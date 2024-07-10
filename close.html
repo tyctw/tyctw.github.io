@@ -29,6 +29,7 @@
             width: 600px;
             text-align: center;
             overflow-y: auto;
+            animation: fadeIn 0.5s ease-in-out;
         }
         h1 {
             color: #007BFF;
@@ -43,13 +44,13 @@
             text-align: left;
         }
         select, button, input[type="text"] {
-            width: calc(100% - 22px); /* Adjusted width to fit within container */
+            width: calc(100% - 22px); /* 調整寬度以適應容器 */
             padding: 10px;
             margin: 5px 0 15px;
             border: 1px solid #ddd;
             border-radius: 5px;
             font-size: 14px;
-            box-sizing: border-box; /* Ensure padding is included in width calculation */
+            box-sizing: border-box; /* 確保填充包含在寬度計算內 */
         }
         select:focus, button:focus, input[type="text"]:focus {
             outline: none;
@@ -61,10 +62,11 @@
             color: #fff;
             cursor: pointer;
             border: none;
-            transition: background-color 0.3s ease;
+            transition: background-color 0.3s ease, transform 0.3s ease;
         }
         button:hover {
             background-color: #0056b3;
+            transform: scale(1.05);
         }
         h2 {
             color: #333;
@@ -99,6 +101,7 @@
             width: 80%; /* 寬度，根據內容調整 */
             box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
             position: relative;
+            animation: slideIn 0.5s ease-in-out;
         }
 
         .close {
@@ -117,6 +120,16 @@
             color: black;
             text-decoration: none;
             cursor: pointer;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes slideIn {
+            from { transform: translateY(-50px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
         }
     </style>
 </head>

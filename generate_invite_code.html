@@ -186,7 +186,7 @@
             const inviteCode = localStorage.getItem('generatedInviteCode');
             if (inviteCode) {
                 // 將使用者自動重定向到分析系統並將邀請碼作為查詢參數
-                window.location.href = `index.html?inviteCode=$;
+                window.location.href = `index.html?inviteCode=${inviteCode}`;
             }
         }
     </script>

@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>桃聯區會考落點分析系統邀請碼</title>
     <style>
+
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background-color: #f0f0f0; /* 調整背景顏色 */
@@ -13,6 +14,7 @@
             justify-content: center;
             align-items: center;
             height: 100vh;
+            animation: fadeIn 1s ease-in-out;
         }
 
         .container {
@@ -24,6 +26,7 @@
             max-width: 400px;
             text-align: center;
             transition: transform 0.3s ease-in-out; /* 添加過渡效果 */
+            animation: fadeIn 1s ease-in-out, bounce 2s infinite;
         }
 
         .container:hover {
@@ -43,7 +46,7 @@
             border: 2px dashed #007bff; /* 添加虛線邊框 */
             border-radius: 8px;
             cursor: pointer;
-            transition: background-color 0.3s ease;
+            transition: background-color 0.3s ease, transform 0.3s ease;
             margin-bottom: 20px;
             display: inline-block;
             width: 100%;
@@ -54,6 +57,7 @@
 
         #invitationCodeDisplay:hover {
             background-color: #e0e0e0;
+            transform: scale(1.02);
         }
 
         #expiryTimeDisplay {
@@ -70,7 +74,7 @@
             font-size: 16px;
             border-radius: 5px;
             cursor: pointer;
-            transition: background-color 0.3s ease;
+            transition: background-color 0.3s ease, transform 0.3s ease;
             margin-top: 10px;
             width: 100%;
             box-sizing: border-box;
@@ -78,6 +82,7 @@
 
         button:hover {
             background-color: #0056b3;
+            transform: scale(1.02);
         }
 
         footer {
@@ -96,8 +101,11 @@
         <footer>&copy; 2024 桃聯區會考落點分析系統2.0. All rights reserved.</footer>
     </div>
 
+    <form id="redirectForm" action="index.html" method="POST" style="display: none;">
+        <input type="hidden" name="inviteCode" id="hiddenInviteCode">
+    </form>
+
     <script>
-        // JavaScript 部分保持不變，你可以繼續使用之前的 JavaScript 代碼
         // 初始呼叫以生成並顯示邀請碼
         generateAndDisplayInviteCode();
 
@@ -185,20 +193,20 @@
         function redirectToAnalysisSystem() {
             const inviteCode = localStorage.getItem('generatedInviteCode');
             if (inviteCode) {
-                // 將使用者自動重定向到分析系統並將邀請碼作為查詢參數
-                window.location.href = `index.html?inviteCode=${inviteCode}`;
+                // 將邀請碼填寫到隱藏表單並提交表單
+                document.getElementById('hiddenInviteCode').value = inviteCode;
+                document.getElementById('redirectForm').submit();
             }
         }
     </script>
 
     <!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-VKP55N96DC"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-
-  gtag('config', 'G-VKP55N96DC');
-</script>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-VKP55N96DC"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-VKP55N96DC');
+    </script>
 </body>
 </html>

@@ -190,15 +190,9 @@
             }
         }
 
-       function redirectToAnalysisSystem() {
-            const inviteCode = localStorage.getItem('generatedInviteCode');
-            if (inviteCode) {
-                // 將邀請碼包含在 URL 中進行重定向
-                window.location.href = `https://tyctw.github.io/?inviteCode=${inviteCode}`;
-                // 將邀請碼填寫到隱藏表單並提交表單
-                document.getElementById('hiddenInviteCode').value = inviteCode;
-                document.getElementById('redirectForm').submit();
-            }
+        function redirectToAnalysisSystem() {
+            // 直接導向到指定 URL
+            window.location.href = "https://tyctw.github.io";
         }
     </script>
 

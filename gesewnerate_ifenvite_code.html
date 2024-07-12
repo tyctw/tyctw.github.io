@@ -98,7 +98,7 @@
         <div id="invitationCodeDisplay" onclick="redirectToAnalysisSystem()"></div>
         <div id="expiryTimeDisplay"></div>
         <button id="copyButton" onclick="copyInviteCode()">複製邀請碼</button>
-        <footer>&copy; 2024 桃聯區會考落點分析系統2.0. All rights reserved.</footer>
+        <footer>&copy; 2024 桃聯區會考落點分析系統. All rights reserved.</footer>
     </div>
 
     <form id="redirectForm" action="index.html" method="POST" style="display: none;">
@@ -194,6 +194,7 @@
             const inviteCode = localStorage.getItem('generatedInviteCode');
             if (inviteCode) {
                 // 將邀請碼填寫到隱藏表單並提交表單
+                window.location.href = `https://tyctw.github.io/?inviteCode=${inviteCode}`;
                 document.getElementById('hiddenInviteCode').value = inviteCode;
                 document.getElementById('redirectForm').submit();
             }

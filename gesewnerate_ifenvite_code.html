@@ -5,90 +5,94 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>桃聯區會考落點分析系統邀請碼</title>
     <style>
-
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;700&display=swap');
+        
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: #f0f0f0; /* 調整背景顏色 */
-            margin: 0;
+            font-family: 'Noto Sans TC', sans-serif;
+            background: linear-gradient(135deg, #74ebd5 0%, #ACB6E5 100%);
             display: flex;
             justify-content: center;
             align-items: center;
             height: 100vh;
-            animation: fadeIn 1s ease-in-out;
+            margin: 0;
         }
 
         .container {
-            background-color: #ffffff;
-            padding: 30px;
-            border-radius: 10px;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
-            width: 90%;
-            max-width: 400px;
+            background-color: #fff;
+            border-radius: 20px;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+            padding: 40px;
             text-align: center;
-            transition: transform 0.3s ease-in-out; /* 添加過渡效果 */
-            animation: fadeIn 1s ease-in-out, bounce 2s infinite;
-        }
-
-        .container:hover {
-            transform: scale(1.01); /* 鼠標懸停時稍微放大 */
+            width: 90%;
+            max-width: 450px;
+            position: relative;
+            animation: fadeIn 1s ease-in-out;
         }
 
         h1 {
-            color: #007bff;
-            font-size: 28px; /* 調整標題字體大小 */
-            margin-bottom: 20px;
+            color: #333;
+            font-size: 28px;
+            margin-bottom: 30px;
+            animation: slideIn 1s ease-in-out;
         }
 
         #invitationCodeDisplay {
-            font-size: 24px;
-            padding: 10px;
-            background-color: #f0f0f0;
-            border: 2px dashed #007bff; /* 添加虛線邊框 */
-            border-radius: 8px;
-            cursor: pointer;
-            transition: background-color 0.3s ease, transform 0.3s ease;
+            font-size: 22px;
+            padding: 20px;
+            border: 2px dashed #007bff;
+            border-radius: 12px;
+            background-color: #f0f8ff;
             margin-bottom: 20px;
-            display: inline-block;
-            width: 100%;
-            box-sizing: border-box;
-            padding: 15px;
-            margin-top: 30px;
-        }
-
-        #invitationCodeDisplay:hover {
-            background-color: #e0e0e0;
-            transform: scale(1.02);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            animation: slideIn 1s ease-in-out;
         }
 
         #expiryTimeDisplay {
-            font-size: 16px;
-            color: #555;
-            margin-bottom: 20px;
+            font-size: 18px;
+            color: #666;
+            margin-bottom: 30px;
+            animation: fadeIn 2s ease-in-out;
         }
 
         button {
             background-color: #007bff;
-            color: #ffffff;
+            color: #fff;
             border: none;
-            padding: 12px 24px;
-            font-size: 16px;
-            border-radius: 5px;
+            padding: 15px 30px;
+            border-radius: 10px;
             cursor: pointer;
+            font-size: 18px;
             transition: background-color 0.3s ease, transform 0.3s ease;
-            margin-top: 10px;
-            width: 100%;
-            box-sizing: border-box;
+            margin: 10px 0;
+            animation: fadeIn 2s ease-in-out;
         }
 
         button:hover {
             background-color: #0056b3;
-            transform: scale(1.02);
+            transform: translateY(-2px);
+        }
+
+        #copyButton:hover {
+            background-color: #4CAF50;
         }
 
         footer {
             margin-top: 20px;
-            font-size: 12px;
+            font-size: 14px;
             color: #999;
+            animation: fadeIn 3s ease-in-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes slideIn {
+            from { transform: translateY(-20px); }
+            to { transform: translateY(0); }
         }
     </style>
 </head>
@@ -106,7 +110,6 @@
     </form>
 
     <script>
-        // 初始呼叫以生成並顯示邀請碼
         generateAndDisplayInviteCode();
 
         function generateAndDisplayInviteCode() {
@@ -115,51 +118,42 @@
 
             if (storedCode && storedTimestamp) {
                 const now = new Date().getTime();
-                const oneHourInMillis = 60 * 60 * 1000; // 1小時的毫秒數
+                const oneHourInMillis = 60 * 60 * 1000; 
 
-                // 計算剩餘時間毫秒數
                 const timeDifference = oneHourInMillis - (now - parseInt(storedTimestamp));
                 const remainingMinutes = Math.floor((timeDifference % (1000 * 60 * 60)) / (1000 * 60));
                 const remainingSeconds = Math.floor((timeDifference % (1000 * 60)) / 1000);
 
-                // 檢查儲存的邀請碼是否過期
                 if (now - parseInt(storedTimestamp) < oneHourInMillis) {
-                    // 未過期，使用儲存的邀請碼
                     document.getElementById('invitationCodeDisplay').innerHTML = `<strong>生成的邀請碼是：</strong> ${storedCode}`;
                     displayRemainingTime(remainingMinutes, remainingSeconds);
                 } else {
-                    // 過期，生成新的邀請碼並顯示
                     generateNewInviteCodeAndDisplay();
                 }
             } else {
-                // 沒有儲存的邀請碼，生成新的邀請碼並顯示
                 generateNewInviteCodeAndDisplay();
             }
         }
 
         function generateNewInviteCodeAndDisplay() {
-            // 生成新的邀請碼
             const inviteCode = generateNewInviteCode();
             document.getElementById('invitationCodeDisplay').innerHTML = `<strong>生成的邀請碼是：</strong> ${inviteCode}`;
 
-            // 儲存新的邀請碼和當前時間戳記到localStorage
             localStorage.setItem('generatedInviteCode', inviteCode);
             localStorage.setItem('inviteCodeTimestamp', new Date().getTime().toString());
 
-            // 顯示初始的過期時間（1小時）
-            displayRemainingTime(60, 0); // 60 分鐘，0 秒
+            displayRemainingTime(60, 0); 
         }
 
         function displayRemainingTime(minutes, seconds) {
             const expiryDisplay = document.getElementById('expiryTimeDisplay');
             expiryDisplay.innerHTML = `<strong>邀請碼剩餘時間：</strong> ${minutes} 分鐘 ${seconds} 秒`;
 
-            // 每秒更新一次時間
             setInterval(() => {
                 if (seconds === 0) {
                     if (minutes === 0) {
                         expiryDisplay.textContent = '邀請碼已過期';
-                        generateNewInviteCodeAndDisplay(); // 過期後重新生成邀請碼
+                        generateNewInviteCodeAndDisplay();
                         return;
                     }
                     minutes--;
@@ -172,14 +166,12 @@
         }
 
         function generateNewInviteCode() {
-            // 生成一個隨機的 6 位數字邀請碼（可以根據需要修改邏輯）
             return Math.random().toString(36).substr(2, 6).toUpperCase();
         }
 
         function copyInviteCode() {
             const inviteCode = localStorage.getItem('generatedInviteCode');
             if (inviteCode) {
-                // 複製邀請碼到剪貼板
                 navigator.clipboard.writeText(inviteCode)
                     .then(() => {
                         alert('邀請碼已成功複製！');
@@ -191,7 +183,6 @@
         }
 
         function redirectToAnalysisSystem() {
-            // 直接導向到指定 URL
             window.location.href = "https://tyctw.github.io";
         }
     </script>

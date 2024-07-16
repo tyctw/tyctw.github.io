@@ -87,8 +87,8 @@
 <body>
     <div class="container">
         <div class="icon">&#9888;</div>
-        <h1>網站維修中</h1>
-        <p>目前尚未開放，正在維修中。<br>請稍後再試。</p>
+        <h1 id="pageTitle">網站維修中</h1>
+        <p id="pageDescription">目前尚未開放，正在維修中。<br>請稍後再試。</p>
         <div class="countdown" id="countdown"></div>
         <div class="language-selector">
             <select id="languageSelect" onchange="changeLanguage()">
@@ -97,7 +97,7 @@
                 <!-- Add more languages as needed -->
             </select>
         </div>
-        <a href="https://sites.google.com/view/tyctw/">返回首頁</a>
+        <a href="https://sites.google.com/view/tyctw/" id="linkToHome">返回首頁</a>
     </div>
 
     <script>
@@ -130,11 +130,19 @@
 
         function changeLanguage() {
             var lang = document.getElementById("languageSelect").value;
-            // Implement language change functionality here
-            // Example: Use AJAX or other methods to load content in the selected language
+            const pageTitleElement = document.getElementById('pageTitle');
+            const pageDescriptionElement = document.getElementById('pageDescription');
+            const linkToHomeElement = document.getElementById('linkToHome');
+
             if (lang === 'en') {
+                pageTitleElement.textContent = 'Website Under Maintenance';
+                pageDescriptionElement.textContent = 'Currently under maintenance. Please try again later.';
+                linkToHomeElement.textContent = 'Return to Homepage';
                 document.getElementById('countdown').innerHTML = getLocalizedString('countdownEN');
             } else {
+                pageTitleElement.textContent = '網站維修中';
+                pageDescriptionElement.textContent = '目前尚未開放，正在維修中。\n請稍後再試。';
+                linkToHomeElement.textContent = '返回首頁';
                 document.getElementById('countdown').innerHTML = getLocalizedString('countdown');
             }
         }

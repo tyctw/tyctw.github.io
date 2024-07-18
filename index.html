@@ -800,4 +800,29 @@
 
   gtag('config', 'G-VKP55N96DC');
 </script>
+                  <script>
+
+document.body.onkeydown = function(e){
+var keyCode = e.keyCode || e.which || e.charCode;
+var ctrlKey = e.ctrlKey || e.metaKey;
+if(ctrlKey && (keyCode == 83 || keyCode == 85 || keyCode == 73)) {
+e.preventDefault();
+return false;
+}else if(keyCode && keyCode == 123){
+return false;
+}
+}
+
+</script>
+    <script>
+
+document.oncontextmenu = function (){
+return false;
+}
+</script>
+            <noscript><p style="font-size:70px;">對不起，你的瀏覽器不支持或禁用了JavaScript，無法正常使用此網站</p></noscript>
+
+
+        </footer>
+    </div>
     </body></html>

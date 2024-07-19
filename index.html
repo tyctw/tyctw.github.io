@@ -26,6 +26,10 @@
         align-items: center;
         min-height: 100vh;
         color: var(--text-color);
+        -webkit-user-select: none; /* 禁用 Chrome, Safari 和 Opera */
+  -moz-user-select: none;    /* 禁用 Firefox */
+  -ms-user-select: none;     /* 禁用 Internet Explorer/Edge */
+  user-select: none;         /* 標準語法 */
       }
     
       .container {
@@ -775,11 +779,6 @@ return false;
       </script>
 
 
-    document.addEventListener('DOMContentLoaded', (event) => {
-  document.body.style.userSelect = 'none';
-  document.body.style.webkitUserSelect = 'none';
-  document.body.style.mozUserSelect = 'none';
-  document.body.style.msUserSelect = 'none';
-});
+    
     
     </body></html>

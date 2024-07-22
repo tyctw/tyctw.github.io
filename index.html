@@ -302,7 +302,7 @@
       }
     </style></head><body>
       <div class="container">
-        <h1><i class="fas fa-chart-line icon"></i>桃聯區會考落點分析</h1>
+        <h1><i class="fas fa-chart-line icon"></i>桃聯區會考落點分析系統</h1>
         <a href="https://forms.gle/ZKW3W58gcbQW3vdX9" target="_blank"><i class="fas fa-link icon"></i>如需獲取邀請碼請幫我們填寫表單</a>
         <button class="instruction-toggle" onclick="toggleInstructions()"><i class="fas fa-info-circle icon"></i>使用說明</button>
         <button class="disclaimer-toggle" onclick="showDisclaimer()"><i class="fas fa-exclamation-triangle icon"></i>免責聲明</button>
@@ -635,10 +635,10 @@
                          <p class="result-item"><i class="fas fa-award icon"></i>總積點：${totalCredits}</p>`;
     
           const schoolData = {
-            '武陵高中(普通科)': { points: 33, credits: 32, type: '普通科', ownership: 'public' },
-        '中壢高中(普通科)': { points: 31, credits: 28, type: '普通科', ownership: 'public' },             
-           '內壢高中(普通科)': { points: 29, credits: 24, type: '普通科', ownership: 'public' },
-                '陽明高中(普通科)': { points: 27, credits: 22, type: '普通科', ownership: 'public' },
+               '武陵高中(普通科)': { points: 33, credits: 32, type: '普通科', ownership: 'public' },
+               '中壢高中(普通科)': { points: 31, credits: 28, type: '普通科', ownership: 'public' },             
+               '內壢高中(普通科)': { points: 29, credits: 24, type: '普通科', ownership: 'public' },
+               '陽明高中(普通科)': { points: 27, credits: 22, type: '普通科', ownership: 'public' },
                 '平鎮高中(普通科)': { points: 27, credits: 21, type: '普通科' , ownership: 'public'},
                 '永豐高中(普通科)': { points: 25, credits: 20, type: '普通科' , ownership: 'public'},
                 '大園高中(普通科)': { points: 25, credits: 19, type: '普通科' , ownership: 'public'},
@@ -654,11 +654,12 @@
                 '治平高中(普通科)': { points: 15, credits: 6, type: '普通科', ownership: 'private' },      
                 '治平高中(綜合科)': { points: 15, credits: 6, type: '普通科', ownership: 'private' },
                 '振聲高中(普通科)': { points: 23, credits: 13, type: '普通科', ownership: 'private' },      
+                '啟英高中(普通科)': { points: 21, credits: 10, type: '普通科', ownership: 'private'},
+                '育達高中(普通科)': { points: 20, credits: 14, type: '普通科', ownership: 'private'},
 
-                '新興高中(資料處理科)': { points: 19, credits: 9, type: '職業類科', ownership: 'private', group: '商業與管理群' },      
+    '新興高中(資料處理科)': { points: 19, credits: 9, type: '職業類科', ownership: 'private', group: '商業與管理群' },      
     '新興高中(應用英語科)': { points: 19, credits: 9, type: '職業類科', ownership: 'private', group: '外語群' },      
     '新興高中(電子科)': { points: 19, credits: 9, type: '職業類科', ownership: 'private', group: '電機與電子群' },
-
     '中壢高商(商業經營科)': { points: 23, credits: 12, type: '職業類科', ownership: 'public', group: '商業與管理群' },
     '中壢高商(資料處理科)': { points: 23, credits: 13, type: '職業類科', ownership: 'public', group: '商業與管理群' },
     '中壢高商(國際貿易科)': { points: 23, credits: 14, type: '職業類科', ownership: 'public', group: '商業與管理群' },
@@ -703,11 +704,24 @@
     '新興高中(飛機修護科)': { points: 19, credits: 8, type: '職業類科', ownership: 'private', group: '動力機械群' },
     '新興高中(觀光事業科)': { points: 19, credits: 8, type: '職業類科', ownership: 'private', group: '餐旅群' },
     '新興高中(電子商務科)': { points: 19, credits: 8, type: '職業類科', ownership: 'private', group: '設計群' },
-    '新興高中(家具木工科)': { points: 19, credits: 8, type: '職業類科', ownership: 'private', group: '商業與管理群' }    
+    '新興高中(家具木工科)': { points: 19, credits: 8, type: '職業類科', ownership: 'private', group: '商業與管理群' }  
 
-          };
+      
+      '啟英高中(餐飲管理科)': { points: 15, credits: 6, type: '職業類科', ownership: 'private', group: '餐旅群' },
+      '啟英高中(汽車科)': { points: 18, credits: 8, type: '職業類科', ownership: 'private', group: '動力機械群' },
+      '啟英高中(時尚造型科)': { points: 15, credits: 6, type: '職業類科', ownership: 'private', group: '家政群' },
+      '啟英高中(資訊科)': { points: 16, credits: 7, type: '職業類科', ownership: 'private', group: '電機與電子群' },
+      '啟英高中(應用英語科)': { points: 19, credits: 8, type: '職業類科', ownership: 'private', group: '外語群' },    
+      '啟英高中(室內設計科)': { points: 21, credits: 9, type: '職業類科', ownership: 'private', group: '設計群' },   
+      '啟英高中(資料處理科)': { points: 22, credits: 10, type: '職業類科', ownership: 'private', group: '商業與管理群' },    
+
+
+
+
+        
+    };
     
-          results += '<h3><i class="fas fa-list-ul icon"></i>可能錄取的學校：</h3>';
+          results += '<h3><i class="fas fa-list-ul icon"></i>可能錄取的學校如下：</h3>';
     
           const eligibleSchools = Object.entries(schoolData).filter(([schoolName, school]) => 
             (schoolOwnership === 'all' || school.ownership === schoolOwnership) &&

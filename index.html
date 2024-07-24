@@ -296,7 +296,16 @@
       .container {
         animation: fadeIn 0.5s ease-out;
       }
-    
+              /* 新增版權聲明樣式 */
+    .copyright {
+      text-align: center;
+      margin-top: 2rem;
+      padding: 1rem;
+      background-color: rgba(0, 0, 0, 0.05);
+      border-radius: 5px;
+      font-size: 0.9rem;
+      color: #666;
+    }  
       .form-group, .result-item, .instruction-item {
         animation: slideIn 0.5s ease-out;
       }
@@ -444,8 +453,11 @@
           <button type="button" onclick="analyzeScores()"><i class="fas fa-search icon"></i>分析落點</button>
         </form>
         <div id="results"></div>
+    <div class="copyright">
+        <p>&copy; 2023 桃聯區會考落點分析系統. All rights reserved.</p>
+        <p>本網站由桃聯區教育局開發維護。未經授權，禁止複製或轉載。</p>
       </div>
-    
+    </div>      
       <!-- Modal -->
       <div id="disclaimerModal" class="modal">
         <div class="modal-content">

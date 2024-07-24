@@ -1,814 +1,876 @@
 <html><head><title>桃聯區會考落點分析</title>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="google-adsense-account" content="ca-pub-3350304014189563">
-      <meta name="description" content="桃聯區會考落點分析，幫助使用者分析會考成績，提供學校落點參考。">
-    <meta name="keywords" content="桃聯區, 會考, 落點分析, 教育, 學校,武陵高中,中壢高中,內壢高中,平鎮高中,大園高中,永豐高中,南崁高中,振聲高中,楊梅高中,治平高中,新興高中,關西高中,大溪高中">
-    <meta name="author" content="桃聯區教育局">
-  <style>
-      @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;700&display=swap');
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="google-adsense-account" content="ca-pub-3350304014189563">
+        <meta name="description" content="桃聯區會考落點分析，幫助使用者分析會考成績，提供學校落點參考。">
+      <meta name="keywords" content="桃聯區, 會考, 落點分析, 教育, 學校,武陵高中,中壢高中,內壢高中,平鎮高中,大園高中,永豐高中,南崁高中,振聲高中,楊梅高中,治平高中,新興高中,關西高中,大溪高中">
+      <meta name="author" content="桃聯區教育局">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;700&display=swap');
+        
+        :root {
+          --primary-color: #3498db;
+          --secondary-color: #2ecc71;
+          --background-color: #f5f7fa;
+          --text-color: #333;
+          --card-background: #fff;
+          --shadow-color: rgba(0, 0, 0, 0.1);
+        }
       
-      :root {
-        --primary-color: #3498db;
-        --secondary-color: #2ecc71;
-        --background-color: #f5f7fa;
-        --text-color: #333;
-        --card-background: #fff;
-        --shadow-color: rgba(0, 0, 0, 0.1);
-      }
-    
-      body {
-        font-family: 'Noto Sans TC', sans-serif;
-        background: linear-gradient(135deg, var(--background-color) 0%, #c3cfe2 100%);
-        margin: 0;
-        padding: 20px;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        min-height: 100vh;
-        color: var(--text-color);
-        -webkit-user-select: none; /* 禁用 Chrome, Safari 和 Opera */
-  -moz-user-select: none;    /* 禁用 Firefox */
-  -ms-user-select: none;     /* 禁用 Internet Explorer/Edge */
-  user-select: none;         /* 標準語法 */
-      }
-    
-      .container {
-        background: var(--card-background);
-        padding: 2.5rem;
-        border-radius: 20px;
-        box-shadow: 0 10px 30px var(--shadow-color);
-        max-width: 800px;
-        width: 90%;
-        text-align: center;
-        backdrop-filter: blur(10px);
-        transition: all 0.3s ease;
-      }
-    
-      .container:hover {
-        transform: translateY(-5px);
-        box-shadow: 0 15px 35px var(--shadow-color);
-      }
-    
-      h1, h2, h3 {
-        color: var(--primary-color);
-        margin-bottom: 1rem;
-        text-shadow: 1px 1px 2px var(--shadow-color);
-      }
-    
-      h1 {
-        font-size: 2.5rem;
-        position: relative;
-        display: inline-block;
-      }
-    
-      h1::after {
-        content: '';
-        position: absolute;
-        bottom: -10px;
-        left: 50%;
-        transform: translateX(-50%);
-        width: 50%;
-        height: 3px;
-        background-color: var(--primary-color);
-        border-radius: 2px;
-      }
-    
-      h2 {
-        font-size: 1.8rem;
-        margin-top: 2rem;
-      }
-    
-      h3 {
-        font-size: 1.5rem;
-        margin-top: 1.5rem;
-      }
-    
-      .form-group {
-        margin-bottom: 1.5rem;
-        text-align: left;
-      }
-    
-      label {
-        display: block;
-        margin-bottom: 0.5rem;
-        font-weight: 500;
-        color: var(--text-color);
-        transition: color 0.3s ease;
-      }
-    
-      label:hover {
-        color: var(--primary-color);
-      }
-    
-      select, input[type="text"] {
-        width: 100%;
-        padding: 0.75rem;
-        border: 2px solid #bdc3c7;
-        border-radius: 8px;
-        font-size: 1rem;
-        transition: all 0.3s ease;
-        background-color: rgba(255, 255, 255, 0.8);
-      }
-    
-      select:focus, input[type="text"]:focus {
-        outline: none;
-        border-color: var(--primary-color);
-        box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.2);
-        background-color: #fff;
-      }
-    
-      button {
-        background-color: var(--primary-color);
-        color: #fff;
-        border: none;
-        padding: 1rem 2rem;
-        font-size: 1.1rem;
-        border-radius: 8px;
-        cursor: pointer;
-        transition: all 0.3s ease;
-        box-shadow: 0 4px 6px var(--shadow-color);
-        position: relative;
-        overflow: hidden;
-      }
-    
-      button::before {
-        content: '';
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        width: 0;
-        height: 0;
-        background-color: rgba(255, 255, 255, 0.2);
-        border-radius: 50%;
-        transform: translate(-50%, -50%);
-        transition: all 0.5s ease;
-      }
-    
-      button:hover::before {
-        width: 300px;
-        height: 300px;
-      }
-    
-      button:hover {
-        background-color: #2980b9;
-        transform: translateY(-2px);
-        box-shadow: 0 6px 8px var(--shadow-color);
-      }
-    
-      #results, #instructions {
-        margin-top: 2.5rem;
-        text-align: left;
-        background: rgba(236, 240, 241, 0.8);
-        padding: 1.5rem;
-        border-radius: 10px;
-        box-shadow: inset 0 2px 4px var(--shadow-color);
-        transition: all 0.3s ease;
-      }
-    
-      #results:hover, #instructions:hover {
-        background: rgba(236, 240, 241, 1);
-        box-shadow: inset 0 3px 6px var(--shadow-color);
-      }
-    
-      .result-item, .instruction-item {
-        margin-bottom: 1rem;
-        padding: 1rem;
-        background: var(--card-background);
-        border-radius: 8px;
-        box-shadow: 0 2px 4px var(--shadow-color);
-        transition: all 0.3s ease;
-      }
-    
-      .result-item:hover, .instruction-item:hover {
-        transform: translateY(-3px);
-        box-shadow: 0 4px 8px var(--shadow-color);
-      }
-    
-      .result-item h3, .instruction-item h3 {
-        margin-bottom: 0.5rem;
-        color: var(--primary-color);
-      }
-    
-      .instruction-toggle, .disclaimer-toggle {
-        background-color: var(--secondary-color);
-        color: white;
-        border: none;
-        padding: 0.5rem 1rem;
-        font-size: 1rem;
-        border-radius: 5px;
-        cursor: pointer;
-        transition: all 0.3s ease;
-        margin-bottom: 1rem;
-        margin-right: 0.5rem;
-      }
-    
-      .instruction-toggle:hover, .disclaimer-toggle:hover {
-        background-color: #27ae60;
-        transform: translateY(-2px);
-        box-shadow: 0 4px 6px var(--shadow-color);
-      }
-    
-      .icon {
-        margin-right: 0.5rem;
-        font-size: 1.2em;
-      }
-    
-      /* Modal styles */
-      .modal {
-        display: none;
-        position: fixed;
-        z-index: 1000;
-        left: 0;
-        top: 0;
-        width: 100%;
-        height: 100%;
-        overflow: auto;
-        background-color: rgba(0,0,0,0.4);
-      }
-    
-      .modal-content {
-        background-color: #fefefe;
-        margin: 15% auto;
-        padding: 20px;
-        border: 1px solid #888;
-        width: 80%;
-        max-width: 600px;
-        border-radius: 10px;
-        box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-        position: relative;
-      }
-    
-      .close {
-        color: #aaa;
-        float: right;
-        font-size: 28px;
-        font-weight: bold;
-        cursor: pointer;
-      }
-    
-      .close:hover,
-      .close:focus {
-        color: #000;
-        text-decoration: none;
-        cursor: pointer;
-      }
-    
-      .confirm-button {
-        background-color: var(--primary-color);
-        color: white;
-        border: none;
-        padding: 10px 20px;
-        text-align: center;
-        text-decoration: none;
-        display: inline-block;
-        font-size: 16px;
-        margin: 4px 2px;
-        cursor: pointer;
-        border-radius: 5px;
-        transition: background-color 0.3s ease;
-      }
-    
-      .confirm-button:hover {
-        background-color: #2980b9;
-      }
-    
-      @media (max-width: 600px) {
+        body {
+          font-family: 'Noto Sans TC', sans-serif;
+          background: linear-gradient(135deg, var(--background-color) 0%, #c3cfe2 100%);
+          margin: 0;
+          padding: 20px;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          min-height: 100vh;
+          color: var(--text-color);
+          -webkit-user-select: none; /* 禁用 Chrome, Safari 和 Opera */
+    -moz-user-select: none;    /* 禁用 Firefox */
+    -ms-user-select: none;     /* 禁用 Internet Explorer/Edge */
+    user-select: none;         /* 標準語法 */
+        }
+      
         .container {
-          padding: 1.5rem;
+          background: var(--card-background);
+          padding: 2.5rem;
+          border-radius: 20px;
+          box-shadow: 0 10px 30px var(--shadow-color);
+          max-width: 800px;
+          width: 90%;
+          text-align: center;
+          backdrop-filter: blur(10px);
+          transition: all 0.3s ease;
         }
+      
+        .container:hover {
+          transform: translateY(-5px);
+          box-shadow: 0 15px 35px var(--shadow-color);
+        }
+      
+        h1, h2, h3 {
+          color: var(--primary-color);
+          margin-bottom: 1rem;
+          text-shadow: 1px 1px 2px var(--shadow-color);
+        }
+      
         h1 {
-          font-size: 2rem;
+          font-size: 2.5rem;
+          position: relative;
+          display: inline-block;
         }
-      }
+      
+        h1::after {
+          content: '';
+          position: absolute;
+          bottom: -10px;
+          left: 50%;
+          transform: translateX(-50%);
+          width: 50%;
+          height: 3px;
+          background-color: var(--primary-color);
+          border-radius: 2px;
+        }
+      
+        h2 {
+          font-size: 1.8rem;
+          margin-top: 2rem;
+        }
+      
+        h3 {
+          font-size: 1.5rem;
+          margin-top: 1.5rem;
+        }
+      
+        .form-group {
+          margin-bottom: 1.5rem;
+          text-align: left;
+        }
+      
+        label {
+          display: block;
+          margin-bottom: 0.5rem;
+          font-weight: 500;
+          color: var(--text-color);
+          transition: color 0.3s ease;
+        }
+      
+        label:hover {
+          color: var(--primary-color);
+        }
+      
+        select, input[type="text"] {
+          width: 100%;
+          padding: 0.75rem;
+          border: 2px solid #bdc3c7;
+          border-radius: 8px;
+          font-size: 1rem;
+          transition: all 0.3s ease;
+          background-color: rgba(255, 255, 255, 0.8);
+        }
+      
+        select:focus, input[type="text"]:focus {
+          outline: none;
+          border-color: var(--primary-color);
+          box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.2);
+          background-color: #fff;
+        }
+      
+        button {
+          background-color: var(--primary-color);
+          color: #fff;
+          border: none;
+          padding: 1rem 2rem;
+          font-size: 1.1rem;
+          border-radius: 8px;
+          cursor: pointer;
+          transition: all 0.3s ease;
+          box-shadow: 0 4px 6px var(--shadow-color);
+          position: relative;
+          overflow: hidden;
+        }
+      
+        button::before {
+          content: '';
+          position: absolute;
+          top: 50%;
+          left: 50%;
+          width: 0;
+          height: 0;
+          background-color: rgba(255, 255, 255, 0.2);
+          border-radius: 50%;
+          transform: translate(-50%, -50%);
+          transition: all 0.5s ease;
+        }
+      
+        button:hover::before {
+          width: 300px;
+          height: 300px;
+        }
+      
+        button:hover {
+          background-color: #2980b9;
+          transform: translateY(-2px);
+          box-shadow: 0 6px 8px var(--shadow-color);
+        }
+      
+        #results, #instructions {
+          margin-top: 2.5rem;
+          text-align: left;
+          background: rgba(236, 240, 241, 0.8);
+          padding: 1.5rem;
+          border-radius: 10px;
+          box-shadow: inset 0 2px 4px var(--shadow-color);
+          transition: all 0.3s ease;
+        }
+      
+        #results:hover, #instructions:hover {
+          background: rgba(236, 240, 241, 1);
+          box-shadow: inset 0 3px 6px var(--shadow-color);
+        }
+      
+        .result-item, .instruction-item {
+          margin-bottom: 1rem;
+          padding: 1rem;
+          background: var(--card-background);
+          border-radius: 8px;
+          box-shadow: 0 2px 4px var(--shadow-color);
+          transition: all 0.3s ease;
+        }
+      
+        .result-item:hover, .instruction-item:hover {
+          transform: translateY(-3px);
+          box-shadow: 0 4px 8px var(--shadow-color);
+        }
+      
+        .result-item h3, .instruction-item h3 {
+          margin-bottom: 0.5rem;
+          color: var(--primary-color);
+        }
+      
+        .instruction-toggle, .disclaimer-toggle {
+          background-color: var(--secondary-color);
+          color: white;
+          border: none;
+          padding: 0.5rem 1rem;
+          font-size: 1rem;
+          border-radius: 5px;
+          cursor: pointer;
+          transition: all 0.3s ease;
+          margin-bottom: 1rem;
+          margin-right: 0.5rem;
+        }
+      
+        .instruction-toggle:hover, .disclaimer-toggle:hover {
+          background-color: #27ae60;
+          transform: translateY(-2px);
+          box-shadow: 0 4px 6px var(--shadow-color);
+        }
+      
+        .icon {
+          margin-right: 0.5rem;
+          font-size: 1.2em;
+        }
+      
+        /* Modal styles */
+        .modal {
+          display: none;
+          position: fixed;
+          z-index: 1000;
+          left: 0;
+          top: 0;
+          width: 100%;
+          height: 100%;
+          overflow: auto;
+          background-color: rgba(0,0,0,0.4);
+        }
+      
+        .modal-content {
+          background-color: #fefefe;
+          margin: 15% auto;
+          padding: 20px;
+          border: 1px solid #888;
+          width: 80%;
+          max-width: 600px;
+          border-radius: 10px;
+          box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+          position: relative;
+        }
+      
+        .close {
+          color: #aaa;
+          float: right;
+          font-size: 28px;
+          font-weight: bold;
+          cursor: pointer;
+        }
+      
+        .close:hover,
+        .close:focus {
+          color: #000;
+          text-decoration: none;
+          cursor: pointer;
+        }
+      
+        .confirm-button {
+          background-color: var(--primary-color);
+          color: white;
+          border: none;
+          padding: 10px 20px;
+          text-align: center;
+          text-decoration: none;
+          display: inline-block;
+          font-size: 16px;
+          margin: 4px 2px;
+          cursor: pointer;
+          border-radius: 5px;
+          transition: background-color 0.3s ease;
+        }
+      
+        .confirm-button:hover {
+          background-color: #2980b9;
+        }
+      
+        @media (max-width: 600px) {
+          .container {
+            padding: 1.5rem;
+          }
+          h1 {
+            font-size: 2rem;
+          }
+        }
+      
+        /* Animations */
+        @keyframes fadeIn {
+          from { opacity: 0; }
+          to { opacity: 1; }
+        }
+      
+        @keyframes slideIn {
+          from { transform: translateY(20px); opacity: 0; }
+          to { transform: translateY(0); opacity: 1; }
+        }
+      
+        .container {
+          animation: fadeIn 0.5s ease-out;
+        }
+                /* 新增版權聲明樣式 */
+      .copyright {
+        text-align: center;
+        margin-top: 2rem;
+        padding: 1rem;
+        background-color: rgba(0, 0, 0, 0.05);
+        border-radius: 5px;
+        font-size: 0.9rem;
+        color: #666;
+      }  
+        .form-group, .result-item, .instruction-item {
+          animation: slideIn 0.5s ease-out;
+        }
+
+
+
+
+            /* 新增頁首樣式 */
+    .header {
+      background-color: #3498db;
+      color: white;
+      padding: 10px 0;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      z-index: 1000;
+    }
     
-      /* Animations */
-      @keyframes fadeIn {
-        from { opacity: 0; }
-        to { opacity: 1; }
-      }
+    .header-container {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 20px;
+    }
     
-      @keyframes slideIn {
-        from { transform: translateY(20px); opacity: 0; }
-        to { transform: translateY(0); opacity: 1; }
-      }
+    .header-logo {
+      font-size: 1.5em;
+      font-weight: bold;
+    }
     
-      .container {
-        animation: fadeIn 0.5s ease-out;
-      }
-              /* 新增版權聲明樣式 */
-    .copyright {
-      text-align: center;
-      margin-top: 2rem;
-      padding: 1rem;
-      background-color: rgba(0, 0, 0, 0.05);
-      border-radius: 5px;
-      font-size: 0.9rem;
-      color: #666;
-    }  
-      .form-group, .result-item, .instruction-item {
-        animation: slideIn 0.5s ease-out;
-      }
-    </style></head><body>
-      <div class="container">
-        <h1><i class="fas fa-chart-line icon"></i>桃聯區會考落點分析系統</h1>
-        <a href="https://forms.gle/ZKW3W58gcbQW3vdX9" target="_blank"><i class="fas fa-link icon"></i>如需獲取邀請碼請幫我們填寫表單</a>
-        <button class="instruction-toggle" onclick="toggleInstructions()"><i class="fas fa-info-circle icon"></i>使用說明</button>
-        <button class="disclaimer-toggle" onclick="showDisclaimer()"><i class="fas fa-exclamation-triangle icon"></i>免責聲明</button>
-        <div id="instructions" style="display: none;">
-          <h2><i class="fas fa-book icon"></i>使用說明</h2>
-          <div class="instruction-item">
-            <h3><i class="fas fa-key icon"></i>1. 輸入邀請碼</h3>
-            <a href="https://forms.gle/ZKW3W58gcbQW3vdX9" target="_blank"><i class="fas fa-link icon"></i>如需獲取邀請碼請幫我們填寫表單</a>
-            <p>在"邀請碼"欄位中輸入有效的邀請碼。邀請碼每小時自動更新，請確保使用最新的邀請碼。</p>
-          </div>
-          <div class="instruction-item">
-            <h3><i class="fas fa-school icon"></i>2. 選擇學校屬性和類型</h3>
-            <p>從下拉菜單中選擇您感興趣的學校屬性（公立/私立）和類型（普通科/職業類科）。</p>
-          </div>
-          <div class="instruction-item">
-            <h3><i class="fas fa-pencil-alt icon"></i>3. 輸入會考成績</h3>
-            <p>為每個科目（國文、英文、數學、自然、社會）選擇您的會考等級，從A++到C。</p>
-          </div>
-          <div class="instruction-item">
-            <h3><i class="fas fa-pen-fancy icon"></i>4. 選擇作文級分</h3>
-            <p>從0到6級中選擇您的作文成績。</p>
-          </div>
-          <div class="instruction-item">
-            <h3><i class="fas fa-search icon"></i>5. 分析結果</h3>
-            <p>點擊"分析落點"按鈕，系統將根據您的成績計算總積分，並顯示您可能錄取的學校列表。</p>
-          </div>
-        </div>
-        <form id="analysisForm">
-          <div class="form-group">
-            <label for="invitationCode"><i class="fas fa-key icon"></i>邀請碼：</label>
-            <input type="text" id="invitationCode" required placeholder="請輸入邀請碼">
-          </div>
-          <div class="form-group">
-            <label for="schoolOwnership"><i class="fas fa-building icon"></i>學校屬性：</label>
-            <select id="schoolOwnership">
-              <option value="all">全部</option>
-              <option value="public">公立</option>
-              <option value="private">私立</option>
-            </select>
-          </div>
-          <div class="form-group">
-            <label for="schoolType"><i class="fas fa-graduation-cap icon"></i>學校類型：</label>
-            <select id="schoolType" onchange="toggleVocationalGroup()">
-              <option value="all">全部</option>
-              <option value="普通科">普通科</option>
-              <option value="職業類科">職業類科</option>
-            </select>
-          </div>
-          <div class="form-group" id="vocationalGroupContainer" style="display: none;">
-            <label for="vocationalGroup"><i class="fas fa-tools icon"></i>職業群別：</label>
-            <select id="vocationalGroup">
-                <option value="all">全部</option>
-                <option value="機械群">機械群</option>
-                <option value="動力機械群">動力機械群</option>
-                <option value="電機與電子群">電機與電子群</option>
-                <option value="化工群">化工群</option>
-                <option value="土木與建築群">土木與建築群</option>
-                <option value="商業與管理群">商業與管理群</option>
-                <option value="外語群">外語群</option>
-                <option value="設計群">設計群</option>
-                <option value="農業群">農業群</option>
-                <option value="食品群">食品群</option>
-                <option value="家政群">家政群</option>
-                <option value="餐旅群">餐旅群</option>
-            </select>
-          </div>
-          <div class="form-group">
-            <label for="chinese"><i class="fas fa-book icon"></i>國文：</label>
-            <select id="chinese">
-              <option value="A++">A++</option>
-              <option value="A+">A+</option>
-              <option value="A">A</option>
-              <option value="B++">B++</option>
-              <option value="B+">B+</option>
-              <option value="B">B</option>
-              <option value="C">C</option>
-            </select>
-          </div>
-          <div class="form-group">
-            <label for="english"><i class="fas fa-language icon"></i>英文：</label>
-            <select id="english">
-              <option value="A++">A++</option>
-              <option value="A+">A+</option>
-              <option value="A">A</option>
-              <option value="B++">B++</option>
-              <option value="B+">B+</option>
-              <option value="B">B</option>
-              <option value="C">C</option>
-            </select>
-          </div>
-          <div class="form-group">
-            <label for="math"><i class="fas fa-calculator icon"></i>數學：</label>
-            <select id="math">
-              <option value="A++">A++</option>
-              <option value="A+">A+</option>
-              <option value="A">A</option>
-              <option value="B++">B++</option>
-              <option value="B+">B+</option>
-              <option value="B">B</option>
-              <option value="C">C</option>
-            </select>
-          </div>
-          <div class="form-group">
-            <label for="science"><i class="fas fa-flask icon"></i>自然：</label>
-            <select id="science">
-              <option value="A++">A++</option>
-              <option value="A+">A+</option>
-              <option value="A">A</option>
-              <option value="B++">B++</option>
-              <option value="B+">B+</option>
-              <option value="B">B</option>
-              <option value="C">C</option>
-            </select>
-          </div>
-          <div class="form-group">
-            <label for="social"><i class="fas fa-globe icon"></i>社會：</label>
-            <select id="social">
-              <option value="A++">A++</option>
-              <option value="A+">A+</option>
-              <option value="A">A</option>
-              <option value="B++">B++</option>
-              <option value="B+">B+</option>
-              <option value="B">B</option>
-              <option value="C">C</option>
-            </select>
-          </div>
-          <div class="form-group">
-            <label for="composition"><i class="fas fa-pen-nib icon"></i>作文：</label>
-            <select id="composition">
-              <option value="0">0 級</option>
-              <option value="1">1 級</option>
-              <option value="2">2 級</option>
-              <option value="3">3 級</option>
-              <option value="4">4 級</option>
-              <option value="5">5 級</option>
-              <option value="6">6 級</option>
-            </select>
-          </div>
-          <button type="button" onclick="analyzeScores()"><i class="fas fa-search icon"></i>分析落點</button>
-        </form>
-        <div id="results"></div>
-    <div class="copyright">
-        <p>&copy; 2024 TYCTW桃聯區會考落點分析系統. All rights reserved.</p>
-        <p>本網站由TYCTW會考落點分析平台開發維護。未經授權，禁止複製或轉載。</p>
-      </div>
-    </div>      
-      <!-- Modal -->
-      <div id="disclaimerModal" class="modal">
-        <div class="modal-content">
-          <span class="close">&times;</span>
-          <h2><i class="fas fa-balance-scale icon"></i>免責聲明</h2>
+    .header-nav a {
+      color: white;
+      text-decoration: none;
+      margin-left: 20px;
+      transition: color 0.3s ease;
+    }
+    
+    .header-nav a:hover {
+      color: #f1c40f;
+    }
+    
+    /* 調整主容器的上邊距，為頁首留出空間 */
+    .container {
+      margin-top: 60px;
+    }
+      </style></head><body>
+          <header class="header">
+            <div class="header-container">
+              <div class="header-logo">
+                <i class="fas fa-chart-line"></i> 桃聯區會考落點分析
+              </div>
+              <nav class="header-nav">
+                <a href="https://sites.google.com/view/tyctw/" target="_blank"><i class="fas fa-school"></i> 回到主網頁</a>
+                <a href="https://tyctw.github.io/Admission/" target="_blank"><i class="fas fa-university"></i> 各校錄取完整分數</a>
+                <a href="https://tyctw.github.io/sequence/" target="_blank"><i class="fas fa-pencil-alt"></i> 序位推估</a>
+                <a href="https://tyctw.github.io/tyc/" target="_blank"><i class="fas fa-pencil-alt"></i> 錄取分數查詢</a>
+
+              </nav>
+            </div>
+          </header>
+
+
+
+        <div class="container">
+          <h1><i class="fas fa-chart-line icon"></i>桃聯區會考落點分析系統</h1>
           <a href="https://forms.gle/ZKW3W58gcbQW3vdX9" target="_blank"><i class="fas fa-link icon"></i>如需獲取邀請碼請幫我們填寫表單</a>
-          <p>本網站提供的落點分析結果僅供參考，不代表實際錄取結果。實際錄取情況可能會因各種因素而有所不同，包括但不限於：</p>
-          <ul>
-            <li>各校的招生政策變化</li>
-            <li>當年度考生整體表現</li>
-            <li>特殊才能或其他加分項目</li>
-            <li>各校的實際招生名額調整</li>
-          </ul>
-          <p>我們強烈建議您：</p>
-          <ul>
-            <li>參考多方資訊，不要僅依賴本網站的分析結果</li>
-            <li>諮詢學校輔導老師或升學顧問的專業意見</li>
-            <li>關注各校的官方網站和招生簡章，以獲取最新和最準確的資訊</li>
-          </ul>
-          <p>本網站不對因使用本服務而產生的任何直接或間接損失負責。使用本服務即表示您同意本免責聲明的所有條款。</p>
-          <button class="confirm-button" onclick="closeDisclaimer()">我已了解並同意</button>
+          <button class="instruction-toggle" onclick="toggleInstructions()"><i class="fas fa-info-circle icon"></i>使用說明</button>
+          <button class="disclaimer-toggle" onclick="showDisclaimer()"><i class="fas fa-exclamation-triangle icon"></i>免責聲明</button>
+          <div id="instructions" style="display: none;">
+            <h2><i class="fas fa-book icon"></i>使用說明</h2>
+            <div class="instruction-item">
+              <h3><i class="fas fa-key icon"></i>1. 輸入邀請碼</h3>
+              <a href="https://forms.gle/ZKW3W58gcbQW3vdX9" target="_blank"><i class="fas fa-link icon"></i>如需獲取邀請碼請幫我們填寫表單</a>
+              <p>在"邀請碼"欄位中輸入有效的邀請碼。邀請碼每小時自動更新，請確保使用最新的邀請碼。</p>
+            </div>
+            <div class="instruction-item">
+              <h3><i class="fas fa-school icon"></i>2. 選擇學校屬性和類型</h3>
+              <p>從下拉菜單中選擇您感興趣的學校屬性（公立/私立）和類型（普通科/職業類科）。</p>
+            </div>
+            <div class="instruction-item">
+              <h3><i class="fas fa-pencil-alt icon"></i>3. 輸入會考成績</h3>
+              <p>為每個科目（國文、英文、數學、自然、社會）選擇您的會考等級，從A++到C。</p>
+            </div>
+            <div class="instruction-item">
+              <h3><i class="fas fa-pen-fancy icon"></i>4. 選擇作文級分</h3>
+              <p>從0到6級中選擇您的作文成績。</p>
+            </div>
+            <div class="instruction-item">
+              <h3><i class="fas fa-search icon"></i>5. 分析結果</h3>
+              <p>點擊"分析落點"按鈕，系統將根據您的成績計算總積分，並顯示您可能錄取的學校列表。</p>
+            </div>
+          </div>
+          <form id="analysisForm">
+            <div class="form-group">
+              <label for="invitationCode"><i class="fas fa-key icon"></i>邀請碼：</label>
+              <input type="text" id="invitationCode" required placeholder="請輸入邀請碼">
+            </div>
+            <div class="form-group">
+              <label for="schoolOwnership"><i class="fas fa-building icon"></i>學校屬性：</label>
+              <select id="schoolOwnership">
+                <option value="all">全部</option>
+                <option value="public">公立</option>
+                <option value="private">私立</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="schoolType"><i class="fas fa-graduation-cap icon"></i>學校類型：</label>
+              <select id="schoolType" onchange="toggleVocationalGroup()">
+                <option value="all">全部</option>
+                <option value="普通科">普通科</option>
+                <option value="職業類科">職業類科</option>
+              </select>
+            </div>
+            <div class="form-group" id="vocationalGroupContainer" style="display: none;">
+              <label for="vocationalGroup"><i class="fas fa-tools icon"></i>職業群別：</label>
+              <select id="vocationalGroup">
+                  <option value="all">全部</option>
+                  <option value="機械群">機械群</option>
+                  <option value="動力機械群">動力機械群</option>
+                  <option value="電機與電子群">電機與電子群</option>
+                  <option value="化工群">化工群</option>
+                  <option value="土木與建築群">土木與建築群</option>
+                  <option value="商業與管理群">商業與管理群</option>
+                  <option value="外語群">外語群</option>
+                  <option value="設計群">設計群</option>
+                  <option value="農業群">農業群</option>
+                  <option value="食品群">食品群</option>
+                  <option value="家政群">家政群</option>
+                  <option value="餐旅群">餐旅群</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="chinese"><i class="fas fa-book icon"></i>國文：</label>
+              <select id="chinese">
+                <option value="A++">A++</option>
+                <option value="A+">A+</option>
+                <option value="A">A</option>
+                <option value="B++">B++</option>
+                <option value="B+">B+</option>
+                <option value="B">B</option>
+                <option value="C">C</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="english"><i class="fas fa-language icon"></i>英文：</label>
+              <select id="english">
+                <option value="A++">A++</option>
+                <option value="A+">A+</option>
+                <option value="A">A</option>
+                <option value="B++">B++</option>
+                <option value="B+">B+</option>
+                <option value="B">B</option>
+                <option value="C">C</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="math"><i class="fas fa-calculator icon"></i>數學：</label>
+              <select id="math">
+                <option value="A++">A++</option>
+                <option value="A+">A+</option>
+                <option value="A">A</option>
+                <option value="B++">B++</option>
+                <option value="B+">B+</option>
+                <option value="B">B</option>
+                <option value="C">C</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="science"><i class="fas fa-flask icon"></i>自然：</label>
+              <select id="science">
+                <option value="A++">A++</option>
+                <option value="A+">A+</option>
+                <option value="A">A</option>
+                <option value="B++">B++</option>
+                <option value="B+">B+</option>
+                <option value="B">B</option>
+                <option value="C">C</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="social"><i class="fas fa-globe icon"></i>社會：</label>
+              <select id="social">
+                <option value="A++">A++</option>
+                <option value="A+">A+</option>
+                <option value="A">A</option>
+                <option value="B++">B++</option>
+                <option value="B+">B+</option>
+                <option value="B">B</option>
+                <option value="C">C</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="composition"><i class="fas fa-pen-nib icon"></i>作文：</label>
+              <select id="composition">
+                <option value="0">0 級</option>
+                <option value="1">1 級</option>
+                <option value="2">2 級</option>
+                <option value="3">3 級</option>
+                <option value="4">4 級</option>
+                <option value="5">5 級</option>
+                <option value="6">6 級</option>
+              </select>
+            </div>
+            <button type="button" onclick="analyzeScores()"><i class="fas fa-search icon"></i>分析落點</button>
+          </form>
+          <div id="results"></div>
+      <div class="copyright">
+          <p>&copy; 2024 TYCTW桃聯區會考落點分析系統. All rights reserved.</p>
+          <p>本網站由TYCTW會考落點分析平台開發維護。未經授權，禁止複製或轉載。</p>
         </div>
-      </div>
-    
-      <script>
-        const vocationalGroups = {
-      '機械群': ['機械科', '鑄造科', '板金科', '機械木模科', '配管科', '模具科', '機電科', '製圖科', '生物產業機電科', '電腦機械製圖科'],
-      '動力機械群': ['汽車科', '重機科', '飛機修護科', '動力機械科', '農業機械科', '軌道車輛科'],
-      '電機與電子群': ['資訊科', '電子科', '控制科', '電機科', '冷凍空調科', '航空電子科', '電機空調科'],
-      '化工群': ['化工科', '紡織科', '染整科'],
-      '土木與建築群': ['建築科', '土木科', '消防工程科', '空間測繪科'],
-      '商業與管理群': ['商業經營科', '國際貿易科', '會計事務科', '資料處理科', '不動產事務科', '電子商務科', '流通管理科', '農產行銷科', '航運管理科'],
-      '外語群': ['應用外語科（英文組）', '應用外語科（日文組）'],
-      '設計群': ['家具木工科', '美工科', '陶瓷工程科', '室內空間設計科', '圖文傳播科', '金屬工藝科', '家具設計科', '廣告設計科', '多媒體設計科', '多媒體應用科', '室內設計科'],
-      '農業群': ['農場經營科', '園藝科', '森林科', '野生動物保育科', '造園科', '畜產保健科'],
-      '食品群': ['食品加工科', '食品科', '水產食品科', '烘焙科'],
-      '家政群': ['家政科', '服裝科', '幼兒保育科', '美容科', '時尚模特兒科', '流行服飾科', '時尚造型科', '照顧服務科'],
-      '餐旅群': ['觀光事業科', '餐飲管理科']
-        };
-    
-        function toggleVocationalGroup() {
-          const schoolType = document.getElementById('schoolType').value;
-          const vocationalGroupContainer = document.getElementById('vocationalGroupContainer');
-          if (schoolType === '職業類科') {
-            vocationalGroupContainer.style.display = 'block';
-          } else {
-            vocationalGroupContainer.style.display = 'none';
+      </div>      
+        <!-- Modal -->
+        <div id="disclaimerModal" class="modal">
+          <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2><i class="fas fa-balance-scale icon"></i>免責聲明</h2>
+            <a href="https://forms.gle/ZKW3W58gcbQW3vdX9" target="_blank"><i class="fas fa-link icon"></i>如需獲取邀請碼請幫我們填寫表單</a>
+            <p>本網站提供的落點分析結果僅供參考，不代表實際錄取結果。實際錄取情況可能會因各種因素而有所不同，包括但不限於：</p>
+            <ul>
+              <li>各校的招生政策變化</li>
+              <li>當年度考生整體表現</li>
+              <li>特殊才能或其他加分項目</li>
+              <li>各校的實際招生名額調整</li>
+            </ul>
+            <p>我們強烈建議您：</p>
+            <ul>
+              <li>參考多方資訊，不要僅依賴本網站的分析結果</li>
+              <li>諮詢學校輔導老師或升學顧問的專業意見</li>
+              <li>關注各校的官方網站和招生簡章，以獲取最新和最準確的資訊</li>
+            </ul>
+            <p>本網站不對因使用本服務而產生的任何直接或間接損失負責。使用本服務即表示您同意本免責聲明的所有條款。</p>
+            <button class="confirm-button" onclick="closeDisclaimer()">我已了解並同意</button>
+          </div>
+        </div>
+      
+        <script>
+          const vocationalGroups = {
+        '機械群': ['機械科', '鑄造科', '板金科', '機械木模科', '配管科', '模具科', '機電科', '製圖科', '生物產業機電科', '電腦機械製圖科'],
+        '動力機械群': ['汽車科', '重機科', '飛機修護科', '動力機械科', '農業機械科', '軌道車輛科'],
+        '電機與電子群': ['資訊科', '電子科', '控制科', '電機科', '冷凍空調科', '航空電子科', '電機空調科'],
+        '化工群': ['化工科', '紡織科', '染整科'],
+        '土木與建築群': ['建築科', '土木科', '消防工程科', '空間測繪科'],
+        '商業與管理群': ['商業經營科', '國際貿易科', '會計事務科', '資料處理科', '不動產事務科', '電子商務科', '流通管理科', '農產行銷科', '航運管理科'],
+        '外語群': ['應用外語科（英文組）', '應用外語科（日文組）'],
+        '設計群': ['家具木工科', '美工科', '陶瓷工程科', '室內空間設計科', '圖文傳播科', '金屬工藝科', '家具設計科', '廣告設計科', '多媒體設計科', '多媒體應用科', '室內設計科'],
+        '農業群': ['農場經營科', '園藝科', '森林科', '野生動物保育科', '造園科', '畜產保健科'],
+        '食品群': ['食品加工科', '食品科', '水產食品科', '烘焙科'],
+        '家政群': ['家政科', '服裝科', '幼兒保育科', '美容科', '時尚模特兒科', '流行服飾科', '時尚造型科', '照顧服務科'],
+        '餐旅群': ['觀光事業科', '餐飲管理科']
+          };
+      
+          function toggleVocationalGroup() {
+            const schoolType = document.getElementById('schoolType').value;
+            const vocationalGroupContainer = document.getElementById('vocationalGroupContainer');
+            if (schoolType === '職業類科') {
+              vocationalGroupContainer.style.display = 'block';
+            } else {
+              vocationalGroupContainer.style.display = 'none';
+            }
           }
-        }
-    
-        function toggleInstructions() {
-          var instructions = document.getElementById('instructions');
-          if (instructions.style.display === 'none') {
-            instructions.style.display = 'block';
-            instructions.style.animation = 'fadeIn 0.5s ease-out';
-          } else {
-            instructions.style.animation = 'fadeOut 0.5s ease-out';
-            setTimeout(() => {
-              instructions.style.display = 'none';
-            }, 500);
+      
+          function toggleInstructions() {
+            var instructions = document.getElementById('instructions');
+            if (instructions.style.display === 'none') {
+              instructions.style.display = 'block';
+              instructions.style.animation = 'fadeIn 0.5s ease-out';
+            } else {
+              instructions.style.animation = 'fadeOut 0.5s ease-out';
+              setTimeout(() => {
+                instructions.style.display = 'none';
+              }, 500);
+            }
           }
-        }
-    
-        let isDragging = false;
-        let startY;
-        let startTop;
-    
-        function showDisclaimer() {
-          var modal = document.getElementById('disclaimerModal');
-          var modalContent = modal.querySelector('.modal-content');
-          modal.style.display = 'block';
-          
-          modalContent.addEventListener('mousedown', startDragging);
-          document.addEventListener('mousemove', drag);
-          document.addEventListener('mouseup', stopDragging);
-          
-          modalContent.addEventListener('touchstart', startDragging);
-          document.addEventListener('touchmove', drag);
-          document.addEventListener('touchend', stopDragging);
-        }
-    
-        function startDragging(e) {
-          isDragging = true;
-          startY = e.type === 'mousedown' ? e.clientY : e.touches[0].clientY;
-          startTop = parseInt(window.getComputedStyle(this).top);
-          this.style.cursor = 'grabbing';
-        }
-    
-        function drag(e) {
-          if (!isDragging) return;
-          e.preventDefault();
-          let modalContent = document.querySelector('.modal-content');
-          let currentY = e.type === 'mousemove' ? e.clientY : e.touches[0].clientY;
-          let deltaY = currentY - startY;
-          modalContent.style.top = `${startTop + deltaY}px`;
-        }
-    
-        function stopDragging() {
-          isDragging = false;
-          document.querySelector('.modal-content').style.cursor = 'grab';
-        }
-    
-        function closeDisclaimer() {
-          var modal = document.getElementById('disclaimerModal');
-          modal.style.display = 'none';
-        }
-    
-        // Get the <span> element that closes the modal
-        var span = document.getElementsByClassName('close')[0];
-    
-        // When the user clicks on <span> (x), close the modal
-        span.onclick = function() {
-          closeDisclaimer();
-        }
-    
-        // When the user clicks anywhere outside of the modal, close it
-        window.onclick = function(event) {
-          var modal = document.getElementById('disclaimerModal');
-          if (event.target == modal) {
+      
+          let isDragging = false;
+          let startY;
+          let startTop;
+      
+          function showDisclaimer() {
+            var modal = document.getElementById('disclaimerModal');
+            var modalContent = modal.querySelector('.modal-content');
+            modal.style.display = 'block';
+            
+            modalContent.addEventListener('mousedown', startDragging);
+            document.addEventListener('mousemove', drag);
+            document.addEventListener('mouseup', stopDragging);
+            
+            modalContent.addEventListener('touchstart', startDragging);
+            document.addEventListener('touchmove', drag);
+            document.addEventListener('touchend', stopDragging);
+          }
+      
+          function startDragging(e) {
+            isDragging = true;
+            startY = e.type === 'mousedown' ? e.clientY : e.touches[0].clientY;
+            startTop = parseInt(window.getComputedStyle(this).top);
+            this.style.cursor = 'grabbing';
+          }
+      
+          function drag(e) {
+            if (!isDragging) return;
+            e.preventDefault();
+            let modalContent = document.querySelector('.modal-content');
+            let currentY = e.type === 'mousemove' ? e.clientY : e.touches[0].clientY;
+            let deltaY = currentY - startY;
+            modalContent.style.top = `${startTop + deltaY}px`;
+          }
+      
+          function stopDragging() {
+            isDragging = false;
+            document.querySelector('.modal-content').style.cursor = 'grab';
+          }
+      
+          function closeDisclaimer() {
+            var modal = document.getElementById('disclaimerModal');
+            modal.style.display = 'none';
+          }
+      
+          // Get the <span> element that closes the modal
+          var span = document.getElementsByClassName('close')[0];
+      
+          // When the user clicks on <span> (x), close the modal
+          span.onclick = function() {
             closeDisclaimer();
           }
-        }
-    
-        function generateInvitationCode() {
-          const now = new Date();
-          const year = now.getFullYear();
-          const month = String(now.getMonth() + 1).padStart(2, '0');
-          const day = String(now.getDate()).padStart(2, '0');
-          const hour = String(now.getHours()).padStart(2, '0');
-          return `TYCTW${year}${month}${day}${hour}`;
-        }
-    
-        function analyzeScores() {
-          const invitationCode = document.getElementById('invitationCode').value;
-          const currentInvitationCode = generateInvitationCode();
-          if (invitationCode !== currentInvitationCode) {
-            alert('邀請碼錯誤或已過期，請確認最新的邀請碼。');
-            return;
-          }
-    
-          const schoolOwnership = document.getElementById('schoolOwnership').value;
-          const schoolType = document.getElementById('schoolType').value;
-          const vocationalGroup = document.getElementById('vocationalGroup').value;
-    
-          const compositionPoints = {
-            0: 0,
-            1: 1,
-            2: 2,
-            3: 2,
-            4: 3,
-            5: 3,
-            6: 3
-          };
-    
-          const scorePoints = {
-            'A++': 6,
-            'A+': 6,
-            'A': 6,
-            'B++': 4,
-            'B+': 4,
-            'B': 4,
-            'C': 2
-          };
-    
-          const creditPoints = {
-            'A++': 7,
-            'A+': 6,
-            'A': 5,
-            'B++': 4,
-            'B+': 3,
-            'B': 2,
-            'C': 1
-          };
-    
-          const chinese = document.getElementById('chinese').value;
-          const english = document.getElementById('english').value;
-          const math = document.getElementById('math').value;
-          const science = document.getElementById('science').value;
-          const social = document.getElementById('social').value;
-          const composition = parseInt(document.getElementById('composition').value);
-    
-          const totalPoints = scorePoints[chinese] + scorePoints[english] + scorePoints[math] + scorePoints[science] + scorePoints[social] + compositionPoints[composition];
-          const totalCredits = creditPoints[chinese] + creditPoints[english] + creditPoints[math] + creditPoints[science] + creditPoints[social];
-    
-          let results = `<h2><i class="fas fa-clipboard-check icon"></i>分析結果</h2>
-                         <p class="result-item"><i class="fas fa-star icon"></i>總積分：${totalPoints}</p>
-                         <p class="result-item"><i class="fas fa-award icon"></i>總積點：${totalCredits}</p>`;
-    
-          const schoolData = {
-               '武陵高中(普通科)': { points: 33, credits: 32, type: '普通科', ownership: 'public' },
-               '中壢高中(普通科)': { points: 31, credits: 28, type: '普通科', ownership: 'public' },             
-               '內壢高中(普通科)': { points: 29, credits: 24, type: '普通科', ownership: 'public' },
-               '陽明高中(普通科)': { points: 27, credits: 22, type: '普通科', ownership: 'public' },
-                '平鎮高中(普通科)': { points: 27, credits: 21, type: '普通科' , ownership: 'public'},
-                '永豐高中(普通科)': { points: 25, credits: 20, type: '普通科' , ownership: 'public'},
-                '大園高中(普通科)': { points: 25, credits: 19, type: '普通科' , ownership: 'public'},
-                '南崁高中(普通科)': { points: 25, credits: 16, type: '普通科' , ownership: 'public'},
-                '壽山高中(普通科)': { points: 25, credits: 14, type: '普通科' , ownership: 'public'},
-                '龍潭高中(普通科)': { points: 23, credits: 17, type: '普通科' , ownership: 'public'},
-                '楊梅高中(普通科)': { points: 23, credits: 15, type: '普通科' , ownership: 'public'},
-                '觀音高中(普通科)': { points: 23, credits: 11, type: '普通科' , ownership: 'public'},
-                '復旦高中(普通科)': { points: 29, credits: 28, type: '普通科', ownership: 'private' },      
-                '新興高中(普通科)': { points: 23, credits: 10, type: '普通科', ownership: 'private' },   
-                '大溪高中(普通科)': { points: 23, credits: 10, type: '普通科' , ownership: 'public'},
-                '中壢高商(綜合科)': { points: 25, credits: 18, type: '普通科' , ownership: 'public'},
-                '治平高中(普通科)': { points: 15, credits: 6, type: '普通科', ownership: 'private' },      
-                '治平高中(綜合科)': { points: 15, credits: 6, type: '普通科', ownership: 'private' },
-                '振聲高中(普通科)': { points: 23, credits: 13, type: '普通科', ownership: 'private' },      
-                '啟英高中(普通科)': { points: 21, credits: 10, type: '普通科', ownership: 'private'},
-                '育達高中(普通科)': { points: 20, credits: 14, type: '普通科', ownership: 'private'},
-
-    '新興高中(資料處理科)': { points: 19, credits: 9, type: '職業類科', ownership: 'private', group: '商業與管理群' },      
-    '新興高中(應用英語科)': { points: 19, credits: 9, type: '職業類科', ownership: 'private', group: '外語群' },      
-    '新興高中(電子科)': { points: 19, credits: 9, type: '職業類科', ownership: 'private', group: '電機與電子群' },
-    '中壢高商(商業經營科)': { points: 23, credits: 12, type: '職業類科', ownership: 'public', group: '商業與管理群' },
-    '中壢高商(資料處理科)': { points: 23, credits: 13, type: '職業類科', ownership: 'public', group: '商業與管理群' },
-    '中壢高商(國際貿易科)': { points: 23, credits: 14, type: '職業類科', ownership: 'public', group: '商業與管理群' },
-    '壽山高中(國際貿易)': { points: 23, credits: 15, type: '職業類科', ownership: 'public', group: '商業與管理群' },
-    '壽山高中(應用英語科)': { points: 23, credits: 15, type: '職業類科', ownership: 'public', group: '外語群' },
-    '壽山高中(廣告設計科)': { points: 23, credits: 14, type: '職業類科', ownership: 'public', group: '設計群' },
-    '中壢家商(應用英語科)': { points: 23, credits: 16, type: '職業類科', ownership: 'public', group: '外語群' },
-    '中壢家商(資料處理科)': { points: 23, credits: 13, type: '職業類科', ownership: 'public', group: '商業與管理群' },
-    '中壢家商(商業經營科)': { points: 23, credits: 13, type: '職業類科', ownership: 'public', group: '商業與管理群' },
-    '中壢家商(家政科)': { points: 23, credits: 12, type: '職業類科', ownership: 'public', group: '家政群' },
-    '北科附工(電機科)': { points: 25, credits: 16, type: '職業類科', ownership: 'public', group: '電機與電子群' },
-    '北科附工(電子科)': { points: 25, credits: 18, type: '職業類科', ownership: 'public', group: '電機與電子群' },
-    '北科附工(畜產保健)': { points: 25, credits: 16, type: '職業類科', ownership: 'public', group: '農業群' },
-    '北科附工(機械科)': { points: 23, credits: 16, type: '職業類科', ownership: 'public', group: '機械群' },
-    '北科附工(化工科)': { points: 23, credits: 16, type: '職業類科', ownership: 'public', group: '化工群' },
-    '北科附工(動力機械)': { points: 23, credits: 14, type: '職業類科', ownership: 'public', group: '動力機械群' },
-    '北科附工(汽車科)': { points: 23, credits: 12, type: '職業類科', ownership: 'public', group: '動力機械群' },
-    '北科附工(生物產業機電)': { points: 23, credits: 13, type: '職業類科', ownership: 'public', group: '機械群' },
-    '北科附工(模具科)': { points: 23, credits: 13, type: '職業類科', ownership: 'public', group: '機械群' },
-    '北科附工(農場經營科)': { points: 23, credits: 12, type: '職業類科', ownership: 'public', group: '農業群' },
-    '北科附工(園藝科)': { points: 23, credits: 12, type: '職業類科', ownership: 'public', group: '農業群' },
-    '楊梅高中(電子科)': { points: 23, credits: 10, type: '職業類科', ownership: 'public', group: '電機與電子群' },
-    '楊梅高中(資訊科)': { points: 23, credits: 10, type: '職業類科', ownership: 'public', group: '電機與電子群' },
-    '龍潭高中(造園科)': { points: 21, credits: 10, type: '職業類科', ownership: 'public', group: '設計群' },
-    '龍潭高中(園藝科)': { points: 21, credits: 10, type: '職業類科', ownership: 'public', group: '農業群' },
-    '龍潭高中(機械科)': { points: 21, credits: 11, type: '職業類科', ownership: 'public', group: '機械群' },
-    '龍潭高中(電子科)': { points: 23, credits: 13, type: '職業類科', ownership: 'public', group: '電機與電子群' },
-    '龍潭高中(畜產保健科)': { points: 21, credits: 14, type: '職業類科', ownership: 'public', group: '農業群' },
-    '關西高中(園藝科)': { points: 21, credits: 9, type: '職業類科', ownership: 'public', group: '農業群' },
-    '關西高中(畜產保健科)': { points: 19, credits: 8, type: '職業類科', ownership: 'public', group: '農業群' },
-    '關西高中(家政科)': { points: 21, credits: 10, type: '職業類科', ownership: 'public', group: '家政群' },
-    '振聲高中(電子商務科)': { points: 21, credits: 9, type: '職業類科', ownership: 'private', group: '商業與管理群' },
-    '振聲高中(多媒體設計)': { points: 21, credits: 9, type: '職業類科', ownership: 'private', group: '設計群' },
-    '振聲高中(觀光事業科)': { points: 21, credits: 12, type: '職業類科', ownership: 'private', group: '商業與管理群' },
-    '振聲高中(資訊科)': { points: 23, credits: 11, type: '職業類科', ownership: 'private', group: '電機與電子群' },
-    '振聲高中(應用英語科)': { points: 23, credits: 13, type: '職業類科', ownership: 'private', group: '外語群' },
-    '振聲高中(商業經營科)': { points: 23, credits: 10, type: '職業類科', ownership: 'private', group: '商業與管理群' },
-    '新興高中(應用日語科)': { points: 29, credits: 13, type: '職業類科', ownership: 'private', group: '外語群' },
-    '新興高中(廣告設計科)': { points: 19, credits: 9, type: '職業類科', ownership: 'private', group: '設計群' },
-    '新興高中(機械科)': { points: 19, credits: 9, type: '職業類科', ownership: 'private', group: '機械群' },
-    '新興高中(汽車科)': { points: 17, credits: 9, type: '職業類科', ownership: 'private', group: '動力機械群' },
-    '新興高中(飛機修護科)': { points: 19, credits: 8, type: '職業類科', ownership: 'private', group: '動力機械群' },
-    '新興高中(觀光事業科)': { points: 19, credits: 8, type: '職業類科', ownership: 'private', group: '餐旅群' },
-    '新興高中(電子商務科)': { points: 19, credits: 8, type: '職業類科', ownership: 'private', group: '設計群' },
-    '新興高中(家具木工科)': { points: 19, credits: 8, type: '職業類科', ownership: 'private', group: '商業與管理群' }, 
-
       
-      '啟英高中(餐飲管理科)': { points: 15, credits: 6, type: '職業類科', ownership: 'private', group: '餐旅群' },
-      '啟英高中(汽車科)': { points: 18, credits: 8, type: '職業類科', ownership: 'private', group: '動力機械群' },
-      '啟英高中(時尚造型科)': { points: 15, credits: 6, type: '職業類科', ownership: 'private', group: '家政群' },
-      '啟英高中(資訊科)': { points: 16, credits: 7, type: '職業類科', ownership: 'private', group: '電機與電子群' },
-      '啟英高中(應用英語科)': { points: 19, credits: 8, type: '職業類科', ownership: 'private', group: '外語群' },    
-      '啟英高中(室內設計科)': { points: 21, credits: 9, type: '職業類科', ownership: 'private', group: '設計群' },   
-      '啟英高中(資料處理科)': { points: 22, credits: 10, type: '職業類科', ownership: 'private', group: '商業與管理群' }  
-
-
-
-
-        
-    };
-    
-          results += '<h3><i class="fas fa-list-ul icon"></i>可能錄取的學校如下：</h3>';
-    
-          const eligibleSchools = Object.entries(schoolData).filter(([schoolName, school]) => 
-            (schoolOwnership === 'all' || school.ownership === schoolOwnership) &&
-            (schoolType === 'all' || school.type === schoolType) &&
-            (vocationalGroup === 'all' || school.group === vocationalGroup) &&
-            totalPoints >= school.points &&
-            totalCredits >= school.credits
-          );
-    
-          if (eligibleSchools.length > 0) {
-            let groupedSchools = {};
-            eligibleSchools.forEach(([schoolName, school]) => {
-              if (!groupedSchools[school.type]) {
-                groupedSchools[school.type] = [];
-              }
-              groupedSchools[school.type].push(schoolName);
-            });
-    
-            Object.entries(groupedSchools).forEach(([type, schools]) => {
-              results += `<h3>${type}</h3><ul>`;
-              schools.forEach(schoolName => {
-                results += `<li class="result-item"><i class="fas fa-check-circle icon"></i>${schoolName}</li>`;
-              });
-              results += '</ul>';
-            });
-          } else {
-            results += '<p class="result-item"><i class="fas fa-exclamation-triangle icon"></i>根據您的成績，暫時沒有符合條件的學校。</p>';
+          // When the user clicks anywhere outside of the modal, close it
+          window.onclick = function(event) {
+            var modal = document.getElementById('disclaimerModal');
+            if (event.target == modal) {
+              closeDisclaimer();
+            }
           }
-    
-          const resultsElement = document.getElementById('results');
-          resultsElement.innerHTML = results;
-          resultsElement.style.display = 'none';
-          setTimeout(() => {
-            resultsElement.style.display = 'block';
-            resultsElement.style.animation = 'fadeIn 0.5s ease-out';
-          }, 100);
-        }
-    
-        // 初始顯示免責聲明
-        window.onload = function() {
-          showDisclaimer();
-        }
-      </script>
-          <!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-VKP55N96DC"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-
-  gtag('config', 'G-VKP55N96DC');
-</script>
-
-<script>
-
-document.oncontextmenu = function (){
-return false;
-}
-</script>
-      <script>
-
-document.body.onkeydown = function(e){
-var keyCode = e.keyCode || e.which || e.charCode;
-var ctrlKey = e.ctrlKey || e.metaKey;
-if(ctrlKey && (keyCode == 83 || keyCode == 85 || keyCode == 73)) {
-e.preventDefault();
-return false;
-}else if(keyCode && keyCode == 123){
-return false;
-}
-}
-
-      </script>
-
-
-    
-    
-    </body></html>
+      
+          function generateInvitationCode() {
+            const now = new Date();
+            const year = now.getFullYear();
+            const month = String(now.getMonth() + 1).padStart(2, '0');
+            const day = String(now.getDate()).padStart(2, '0');
+            const hour = String(now.getHours()).padStart(2, '0');
+            return `TYCTW${year}${month}${day}${hour}`;
+          }
+      
+          function analyzeScores() {
+            const invitationCode = document.getElementById('invitationCode').value;
+            const currentInvitationCode = generateInvitationCode();
+            if (invitationCode !== currentInvitationCode) {
+              alert('邀請碼錯誤或已過期，請確認最新的邀請碼。');
+              return;
+            }
+      
+            const schoolOwnership = document.getElementById('schoolOwnership').value;
+            const schoolType = document.getElementById('schoolType').value;
+            const vocationalGroup = document.getElementById('vocationalGroup').value;
+      
+            const compositionPoints = {
+              0: 0,
+              1: 1,
+              2: 2,
+              3: 2,
+              4: 3,
+              5: 3,
+              6: 3
+            };
+      
+            const scorePoints = {
+              'A++': 6,
+              'A+': 6,
+              'A': 6,
+              'B++': 4,
+              'B+': 4,
+              'B': 4,
+              'C': 2
+            };
+      
+            const creditPoints = {
+              'A++': 7,
+              'A+': 6,
+              'A': 5,
+              'B++': 4,
+              'B+': 3,
+              'B': 2,
+              'C': 1
+            };
+      
+            const chinese = document.getElementById('chinese').value;
+            const english = document.getElementById('english').value;
+            const math = document.getElementById('math').value;
+            const science = document.getElementById('science').value;
+            const social = document.getElementById('social').value;
+            const composition = parseInt(document.getElementById('composition').value);
+      
+            const totalPoints = scorePoints[chinese] + scorePoints[english] + scorePoints[math] + scorePoints[science] + scorePoints[social] + compositionPoints[composition];
+            const totalCredits = creditPoints[chinese] + creditPoints[english] + creditPoints[math] + creditPoints[science] + creditPoints[social];
+      
+            let results = `<h2><i class="fas fa-clipboard-check icon"></i>分析結果</h2>
+                           <p class="result-item"><i class="fas fa-star icon"></i>總積分：${totalPoints}</p>
+                           <p class="result-item"><i class="fas fa-award icon"></i>總積點：${totalCredits}</p>`;
+      
+            const schoolData = {
+                 '武陵高中(普通科)': { points: 33, credits: 32, type: '普通科', ownership: 'public' },
+                 '中壢高中(普通科)': { points: 31, credits: 28, type: '普通科', ownership: 'public' },             
+                 '內壢高中(普通科)': { points: 29, credits: 24, type: '普通科', ownership: 'public' },
+                 '陽明高中(普通科)': { points: 27, credits: 22, type: '普通科', ownership: 'public' },
+                  '平鎮高中(普通科)': { points: 27, credits: 21, type: '普通科' , ownership: 'public'},
+                  '永豐高中(普通科)': { points: 25, credits: 20, type: '普通科' , ownership: 'public'},
+                  '大園高中(普通科)': { points: 25, credits: 19, type: '普通科' , ownership: 'public'},
+                  '南崁高中(普通科)': { points: 25, credits: 16, type: '普通科' , ownership: 'public'},
+                  '壽山高中(普通科)': { points: 25, credits: 14, type: '普通科' , ownership: 'public'},
+                  '龍潭高中(普通科)': { points: 23, credits: 17, type: '普通科' , ownership: 'public'},
+                  '楊梅高中(普通科)': { points: 23, credits: 15, type: '普通科' , ownership: 'public'},
+                  '觀音高中(普通科)': { points: 23, credits: 11, type: '普通科' , ownership: 'public'},
+                  '復旦高中(普通科)': { points: 29, credits: 28, type: '普通科', ownership: 'private' },      
+                  '新興高中(普通科)': { points: 23, credits: 10, type: '普通科', ownership: 'private' },   
+                  '大溪高中(普通科)': { points: 23, credits: 10, type: '普通科' , ownership: 'public'},
+                  '中壢高商(綜合科)': { points: 25, credits: 18, type: '普通科' , ownership: 'public'},
+                  '治平高中(普通科)': { points: 15, credits: 6, type: '普通科', ownership: 'private' },      
+                  '治平高中(綜合科)': { points: 15, credits: 6, type: '普通科', ownership: 'private' },
+                  '振聲高中(普通科)': { points: 23, credits: 13, type: '普通科', ownership: 'private' },      
+                  '啟英高中(普通科)': { points: 21, credits: 10, type: '普通科', ownership: 'private'},
+                  '育達高中(普通科)': { points: 20, credits: 14, type: '普通科', ownership: 'private'},
+  
+      '新興高中(資料處理科)': { points: 19, credits: 9, type: '職業類科', ownership: 'private', group: '商業與管理群' },      
+      '新興高中(應用英語科)': { points: 19, credits: 9, type: '職業類科', ownership: 'private', group: '外語群' },      
+      '新興高中(電子科)': { points: 19, credits: 9, type: '職業類科', ownership: 'private', group: '電機與電子群' },
+      '中壢高商(商業經營科)': { points: 23, credits: 12, type: '職業類科', ownership: 'public', group: '商業與管理群' },
+      '中壢高商(資料處理科)': { points: 23, credits: 13, type: '職業類科', ownership: 'public', group: '商業與管理群' },
+      '中壢高商(國際貿易科)': { points: 23, credits: 14, type: '職業類科', ownership: 'public', group: '商業與管理群' },
+      '壽山高中(國際貿易)': { points: 23, credits: 15, type: '職業類科', ownership: 'public', group: '商業與管理群' },
+      '壽山高中(應用英語科)': { points: 23, credits: 15, type: '職業類科', ownership: 'public', group: '外語群' },
+      '壽山高中(廣告設計科)': { points: 23, credits: 14, type: '職業類科', ownership: 'public', group: '設計群' },
+      '中壢家商(應用英語科)': { points: 23, credits: 16, type: '職業類科', ownership: 'public', group: '外語群' },
+      '中壢家商(資料處理科)': { points: 23, credits: 13, type: '職業類科', ownership: 'public', group: '商業與管理群' },
+      '中壢家商(商業經營科)': { points: 23, credits: 13, type: '職業類科', ownership: 'public', group: '商業與管理群' },
+      '中壢家商(家政科)': { points: 23, credits: 12, type: '職業類科', ownership: 'public', group: '家政群' },
+      '北科附工(電機科)': { points: 25, credits: 16, type: '職業類科', ownership: 'public', group: '電機與電子群' },
+      '北科附工(電子科)': { points: 25, credits: 18, type: '職業類科', ownership: 'public', group: '電機與電子群' },
+      '北科附工(畜產保健)': { points: 25, credits: 16, type: '職業類科', ownership: 'public', group: '農業群' },
+      '北科附工(機械科)': { points: 23, credits: 16, type: '職業類科', ownership: 'public', group: '機械群' },
+      '北科附工(化工科)': { points: 23, credits: 16, type: '職業類科', ownership: 'public', group: '化工群' },
+      '北科附工(動力機械)': { points: 23, credits: 14, type: '職業類科', ownership: 'public', group: '動力機械群' },
+      '北科附工(汽車科)': { points: 23, credits: 12, type: '職業類科', ownership: 'public', group: '動力機械群' },
+      '北科附工(生物產業機電)': { points: 23, credits: 13, type: '職業類科', ownership: 'public', group: '機械群' },
+      '北科附工(模具科)': { points: 23, credits: 13, type: '職業類科', ownership: 'public', group: '機械群' },
+      '北科附工(農場經營科)': { points: 23, credits: 12, type: '職業類科', ownership: 'public', group: '農業群' },
+      '北科附工(園藝科)': { points: 23, credits: 12, type: '職業類科', ownership: 'public', group: '農業群' },
+      '楊梅高中(電子科)': { points: 23, credits: 10, type: '職業類科', ownership: 'public', group: '電機與電子群' },
+      '楊梅高中(資訊科)': { points: 23, credits: 10, type: '職業類科', ownership: 'public', group: '電機與電子群' },
+      '龍潭高中(造園科)': { points: 21, credits: 10, type: '職業類科', ownership: 'public', group: '設計群' },
+      '龍潭高中(園藝科)': { points: 21, credits: 10, type: '職業類科', ownership: 'public', group: '農業群' },
+      '龍潭高中(機械科)': { points: 21, credits: 11, type: '職業類科', ownership: 'public', group: '機械群' },
+      '龍潭高中(電子科)': { points: 23, credits: 13, type: '職業類科', ownership: 'public', group: '電機與電子群' },
+      '龍潭高中(畜產保健科)': { points: 21, credits: 14, type: '職業類科', ownership: 'public', group: '農業群' },
+      '關西高中(園藝科)': { points: 21, credits: 9, type: '職業類科', ownership: 'public', group: '農業群' },
+      '關西高中(畜產保健科)': { points: 19, credits: 8, type: '職業類科', ownership: 'public', group: '農業群' },
+      '關西高中(家政科)': { points: 21, credits: 10, type: '職業類科', ownership: 'public', group: '家政群' },
+      '振聲高中(電子商務科)': { points: 21, credits: 9, type: '職業類科', ownership: 'private', group: '商業與管理群' },
+      '振聲高中(多媒體設計)': { points: 21, credits: 9, type: '職業類科', ownership: 'private', group: '設計群' },
+      '振聲高中(觀光事業科)': { points: 21, credits: 12, type: '職業類科', ownership: 'private', group: '商業與管理群' },
+      '振聲高中(資訊科)': { points: 23, credits: 11, type: '職業類科', ownership: 'private', group: '電機與電子群' },
+      '振聲高中(應用英語科)': { points: 23, credits: 13, type: '職業類科', ownership: 'private', group: '外語群' },
+      '振聲高中(商業經營科)': { points: 23, credits: 10, type: '職業類科', ownership: 'private', group: '商業與管理群' },
+      '新興高中(應用日語科)': { points: 29, credits: 13, type: '職業類科', ownership: 'private', group: '外語群' },
+      '新興高中(廣告設計科)': { points: 19, credits: 9, type: '職業類科', ownership: 'private', group: '設計群' },
+      '新興高中(機械科)': { points: 19, credits: 9, type: '職業類科', ownership: 'private', group: '機械群' },
+      '新興高中(汽車科)': { points: 17, credits: 9, type: '職業類科', ownership: 'private', group: '動力機械群' },
+      '新興高中(飛機修護科)': { points: 19, credits: 8, type: '職業類科', ownership: 'private', group: '動力機械群' },
+      '新興高中(觀光事業科)': { points: 19, credits: 8, type: '職業類科', ownership: 'private', group: '餐旅群' },
+      '新興高中(電子商務科)': { points: 19, credits: 8, type: '職業類科', ownership: 'private', group: '設計群' },
+      '新興高中(家具木工科)': { points: 19, credits: 8, type: '職業類科', ownership: 'private', group: '商業與管理群' }, 
+  
+        
+        '啟英高中(餐飲管理科)': { points: 15, credits: 6, type: '職業類科', ownership: 'private', group: '餐旅群' },
+        '啟英高中(汽車科)': { points: 18, credits: 8, type: '職業類科', ownership: 'private', group: '動力機械群' },
+        '啟英高中(時尚造型科)': { points: 15, credits: 6, type: '職業類科', ownership: 'private', group: '家政群' },
+        '啟英高中(資訊科)': { points: 16, credits: 7, type: '職業類科', ownership: 'private', group: '電機與電子群' },
+        '啟英高中(應用英語科)': { points: 19, credits: 8, type: '職業類科', ownership: 'private', group: '外語群' },    
+        '啟英高中(室內設計科)': { points: 21, credits: 9, type: '職業類科', ownership: 'private', group: '設計群' },   
+        '啟英高中(資料處理科)': { points: 22, credits: 10, type: '職業類科', ownership: 'private', group: '商業與管理群' }  
+  
+  
+  
+  
+          
+      };
+      
+            results += '<h3><i class="fas fa-list-ul icon"></i>可能錄取的學校如下：</h3>';
+      
+            const eligibleSchools = Object.entries(schoolData).filter(([schoolName, school]) => 
+              (schoolOwnership === 'all' || school.ownership === schoolOwnership) &&
+              (schoolType === 'all' || school.type === schoolType) &&
+              (vocationalGroup === 'all' || school.group === vocationalGroup) &&
+              totalPoints >= school.points &&
+              totalCredits >= school.credits
+            );
+      
+            if (eligibleSchools.length > 0) {
+              let groupedSchools = {};
+              eligibleSchools.forEach(([schoolName, school]) => {
+                if (!groupedSchools[school.type]) {
+                  groupedSchools[school.type] = [];
+                }
+                groupedSchools[school.type].push(schoolName);
+              });
+      
+              Object.entries(groupedSchools).forEach(([type, schools]) => {
+                results += `<h3>${type}</h3><ul>`;
+                schools.forEach(schoolName => {
+                  results += `<li class="result-item"><i class="fas fa-check-circle icon"></i>${schoolName}</li>`;
+                });
+                results += '</ul>';
+              });
+            } else {
+              results += '<p class="result-item"><i class="fas fa-exclamation-triangle icon"></i>根據您的成績，暫時沒有符合條件的學校。</p>';
+            }
+      
+            const resultsElement = document.getElementById('results');
+            resultsElement.innerHTML = results;
+            resultsElement.style.display = 'none';
+            setTimeout(() => {
+              resultsElement.style.display = 'block';
+              resultsElement.style.animation = 'fadeIn 0.5s ease-out';
+            }, 100);
+          }
+      
+          // 初始顯示免責聲明
+          window.onload = function() {
+            showDisclaimer();
+          }
+        </script>
+            <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-VKP55N96DC"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+  
+    gtag('config', 'G-VKP55N96DC');
+  </script>
+  
+  <script>
+  
+  document.oncontextmenu = function (){
+  return false;
+  }
+  </script>
+        <script>
+  
+  document.body.onkeydown = function(e){
+  var keyCode = e.keyCode || e.which || e.charCode;
+  var ctrlKey = e.ctrlKey || e.metaKey;
+  if(ctrlKey && (keyCode == 83 || keyCode == 85 || keyCode == 73)) {
+  e.preventDefault();
+  return false;
+  }else if(keyCode && keyCode == 123){
+  return false;
+  }
+  }
+  
+        </script>
+  
+  
+      
+      
+      </body></html>

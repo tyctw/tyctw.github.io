@@ -509,14 +509,14 @@
         navigator.share({
           title: '桃聯區會考落點分析邀請碼',
           text: `我的桃聯區會考落點分析邀請碼是：${invitationCode}`,
-          url: window.location.href
+          url: 'https://tyctw.github.io/'
         }).then(() => {
           console.log('邀請碼分享成功');
         }).catch((error) => {
           console.log('邀請碼分享失敗', error);
         });
       } else {
-        alert(`請複製以下文字進行分享：\n\n我的桃聯區會考落點分析邀請碼是：${invitationCode}`);
+        alert(`請複製以下文字進行分享：\n\n我的桃聯區會考落點分析邀請碼是：${invitationCode}\n\n網站: https://tyctw.github.io/`);
       }
     }
 

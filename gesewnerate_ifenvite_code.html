@@ -6,13 +6,16 @@
   @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;700&display=swap');
   
   :root {
-    --primary-color: #3498db;
-    --secondary-color: #2980b9;
-    --background-color: #ecf0f1;
-    --text-color: #2c3e50;
+    --primary-color: #4a90e2;
+    --secondary-color: #3498db;
+    --background-color: #f0f4f8;
+    --text-color: #333333;
     --card-background: #ffffff;
     --shadow-color: rgba(0, 0, 0, 0.1);
     --accent-color: #e74c3c;
+    --success-color: #2ecc71;
+    --border-radius: 12px;
+    --transition: all 0.3s ease;
   }
 
   body {
@@ -26,17 +29,18 @@
     align-items: center;
     min-height: 100vh;
     color: var(--text-color);
+    line-height: 1.6;
   }
 
   .container {
     background: var(--card-background);
     padding: 3rem;
-    border-radius: 20px;
+    border-radius: var(--border-radius);
     box-shadow: 0 10px 30px var(--shadow-color);
     max-width: 600px;
     width: 90%;
     text-align: center;
-    transition: all 0.3s ease;
+    transition: var(--transition);
     margin-bottom: 2rem;
   }
 
@@ -45,15 +49,24 @@
     box-shadow: 0 15px 35px var(--shadow-color);
   }
 
-  h1 {
+  h1, h2 {
     color: var(--primary-color);
     margin-bottom: 1.5rem;
-    font-size: 2.5rem;
     position: relative;
     display: inline-block;
   }
 
-  h1::after {
+  h1 {
+    font-size: 2.5rem;
+    font-weight: 700;
+  }
+
+  h2 {
+    font-size: 1.8rem;
+    font-weight: 500;
+  }
+
+  h1::after, h2::after {
     content: '';
     position: absolute;
     bottom: -10px;
@@ -71,7 +84,7 @@
     align-items: stretch;
     margin: 2.5rem 0;
     box-shadow: 0 5px 15px var(--shadow-color);
-    border-radius: 10px;
+    border-radius: var(--border-radius);
     overflow: hidden;
   }
 
@@ -80,11 +93,11 @@
     font-weight: bold;
     color: var(--primary-color);
     padding: 1.2rem 1.5rem;
-    background-color: rgba(52, 152, 219, 0.1);
+    background-color: rgba(74, 144, 226, 0.1);
     display: inline-block;
     border: 2px solid var(--primary-color);
     border-right: none;
-    border-radius: 10px 0 0 10px;
+    border-radius: var(--border-radius) 0 0 var(--border-radius);
   }
 
   .copy-button {
@@ -93,9 +106,9 @@
     border: none;
     padding: 1rem 1.5rem;
     font-size: 1.3rem;
-    border-radius: 0 10px 10px 0;
+    border-radius: 0 var(--border-radius) var(--border-radius) 0;
     cursor: pointer;
-    transition: all 0.3s ease;
+    transition: var(--transition);
   }
 
   .copy-button:hover {
@@ -107,6 +120,10 @@
     margin-bottom: 2.5rem;
     color: var(--accent-color);
     font-weight: 500;
+    background-color: rgba(231, 76, 60, 0.1);
+    padding: 0.5rem 1rem;
+    border-radius: var(--border-radius);
+    display: inline-block;
   }
 
   .info {
@@ -114,7 +131,7 @@
     text-align: left;
     background: var(--background-color);
     padding: 2rem;
-    border-radius: 10px;
+    border-radius: var(--border-radius);
     box-shadow: 0 5px 15px var(--shadow-color);
   }
 
@@ -135,13 +152,13 @@
     top: 20px;
     left: 50%;
     transform: translateX(-50%);
-    background-color: var(--secondary-color);
+    background-color: var(--success-color);
     color: white;
     padding: 1rem 2rem;
     border-radius: 30px;
     font-size: 1.1rem;
     opacity: 0;
-    transition: opacity 0.3s ease, transform 0.3s ease;
+    transition: var(--transition);
     box-shadow: 0 3px 10px var(--shadow-color);
   }
 
@@ -171,12 +188,76 @@
   a {
     color: var(--primary-color);
     text-decoration: none;
-    transition: color 0.3s ease;
+    transition: var(--transition);
   }
 
   a:hover {
     color: var(--secondary-color);
     text-decoration: underline;
+  }
+
+  .button {
+    background-color: var(--primary-color);
+    color: white;
+    border: none;
+    padding: 0.8rem 1.5rem;
+    font-size: 1rem;
+    border-radius: var(--border-radius);
+    cursor: pointer;
+    transition: var(--transition);
+    margin: 0.5rem;
+    box-shadow: 0 2px 5px var(--shadow-color);
+  }
+
+  .button:hover {
+    background-color: var(--secondary-color);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px var(--shadow-color);
+  }
+
+  .modal {
+    display: none;
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0,0,0,0.4);
+    backdrop-filter: blur(5px);
+  }
+
+  .modal-content {
+    background-color: var(--card-background);
+    margin: 15% auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%;
+    max-width: 500px;
+    border-radius: var(--border-radius);
+    box-shadow: 0 10px 30px var(--shadow-color);
+  }
+
+  .close {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+    transition: var(--transition);
+  }
+
+  .close:hover,
+  .close:focus {
+    color: var(--text-color);
+    text-decoration: none;
+    cursor: pointer;
+  }
+
+  #qrCode {
+    margin-top: 20px;
+    display: flex;
+    justify-content: center;
   }
 
   @media (max-width: 600px) {
@@ -193,6 +274,10 @@
       font-size: 1.8rem;
     }
 
+    h2 {
+      font-size: 1.5rem;
+    }
+
     .invitation-code-container {
       flex-direction: column;
       margin: 1.5rem 0;
@@ -201,7 +286,7 @@
     .invitation-code {
       font-size: 1.5rem;
       padding: 1rem;
-      border-radius: 10px 10px 0 0;
+      border-radius: var(--border-radius) var(--border-radius) 0 0;
       border-right: 2px solid var(--primary-color);
       border-bottom: none;
     }
@@ -209,7 +294,7 @@
     .copy-button {
       font-size: 1.1rem;
       padding: 0.8rem;
-      border-radius: 0 0 10px 10px;
+      border-radius: 0 0 var(--border-radius) var(--border-radius);
     }
 
     .timer {
@@ -230,9 +315,13 @@
     .copyright {
       font-size: 0.8rem;
     }
+
+    .button {
+      font-size: 0.9rem;
+      padding: 0.6rem 1.2rem;
+    }
   }
 
-  /* 增加手機版介面 */
   @media (max-width: 480px) {
     .container {
       padding: 1rem;
@@ -243,6 +332,10 @@
 
     h1 {
       font-size: 1.5rem;
+    }
+
+    h2 {
+      font-size: 1.3rem;
     }
 
     .invitation-code {
@@ -274,6 +367,11 @@
     .copyright {
       font-size: 0.7rem;
     }
+
+    .button {
+      font-size: 0.8rem;
+      padding: 0.5rem 1rem;
+    }
   }
 </style>
 </head>
@@ -287,6 +385,10 @@
       </button>
     </div>
     <div class="timer" id="timer"></div>
+    <div>
+      <button class="button" onclick="showQRCode()"><i class="fas fa-qrcode"></i> 顯示QR碼</button>
+      <button class="button" onclick="shareInvitationCode()"><i class="fas fa-share-alt"></i> 分享邀請碼</button>
+    </div>
     <div class="info">
       <p><i class="fas fa-sync-alt icon"></i>此邀請碼每小時自動更新一次。</p>
       <p><i class="fas fa-clock icon"></i>請在邀請碼有效期內使用落點分析系統。</p>
@@ -296,11 +398,20 @@
   </div>
 
   <div class="copyright">
-    © 2024 TYCTW桃聯區會考落點分析系統. All rights reserved.
+    © 2024 桃聯區會考落點分析系統. All rights reserved.
   </div>
 
   <div class="toast" id="toast">已成功複製邀請碼！</div>
 
+  <div id="qrModal" class="modal">
+    <div class="modal-content">
+      <span class="close">&times;</span>
+      <h2>邀請碼 QR 碼</h2>
+      <div id="qrCode"></div>
+    </div>
+  </div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
   <script>
     function generateInvitationCode() {
       const now = new Date();
@@ -342,7 +453,6 @@
           alert('複製失敗，請手動複製邀請碼。');
         });
       } else {
-        // 備用方法：為不支援 Clipboard API 的瀏覽器
         const textArea = document.createElement("textarea");
         textArea.value = invitationCode;
         document.body.appendChild(textArea);
@@ -368,19 +478,50 @@
       }, 2000);
     }
 
+    function showQRCode() {
+      const modal = document.getElementById("qrModal");
+      const span = document.getElementsByClassName("close")[0];
+      const qrCodeDiv = document.getElementById("qrCode");
+      
+      qrCodeDiv.innerHTML = '';
+      new QRCode(qrCodeDiv, {
+        text: document.getElementById('invitationCode').textContent,
+        width: 128,
+        height: 128
+      });
+      
+      modal.style.display = "block";
+      
+      span.onclick = function() {
+        modal.style.display = "none";
+      }
+      
+      window.onclick = function(event) {
+        if (event.target == modal) {
+          modal.style.display = "none";
+        }
+      }
+    }
+
+    function shareInvitationCode() {
+      const invitationCode = document.getElementById('invitationCode').textContent;
+      if (navigator.share) {
+        navigator.share({
+          title: '桃聯區會考落點分析邀請碼',
+          text: `我的桃聯區會考落點分析邀請碼是：${invitationCode}`,
+          url: window.location.href
+        }).then(() => {
+          console.log('邀請碼分享成功');
+        }).catch((error) => {
+          console.log('邀請碼分享失敗', error);
+        });
+      } else {
+        alert(`請複製以下文字進行分享：\n\n我的桃聯區會考落點分析邀請碼是：${invitationCode}`);
+      }
+    }
+
     updateInvitationCode();
     setInterval(updateTimer, 1000);
-  </script>
-  <script type="text/javascript">
-    document.oncontextmenu = function(){
-        return false;
-    }
-    document.onselectstart = function(){
-        return false;
-    }
-    document.onmousedown = function(){
-        return false;
-    }
   </script>
 </body>
 </html>

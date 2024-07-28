@@ -1,16 +1,18 @@
-<html><head><title>桃聯區會考落點分析邀請碼</title>
+<html><head>
+<title>桃聯區會考落點分析邀請碼</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 <style>
   @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;700&display=swap');
   
   :root {
-    --primary-color: #4a69bd;
-    --secondary-color: #6a89cc;
-    --background-color: #f0f2f5;
-    --text-color: #333;
-    --card-background: #fff;
+    --primary-color: #3498db;
+    --secondary-color: #2980b9;
+    --background-color: #ecf0f1;
+    --text-color: #2c3e50;
+    --card-background: #ffffff;
     --shadow-color: rgba(0, 0, 0, 0.1);
+    --accent-color: #e74c3c;
   }
 
   body {
@@ -19,6 +21,7 @@
     margin: 0;
     padding: 20px;
     display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
     min-height: 100vh;
@@ -34,6 +37,7 @@
     width: 90%;
     text-align: center;
     transition: all 0.3s ease;
+    margin-bottom: 2rem;
   }
 
   .container:hover {
@@ -76,7 +80,7 @@
     font-weight: bold;
     color: var(--primary-color);
     padding: 1.2rem 1.5rem;
-    background-color: rgba(74, 105, 189, 0.1);
+    background-color: rgba(52, 152, 219, 0.1);
     display: inline-block;
     border: 2px solid var(--primary-color);
     border-right: none;
@@ -101,7 +105,7 @@
   .timer {
     font-size: 1.3rem;
     margin-bottom: 2.5rem;
-    color: var(--primary-color);
+    color: var(--accent-color);
     font-weight: 500;
   }
 
@@ -141,6 +145,14 @@
     box-shadow: 0 3px 10px var(--shadow-color);
   }
 
+  .copyright {
+    margin-top: 2rem;
+    font-size: 0.9rem;
+    color: var(--text-color);
+    opacity: 0.7;
+    text-align: center;
+  }
+
   @keyframes fadeInUp {
     from { 
       opacity: 0;
@@ -154,6 +166,17 @@
 
   .container {
     animation: fadeInUp 0.8s ease-out;
+  }
+
+  a {
+    color: var(--primary-color);
+    text-decoration: none;
+    transition: color 0.3s ease;
+  }
+
+  a:hover {
+    color: var(--secondary-color);
+    text-decoration: underline;
   }
 
   @media (max-width: 600px) {
@@ -203,6 +226,10 @@
       font-size: 1rem;
       margin-bottom: 1rem;
     }
+
+    .copyright {
+      font-size: 0.8rem;
+    }
   }
 </style>
 </head>
@@ -220,9 +247,12 @@
       <p><i class="fas fa-sync-alt icon"></i>此邀請碼每小時自動更新一次。</p>
       <p><i class="fas fa-clock icon"></i>請在邀請碼有效期內使用落點分析系統。</p>
       <p><i class="fas fa-chart-line icon"></i> <a href="https://tyctw.github.io/">返回分析平台</a> 。</p>
-      <p><i class="fas fa-chart-line icon"></i>查看 <a href="https://tyctw.github.io/analysis/">全國會考統計資料</a> 。</p>
-
+      <p><i class="fas fa-chart-bar icon"></i>查看 <a href="https://tyctw.github.io/analysis/">全國會考統計資料</a> 。</p>
     </div>
+  </div>
+
+  <div class="copyright">
+    © 2024 桃聯區會考落點分析系統. All rights reserved.
   </div>
 
   <div class="toast" id="toast">已成功複製邀請碼！</div>
@@ -307,6 +337,6 @@
     document.onmousedown = function(){
         return false;
     }
-</script>
+  </script>
 </body>
 </html>

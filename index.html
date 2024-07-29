@@ -412,11 +412,38 @@
     }
 
     @media (max-width: 600px) {
+      .container {
+        padding: 10px;
+      }
+
+      h1 {
+        font-size: 2em;
+      }
+
       .qr-options {
         flex-direction: column;
       }
+
       .album-input-label, #scanQRCode {
         width: 100%;
+        padding: 15px;
+        font-size: 16px;
+      }
+
+      input[type="text"] {
+        font-size: 14px;
+      }
+
+      #qr-reader {
+        width: 100% !important;
+      }
+
+      #qr-reader__scan_region {
+        min-height: 250px !important;
+      }
+
+      #qr-reader__dashboard_section_swaplink {
+        display: none;
       }
     }
 
@@ -491,7 +518,7 @@
             <div class="qr-options">
                 <button type="button" id="scanQRCode"><i class="fas fa-camera icon"></i>掃描邀請碼 QR 碼</button>
                 <label for="albumInput" class="album-input-label">
-                  <i class="fas fa-photo-video icon"></i>從相簿選擇邀請碼QR CODE
+                  <i class="fas fa-photo-video icon"></i>從相簿選擇邀請碼
                 </label>
                 <input type="file" id="albumInput" accept="image/*" capture="album">
               </div>

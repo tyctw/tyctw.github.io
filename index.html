@@ -313,9 +313,9 @@
   
   
   
-            /* 新增頁首樣式 */
+    /* Header styles */
     .header {
-      background-color: #3498db;
+      background-color: var(--primary-color);
       color: white;
       padding: 10px 0;
       position: fixed;
@@ -324,7 +324,7 @@
       width: 100%;
       z-index: 1000;
     }
-    
+
     .header-container {
       display: flex;
       justify-content: space-between;
@@ -333,22 +333,65 @@
       margin: 0 auto;
       padding: 0 20px;
     }
-    
+
     .header-logo {
       font-size: 1.5em;
       font-weight: bold;
     }
-    
+
+    .menu-icon {
+      display: none;
+      font-size: 1.5em;
+      cursor: pointer;
+    }
+
+    .header-nav {
+      display: flex;
+    }
+
     .header-nav a {
       color: white;
       text-decoration: none;
       margin-left: 20px;
       transition: color 0.3s ease;
     }
-    
+
     .header-nav a:hover {
       color: #f1c40f;
     }
+
+    /* Mobile styles */
+    @media (max-width: 768px) {
+      .menu-icon {
+        display: block;
+      }
+
+      .header-nav {
+        display: none;
+        position: absolute;
+        top: 100%;
+        left: 0;
+        width: 100%;
+        background-color: var(--primary-color);
+        flex-direction: column;
+        padding: 10px 0;
+      }
+
+      .header-nav.show {
+        display: flex;
+      }
+
+      .header-nav a {
+        margin: 10px 20px;
+        padding: 5px 0;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+      }
+
+      .header-nav a:last-child {
+        border-bottom: none;
+      }
+    }
+
     
     /* 調整主容器的上邊距，為頁首留出空間 */
     .container {
@@ -441,26 +484,56 @@
     #qr-result {
       animation: fadeIn 0.5s ease-in-out 0.4s both;
     }
+
+
+    .invitation-link {
+      display: inline-block;
+      margin: 20px 0;
+      padding: 12px 24px;
+      background-color: var(--secondary-color);
+      color: white;
+      text-decoration: none;
+      border-radius: 30px;
+      font-weight: 500;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    .invitation-link:hover {
+      background-color: #00a6ff;
+      transform: translateY(-2px);
+      box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
+    }
+
+    .invitation-link i {
+      margin-right: 8px;
+    }
+
       </style></head><body>
-          <header class="header">
-            <div class="header-container">
-              <div class="header-logo">
-                <i class="fas fa-chart-line"></i> 桃聯區會考落點分析
-              </div>
-              <nav class="header-nav">
-                <a href="https://sites.google.com/view/tyctw/" target="_blank"><i class="fas fa-school"></i> 回到主網頁</a>
-             <a href="https://tyctw.github.io/sequence/" target="_blank"><i class="fas fa-pencil-alt"></i> 序位推估</a>
-                <a href="https://tyctw.github.io/Navigation/"><i class="fas fa-university"></i> 更多資訊</a>
-              </nav>
-            </div>
-          </header>
+  <header class="header">
+    <div class="header-container">
+      <div class="header-logo">
+        <i class="fas fa-chart-line"></i> 桃聯區會考落點分析
+      </div>
+      <div class="menu-icon" onclick="toggleMenu()">
+        <i class="fas fa-bars"></i>
+      </div>
+      <nav class="header-nav" id="headerNav">
+        <a href="https://sites.google.com/view/tyctw/" target="_blank"><i class="fas fa-school"></i> 回到主網頁</a>
+        <a href="https://tyctw.github.io/sequence/" target="_blank"><i class="fas fa-pencil-alt"></i> 序位推估</a>
+        <a href="https://tyctw.github.io/Navigation/"><i class="fas fa-university"></i> 更多資訊</a>
+      </nav>
+    </div>
+  </header>
   
   
   
         <div class="container">
           <h1><i class="fas fa-chart-line icon"></i>桃聯區會考落點分析系統</h1>
-          <a href="https://forms.gle/ZKW3W58gcbQW3vdX9" target="_blank"><i class="fas fa-link icon"></i>如需獲取邀請碼請幫我們填寫表單</a>
-          <button class="instruction-toggle" onclick="toggleInstructions()"><i class="fas fa-info-circle icon"></i>使用說明</button>
+          <a href="https://forms.gle/ZKW3W58gcbQW3vdX9" target="_blank" class="invitation-link">
+            <i class="fas fa-link icon"></i>如需獲取邀請碼請幫我們填寫表單
+          </a>
+                    <button class="instruction-toggle" onclick="toggleInstructions()"><i class="fas fa-info-circle icon"></i>使用說明</button>
           <button class="disclaimer-toggle" onclick="showDisclaimer()"><i class="fas fa-exclamation-triangle icon"></i>免責聲明</button>
           <div id="instructions" style="display: none;">
             <h2><i class="fas fa-book icon"></i>使用說明</h2>
@@ -488,10 +561,9 @@
           </div>
           <form id="analysisForm">
             <div class="form-group">
-              <label for="invitationCode"><i class="fas fa-key icon"></i>邀請碼：</label>
-              <input type="text" id="invitationCode" required placeholder="請輸入邀請碼">
+                <label for="invitationCode"><i class="fas fa-key icon"></i>邀請碼：</label>
+                <input type="text" id="invitationCode" required placeholder="請輸入邀請碼">
               </div>
-
               <div class="qr-options">
                 <button type="button" id="scanQRCode"><i class="fas fa-camera icon"></i>掃描 QR 碼</button>
                 <label for="fileInput" class="file-input-label">
@@ -501,7 +573,7 @@
             </form>
             <div id="qr-reader" style="display: none;"></div>
             <div id="qr-result"></div>
-            </div>
+          </div>
 
 
             
@@ -1058,6 +1130,24 @@
       const file = event.target.files[0];
       if (file) {
         handleQRCodeImage(file);
+      }
+    });
+
+
+
+
+
+    function toggleMenu() {
+      var nav = document.getElementById("headerNav");
+      nav.classList.toggle("show");
+    }
+
+    // Close the menu when clicking outside
+    document.addEventListener('click', function(event) {
+      var nav = document.getElementById("headerNav");
+      var menuIcon = document.querySelector(".menu-icon");
+      if (!nav.contains(event.target) && !menuIcon.contains(event.target)) {
+        nav.classList.remove("show");
       }
     });
         </script>

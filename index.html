@@ -441,6 +441,83 @@
         .confirm-button:hover {
           background-color: #2980b9;
         }
+
+
+
+
+
+
+         /* 深色模式樣式 */
+         body.dark-mode {
+            --background-color: #2c3e50;
+            --text-color: #ecf0f1;
+            --card-background: #34495e;
+            --shadow-color: rgba(0, 0, 0, 0.2);
+        }
+
+        /* 深色模式切換按鈕樣式 */
+        .dark-mode-toggle {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 60px;
+            height: 60px;
+            font-size: 1.5em;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            outline: none;
+        }
+
+        .dark-mode-toggle:hover {
+            background-color: var(--secondary-color);
+            transform: scale(1.1) rotate(360deg);
+            box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
+        }
+
+        .dark-mode-toggle:active {
+            transform: scale(0.95);
+        }
+
+        .dark-mode-toggle i {
+            transition: all 0.3s ease;
+        }
+
+        body.dark-mode .dark-mode-toggle {
+            background-color: var(--accent-color);
+        }
+
+        body.dark-mode .dark-mode-toggle:hover {
+            background-color: var(--secondary-color);
+        }
+
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+            100% { transform: translateY(0px); }
+        }
+
+        .dark-mode-toggle {
+            animation: float 4s ease-in-out infinite;
+        }
+
+        @media (max-width: 768px) {
+            .dark-mode-toggle {
+                width: 50px;
+                height: 50px;
+                font-size: 1.2em;
+                bottom: 10px;
+                right: 10px;
+            }
+        }
       </style>
     </head>
     <body>
@@ -644,6 +721,15 @@
           <p>本網站由TYCTW會考落點分析平台開發維護。未經授權，禁止複製或轉載。</p>
         </div>
       </div>      
+
+
+      <button id="darkModeToggle" class="dark-mode-toggle" aria-label="切換深色模式">
+        <i class="fas fa-moon"></i>
+    </button>
+
+
+
+
         <!-- Modal -->
         <div id="disclaimerModal" class="modal">
           <div class="modal-content">
@@ -1089,6 +1175,43 @@
         nav.classList.remove("show");
       }
     });
+
+
+
+
+  function toggleDarkMode() {
+            document.body.classList.toggle('dark-mode');
+            const isDarkMode = document.body.classList.contains('dark-mode');
+            localStorage.setItem('darkMode', isDarkMode);
+            updateDarkModeIcon(isDarkMode);
+        }
+
+        function updateDarkModeIcon(isDarkMode) {
+            const icon = document.querySelector('#darkModeToggle i');
+            icon.style.transform = 'scale(0)';
+            
+            setTimeout(() => {
+                if (isDarkMode) {
+                    icon.classList.remove('fa-moon');
+                    icon.classList.add('fa-sun');
+                } else {
+                    icon.classList.remove('fa-sun');
+                    icon.classList.add('fa-moon');
+                }
+                icon.style.transform = 'scale(1)';
+            }, 150);
+        }
+
+        // 檢查用戶之前的深色模式偏好
+        const savedDarkMode = localStorage.getItem('darkMode') === 'true';
+        if (savedDarkMode) {
+            document.body.classList.add('dark-mode');
+        }
+        updateDarkModeIcon(savedDarkMode);
+
+        // 添加事件監聽器
+        document.getElementById('darkModeToggle').addEventListener('click', toggleDarkMode);
+
         </script>
   
   

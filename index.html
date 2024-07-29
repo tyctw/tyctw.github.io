@@ -1188,7 +1188,7 @@ body.dark-mode .modal-content li {
           const code = jsQR(imageData.data, imageData.width, imageData.height);
           if (code) {
             document.getElementById('invitationCode').value = code.data;
-            document.getElementById('qr-result').textContent = `讀取成功：${code.data}`;
+            document.getElementById('qr-result').textContent = `您的邀請碼是：${code.data}`;
           } else {
             document.getElementById('qr-result').textContent = '無法識別 QR 碼，請嘗試其他圖片';
           }

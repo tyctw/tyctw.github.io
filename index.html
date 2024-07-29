@@ -1171,7 +1171,7 @@ body.dark-mode .modal-content li {
       document.getElementById('invitationCode').value = decodedText;
       html5QrCode.stop();
       document.getElementById('qr-reader').style.display = 'none';
-      document.getElementById('qr-result').textContent = `掃描成功：${decodedText}`;
+      document.getElementById('qr-result').textContent = `您的邀請碼是：${decodedText}`;
     }
 
     function handleQRCodeImage(file) {

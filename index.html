@@ -1083,33 +1083,39 @@ body.dark-mode .modal-content li {
       
             results += '<h3><i class="fas fa-list-ul icon"></i>可能錄取的學校：</h3>';
       
-            const eligibleSchools = Object.entries(schoolData).filter(([schoolName, school]) => 
-              (schoolOwnership === 'all' || school.ownership === schoolOwnership) &&
-              (schoolType === 'all' || school.type === schoolType) &&
-              (vocationalGroup === 'all' || school.group === vocationalGroup) &&
-              totalPoints >= school.points &&
-              totalCredits >= school.credits
-            );
-      
-            if (eligibleSchools.length > 0) {
-              let groupedSchools = {};
-              eligibleSchools.forEach(([schoolName, school]) => {
-                if (!groupedSchools[school.type]) {
-                  groupedSchools[school.type] = [];
-                }
-                groupedSchools[school.type].push(schoolName);
-              });
-      
-              Object.entries(groupedSchools).forEach(([type, schools]) => {
-                results += `<h3>${type}</h3><ul>`;
-                schools.forEach(schoolName => {
-                  results += `<li class="result-item"><i class="fas fa-check-circle icon"></i>${schoolName}</li>`;
-                });
-                results += '</ul>';
-              });
-            } else {
-              results += '<p class="result-item"><i class="fas fa-exclamation-triangle icon"></i>根據您的成績，暫時沒有符合條件的學校。</p>';
-            }
+            const calculateSchoolScore = (school) => {
+    return school.points * 1 + school.credits; // Gives more weight to points
+  };
+
+  const eligibleSchools = Object.entries(schoolData)
+    .filter(([schoolName, school]) => 
+      (schoolOwnership === 'all' || school.ownership === schoolOwnership) &&
+      (schoolType === 'all' || school.type === schoolType) &&
+      (vocationalGroup === 'all' || school.group === vocationalGroup) &&
+      totalPoints >= school.points &&
+      totalCredits >= school.credits
+    )
+    .map(([schoolName, school]) => ({
+      name: schoolName,
+      ...school,
+      score: calculateSchoolScore(school)
+    }))
+    .sort((a, b) => b.score - a.score);
+
+
+  if (eligibleSchools.length > 0) {
+    results += '<ul>';
+    eligibleSchools.forEach(school => {
+      results += `<li class="result-item">
+        <i class="fas fa-check-circle icon"></i>
+        ${school.name} (${school.type})
+        <br>
+      </li>`;
+    });
+    results += '</ul>';
+  } else {
+    results += '<p class="result-item"><i class="fas fa-exclamation-triangle icon"></i>根據您的成績，暫時沒有符合條件的學校。</p>';
+  }
       
             const resultsElement = document.getElementById('results');
             resultsElement.innerHTML = results;

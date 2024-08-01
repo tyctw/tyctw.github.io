@@ -1087,14 +1087,13 @@ body.dark-mode .modal-content li {
     return school.points * 1 + school.credits; // Gives more weight to points
   };
 
-  const eligibleSchools = Object.entries(schoolData)
-    .filter(([schoolName, school]) => 
-      (schoolOwnership === 'all' || school.ownership === schoolOwnership) &&
-      (schoolType === 'all' || school.type === schoolType) &&
-      (vocationalGroup === 'all' || school.group === vocationalGroup) &&
-      totalPoints >= school.points &&
-      totalCredits >= school.credits
-    )
+            const eligibleSchools = Object.entries(schoolData).filter(([schoolName, school]) => 
+              (schoolOwnership === 'all' || school.ownership === schoolOwnership) &&
+              (schoolType === 'all' || school.type === schoolType) &&
+              (vocationalGroup === 'all' || school.group === vocationalGroup) &&
+              totalPoints >= school.points &&
+              totalCredits >= school.credits
+            )
     .map(([schoolName, school]) => ({
       name: schoolName,
       ...school,

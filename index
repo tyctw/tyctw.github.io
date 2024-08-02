@@ -999,7 +999,7 @@ body.dark-mode .modal-content li {
                          <p class="result-item"><i class="fas fa-award icon"></i>總積點：${totalCredits}</p>`;
     
           const schoolData = {
-               '武陵高中(普通科)': { points: 33, credits: 32, type: '普通科', ownership: 'public' },
+               '武陵高中(普通科)': { points: 33, credits: 33, type: '普通科', ownership: 'public' },
                '中壢高中(普通科)': { points: 31, credits: 28, type: '普通科', ownership: 'public' },             
                '內壢高中(普通科)': { points: 29, credits: 24, type: '普通科', ownership: 'public' },
                '陽明高中(普通科)': { points: 27, credits: 22, type: '普通科', ownership: 'public' },

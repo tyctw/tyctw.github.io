@@ -766,10 +766,6 @@ body.dark-mode .modal-content li {
     <div class="copyright">
         <p>&copy; 2024 TYCTW桃聯區會考落點分析系統. All rights reserved.</p>
         <p>本網站由TYCTW會考落點分析平台開發維護。未經授權，禁止複製或轉載。</p>
-        <div class="version-info">
-          程式更新時間：<span id="programUpdateTime"></span>
-        </div>
-      </div>
       </div>
     </div>      
 
@@ -999,7 +995,7 @@ body.dark-mode .modal-content li {
                          <p class="result-item"><i class="fas fa-award icon"></i>總積點：${totalCredits}</p>`;
     
           const schoolData = {
-               '武陵高中(普通科)': { points: 33, credits: 33, type: '普通科', ownership: 'public' },
+               '武陵高中(普通科)': { points: 33, credits: 32, type: '普通科', ownership: 'public' },
                '中壢高中(普通科)': { points: 31, credits: 28, type: '普通科', ownership: 'public' },             
                '內壢高中(普通科)': { points: 29, credits: 24, type: '普通科', ownership: 'public' },
                '陽明高中(普通科)': { points: 27, credits: 22, type: '普通科', ownership: 'public' },
@@ -1087,27 +1083,33 @@ body.dark-mode .modal-content li {
     
           results += '<h3><i class="fas fa-list-ul icon"></i>可能錄取的學校：</h3>';
     
-  const eligibleSchools = Object.keys(schoolData).filter(schoolName => 
-    (schoolOwnership === 'all' || schoolData[schoolName].ownership === schoolOwnership) &&
-    (schoolType === 'all' || schoolData[schoolName].type === schoolType) &&
-    (vocationalGroup === 'all' || schoolData[schoolName].group === vocationalGroup) &&
-    totalPoints >= schoolData[schoolName].points &&
-    totalCredits >= schoolData[schoolName].credits
-  );
-
-  if (eligibleSchools.length > 0) {
-    results += '<ul>';
-    eligibleSchools.forEach(schoolName => {
-      let exactMatch = (totalPoints === schoolData[schoolName].points && totalCredits === schoolData[schoolName].credits);
-      results += `<li class="result-item">
-        <i class="fas fa-check-circle icon"></i>${schoolName}
-        ${exactMatch ? ' <span style="color: #e74c3c; font-weight: bold;">[與去年錄取最低分數相同]</span>' : ''}
-      </li>`;
-    });
-    results += '</ul>';
-  } else {
-    results += '<p class="result-item"><i class="fas fa-exclamation-triangle icon"></i>根據您的成績，暫時沒有符合條件的學校。</p>';
-  }
+          const eligibleSchools = Object.entries(schoolData).filter(([schoolName, school]) => 
+            (schoolOwnership === 'all' || school.ownership === schoolOwnership) &&
+            (schoolType === 'all' || school.type === schoolType) &&
+            (vocationalGroup === 'all' || school.group === vocationalGroup) &&
+            totalPoints >= school.points &&
+            totalCredits >= school.credits
+          );
+    
+          if (eligibleSchools.length > 0) {
+            let groupedSchools = {};
+            eligibleSchools.forEach(([schoolName, school]) => {
+              if (!groupedSchools[school.type]) {
+                groupedSchools[school.type] = [];
+              }
+              groupedSchools[school.type].push(schoolName);
+            });
+    
+            Object.entries(groupedSchools).forEach(([type, schools]) => {
+              results += `<h3>${type}</h3><ul>`;
+              schools.forEach(schoolName => {
+                results += `<li class="result-item"><i class="fas fa-check-circle icon"></i>${schoolName}</li>`;
+              });
+              results += '</ul>';
+            });
+          } else {
+            results += '<p class="result-item"><i class="fas fa-exclamation-triangle icon"></i>根據您的成績，暫時沒有符合條件的學校。</p>';
+          }
     
           const resultsElement = document.getElementById('results');
           resultsElement.innerHTML = results;
@@ -1256,25 +1258,7 @@ function toggleDarkMode() {
 
       // 添加事件監聽器2024/8/1
       document.getElementById('darkModeToggle').addEventListener('click', toggleDarkMode);
-      // 添加显示程序更新时间的函数
-      function displayProgramUpdateTime() {
-        const updateTime = new Date('2024-08-01T23:30:00');
-        const options = { 
-          year: 'numeric', 
-          month: 'long', 
-          day: 'numeric', 
-          hour: '2-digit', 
-          minute: '2-digit', 
-          hour12: false 
-        };
-        document.getElementById('programUpdateTime').textContent = updateTime.toLocaleString('zh-TW', options);
-      }
 
-      // 在页面加载完成后显示程序更新时间
-      window.onload = function() {
-        showDisclaimer();
-        displayProgramUpdateTime();
-      }
       </script>
 
 

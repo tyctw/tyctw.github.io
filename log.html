@@ -1,300 +1,449 @@
 <html><head>
   <title>更新日誌 - 桃聯區會考落點分析</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="桃聯區會考落點分析系統的更新日誌，記錄系統的版本變更和功能更新。">
-    <meta name="keywords" content="桃聯區, 會考, 落點分析, 更新日誌, 版本歷史">
-    <meta name="author" content="桃聯區教育局">
-    <style>
-      @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;700&display=swap');
-      
-      :root {
-        --primary-color: #3498db;
-        --secondary-color: #2ecc71;
-        --background-color: #f0f4f8;
-        --text-color: #2c3e50;
-        --card-background: #ffffff;
-        --shadow-color: rgba(0, 0, 0, 0.1);
-        --accent-color: #e74c3c;
-        --header-color: #34495e;
-        --border-color: #bdc3c7;
-        --footer-color: #2c3e50;
-      }
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;700&display=swap');
     
-      body {
-        font-family: 'Noto Sans TC', sans-serif;
-        background-color: var(--background-color);
-        margin: 0;
-        padding: 0;
-        color: var(--text-color);
-        line-height: 1.8;
-        display: flex;
-        flex-direction: column;
-        min-height: 100vh;
-      }
+    :root {
+      --primary-color: #3498db;
+      --secondary-color: #2ecc71;
+      --background-color: #ecf0f1;
+      --text-color: #34495e;
+      --card-background: #ffffff;
+      --shadow-color: rgba(0, 0, 0, 0.1);
+      --accent-color: #e74c3c;
+    }
     
-      .container {
-        max-width: 900px;
-        margin: 0 auto;
-        padding: 2rem;
-        flex: 1;
-      }
+    body {
+      font-family: 'Noto Sans TC', sans-serif;
+      background-color: var(--background-color);
+      color: var(--text-color);
+      line-height: 1.6;
+      margin: 0;
+      padding: 0;
+      transition: background-color 0.3s ease, color 0.3s ease;
+    }
     
-      header {
-        background-color: var(--header-color);
-        color: white;
-        text-align: center;
-        padding: 2rem 0;
-        margin-bottom: 3rem;
-        box-shadow: 0 4px 6px var(--shadow-color);
-      }
+    .container {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 20px;
+    }
     
-      h1 {
-        margin: 0;
-        font-size: 2.8rem;
-        letter-spacing: 2px;
-      }
+    h1, h2, h3 {
+      color: var(--primary-color);
+      transition: color 0.3s ease;
+    }
     
-      .subtitle {
-        font-size: 1.2rem;
-        opacity: 0.8;
-        margin-top: 0.5rem;
-      }
+    .header {
+      background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+      color: white;
+      padding: 60px 0;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    }
     
-      .changelog-item {
-        background-color: var(--card-background);
-        border-radius: 12px;
-        padding: 2rem;
-        margin-bottom: 2rem;
-        box-shadow: 0 8px 16px var(--shadow-color);
-        transition: all 0.3s ease;
-        border: 1px solid var(--border-color);
-      }
+    .header::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: radial-gradient(circle, rgba(255,255,255,0.2) 0%, rgba(255,255,255,0) 70%);
+      transform: rotate(30deg);
+      animation: shimmer 10s infinite linear;
+    }
     
-      .changelog-item:hover {
-        transform: translateY(-5px);
-        box-shadow: 0 12px 24px var(--shadow-color);
-      }
+    @keyframes shimmer {
+      0% { transform: rotate(30deg) translateY(0); }
+      100% { transform: rotate(30deg) translateY(50%); }
+    }
     
-      .changelog-item h2 {
-        color: var(--primary-color);
-        margin-top: 0;
-        font-size: 2rem;
-        border-bottom: 2px solid var(--border-color);
-        padding-bottom: 0.5rem;
-        margin-bottom: 1rem;
-      }
+    .header h1 {
+      margin: 0;
+      color: white;
+      font-size: 3em;
+      position: relative;
+      z-index: 1;
+      text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+      letter-spacing: 2px;
+    }
     
-      .changelog-item h3 {
-        color: var(--secondary-color);
-        font-size: 1.5rem;
-        margin: 1.5rem 0 0.5rem;
-      }
+    .changelog {
+      background-color: var(--card-background);
+      border-radius: 12px;
+      box-shadow: 0 10px 20px var(--shadow-color);
+      padding: 40px;
+      margin-top: 40px;
+      transition: background-color 0.3s ease, box-shadow 0.3s ease;
+    }
     
-      .changelog-item ul {
-        padding-left: 1.5rem;
-        margin-bottom: 0;
-      }
+    .changelog-item {
+      margin-bottom: 40px;
+      border-bottom: 2px solid #eee;
+      padding-bottom: 40px;
+      transition: border-color 0.3s ease, transform 0.3s ease;
+    }
     
-      .changelog-item li {
-        margin-bottom: 0.8rem;
-        position: relative;
-      }
+    .changelog-item:hover {
+      transform: translateY(-5px);
+    }
     
-      .changelog-item li::before {
-        content: '•';
-        color: var(--accent-color);
-        font-weight: bold;
-        display: inline-block;
-        width: 1em;
-        margin-left: -1em;
-      }
+    .changelog-item:last-child {
+      border-bottom: none;
+      margin-bottom: 0;
+      padding-bottom: 0;
+    }
     
-      .back-link {
-        display: inline-block;
-        margin-top: 2rem;
-        color: var(--primary-color);
-        text-decoration: none;
-        font-weight: bold;
-        transition: all 0.3s ease;
-        padding: 0.5rem 1rem;
-        border: 2px solid var(--primary-color);
-        border-radius: 5px;
-      }
+    .changelog-date {
+      font-weight: bold;
+      color: var(--accent-color);
+      font-size: 1.2em;
+      margin-bottom: 15px;
+      display: inline-block;
+      padding: 5px 10px;
+      background-color: rgba(231, 76, 60, 0.1);
+      border-radius: 5px;
+    }
     
-      .back-link:hover {
-        color: white;
-        background-color: var(--primary-color);
-      }
+    .changelog-title {
+      font-size: 1.6em;
+      margin: 15px 0;
+      color: var(--primary-color);
+      display: flex;
+      align-items: center;
+    }
     
-      .icon {
-        margin-right: 0.5rem;
-      }
+    .changelog-title i {
+      margin-right: 10px;
+      font-size: 0.8em;
+    }
     
-      .version-tag {
-        background-color: var(--accent-color);
-        color: white;
-        padding: 0.2rem 0.5rem;
-        border-radius: 20px;
-        font-size: 0.9rem;
-        margin-left: 0.5rem;
-        vertical-align: middle;
-      }
+    .changelog-description {
+      margin-left: 25px;
+    }
     
-      footer {
-        background-color: var(--footer-color);
-        color: white;
-        text-align: center;
-        padding: 1.5rem 0;
-        margin-top: 3rem;
-      }
+    .changelog-description li {
+      margin-bottom: 15px;
+      position: relative;
+      padding-left: 30px;
+    }
     
-      .copyright {
-        font-size: 0.9rem;
-        opacity: 0.8;
-      }
+    .changelog-description li::before {
+      content: '\f00c';
+      font-family: 'Font Awesome 5 Free';
+      font-weight: 900;
+      color: var(--secondary-color);
+      position: absolute;
+      left: 0;
+      top: 2px;
+    }
     
-      /* 深色模式樣式 */
-      @media (prefers-color-scheme: dark) {
-        :root {
-          --background-color: #2c3e50;
-          --text-color: #ecf0f1;
-          --card-background: #34495e;
-          --shadow-color: rgba(0, 0, 0, 0.2);
-          --header-color: #1a2634;
-          --border-color: #4a6278;
-          --footer-color: #1a2634;
-        }
-      }
+    .back-button {
+      display: inline-block;
+      background-color: var(--secondary-color);
+      color: white;
+      padding: 15px 30px;
+      border-radius: 30px;
+      text-decoration: none;
+      margin-top: 40px;
+      transition: all 0.3s ease;
+      font-weight: bold;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+      font-size: 1.1em;
+    }
     
-      /* 動畫效果 */
-      @keyframes fadeIn {
-        from { opacity: 0; transform: translateY(20px); }
-        to { opacity: 1; transform: translateY(0); }
-      }
+    .back-button:hover {
+      background-color: #27ae60;
+      transform: translateY(-2px);
+      box-shadow: 0 6px 8px rgba(0,0,0,0.15);
+    }
     
-      .changelog-item {
-        animation: fadeIn 0.5s ease-out forwards;
-        opacity: 0;
-      }
+    footer {
+      background-color: #34495e;
+      color: white;
+      text-align: center;
+      padding: 40px 0;
+      margin-top: 80px;
+    }
     
-      .changelog-item:nth-child(1) { animation-delay: 0.1s; }
-      .changelog-item:nth-child(2) { animation-delay: 0.2s; }
-      .changelog-item:nth-child(3) { animation-delay: 0.3s; }
-    
-      /* 響應式設計 */
-      @media (max-width: 768px) {
-        .container {
-          padding: 1rem;
-        }
-        h1 {
-          font-size: 2rem;
-        }
-        .changelog-item {
-          padding: 1.5rem;
-        }
-        .changelog-item h2 {
-          font-size: 1.6rem;
-        }
-        .changelog-item h3 {
-          font-size: 1.3rem;
-        }
+    .copyright {
+      font-size: 0.9em;
+      opacity: 0.8;
+      margin-bottom: 15px;
+    }
+
+    /* Dark mode styles */
+    body.dark-mode {
+      --background-color: #2c3e50;
+      --text-color: #ecf0f1;
+      --card-background: #34495e;
+      --shadow-color: rgba(0, 0, 0, 0.2);
+    }
+
+    body.dark-mode .header {
+      background: linear-gradient(135deg, #2980b9, #27ae60);
+    }
+
+    body.dark-mode .back-button {
+      background-color: #27ae60;
+    }
+
+    body.dark-mode .back-button:hover {
+      background-color: #2ecc71;
+    }
+
+    body.dark-mode footer {
+      background-color: #2c3e50;
+    }
+
+    body.dark-mode .changelog-item {
+      border-bottom-color: #4a6278;
+    }
+
+    /* Dark mode toggle button */
+    .dark-mode-toggle {
+      position: fixed;
+      bottom: 30px;
+      right: 30px;
+      background-color: var(--primary-color);
+      color: white;
+      border: none;
+      border-radius: 50%;
+      width: 60px;
+      height: 60px;
+      font-size: 1.5em;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      z-index: 1000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    .dark-mode-toggle:hover {
+      background-color: var(--secondary-color);
+      transform: scale(1.1) rotate(360deg);
+    }
+
+    body.dark-mode .dark-mode-toggle {
+      background-color: var(--accent-color);
+    }
+
+    body.dark-mode .dark-mode-toggle:hover {
+      background-color: #c0392b;
+    }
+
+    /* Animations */
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    @keyframes slideIn {
+      from { transform: translateY(20px); opacity: 0; }
+      to { transform: translateY(0); opacity: 1; }
+    }
+
+    .changelog-item {
+      animation: slideIn 0.5s ease-out forwards;
+      opacity: 0;
+    }
+
+    .changelog-item:nth-child(1) { animation-delay: 0.1s; }
+    .changelog-item:nth-child(2) { animation-delay: 0.3s; }
+    .changelog-item:nth-child(3) { animation-delay: 0.5s; }
+
+    .back-button {
+      animation: fadeIn 0.5s ease-out 0.7s forwards;
+      opacity: 0;
+    }
+
+    /* New styles for enhanced aesthetics */
+    .changelog-version {
+      display: inline-block;
+      background-color: var(--primary-color);
+      color: white;
+      padding: 5px 10px;
+      border-radius: 15px;
+      font-size: 0.9em;
+      margin-left: 10px;
+    }
+
+    .changelog-item-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 20px;
+    }
+
+    .changelog-item-content {
+      background-color: rgba(52, 152, 219, 0.05);
+      border-radius: 8px;
+      padding: 20px;
+      transition: background-color 0.3s ease;
+    }
+
+    body.dark-mode .changelog-item-content {
+      background-color: rgba(52, 152, 219, 0.1);
+    }
+
+    .feature-icon {
+      margin-right: 10px;
+      color: var(--secondary-color);
+    }
+
+    /* Hover effects */
+    .changelog-item:hover .changelog-item-content {
+      background-color: rgba(52, 152, 219, 0.1);
+    }
+
+    body.dark-mode .changelog-item:hover .changelog-item-content {
+      background-color: rgba(52, 152, 219, 0.15);
+    }
+
+    /* Responsive design improvements */
+    @media (max-width: 768px) {
+      .header h1 {
+        font-size: 2.5em;
       }
-    </style>
-  </head>
-  <body>
-    <header>
-      <h1><i class="fas fa-history icon"></i>更新日誌</h1>
-      <p class="subtitle">桃聯區會考落點分析系統的版本更新記錄</p>
-    </header>
-    <div class="container">
+
+      .changelog {
+        padding: 30px;
+      }
+
+      .changelog-title {
+        font-size: 1.4em;
+      }
+
+      .changelog-date {
+        font-size: 1em;
+      }
+
+      .back-button {
+        padding: 12px 24px;
+        font-size: 1em;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <h1><i class="fas fa-history"></i> 更新日誌</h1>
+  </div>
+  
+  <div class="container">
+    <div class="changelog">
       <div class="changelog-item">
-        <h2>版本 1.2.0 <span class="version-tag">最新</span> <small>(2024-08-10)</small></h2>
-        <h3><i class="fas fa-star icon"></i>主要更新</h3>
-        <ul>
-          <li>新增獨立的更新日誌頁面，提供完整的版本更新歷史記錄</li>
-          <li>大幅優化深色模式支援，提升夜間使用體驗</li>
-          <li>全面改進移動設備的響應式設計，確保各種螢幕尺寸下的最佳顯示效果</li>
-        </ul>
-        <h3><i class="fas fa-wrench icon"></i>優化與修復</h3>
-        <ul>
-          <li>修復在 Safari 和 Firefox 瀏覽器中的部分顯示問題</li>
-          <li>通過代碼優化和資源壓縮，大幅提高頁面加載速度</li>
-          <li>更新所有依賴庫至最新穩定版本，提升系統安全性和穩定性</li>
-        </ul>
+        <div class="changelog-item-header">
+          <div class="changelog-date"><i class="fas fa-calendar-alt"></i> 2024年8月10日</div>
+          <div class="changelog-version">版本 1.2.0</div>
+        </div>
+        <div class="changelog-title"><i class="fas fa-rocket"></i> 重大功能更新</div>
+        <div class="changelog-item-content">
+          <ul class="changelog-description">
+            <li><i class="fas fa-school feature-icon"></i>新增學校詳細資訊頁面，提供更全面的學校介紹</li>
+            <li><i class="fas fa-bug feature-icon"></i>修復了一些已知的錯誤，提高系統穩定性</li>
+            <li><i class="fas fa-chart-bar feature-icon"></i>新增數據可視化功能，幫助用戶更直觀地理解落點分析結果</li>
+          </ul>
+        </div>
       </div>
       
       <div class="changelog-item">
-        <h2>版本 1.1.0 <small>(2024-06-15)</small></h2>
-        <h3><i class="fas fa-plus-circle icon"></i>新增功能</h3>
-        <ul>
-          <li>引入更新日誌功能，方便用戶了解系統變更</li>
-          <li>實現即時使用者反饋系統，提升用戶互動體驗</li>
-          <li>新增學校詳細資訊彈窗，提供更豐富的學校背景資料</li>
-        </ul>
-        <h3><i class="fas fa-paint-brush icon"></i>界面更新</h3>
-        <ul>
-          <li>重新設計使用者界面，採用現代化的卡片式佈局</li>
-          <li>增加豐富的動畫效果，提升整體視覺體驗</li>
-          <li>優化色彩方案，提高對比度和可讀性</li>
-        </ul>
-        <h3><i class="fas fa-bug icon"></i>錯誤修復</h3>
-        <ul>
-          <li>修正多個已知的成績計算邏輯錯誤</li>
-          <li>解決部分私立學校資料顯示不完整的問題</li>
-          <li>修復在某些情況下無法正確保存用戶偏好設置的bug</li>
-        </ul>
+        <div class="changelog-item-header">
+          <div class="changelog-date"><i class="fas fa-calendar-alt"></i> 2024年6月1日</div>
+          <div class="changelog-version">版本 1.1.0</div>
+        </div>
+        <div class="changelog-title"><i class="fas fa-chart-line"></i> 系統優化與擴展</div>
+        <div class="changelog-item-content">
+          <ul class="changelog-description">
+            <li><i class="fas fa-database feature-icon"></i>增加了更多學校的資訊，覆蓋範圍更廣</li>
+            <li><i class="fas fa-mobile-alt feature-icon"></i>改進了網站的響應式設計，提升移動設備使用體驗</li>
+            <li><i class="fas fa-search feature-icon"></i>優化了搜索功能，讓用戶更容易找到感興趣的學校</li>
+          </ul>
+        </div>
       </div>
       
       <div class="changelog-item">
-        <h2>版本 1.0.0 <small>(2024-05-01)</small></h2>
-        <h3><i class="fas fa-rocket icon"></i>初始版本發布</h3>
-        <ul>
-          <li>實現基本的會考成績落點分析功能</li>
-          <li>支援公立、私立學校的篩選和比較</li>
-          <li>提供直觀的使用說明和操作指南</li>
-          <li>初步實現響應式設計，支援桌面和移動設備</li>
-          <li>整合基本的數據視覺化功能，展示分析結果</li>
-        </ul>
+        <div class="changelog-item-header">
+          <div class="changelog-date"><i class="fas fa-calendar-alt"></i> 2023年12月10日</div>
+          <div class="changelog-version">版本 1.0.0</div>
+        </div>
+        <div class="changelog-title"><i class="fas fa-flag"></i> 系統正式上線</div>
+        <div class="changelog-item-content">
+          <ul class="changelog-description">
+            <li><i class="fas fa-rocket feature-icon"></i>桃聯區會考落點分析系統正式上線</li>
+            <li><i class="fas fa-calculator feature-icon"></i>提供基本的成績計算功能，幫助學生快速了解自己的學習水平</li>
+            <li><i class="fas fa-list-ul feature-icon"></i>顯示符合條件的學校列表，為學生提供初步的升學方向</li>
+            <li><i class="fas fa-user-friends feature-icon"></i>實現用戶友好的界面設計，確保操作簡單直觀</li>
+          </ul>
+        </div>
       </div>
-      
-      <a href="https://tyctw.github.io/" class="back-link"><i class="fas fa-arrow-left icon"></i>返回主頁</a>
     </div>
+    
+    <a href="https://tyctw.github.io/" class="back-button">
+      <i class="fas fa-arrow-left"></i> 返回主頁
+    </a>
+  </div>
+  
+  <footer>
+    <p class="copyright">&copy; 2024 TYCTW會考落點分析平台 版權所有.</p>
+    <p>本網站內容僅供參考。</p>
+    <p>如有任何問題或建議，請聯繫我們的支持團隊。</p>
+  </footer>
 
-    <footer>
-      <p class="copyright">&copy; 2024 TYCTW桃聯區會考落點. 版權所有.</p>
-      <p>本網站內容僅供參考。</p>
-    </footer>
+  <button id="darkModeToggle" class="dark-mode-toggle" aria-label="切換深色模式">
+    <i class="fas fa-moon"></i>
+  </button>
 
-    <script>
-      document.addEventListener('DOMContentLoaded', (event) => {
-        // 平滑滾動效果
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-          anchor.addEventListener('click', function (e) {
-            e.preventDefault();
-            document.querySelector(this.getAttribute('href')).scrollIntoView({
-              behavior: 'smooth'
-            });
-          });
-        });
+  <script>
+    function toggleDarkMode() {
+      document.body.classList.toggle('dark-mode');
+      const isDarkMode = document.body.classList.contains('dark-mode');
+      localStorage.setItem('darkMode', isDarkMode);
+      updateDarkModeIcon(isDarkMode);
+    }
 
-        // 為每個更新日誌項目添加淡入效果
-        const items = document.querySelectorAll('.changelog-item');
-        const observer = new IntersectionObserver((entries) => {
-          entries.forEach(entry => {
-            if (entry.isIntersecting) {
-              entry.target.style.animationPlayState = 'running';
-              observer.unobserve(entry.target);
-            }
-          });
-        }, { threshold: 0.1 });
+    function updateDarkModeIcon(isDarkMode) {
+      const icon = document.querySelector('#darkModeToggle i');
+      icon.className = isDarkMode ? 'fas fa-sun' : 'fas fa-moon';
+    }
 
-        items.forEach((item, index) => {
-          item.style.animationDelay = `${index * 0.1}s`;
-          item.style.animationPlayState = 'paused';
-          observer.observe(item);
-        });
+    // Check user's previous dark mode preference
+    const savedDarkMode = localStorage.getItem('darkMode') === 'true';
+    if (savedDarkMode) {
+      document.body.classList.add('dark-mode');
+    }
+    updateDarkModeIcon(savedDarkMode);
+
+    // Add event listener
+    document.getElementById('darkModeToggle').addEventListener('click', toggleDarkMode);
+
+    // Smooth scroll to top when clicking the back button
+    document.querySelector('.back-button').addEventListener('click', function(e) {
+      e.preventDefault();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+      setTimeout(() => {
+        window.location.href = this.getAttribute('href');
+      }, 500);
+    });
+
+    // Add hover effect to changelog items
+    const changelogItems = document.querySelectorAll('.changelog-item');
+    changelogItems.forEach(item => {
+      item.addEventListener('mouseenter', () => {
+        item.style.transform = 'scale(1.02)';
+        item.style.transition = 'transform 0.3s ease';
       });
-    </script>
-  </body>
+      item.addEventListener('mouseleave', () => {
+        item.style.transform = 'scale(1)';
+      });
+    });
+  </script>
+</body>
 </html>

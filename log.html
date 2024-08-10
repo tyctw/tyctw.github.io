@@ -1,0 +1,300 @@
+<html><head>
+  <title>更新日誌 - 桃聯區會考落點分析</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="桃聯區會考落點分析系統的更新日誌，記錄系統的版本變更和功能更新。">
+    <meta name="keywords" content="桃聯區, 會考, 落點分析, 更新日誌, 版本歷史">
+    <meta name="author" content="桃聯區教育局">
+    <style>
+      @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;700&display=swap');
+      
+      :root {
+        --primary-color: #3498db;
+        --secondary-color: #2ecc71;
+        --background-color: #f0f4f8;
+        --text-color: #2c3e50;
+        --card-background: #ffffff;
+        --shadow-color: rgba(0, 0, 0, 0.1);
+        --accent-color: #e74c3c;
+        --header-color: #34495e;
+        --border-color: #bdc3c7;
+        --footer-color: #2c3e50;
+      }
+    
+      body {
+        font-family: 'Noto Sans TC', sans-serif;
+        background-color: var(--background-color);
+        margin: 0;
+        padding: 0;
+        color: var(--text-color);
+        line-height: 1.8;
+        display: flex;
+        flex-direction: column;
+        min-height: 100vh;
+      }
+    
+      .container {
+        max-width: 900px;
+        margin: 0 auto;
+        padding: 2rem;
+        flex: 1;
+      }
+    
+      header {
+        background-color: var(--header-color);
+        color: white;
+        text-align: center;
+        padding: 2rem 0;
+        margin-bottom: 3rem;
+        box-shadow: 0 4px 6px var(--shadow-color);
+      }
+    
+      h1 {
+        margin: 0;
+        font-size: 2.8rem;
+        letter-spacing: 2px;
+      }
+    
+      .subtitle {
+        font-size: 1.2rem;
+        opacity: 0.8;
+        margin-top: 0.5rem;
+      }
+    
+      .changelog-item {
+        background-color: var(--card-background);
+        border-radius: 12px;
+        padding: 2rem;
+        margin-bottom: 2rem;
+        box-shadow: 0 8px 16px var(--shadow-color);
+        transition: all 0.3s ease;
+        border: 1px solid var(--border-color);
+      }
+    
+      .changelog-item:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 12px 24px var(--shadow-color);
+      }
+    
+      .changelog-item h2 {
+        color: var(--primary-color);
+        margin-top: 0;
+        font-size: 2rem;
+        border-bottom: 2px solid var(--border-color);
+        padding-bottom: 0.5rem;
+        margin-bottom: 1rem;
+      }
+    
+      .changelog-item h3 {
+        color: var(--secondary-color);
+        font-size: 1.5rem;
+        margin: 1.5rem 0 0.5rem;
+      }
+    
+      .changelog-item ul {
+        padding-left: 1.5rem;
+        margin-bottom: 0;
+      }
+    
+      .changelog-item li {
+        margin-bottom: 0.8rem;
+        position: relative;
+      }
+    
+      .changelog-item li::before {
+        content: '•';
+        color: var(--accent-color);
+        font-weight: bold;
+        display: inline-block;
+        width: 1em;
+        margin-left: -1em;
+      }
+    
+      .back-link {
+        display: inline-block;
+        margin-top: 2rem;
+        color: var(--primary-color);
+        text-decoration: none;
+        font-weight: bold;
+        transition: all 0.3s ease;
+        padding: 0.5rem 1rem;
+        border: 2px solid var(--primary-color);
+        border-radius: 5px;
+      }
+    
+      .back-link:hover {
+        color: white;
+        background-color: var(--primary-color);
+      }
+    
+      .icon {
+        margin-right: 0.5rem;
+      }
+    
+      .version-tag {
+        background-color: var(--accent-color);
+        color: white;
+        padding: 0.2rem 0.5rem;
+        border-radius: 20px;
+        font-size: 0.9rem;
+        margin-left: 0.5rem;
+        vertical-align: middle;
+      }
+    
+      footer {
+        background-color: var(--footer-color);
+        color: white;
+        text-align: center;
+        padding: 1.5rem 0;
+        margin-top: 3rem;
+      }
+    
+      .copyright {
+        font-size: 0.9rem;
+        opacity: 0.8;
+      }
+    
+      /* 深色模式樣式 */
+      @media (prefers-color-scheme: dark) {
+        :root {
+          --background-color: #2c3e50;
+          --text-color: #ecf0f1;
+          --card-background: #34495e;
+          --shadow-color: rgba(0, 0, 0, 0.2);
+          --header-color: #1a2634;
+          --border-color: #4a6278;
+          --footer-color: #1a2634;
+        }
+      }
+    
+      /* 動畫效果 */
+      @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(20px); }
+        to { opacity: 1; transform: translateY(0); }
+      }
+    
+      .changelog-item {
+        animation: fadeIn 0.5s ease-out forwards;
+        opacity: 0;
+      }
+    
+      .changelog-item:nth-child(1) { animation-delay: 0.1s; }
+      .changelog-item:nth-child(2) { animation-delay: 0.2s; }
+      .changelog-item:nth-child(3) { animation-delay: 0.3s; }
+    
+      /* 響應式設計 */
+      @media (max-width: 768px) {
+        .container {
+          padding: 1rem;
+        }
+        h1 {
+          font-size: 2rem;
+        }
+        .changelog-item {
+          padding: 1.5rem;
+        }
+        .changelog-item h2 {
+          font-size: 1.6rem;
+        }
+        .changelog-item h3 {
+          font-size: 1.3rem;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <h1><i class="fas fa-history icon"></i>更新日誌</h1>
+      <p class="subtitle">桃聯區會考落點分析系統的版本更新記錄</p>
+    </header>
+    <div class="container">
+      <div class="changelog-item">
+        <h2>版本 1.2.0 <span class="version-tag">最新</span> <small>(2024-08-10)</small></h2>
+        <h3><i class="fas fa-star icon"></i>主要更新</h3>
+        <ul>
+          <li>新增獨立的更新日誌頁面，提供完整的版本更新歷史記錄</li>
+          <li>大幅優化深色模式支援，提升夜間使用體驗</li>
+          <li>全面改進移動設備的響應式設計，確保各種螢幕尺寸下的最佳顯示效果</li>
+        </ul>
+        <h3><i class="fas fa-wrench icon"></i>優化與修復</h3>
+        <ul>
+          <li>修復在 Safari 和 Firefox 瀏覽器中的部分顯示問題</li>
+          <li>通過代碼優化和資源壓縮，大幅提高頁面加載速度</li>
+          <li>更新所有依賴庫至最新穩定版本，提升系統安全性和穩定性</li>
+        </ul>
+      </div>
+      
+      <div class="changelog-item">
+        <h2>版本 1.1.0 <small>(2024-06-15)</small></h2>
+        <h3><i class="fas fa-plus-circle icon"></i>新增功能</h3>
+        <ul>
+          <li>引入更新日誌功能，方便用戶了解系統變更</li>
+          <li>實現即時使用者反饋系統，提升用戶互動體驗</li>
+          <li>新增學校詳細資訊彈窗，提供更豐富的學校背景資料</li>
+        </ul>
+        <h3><i class="fas fa-paint-brush icon"></i>界面更新</h3>
+        <ul>
+          <li>重新設計使用者界面，採用現代化的卡片式佈局</li>
+          <li>增加豐富的動畫效果，提升整體視覺體驗</li>
+          <li>優化色彩方案，提高對比度和可讀性</li>
+        </ul>
+        <h3><i class="fas fa-bug icon"></i>錯誤修復</h3>
+        <ul>
+          <li>修正多個已知的成績計算邏輯錯誤</li>
+          <li>解決部分私立學校資料顯示不完整的問題</li>
+          <li>修復在某些情況下無法正確保存用戶偏好設置的bug</li>
+        </ul>
+      </div>
+      
+      <div class="changelog-item">
+        <h2>版本 1.0.0 <small>(2024-05-01)</small></h2>
+        <h3><i class="fas fa-rocket icon"></i>初始版本發布</h3>
+        <ul>
+          <li>實現基本的會考成績落點分析功能</li>
+          <li>支援公立、私立學校的篩選和比較</li>
+          <li>提供直觀的使用說明和操作指南</li>
+          <li>初步實現響應式設計，支援桌面和移動設備</li>
+          <li>整合基本的數據視覺化功能，展示分析結果</li>
+        </ul>
+      </div>
+      
+      <a href="https://tyctw.github.io/" class="back-link"><i class="fas fa-arrow-left icon"></i>返回主頁</a>
+    </div>
+
+    <footer>
+      <p class="copyright">&copy; 2024 TYCTW桃聯區會考落點. 版權所有.</p>
+      <p>本網站內容僅供參考。</p>
+    </footer>
+
+    <script>
+      document.addEventListener('DOMContentLoaded', (event) => {
+        // 平滑滾動效果
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+          anchor.addEventListener('click', function (e) {
+            e.preventDefault();
+            document.querySelector(this.getAttribute('href')).scrollIntoView({
+              behavior: 'smooth'
+            });
+          });
+        });
+
+        // 為每個更新日誌項目添加淡入效果
+        const items = document.querySelectorAll('.changelog-item');
+        const observer = new IntersectionObserver((entries) => {
+          entries.forEach(entry => {
+            if (entry.isIntersecting) {
+              entry.target.style.animationPlayState = 'running';
+              observer.unobserve(entry.target);
+            }
+          });
+        }, { threshold: 0.1 });
+
+        items.forEach((item, index) => {
+          item.style.animationDelay = `${index * 0.1}s`;
+          item.style.animationPlayState = 'paused';
+          observer.observe(item);
+        });
+      });
+    </script>
+  </body>
+</html>

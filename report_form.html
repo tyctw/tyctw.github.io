@@ -1,0 +1,604 @@
+<html><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>系統異常回報</title>
+<style>
+body {
+  font-family: 'Google Sans', Arial, sans-serif;
+  background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+  margin: 0;
+  padding: 40px 20px;
+  color: #202124;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.container {
+  max-width: 600px;
+  width: 100%;
+  background-color: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+  padding: 40px;
+  transition: all 0.3s ease;
+}
+
+.container:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 15px 35px rgba(0,0,0,0.15);
+}
+
+h1 {
+  color: #4285f4;
+  font-size: 32px;
+  margin-bottom: 30px;
+  text-align: center;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+}
+
+.form-group {
+  margin-bottom: 25px;
+  position: relative;
+}
+
+label {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: 500;
+  color: #5f6368;
+  transition: color 0.3s ease;
+}
+
+input[type="email"],
+input[type="text"],
+textarea {
+  width: 100%;
+  padding: 12px;
+  border: 2px solid #dadce0;
+  border-radius: 8px;
+  font-size: 16px;
+  transition: all 0.3s ease;
+  background-color: #f8f9fa;
+}
+
+input[type="email"]:focus,
+input[type="text"]:focus,
+textarea:focus {
+  border-color: #4285f4;
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(66, 133, 244, 0.2);
+  background-color: #ffffff;
+}
+
+textarea {
+  height: 120px;
+  resize: vertical;
+}
+
+button {
+  background-color: #4285f4;
+  color: white;
+  border: none;
+  padding: 14px 28px;
+  border-radius: 30px;
+  cursor: pointer;
+  font-size: 18px;
+  font-weight: 500;
+  transition: all 0.3s ease;
+  display: block;
+  width: 100%;
+  margin-top: 20px;
+}
+
+button:hover {
+  background-color: #3367d6;
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(66, 133, 244, 0.4);
+}
+
+.form-footer {
+  margin-top: 30px;
+  text-align: center;
+  font-size: 14px;
+  color: #5f6368;
+}
+
+.autofill-message {
+  background-color: #e8f0fe;
+  border-left: 4px solid #4285f4;
+  padding: 15px;
+  margin-bottom: 25px;
+  font-size: 14px;
+  color: #3c4043;
+  display: none;
+  border-radius: 8px;
+  animation: fadeIn 0.5s ease-out;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(-10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+#loadingSpinner {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(255, 255, 255, 0.8);
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.spinner {
+  border: 4px solid #f3f3f3;
+  border-top: 4px solid #4285f4;
+  border-radius: 50%;
+  width: 50px;
+  height: 50px;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.error-message {
+  color: #d93025;
+  font-size: 14px;
+  margin-top: 5px;
+  display: block;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.error-message.show {
+  opacity: 1;
+}
+
+.message {
+  padding: 15px;
+  margin-top: 20px;
+  border-radius: 8px;
+  text-align: center;
+  font-weight: 500;
+  animation: slideIn 0.5s ease-out;
+}
+
+@keyframes slideIn {
+  from { opacity: 0; transform: translateY(-20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.success-message {
+  background-color: #d4edda;
+  color: #155724;
+  border: 1px solid #c3e6cb;
+}
+
+.error-message {
+  background-color: #f8d7da;
+  color: #721c24;
+  border: 1px solid #f5c6cb;
+}
+
+.form-icon {
+  position: absolute;
+  top: 40px;
+  right: 15px;
+  color: #5f6368;
+  transition: color 0.3s ease;
+}
+
+input:focus + .form-icon,
+textarea:focus + .form-icon {
+  color: #4285f4;
+}
+
+@media (max-width: 600px) {
+  .container {
+    padding: 30px 20px;
+  }
+  
+  h1 {
+    font-size: 24px;
+  }
+  
+  button {
+    padding: 12px 24px;
+    font-size: 16px;
+  }
+}
+
+/* New styles for offline mode */
+.offline-mode {
+  background-color: #fff3cd;
+  border: 1px solid #ffeeba;
+  color: #856404;
+  padding: 10px;
+  margin-bottom: 20px;
+  border-radius: 8px;
+  display: none;
+  align-items: center;
+  font-size: 14px;
+}
+
+.offline-mode i {
+  margin-right: 10px;
+}
+
+/* Style for pending submissions */
+#pendingSubmissions {
+  margin-top: 20px;
+  padding: 15px;
+  background-color: #e9ecef;
+  border-radius: 8px;
+  display: none;
+}
+
+#pendingSubmissions h3 {
+  margin-top: 0;
+  color: #495057;
+}
+
+#pendingList {
+  list-style-type: none;
+  padding: 0;
+}
+
+#pendingList li {
+  background-color: #ffffff;
+  margin-bottom: 10px;
+  padding: 10px;
+  border-radius: 5px;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+.retry-button {
+  background-color: #28a745;
+  color: white;
+  border: none;
+  padding: 5px 10px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 14px;
+  margin-top: 5px;
+}
+
+.retry-button:hover {
+  background-color: #218838;
+}
+
+</style>
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+</head>
+<body>
+<div class="container">
+    <h1>系統異常回報</h1>
+    <div id="offlineMode" class="offline-mode">
+        <i class="material-icons">cloud_off</i>
+        您目前處於離線模式。表單將在恢復連接後自動提交。
+    </div>
+    <div id="autofillMessage" class="autofill-message">
+        <i class="material-icons" style="vertical-align: middle; margin-right: 5px;">info</i>
+        我們已自動填充您之前保存的資料。請檢查並更新必要的資訊。
+    </div>
+    <form id="bugReportForm">
+        <div class="form-group">
+            <label for="email">電子信箱 *</label>
+            <input type="email" id="email" name="entry.462966126" required>
+            <i class="material-icons form-icon">email</i>
+            <span class="error-message" id="emailError"></span>
+        </div>
+        <div class="form-group">
+            <label for="category">問題類別 *</label>
+            <input type="text" id="category" name="entry.1677301715" required>
+            <i class="material-icons form-icon">category</i>
+            <span class="error-message" id="categoryError"></span>
+        </div>
+        <div class="form-group">
+            <label for="description">問題描述 *</label>
+            <textarea id="description" name="entry.1820933566" required></textarea>
+            <i class="material-icons form-icon">description</i>
+            <span class="error-message" id="descriptionError"></span>
+        </div>
+        <button type="submit">
+            <i class="material-icons" style="vertical-align: middle; margin-right: 5px;">send</i>
+            提交
+        </button>
+    </form>
+    <div id="formMessage" class="message"></div>
+    <div id="pendingSubmissions" style="display:none;">
+        <h3>待提交的回報</h3>
+        <ul id="pendingList"></ul>
+    </div>
+    <div class="form-footer">
+        <i class="material-icons" style="vertical-align: middle; margin-right: 5px;">support_agent</i>
+        您的回報對我們至關重要。我們會盡快處理並改進系統。
+    </div>
+</div>
+
+<div id="loadingSpinner">
+    <div class="spinner"></div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const form = document.getElementById('bugReportForm');
+    const autofillMessage = document.getElementById('autofillMessage');
+    const loadingSpinner = document.getElementById('loadingSpinner');
+    const formMessage = document.getElementById('formMessage');
+    const offlineMode = document.getElementById('offlineMode');
+    const pendingSubmissions = document.getElementById('pendingSubmissions');
+    const pendingList = document.getElementById('pendingList');
+    
+    const GOOGLE_FORM_URL = 'https://docs.google.com/forms/d/e/1FAIpQLScA9AzPWNye3PZ7ta2BGYdD9FYLmJftmXvuco1paXSlkEMcKQ/formResponse';
+    
+    let isOnline = navigator.onLine;
+    updateOfflineStatus();
+
+    window.addEventListener('online', updateOfflineStatus);
+    window.addEventListener('offline', updateOfflineStatus);
+
+    function updateOfflineStatus() {
+        isOnline = navigator.onLine;
+        offlineMode.style.display = isOnline ? 'none' : 'flex';
+        if (isOnline) {
+            submitPendingReports();
+        }
+    }
+
+    form.addEventListener('submit', async function(e) {
+        e.preventDefault();
+        
+        if (!validateForm()) {
+            return;
+        }
+        
+        loadingSpinner.style.display = 'flex';
+        
+        const formData = new FormData(form);
+        const reportData = Object.fromEntries(formData.entries());
+        
+        if (!isOnline) {
+            savePendingReport(reportData);
+            showMessage('您的回報已保存，將在恢復網路連接後提交。', 'success');
+            form.reset();
+            loadingSpinner.style.display = 'none';
+            return;
+        }
+        
+        try {
+            const response = await submitFormWithJsonp(formData);
+            console.log('Form submission response:', response);
+            if (response && response.result === 'success') {
+                showMessage('感謝您的回報！我們會盡快處理您的問題。', 'success');
+                form.reset();
+                localStorage.removeItem('bugReportFormData');
+            } else {
+                throw new Error('Form submission failed');
+            }
+        } catch (error) {
+            console.error('提交表單時發生錯誤:', error);
+            showMessage('提交表單時發生錯誤，請稍後再試。如果問題持續存在，請聯繫我們的支援團隊。', 'error');
+            savePendingReport(reportData);
+        } finally {
+            loadingSpinner.style.display = 'none';
+        }
+    });
+    
+    function submitFormWithJsonp(formData) {
+        return new Promise((resolve, reject) => {
+            const script = document.createElement('script');
+            const callback = 'jsonp_callback_' + Math.round(100000 * Math.random());
+            
+            window[callback] = function(response) {
+                delete window[callback];
+                document.body.removeChild(script);
+                resolve(response);
+            };
+            
+            let url = `${GOOGLE_FORM_URL}?`;
+            for (let [key, value] of formData.entries()) {
+                url += `${encodeURIComponent(key)}=${encodeURIComponent(value)}&`;
+            }
+            url += 'submit=Submit';
+            
+            script.src = `${url}&callback=${callback}`;
+            document.body.appendChild(script);
+            
+            script.onerror = () => {
+                delete window[callback];
+                document.body.removeChild(script);
+                reject(new Error('Network error'));
+            };
+            
+            setTimeout(() => {
+                if (window[callback]) {
+                    delete window[callback];
+                    document.body.removeChild(script);
+                    reject(new Error('Request timeout'));
+                }
+            }, 5000);
+        });
+    }
+    
+    function validateForm() {
+        let isValid = true;
+        
+        const email = document.getElementById('email');
+        const category = document.getElementById('category');
+        const description = document.getElementById('description');
+        
+        const emailError = document.getElementById('emailError');
+        const categoryError = document.getElementById('categoryError');
+        const descriptionError = document.getElementById('descriptionError');
+        
+        emailError.textContent = '';
+        categoryError.textContent = '';
+        descriptionError.textContent = '';
+        
+        if (!email.value.trim() || !isValidEmail(email.value)) {
+            emailError.textContent = '請輸入有效的電子郵件地址';
+            emailError.classList.add('show');
+            isValid = false;
+        }
+        
+        if (!category.value.trim()) {
+            categoryError.textContent = '請選擇問題類別';
+            categoryError.classList.add('show');
+            isValid = false;
+        }
+        
+        if (!description.value.trim()) {
+            descriptionError.textContent = '請描述您遇到的問題';
+            descriptionError.classList.add('show');
+            isValid = false;
+        }
+        
+        return isValid;
+    }
+    
+    function isValidEmail(email) {
+        const re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+        return re.test(String(email).toLowerCase());
+    }
+    
+    function showMessage(message, type) {
+        formMessage.textContent = message;
+        formMessage.className = `message ${type === 'success' ? 'success-message' : 'error-message'}`;
+        
+        setTimeout(() => {
+            formMessage.textContent = '';
+            formMessage.className = 'message';
+        }, 5000);
+    }
+    
+    const formInputs = form.querySelectorAll('input, select, textarea');
+    formInputs.forEach(input => {
+        input.addEventListener('change', function() {
+            const formData = new FormData(form);
+            const data = Object.fromEntries(formData.entries());
+            localStorage.setItem('bugReportFormData', JSON.stringify(data));
+        });
+    });
+    
+    const savedData = localStorage.getItem('bugReportFormData');
+    if (savedData) {
+        const data = JSON.parse(savedData);
+        let autofilled = false;
+        Object.keys(data).forEach(key => {
+            const input = form.querySelector(`[name="${key}"]`);
+            if (input && data[key]) {
+                input.value = data[key];
+                autofilled = true;
+            }
+        });
+        
+        if (autofilled) {
+            autofillMessage.style.display = 'block';
+        }
+    }
+    
+    const emailInput = document.getElementById('email');
+    emailInput.addEventListener('input', function() {
+        const email = this.value;
+        if (email.includes('@')) {
+            const [username, domain] = email.split('@');
+            if (domain) {
+                const suggestions = ['gmail.com', 'yahoo.com', 'hotmail.com', 'outlook.com'];
+                const matchedDomain = suggestions.find(d => d.startsWith(domain));
+                if (matchedDomain) {
+                    this.value = `${username}@${matchedDomain}`;
+                }
+            }
+        }
+    });
+    
+    // Add subtle animations
+    formInputs.forEach(input => {
+        input.addEventListener('focus', function() {
+            this.parentElement.querySelector('label').style.color = '#4285f4';
+        });
+        
+        input.addEventListener('blur', function() {
+            this.parentElement.querySelector('label').style.color = '';
+        });
+    });
+
+    function savePendingReport(reportData) {
+        let pendingReports = JSON.parse(localStorage.getItem('pendingReports') || '[]');
+        pendingReports.push(reportData);
+        localStorage.setItem('pendingReports', JSON.stringify(pendingReports));
+        updatePendingList();
+    }
+
+    function updatePendingList() {
+        const pendingReports = JSON.parse(localStorage.getItem('pendingReports') || '[]');
+        pendingList.innerHTML = '';
+        if (pendingReports.length > 0) {
+            pendingSubmissions.style.display = 'block';
+            pendingReports.forEach((report, index) => {
+                const li = document.createElement('li');
+                li.textContent = `問題類別: ${report['entry.1677301715']} - ${new Date().toLocaleString()}`;
+                const retryButton = document.createElement('button');
+                retryButton.textContent = '重新提交';
+                retryButton.className = 'retry-button';
+                retryButton.onclick = () => retrySubmission(index);
+                li.appendChild(retryButton);
+                pendingList.appendChild(li);
+            });
+        } else {
+            pendingSubmissions.style.display = 'none';
+        }
+    }
+
+    async function submitPendingReports() {
+        const pendingReports = JSON.parse(localStorage.getItem('pendingReports') || '[]');
+        for (let i = pendingReports.length - 1; i >= 0; i--) {
+            try {
+                const formData = new FormData();
+                Object.entries(pendingReports[i]).forEach(([key, value]) => {
+                    formData.append(key, value);
+                });
+                await submitFormWithJsonp(formData);
+                pendingReports.splice(i, 1);
+                showMessage('待提交的回報已成功提交！', 'success');
+            } catch (error) {
+                console.error('重新提交回報時發生錯誤:', error);
+            }
+        }
+        localStorage.setItem('pendingReports', JSON.stringify(pendingReports));
+        updatePendingList();
+    }
+
+    async function retrySubmission(index) {
+        const pendingReports = JSON.parse(localStorage.getItem('pendingReports') || '[]');
+        if (index >= 0 && index < pendingReports.length) {
+            const report = pendingReports[index];
+            try {
+                const formData = new FormData();
+                Object.entries(report).forEach(([key, value]) => {
+                    formData.append(key, value);
+                });
+                await submitFormWithJsonp(formData);
+                pendingReports.splice(index, 1);
+                localStorage.setItem('pendingReports', JSON.stringify(pendingReports));
+                showMessage('回報已成功重新提交！', 'success');
+                updatePendingList();
+            } catch (error) {
+                console.error('重新提交單一回報時發生錯誤:', error);
+                showMessage('重新提交失敗，請稍後再試。', 'error');
+            }
+        }
+    }
+
+    updatePendingList();
+});
+</script>
+</body>
+</html>

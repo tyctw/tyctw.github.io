@@ -1005,7 +1005,7 @@ body.dark-mode .modal-content li {
                 '南崁高中(普通科)': { points: 25, credits: 16, type: '普通科' , ownership: 'public'},
                 '壽山高中(普通科)': { points: 25, credits: 14, type: '普通科' , ownership: 'public'},
                 '龍潭高中(普通科)': { points: 23, credits: 17, type: '普通科' , ownership: 'public'},
-                '楊梅高中(普通科)': { points: 23, credits: 15, type: '普通科' , ownership: 'public'},
+                '楊梅高中(普通科)': { points: 23, credits: 13, type: '普通科' , ownership: 'public'},
                 '觀音高中(普通科)': { points: 23, credits: 11, type: '普通科' , ownership: 'public'},
                 '復旦高中(普通科)': { points: 29, credits: 28, type: '普通科', ownership: 'private' },      
                 '新興高中(普通科)': { points: 23, credits: 10, type: '普通科', ownership: 'private' },   

@@ -1,313 +1,313 @@
 <html><head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>系統異常回報</title>
-<style>
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
-
-:root {
-  --primary-color: #667eea;
-  --secondary-color: #764ba2;
-  --text-color: #333;
-  --background-color: #f4f7f9;
-  --card-background: rgba(255, 255, 255, 0.95);
-  --input-background: rgba(255, 255, 255, 0.8);
-  --box-shadow: 0 15px 35px rgba(0,0,0,0.1);
-}
-
-body {
-  font-family: 'Poppins', sans-serif;
-  background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
-  margin: 0;
-  padding: 0;
-  color: var(--text-color);
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-}
-
-.header {
-  background-color: rgba(255, 255, 255, 0.1);
-  backdrop-filter: blur(10px);
-  padding: 20px 0;
-  position: sticky;
-  top: 0;
-  z-index: 1000;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-}
-
-.header-content {
-  max-width: 1200px;
-  margin: 0 auto;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 0 20px;
-}
-
-.logo {
-  color: #ffffff;
-  font-size: 24px;
-  font-weight: 700;
-  text-decoration: none;
-  letter-spacing: 1px;
-}
-
-.menu-icon {
-  display: none;
-  cursor: pointer;
-  font-size: 24px;
-  color: #ffffff;
-}
-
-.nav-menu {
-  display: flex;
-  list-style-type: none;
-  margin: 0;
-  padding: 0;
-}
-
-.nav-item {
-  margin-left: 30px;
-}
-
-.nav-link {
-  color: #ffffff;
-  text-decoration: none;
-  font-size: 16px;
-  font-weight: 500;
-  transition: color 0.3s ease;
-}
-
-.nav-link:hover {
-  color: var(--secondary-color);
-}
-
-.main-content {
-  flex: 1;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  padding: 40px 20px;
-}
-
-.container {
-  max-width: 600px;
-  width: 100%;
-  background-color: var(--card-background);
-  border-radius: 20px;
-  box-shadow: var(--box-shadow);
-  padding: 50px;
-  backdrop-filter: blur(10px);
-  transition: all 0.4s ease;
-}
-
-.container:hover {
-  transform: translateY(-10px);
-  box-shadow: 0 20px 40px rgba(0,0,0,0.2);
-}
-
-h2 {
-  color: var(--text-color);
-  font-size: 32px;
-  margin-bottom: 40px;
-  text-align: center;
-  position: relative;
-}
-
-h2::after {
-  content: '';
-  display: block;
-  width: 50px;
-  height: 4px;
-  background: linear-gradient(to right, var(--primary-color), var(--secondary-color));
-  margin: 15px auto 0;
-  border-radius: 2px;
-}
-
-.form-group {
-  margin-bottom: 30px;
-  position: relative;
-}
-
-label {
-  display: block;
-  margin-bottom: 10px;
-  font-weight: 500;
-  color: var(--text-color);
-  transition: all 0.3s ease;
-}
-
-input[type="email"],
-select,
-textarea {
-  width: 100%;
-  padding: 15px;
-  border: 2px solid #e0e0e0;
-  border-radius: 12px;
-  font-size: 16px;
-  transition: all 0.3s ease;
-  background-color: var(--input-background);
-}
-
-input[type="email"]:focus,
-select:focus,
-textarea:focus {
-  border-color: var(--primary-color);
-  outline: none;
-  box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.1);
-}
-
-textarea {
-  resize: vertical;
-  min-height: 120px;
-}
-
-button {
-  background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
-  color: white;
-  border: none;
-  padding: 16px 24px;
-  font-size: 18px;
-  border-radius: 30px;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  display: block;
-  width: 100%;
-  margin-top: 30px;
-  text-transform: uppercase;
-  letter-spacing: 1px;
-  font-weight: 600;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-}
-
-button:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 7px 14px rgba(0,0,0,0.2);
-}
-
-button:active {
-  transform: translateY(-1px);
-  box-shadow: 0 5px 10px rgba(0,0,0,0.2);
-}
-
-.success-message, .error-message {
-  padding: 20px;
-  border-radius: 12px;
-  margin-top: 30px;
-  text-align: center;
-  display: none;
-  font-weight: 500;
-  transition: all 0.3s ease;
-}
-
-.success-message {
-  background-color: rgba(230, 244, 234, 0.8);
-  border: 2px solid #137333;
-  color: #137333;
-}
-
-.error-message {
-  background-color: rgba(252, 232, 230, 0.8);
-  border: 2px solid #d93025;
-  color: #d93025;
-}
-
-.copyright {
-  color: rgba(255, 255, 255, 0.8);
-  text-align: center;
-  font-size: 14px;
-  padding: 20px;
-  background-color: rgba(0, 0, 0, 0.1);
-  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
-}
-
-@media screen and (max-width: 768px) {
-  .menu-icon {
-    display: block;
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>系統異常回報2.0</title>
+  <style>
+  @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+  
+  :root {
+    --primary-color: #667eea;
+    --secondary-color: #764ba2;
+    --text-color: #333;
+    --background-color: #f4f7f9;
+    --card-background: rgba(255, 255, 255, 0.95);
+    --input-background: rgba(255, 255, 255, 0.8);
+    --box-shadow: 0 15px 35px rgba(0,0,0,0.1);
   }
-
-  .nav-menu {
-    display: none;
+  
+  body {
+    font-family: 'Poppins', sans-serif;
+    background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+    margin: 0;
+    padding: 0;
+    color: var(--text-color);
+    min-height: 100vh;
+    display: flex;
     flex-direction: column;
-    position: absolute;
-    top: 100%;
-    left: 0;
-    width: 100%;
-    background-color: rgba(255, 255, 255, 0.95);
+  }
+  
+  .header {
+    background-color: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    padding: 20px 0;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   }
-
-  .nav-menu.active {
+  
+  .header-content {
+    max-width: 1200px;
+    margin: 0 auto;
     display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 20px;
   }
-
-  .nav-item {
-    margin: 0;
-    text-align: center;
-  }
-
-  .nav-link {
-    display: block;
-    padding: 15px;
-    color: var(--text-color);
-  }
-
-  .container {
-    padding: 30px 20px;
-  }
-
-  h2 {
+  
+  .logo {
+    color: #ffffff;
     font-size: 24px;
+    font-weight: 700;
+    text-decoration: none;
+    letter-spacing: 1px;
   }
-
+  
+  .menu-icon {
+    display: none;
+    cursor: pointer;
+    font-size: 24px;
+    color: #ffffff;
+  }
+  
+  .nav-menu {
+    display: flex;
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+  }
+  
+  .nav-item {
+    margin-left: 30px;
+  }
+  
+  .nav-link {
+    color: #ffffff;
+    text-decoration: none;
+    font-size: 16px;
+    font-weight: 500;
+    transition: color 0.3s ease;
+  }
+  
+  .nav-link:hover {
+    color: var(--secondary-color);
+  }
+  
+  .main-content {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 40px 20px;
+  }
+  
+  .container {
+    max-width: 600px;
+    width: 100%;
+    background-color: var(--card-background);
+    border-radius: 20px;
+    box-shadow: var(--box-shadow);
+    padding: 50px;
+    backdrop-filter: blur(10px);
+    transition: all 0.4s ease;
+  }
+  
+  .container:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+  }
+  
+  h2 {
+    color: var(--text-color);
+    font-size: 32px;
+    margin-bottom: 40px;
+    text-align: center;
+    position: relative;
+  }
+  
+  h2::after {
+    content: '';
+    display: block;
+    width: 50px;
+    height: 4px;
+    background: linear-gradient(to right, var(--primary-color), var(--secondary-color));
+    margin: 15px auto 0;
+    border-radius: 2px;
+  }
+  
+  .form-group {
+    margin-bottom: 30px;
+    position: relative;
+  }
+  
+  label {
+    display: block;
+    margin-bottom: 10px;
+    font-weight: 500;
+    color: var(--text-color);
+    transition: all 0.3s ease;
+  }
+  
   input[type="email"],
   select,
-  textarea,
-  button {
+  textarea {
+    width: 100%;
+    padding: 15px;
+    border: 2px solid #e0e0e0;
+    border-radius: 12px;
     font-size: 16px;
-    padding: 12px;
+    transition: all 0.3s ease;
+    background-color: var(--input-background);
   }
-}
-
-@keyframes fadeInUp {
-  from {
-    opacity: 0;
-    transform: translate3d(0, 40px, 0);
+  
+  input[type="email"]:focus,
+  select:focus,
+  textarea:focus {
+    border-color: var(--primary-color);
+    outline: none;
+    box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.1);
   }
-  to {
-    opacity: 1;
-    transform: translate3d(0, 0, 0);
+  
+  textarea {
+    resize: vertical;
+    min-height: 120px;
   }
-}
-
-.fade-in-up {
-  animation: fadeInUp 0.6s ease-out;
-}
-
-</style>
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-</head>
-<body>
-<header class="header">
-  <div class="header-content">
-    <a href="#" class="logo">系統異常回報平台</a>
-    <div class="menu-icon" id="menuIcon">
-      <i class="fas fa-bars"></i>
+  
+  button {
+    background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+    color: white;
+    border: none;
+    padding: 16px 24px;
+    font-size: 18px;
+    border-radius: 30px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: block;
+    width: 100%;
+    margin-top: 30px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-weight: 600;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  }
+  
+  button:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 7px 14px rgba(0,0,0,0.2);
+  }
+  
+  button:active {
+    transform: translateY(-1px);
+    box-shadow: 0 5px 10px rgba(0,0,0,0.2);
+  }
+  
+  .success-message, .error-message {
+    padding: 20px;
+    border-radius: 12px;
+    margin-top: 30px;
+    text-align: center;
+    display: none;
+    font-weight: 500;
+    transition: all 0.3s ease;
+  }
+  
+  .success-message {
+    background-color: rgba(230, 244, 234, 0.8);
+    border: 2px solid #137333;
+    color: #137333;
+  }
+  
+  .error-message {
+    background-color: rgba(252, 232, 230, 0.8);
+    border: 2px solid #d93025;
+    color: #d93025;
+  }
+  
+  .copyright {
+    color: rgba(255, 255, 255, 0.8);
+    text-align: center;
+    font-size: 14px;
+    padding: 20px;
+    background-color: rgba(0, 0, 0, 0.1);
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
+  }
+  
+  @media screen and (max-width: 768px) {
+    .menu-icon {
+      display: block;
+    }
+  
+    .nav-menu {
+      display: none;
+      flex-direction: column;
+      position: absolute;
+      top: 100%;
+      left: 0;
+      width: 100%;
+      background-color: rgba(255, 255, 255, 0.95);
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+  
+    .nav-menu.active {
+      display: flex;
+    }
+  
+    .nav-item {
+      margin: 0;
+      text-align: center;
+    }
+  
+    .nav-link {
+      display: block;
+      padding: 15px;
+      color: var(--text-color);
+    }
+  
+    .container {
+      padding: 30px 20px;
+    }
+  
+    h2 {
+      font-size: 24px;
+    }
+  
+    input[type="email"],
+    select,
+    textarea,
+    button {
+      font-size: 16px;
+      padding: 12px;
+    }
+  }
+  
+  @keyframes fadeInUp {
+    from {
+      opacity: 0;
+      transform: translate3d(0, 40px, 0);
+    }
+    to {
+      opacity: 1;
+      transform: translate3d(0, 0, 0);
+    }
+  }
+  
+  .fade-in-up {
+    animation: fadeInUp 0.6s ease-out;
+  }
+  
+  </style>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  </head>
+  <body>
+  <header class="header">
+    <div class="header-content">
+      <a href="#" class="logo">系統異常回報平台</a>
+      <div class="menu-icon" id="menuIcon">
+        <i class="fas fa-bars"></i>
+      </div>
+      <nav>
+        <ul class="nav-menu" id="navMenu">
+          <li class="nav-item"><a href="https://tyctw.github.io/" class="nav-link"">落點分析系統</a></li>
+          <li class="nav-item"><a href="https://tyctw.github.io/log" class="nav-link">更新日誌</a></li>
+          <li class="nav-item"><a href="https://tyctw.github.io/Navigation/" class="nav-link" >更多會考資訊</a></li>
+        </ul>
+      </nav>
     </div>
-    <nav>
-      <ul class="nav-menu" id="navMenu">
-        <li class="nav-item"><a href="https://tyctw.github.io/" class="nav-link"">落點分析系統</a></li>
-        <li class="nav-item"><a href="https://tyctw.github.io/log" class="nav-link">更新日誌</a></li>
-        <li class="nav-item"><a href="https://tyctw.github.io/Navigation/" class="nav-link" >更多會考資訊</a></li>
-      </ul>
-    </nav>
-  </div>
-</header>
+  </header>
 
 <main class="main-content">
   <div class="container fade-in-up">
-    <h2>異常回報表單</h2>
+    <h2>系統異常回報表單</h2>
     <form id="reportForm">
       <div class="form-group">
         <label for="email">電子郵件：</label>
@@ -319,8 +319,8 @@ button:active {
           <option value="">請選擇異常類別</option>
           <option value="邀請碼功能有誤">邀請碼功能有誤</option>
           <option value="分析結果錯誤">分析結果錯誤</option>
-<option value="學校科系錯誤">學校科系錯誤</option>
-          <option value="系統錯誤">系統錯誤</option>
+          <option value="學校科系錯誤">學校科系錯誤</option>
+          <option value="程式錯誤">程式錯誤</option>
           <option value="功能異常">功能異常</option>
           <option value="效能問題">效能問題</option>
           <option value="其他">其他</option>
@@ -332,7 +332,11 @@ button:active {
       </div>
       <button type="submit">提交回報</button>
     </form>
-    <div id="successMessage" class="success-message">回報已成功提交，感謝您的反饋！</div>
+    <div id="successMessage" class="success-message">
+      回報已成功提交，感謝您的反饋！<br>
+      您的回報代碼是：<span id="reportCode" class="report-code"></span><br>
+      請保存此代碼以便日後查詢回報進度。
+    </div>
     <div id="errorMessage" class="error-message">提交失敗，請稍後再試。</div>
   </div>
 </main>
@@ -342,26 +346,38 @@ button:active {
 </footer>
 
 <script>
+function generateReportCode() {
+  const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+  let result = '';
+  for (let i = 0; i < 8; i++) {
+    result += characters.charAt(Math.floor(Math.random() * characters.length));
+  }
+  return result;
+}
+
 document.getElementById('reportForm').addEventListener('submit', function(e) {
   e.preventDefault();
   
   var email = document.getElementById('email').value;
   var category = document.getElementById('category').value;
   var description = document.getElementById('description').value;
+  var reportCode = generateReportCode();
   
   var data = {
     email: email,
     category: category,
-    description: description
+    description: description,
+    reportCode: reportCode
   };
   
-  fetch('https://script.google.com/macros/s/AKfycbxJjChDQzz8hxx9-5brZaM3mIkoUrJp1a5_JgIRsoSNhrp7iN8CsWdX1FcamTwZfVQ/exec', {
+  fetch('https://script.google.com/macros/s/AKfycbzAl0zsTrvn4UQpKtMXGolMAMHeeZ_mpJMUQkL9U2oEiZDbcAqMT0YGLF95BVdqyYKo4A/exec', {
     method: 'POST',
     body: JSON.stringify(data)
   })
   .then(response => response.json())
   .then(data => {
     if(data.result === 'success') {
+      document.getElementById('reportCode').textContent = reportCode;
       document.getElementById('successMessage').style.display = 'block';
       document.getElementById('errorMessage').style.display = 'none';
       document.getElementById('reportForm').reset();
@@ -376,78 +392,15 @@ document.getElementById('reportForm').addEventListener('submit', function(e) {
   });
 });
 
-// Menu toggle functionality
-const menuIcon = document.getElementById('menuIcon');
-const navMenu = document.getElementById('navMenu');
-
-menuIcon.addEventListener('click', () => {
-  navMenu.classList.toggle('active');
-});
-
-// Close menu when clicking outside
-document.addEventListener('click', (event) => {
-  const isClickInsideMenu = navMenu.contains(event.target);
-  const isClickOnMenuIcon = menuIcon.contains(event.target);
-
-  if (!isClickInsideMenu && !isClickOnMenuIcon && navMenu.classList.contains('active')) {
-    navMenu.classList.remove('active');
-  }
-});
-
-// Navigation functionality
-function scrollToReport() {
-  document.querySelector('.container').scrollIntoView({ behavior: 'smooth' });
-  if (window.innerWidth <= 768) {
-    navMenu.classList.remove('active');
-  }
-}
-
-document.getElementById('reportLink').addEventListener('click', function(e) {
-  e.preventDefault();
-  scrollToReport();
-});
-
-document.getElementById('faqLink').addEventListener('click', function(e) {
-  e.preventDefault();
-  alert('常見問題頁面正在建設中，敬請期待！');
-});
-
-document.getElementById('contactLink').addEventListener('click', function(e) {
-  e.preventDefault();
-  alert('聯絡我們頁面正在建設中，敬請期待！');
-});
-
-// Add subtle animations
-document.querySelectorAll('.form-group').forEach((group, index) => {
-  group.style.animation = `fadeInUp 0.6s ease-out ${index * 0.1}s both`;
-});
-
-document.querySelector('button[type="submit"]').style.animation = 'fadeInUp 0.6s ease-out 0.3s both';
-
-// Add hover effect to form inputs
-const formInputs = document.querySelectorAll('input, select, textarea');
-formInputs.forEach(input => {
-  input.addEventListener('mouseover', function() {
-    this.style.transform = 'translateY(-2px)';
-    this.style.boxShadow = '0 4px 8px rgba(0,0,0,0.1)';
+// Add some interactivity
+const inputs = document.querySelectorAll('input, select, textarea');
+inputs.forEach(input => {
+  input.addEventListener('focus', function() {
+    this.parentElement.querySelector('label').style.color = '#667eea';
   });
-  input.addEventListener('mouseout', function() {
-    this.style.transform = 'translateY(0)';
-    this.style.boxShadow = 'none';
+  input.addEventListener('blur', function() {
+    this.parentElement.querySelector('label').style.color = '#4a4a4a';
   });
-});
-
-// Add subtle background animation
-const body = document.body;
-let mouseX = 0;
-let mouseY = 0;
-
-body.addEventListener('mousemove', (e) => {
-  mouseX = e.clientX / window.innerWidth;
-  mouseY = e.clientY / window.innerHeight;
-  
-  const gradientAngle = (mouseX * 360) + (mouseY * 180);
-  body.style.background = `linear-gradient(${gradientAngle}deg, var(--primary-color) 0%, var(--secondary-color) 100%)`;
 });
 
 </script>

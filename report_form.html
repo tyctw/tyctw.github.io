@@ -1,348 +1,375 @@
 <html><head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>系統異常回報2.0</title>
-  <style>
-  @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
-  
-  :root {
-    --primary-color: #667eea;
-    --secondary-color: #764ba2;
-    --text-color: #333;
-    --background-color: #f4f7f9;
-    --card-background: rgba(255, 255, 255, 0.95);
-    --input-background: rgba(255, 255, 255, 0.8);
-    --box-shadow: 0 15px 35px rgba(0,0,0,0.1);
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>系統異常回報 3.1</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+
+:root {
+  --primary-color: #4a90e2;
+  --secondary-color: #50c878;
+  --text-color: #333;
+  --background-color: #f0f4f8;
+  --card-background: rgba(255, 255, 255, 0.95);
+  --input-background: rgba(255, 255, 255, 0.8);
+  --box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+  --error-color: #ff6347;
+}
+
+body {
+  font-family: 'Poppins', sans-serif;
+  background: linear-gradient(135deg, #4a90e2 0%, #50c878 100%);
+  margin: 0;
+  padding: 0;
+  color: var(--text-color);
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.header {
+  background-color: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  padding: 20px 0;
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.header-content {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 20px;
+}
+
+.logo {
+  color: #ffffff;
+  font-size: 24px;
+  font-weight: 700;
+  text-decoration: none;
+  letter-spacing: 1px;
+  transition: all 0.3s ease;
+}
+
+.logo:hover {
+  text-shadow: 0 0 10px rgba(255,255,255,0.5);
+}
+
+.menu-icon {
+  display: none;
+  cursor: pointer;
+  font-size: 24px;
+  color: #ffffff;
+}
+
+.nav-menu {
+  display: flex;
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+}
+
+.nav-item {
+  margin-left: 30px;
+}
+
+.nav-link {
+  color: #ffffff;
+  text-decoration: none;
+  font-size: 16px;
+  font-weight: 500;
+  transition: all 0.3s ease;
+  padding: 8px 12px;
+  border-radius: 20px;
+}
+
+.nav-link:hover {
+  background-color: rgba(255,255,255,0.2);
+}
+
+.main-content {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 40px 20px;
+}
+
+.container {
+  max-width: 600px;
+  width: 100%;
+  background-color: var(--card-background);
+  border-radius: 20px;
+  box-shadow: var(--box-shadow);
+  padding: 40px;
+  backdrop-filter: blur(10px);
+  transition: all 0.4s ease;
+}
+
+.container:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 15px 30px rgba(0,0,0,0.2);
+}
+
+h2 {
+  color: var(--primary-color);
+  font-size: 32px;
+  margin-bottom: 30px;
+  text-align: center;
+  position: relative;
+}
+
+h2::after {
+  content: '';
+  display: block;
+  width: 50px;
+  height: 4px;
+  background: linear-gradient(to right, var(--primary-color), var(--secondary-color));
+  margin: 15px auto 0;
+  border-radius: 2px;
+}
+
+.form-group {
+  margin-bottom: 25px;
+  position: relative;
+}
+
+label {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: 500;
+  color: var(--text-color);
+  transition: all 0.3s ease;
+}
+
+input[type="email"],
+select,
+textarea {
+  width: 100%;
+  padding: 12px;
+  border: 2px solid #e0e0e0;
+  border-radius: 8px;
+  font-size: 16px;
+  transition: all 0.3s ease;
+  background-color: var(--input-background);
+}
+
+input[type="email"]:focus,
+select:focus,
+textarea:focus {
+  border-color: var(--primary-color);
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(74, 144, 226, 0.1);
+}
+
+textarea {
+  resize: vertical;
+  min-height: 120px;
+}
+
+button {
+  background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+  color: white;
+  border: none;
+  padding: 14px 20px;
+  font-size: 18px;
+  border-radius: 30px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: block;
+  width: 100%;
+  margin-top: 30px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  font-weight: 600;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 7px 14px rgba(0,0,0,0.2);
+}
+
+button:active {
+  transform: translateY(0);
+  box-shadow: 0 5px 10px rgba(0,0,0,0.2);
+}
+
+button:disabled {
+  background: #cccccc;
+  cursor: not-allowed;
+}
+
+.success-message, .error-message {
+  padding: 15px;
+  border-radius: 8px;
+  margin-top: 20px;
+  text-align: center;
+  display: none;
+  font-weight: 500;
+  transition: all 0.3s ease;
+}
+
+.success-message {
+  background-color: rgba(80, 200, 120, 0.2);
+  border: 2px solid #50c878;
+  color: #2c7a44;
+}
+
+.error-message {
+  background-color: rgba(255, 99, 71, 0.2);
+  border: 2px solid #ff6347;
+  color: #c0392b;
+}
+
+.copyright {
+  color: rgba(255, 255, 255, 0.8);
+  text-align: center;
+  font-size: 14px;
+  padding: 20px;
+  background-color: rgba(0, 0, 0, 0.1);
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+.error {
+  color: var(--error-color);
+  font-size: 14px;
+  margin-top: 5px;
+  display: none;
+}
+
+input.invalid, select.invalid, textarea.invalid {
+  border-color: var(--error-color);
+}
+
+@media screen and (max-width: 768px) {
+  .menu-icon {
+    display: block;
   }
-  
-  body {
-    font-family: 'Poppins', sans-serif;
-    background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
-    margin: 0;
-    padding: 0;
-    color: var(--text-color);
-    min-height: 100vh;
-    display: flex;
+
+  .nav-menu {
+    display: none;
     flex-direction: column;
-  }
-  
-  .header {
-    background-color: rgba(255, 255, 255, 0.1);
-    backdrop-filter: blur(10px);
-    padding: 20px 0;
-    position: sticky;
-    top: 0;
-    z-index: 1000;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    width: 100%;
+    background-color: rgba(255, 255, 255, 0.95);
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   }
-  
-  .header-content {
-    max-width: 1200px;
-    margin: 0 auto;
+
+  .nav-menu.active {
     display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 0 20px;
   }
-  
-  .logo {
-    color: #ffffff;
-    font-size: 24px;
-    font-weight: 700;
-    text-decoration: none;
-    letter-spacing: 1px;
-  }
-  
-  .menu-icon {
-    display: none;
-    cursor: pointer;
-    font-size: 24px;
-    color: #ffffff;
-  }
-  
-  .nav-menu {
-    display: flex;
-    list-style-type: none;
-    margin: 0;
-    padding: 0;
-  }
-  
+
   .nav-item {
-    margin-left: 30px;
-  }
-  
-  .nav-link {
-    color: #ffffff;
-    text-decoration: none;
-    font-size: 16px;
-    font-weight: 500;
-    transition: color 0.3s ease;
-  }
-  
-  .nav-link:hover {
-    color: var(--secondary-color);
-  }
-  
-  .main-content {
-    flex: 1;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    padding: 40px 20px;
-  }
-  
-  .container {
-    max-width: 600px;
-    width: 100%;
-    background-color: var(--card-background);
-    border-radius: 20px;
-    box-shadow: var(--box-shadow);
-    padding: 50px;
-    backdrop-filter: blur(10px);
-    transition: all 0.4s ease;
-  }
-  
-  .container:hover {
-    transform: translateY(-10px);
-    box-shadow: 0 20px 40px rgba(0,0,0,0.2);
-  }
-  
-  h2 {
-    color: var(--text-color);
-    font-size: 32px;
-    margin-bottom: 40px;
+    margin: 0;
     text-align: center;
-    position: relative;
   }
-  
-  h2::after {
-    content: '';
+
+  .nav-link {
     display: block;
-    width: 50px;
-    height: 4px;
-    background: linear-gradient(to right, var(--primary-color), var(--secondary-color));
-    margin: 15px auto 0;
-    border-radius: 2px;
-  }
-  
-  .form-group {
-    margin-bottom: 30px;
-    position: relative;
-  }
-  
-  label {
-    display: block;
-    margin-bottom: 10px;
-    font-weight: 500;
+    padding: 15px;
     color: var(--text-color);
-    transition: all 0.3s ease;
   }
-  
+
+  .container {
+    padding: 30px 20px;
+  }
+
+  h2 {
+    font-size: 28px;
+  }
+
   input[type="email"],
   select,
-  textarea {
-    width: 100%;
-    padding: 15px;
-    border: 2px solid #e0e0e0;
-    border-radius: 12px;
-    font-size: 16px;
-    transition: all 0.3s ease;
-    background-color: var(--input-background);
-  }
-  
-  input[type="email"]:focus,
-  select:focus,
-  textarea:focus {
-    border-color: var(--primary-color);
-    outline: none;
-    box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.1);
-  }
-  
-  textarea {
-    resize: vertical;
-    min-height: 120px;
-  }
-  
+  textarea,
   button {
-    background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
-    color: white;
-    border: none;
-    padding: 16px 24px;
-    font-size: 18px;
-    border-radius: 30px;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    display: block;
-    width: 100%;
-    margin-top: 30px;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    font-weight: 600;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    font-size: 16px;
+    padding: 12px;
   }
-  
-  button:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 7px 14px rgba(0,0,0,0.2);
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translate3d(0, 40px, 0);
   }
-  
-  button:active {
-    transform: translateY(-1px);
-    box-shadow: 0 5px 10px rgba(0,0,0,0.2);
+  to {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
   }
-  
-  .success-message, .error-message {
-    padding: 20px;
-    border-radius: 12px;
-    margin-top: 30px;
-    text-align: center;
-    display: none;
-    font-weight: 500;
-    transition: all 0.3s ease;
-  }
-  
-  .success-message {
-    background-color: rgba(230, 244, 234, 0.8);
-    border: 2px solid #137333;
-    color: #137333;
-  }
-  
-  .error-message {
-    background-color: rgba(252, 232, 230, 0.8);
-    border: 2px solid #d93025;
-    color: #d93025;
-  }
-  
-  .copyright {
-    color: rgba(255, 255, 255, 0.8);
-    text-align: center;
-    font-size: 14px;
-    padding: 20px;
-    background-color: rgba(0, 0, 0, 0.1);
-    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
-  }
-  
-  @media screen and (max-width: 768px) {
-    .menu-icon {
-      display: block;
-    }
-  
-    .nav-menu {
-      display: none;
-      flex-direction: column;
-      position: absolute;
-      top: 100%;
-      left: 0;
-      width: 100%;
-      background-color: rgba(255, 255, 255, 0.95);
-      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    }
-  
-    .nav-menu.active {
-      display: flex;
-    }
-  
-    .nav-item {
-      margin: 0;
-      text-align: center;
-    }
-  
-    .nav-link {
-      display: block;
-      padding: 15px;
-      color: var(--text-color);
-    }
-  
-    .container {
-      padding: 30px 20px;
-    }
-  
-    h2 {
-      font-size: 24px;
-    }
-  
-    input[type="email"],
-    select,
-    textarea,
-    button {
-      font-size: 16px;
-      padding: 12px;
-    }
-  }
-  
-  @keyframes fadeInUp {
-    from {
-      opacity: 0;
-      transform: translate3d(0, 40px, 0);
-    }
-    to {
-      opacity: 1;
-      transform: translate3d(0, 0, 0);
-    }
-  }
-  
-  .fade-in-up {
-    animation: fadeInUp 0.6s ease-out;
-  }
-  
-  </style>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-  </head>
-  <body>
-  <header class="header">
-    <div class="header-content">
-      <a href="#" class="logo">系統異常回報平台</a>
-      <div class="menu-icon" id="menuIcon">
-        <i class="fas fa-bars"></i>
-      </div>
-      <nav>
-        <ul class="nav-menu" id="navMenu">
-          <li class="nav-item"><a href="https://tyctw.github.io/" class="nav-link"">落點分析系統</a></li>
-          <li class="nav-item"><a href="https://tyctw.github.io/log" class="nav-link">更新日誌</a></li>
-          <li class="nav-item"><a href="https://tyctw.github.io/Navigation/" class="nav-link" >更多會考資訊</a></li>
-        </ul>
-      </nav>
+}
+
+.fade-in-up {
+  animation: fadeInUp 0.6s ease-out;
+}
+
+</style>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+<header class="header">
+  <div class="header-content">
+    <a href="#" class="logo">TYCTW</a>
+    <div class="menu-icon" id="menuIcon">
+      <i class="fas fa-bars"></i>
     </div>
-  </header>
+    <nav>
+      <ul class="nav-menu" id="navMenu">
+        <li class="nav-item"><a href="https://tyctw.github.io/" class="nav-link">落點分析系統</a></li>
+        <li class="nav-item"><a href="https://tyctw.github.io/log" class="nav-link">更新日誌</a></li>
+        <li class="nav-item"><a href="https://tyctw.github.io/Navigation/" class="nav-link">更多會考資訊</a></li>
+      </ul>
+    </nav>
+  </div>
+</header>
 
 <main class="main-content">
-  <div class="container fade-in-up">
-    <h2>系統異常回報表單</h2>
-    <form id="reportForm">
-      <div class="form-group">
-        <label for="email">電子郵件：</label>
-        <input type="email" id="email" name="email" required placeholder="請輸入您的電子郵件">
-      </div>
-      <div class="form-group">
-        <label for="category">異常類別：</label>
-        <select id="category" name="category" required>
-          <option value="">請選擇異常類別</option>
-          <option value="邀請碼功能有誤">邀請碼功能有誤</option>
-          <option value="分析結果錯誤">分析結果錯誤</option>
-          <option value="學校科系錯誤">學校科系錯誤</option>
-          <option value="程式錯誤">程式錯誤</option>
-          <option value="功能異常">功能異常</option>
-          <option value="效能問題">效能問題</option>
-          <option value="其他">其他</option>
-        </select>
-      </div>
-      <div class="form-group">
-        <label for="description">問題描述：</label>
-        <textarea id="description" name="description" required placeholder="請詳細描述您遇到的問題..."></textarea>
-      </div>
-      <button type="submit">提交回報</button>
-    </form>
-    <div id="successMessage" class="success-message">
-      回報已成功提交，感謝您的反饋！<br>
-      您的回報代碼是：<span id="reportCode" class="report-code"></span><br>
-      請保存此代碼以便日後查詢回報進度。
+<div class="container fade-in-up">
+  <h2>TYCTW系統異常回報表單</h2>
+  <form id="reportForm">
+    <div class="form-group">
+      <label for="email">電子郵件：</label>
+      <input type="email" id="email" name="email" required placeholder="請輸入您的電子郵件">
+      <div class="error" id="emailError"></div>
     </div>
-    <div id="errorMessage" class="error-message">提交失敗，請稍後再試。</div>
+    <div class="form-group">
+      <label for="category">異常類別：</label>
+      <select id="category" name="category" required>
+        <option value="">請選擇異常類別</option>
+        <option value="邀請碼功能有誤">邀請碼功能有誤</option>
+        <option value="分析結果錯誤">分析結果錯誤</option>
+        <option value="學校科系錯誤">學校科系錯誤</option>
+        <option value="程式錯誤">程式錯誤</option>
+        <option value="功能異常">功能異常</option>
+        <option value="效能問題">效能問題</option>
+        <option value="其他">其他</option>
+      </select>
+      <div class="error" id="categoryError"></div>
+    </div>
+    <div class="form-group">
+      <label for="description">問題描述：</label>
+      <textarea id="description" name="description" required placeholder="請詳細描述您遇到的問題..."></textarea>
+      <div class="error" id="descriptionError"></div>
+    </div>
+    <button type="submit" id="submitBtn">提交回報</button>
+  </form>
+  <div id="successMessage" class="success-message">
+    回報已成功提交，感謝您的反饋！<br>
+    您的回報代碼是：<span id="reportCode" class="report-code"></span><br>
+    請保存此代碼以便日後查詢回報進度。
   </div>
+  <div id="errorMessage" class="error-message">提交失敗，請稍後再試。</div>
+</div>
 </main>
 
 <footer class="copyright">
-  © 2024 TYCTW會考落點分析系統異常回報平台。保留所有權利。
+© 2024 TYCTW會考落點分析系統異常回報平台。保留所有權利。
 </footer>
 
 <script>
@@ -355,21 +382,74 @@ function generateReportCode() {
   return result;
 }
 
+function validateEmail(email) {
+  const re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+  return re.test(String(email).toLowerCase());
+}
+
+function showError(inputElement, errorMessage) {
+  const errorElement = document.getElementById(inputElement.id + 'Error');
+  errorElement.textContent = errorMessage;
+  errorElement.style.display = 'block';
+  inputElement.classList.add('invalid');
+}
+
+function hideError(inputElement) {
+  const errorElement = document.getElementById(inputElement.id + 'Error');
+  errorElement.style.display = 'none';
+  inputElement.classList.remove('invalid');
+}
+
 document.getElementById('reportForm').addEventListener('submit', function(e) {
   e.preventDefault();
-  
-  var email = document.getElementById('email').value;
-  var category = document.getElementById('category').value;
-  var description = document.getElementById('description').value;
+
+  let isValid = true;
+
+  const email = document.getElementById('email');
+  const category = document.getElementById('category');
+  const description = document.getElementById('description');
+  const submitBtn = document.getElementById('submitBtn');
+
+  // Validate email
+  if (!validateEmail(email.value)) {
+    showError(email, '請輸入有效的電子郵件地址');
+    isValid = false;
+  } else {
+    hideError(email);
+  }
+
+  // Validate category
+  if (category.value === '') {
+    showError(category, '請選擇異常類別');
+    isValid = false;
+  } else {
+    hideError(category);
+  }
+
+  // Validate description
+  if (description.value.trim().length < 10) {
+    showError(description, '問題描述至少需要10個字符');
+    isValid = false;
+  } else {
+    hideError(description);
+  }
+
+  if (!isValid) {
+    return;
+  }
+
+  submitBtn.disabled = true;
+  submitBtn.textContent = '提交中...';
+
   var reportCode = generateReportCode();
-  
+
   var data = {
-    email: email,
-    category: category,
-    description: description,
+    email: email.value,
+    category: category.value,
+    description: description.value,
     reportCode: reportCode
   };
-  
+
   fetch('https://script.google.com/macros/s/AKfycbzAl0zsTrvn4UQpKtMXGolMAMHeeZ_mpJMUQkL9U2oEiZDbcAqMT0YGLF95BVdqyYKo4A/exec', {
     method: 'POST',
     body: JSON.stringify(data)
@@ -389,6 +469,10 @@ document.getElementById('reportForm').addEventListener('submit', function(e) {
     console.error('Error:', error);
     document.getElementById('errorMessage').style.display = 'block';
     document.getElementById('successMessage').style.display = 'none';
+  })
+  .finally(() => {
+    submitBtn.disabled = false;
+    submitBtn.textContent = '提交回報';
   });
 });
 
@@ -396,11 +480,64 @@ document.getElementById('reportForm').addEventListener('submit', function(e) {
 const inputs = document.querySelectorAll('input, select, textarea');
 inputs.forEach(input => {
   input.addEventListener('focus', function() {
-    this.parentElement.querySelector('label').style.color = '#667eea';
+    this.parentElement.querySelector('label').style.color = '#4a90e2';
   });
   input.addEventListener('blur', function() {
-    this.parentElement.querySelector('label').style.color = '#4a4a4a';
+    this.parentElement.querySelector('label').style.color = '#333';
   });
+  input.addEventListener('input', function() {
+    hideError(this);
+  });
+});
+
+// Mobile menu toggle
+const menuIcon = document.getElementById('menuIcon');
+const navMenu = document.getElementById('navMenu');
+
+menuIcon.addEventListener('click', () => {
+  navMenu.classList.toggle('active');
+});
+
+// Close menu when clicking outside
+document.addEventListener('click', (event) => {
+  const isClickInsideMenu = navMenu.contains(event.target);
+  const isClickOnMenuIcon = menuIcon.contains(event.target);
+
+  if (!isClickInsideMenu && !isClickOnMenuIcon && navMenu.classList.contains('active')) {
+    navMenu.classList.remove('active');
+  }
+});
+
+// Close menu when window is resized
+window.addEventListener('resize', () => {
+  if (window.innerWidth > 768 && navMenu.classList.contains('active')) {
+    navMenu.classList.remove('active');
+  }
+});
+
+// Add smooth scrolling for internal links
+document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+  anchor.addEventListener('click', function (e) {
+    e.preventDefault();
+
+    document.querySelector(this.getAttribute('href')).scrollIntoView({
+      behavior: 'smooth'
+    });
+  });
+});
+
+// Add custom animations
+const container = document.querySelector('.container');
+container.addEventListener('mousemove', (e) => {
+  const { offsetX, offsetY } = e;
+  const { offsetWidth, offsetHeight } = container;
+  const moveX = (offsetX / offsetWidth - 0.5) * 20;
+  const moveY = (offsetY / offsetHeight - 0.5) * 20;
+  container.style.transform = `translateX(${moveX}px) translateY(${moveY}px)`;
+});
+
+container.addEventListener('mouseleave', () => {
+  container.style.transform = 'translateX(0) translateY(0)';
 });
 
 </script>

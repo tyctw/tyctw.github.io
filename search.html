@@ -1,5 +1,4 @@
-<html><head></head><body>
-
+<html><head><base href="https://tyctw.github.io/"></head><body>
 <html>
 <head>
 <meta charset="UTF-8">
@@ -225,6 +224,28 @@
     font-size: 0.9rem;
   }
 
+  .captcha-container {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 1rem;
+  }
+
+  #captchaImage {
+    border: 1px solid #ddd;
+    border-radius: 4px;
+  }
+
+  #refreshCaptcha {
+    background-color: var(--primary-color);
+    color: white;
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 0.9rem;
+  }
+
   @media (max-width: 768px) {
     .header-content {
       flex-direction: column;
@@ -262,6 +283,11 @@
     h1 {
       font-size: 2rem;
     }
+
+    .captcha-container {
+      flex-direction: column;
+      align-items: flex-start;
+    }
   }
 </style>
 </head>
@@ -283,6 +309,14 @@
     <form id="queryForm">
       <label for="reportCode">回報代碼：</label>
       <input type="text" id="reportCode" name="reportCode" required placeholder="請輸入您的回報代碼">
+      
+
+      <label for="captchaInput">驗證碼：</label>
+      <input type="text" id="captchaInput" name="captchaInput" required placeholder="請輸入驗證碼">
+      <div class="captcha-container">
+        <img id="captchaImage" src="" alt="驗證碼" width="150" height="50">
+        <button type="button" id="refreshCaptcha">刷新驗證碼</button>
+      </div>
       <button type="submit">查詢紀錄</button>
     </form>
 
@@ -295,10 +329,78 @@
 
   <script>
     const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxL_Tx2gfpYE6pkgW9ytYLDYjVrpgwkUYU-IyHQbw4_ix9CdGwhs_J490D6A7BwKwx7Gg/exec';
+    let captchaText = '';
+
+    function generateCaptcha() {
+      const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnpqrstuvwxyz23456789';
+      captchaText = '';
+      for (let i = 0; i < 6; i++) {
+        captchaText += chars.charAt(Math.floor(Math.random() * chars.length));
+      }
+      return captchaText;
+    }
+
+    function drawCaptcha() {
+      const canvas = document.createElement('canvas');
+      const ctx = canvas.getContext('2d');
+      canvas.width = 150;
+      canvas.height = 50;
+
+      // 背景
+      ctx.fillStyle = '#f0f0f0';
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+      // 文字
+      ctx.font = 'bold 30px Arial';
+      ctx.fillStyle = '#333';
+      ctx.textBaseline = 'middle';
+      ctx.textAlign = 'center';
+      
+      for (let i = 0; i < captchaText.length; i++) {
+        const x = (i + 1) * (canvas.width / (captchaText.length + 1));
+        const y = canvas.height / 2 + Math.random() * 10 - 5;
+        ctx.save();
+        ctx.translate(x, y);
+        ctx.rotate((Math.random() - 0.5) * 0.4);
+        ctx.fillText(captchaText[i], 0, 0);
+        ctx.restore();
+      }
+
+      // 干擾線
+      for (let i = 0; i < 3; i++) {
+        ctx.beginPath();
+        ctx.moveTo(Math.random() * canvas.width, Math.random() * canvas.height);
+        ctx.lineTo(Math.random() * canvas.width, Math.random() * canvas.height);
+        ctx.strokeStyle = `rgba(${Math.random() * 255},${Math.random() * 255},${Math.random() * 255},0.5)`;
+        ctx.stroke();
+      }
+
+      // 設置圖片源
+      document.getElementById('captchaImage').src = canvas.toDataURL();
+    }
+
+    function refreshCaptcha() {
+      generateCaptcha();
+      drawCaptcha();
+    }
+
+    document.addEventListener('DOMContentLoaded', function() {
+      refreshCaptcha();
+      document.getElementById('refreshCaptcha').addEventListener('click', refreshCaptcha);
+    });
 
     document.getElementById('queryForm').addEventListener('submit', function(e) {
       e.preventDefault();
       const reportCode = document.getElementById('reportCode').value;
+      const captchaInput = document.getElementById('captchaInput').value;
+      
+      if (captchaInput.toLowerCase() !== captchaText.toLowerCase()) {
+        alert('驗證碼錯誤，請重新輸入');
+        refreshCaptcha();
+        document.getElementById('captchaInput').value = '';
+        return;
+      }
+      
       queryReport(reportCode);
     });
 
@@ -326,6 +428,8 @@
               resultDiv.innerHTML = '<p class="error-message">找不到相關回報紀錄。請確認回報代碼是否正確。</p>';
             }
             resultDiv.style.opacity = '1';
+            refreshCaptcha();
+            document.getElementById('captchaInput').value = '';
           }, 300);
         })
         .catch(error => {
@@ -334,6 +438,8 @@
           setTimeout(() => {
             resultDiv.innerHTML = '<p class="error-message">查詢時發生錯誤。請稍後再試。</p>';
             resultDiv.style.opacity = '1';
+            refreshCaptcha();
+            document.getElementById('captchaInput').value = '';
           }, 300);
         });
     }
@@ -359,30 +465,30 @@
       }
     });
 
+    // 防止複製
+    document.addEventListener('copy', function(e) {
+      e.preventDefault();
+      return false;
+    });
 
-             // 防止複製
-         document.addEventListener('copy', function(e) {
-        e.preventDefault();
-        return false;
-      });
-  
-      // 防止截圖 (僅適用於部分瀏覽器)
-      document.addEventListener('keyup', function(e) {
-        if (e.key == 'PrintScreen') {
-          navigator.clipboard.writeText('');
-          alert('截圖功能已被禁用');
-        }
-      });
-  
-      // 防止右鍵點擊
-      document.addEventListener('contextmenu', function(e) {
-        e.preventDefault();
-      });
-  
-      // 防止拖曳選擇文字
-      document.onselectstart = function() {
-        return false;
-      };
+    // 防止截圖 (僅適用於部分瀏覽器)
+    document.addEventListener('keyup', function(e) {
+      if (e.key == 'PrintScreen') {
+        navigator.clipboard.writeText('');
+        alert('截圖功能已被禁用');
+      }
+    });
+
+    // 防止右鍵點擊
+    document.addEventListener('contextmenu', function(e) {
+      e.preventDefault();
+    });
+
+    // 防止拖曳選擇文字
+    document.onselectstart = function() {
+      return false;
+    };
   </script>
 </body>
 </html>
+</body></html>

@@ -1,7 +1,7 @@
 <html><head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>系統異常回報 3.6</title>
+<title>系統異常回報 3.9</title>
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
 
@@ -426,8 +426,8 @@ input.invalid, select.invalid, textarea.invalid {
 
 <script>
 let captchaText = '';
-let submissionCount = 0;
-let lastSubmissionTime = 0;
+let captchaAttempts = 0;
+const MAX_CAPTCHA_ATTEMPTS = 3;
 
 function generateCaptcha() {
   const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnpqrstuvwxyz23456789';
@@ -469,128 +469,113 @@ function hideError(inputElement) {
   }
 }
 
-function throttleSubmission() {
-  const now = Date.now();
-  if (now - lastSubmissionTime < 60000) { // 1 minute cooldown
-    return false;
-  }
-  if (submissionCount >= 5) { // Max 5 submissions
-    return false;
-  }
-  lastSubmissionTime = now;
-  submissionCount++;
-  return true;
-}
-
 document.addEventListener('DOMContentLoaded', function() {
   generateCaptcha();
 
-  const refreshCaptchaButton = document.getElementById('refreshCaptcha');
-  if (refreshCaptchaButton) {
-    refreshCaptchaButton.addEventListener('click', generateCaptcha);
-  }
+  document.getElementById('refreshCaptcha').addEventListener('click', generateCaptcha);
 
-  const reportForm = document.getElementById('reportForm');
-  if (reportForm) {
-    reportForm.addEventListener('submit', function(e) {
-      e.preventDefault();
+  document.getElementById('reportForm').addEventListener('submit', function(e) {
+    e.preventDefault();
 
-      if (!throttleSubmission()) {
-        alert('提交次數過多，請稍後再試。');
-        return;
+    let isValid = true;
+
+    const email = document.getElementById('email');
+    const category = document.getElementById('category');
+    const description = document.getElementById('description');
+    const captchaInput = document.getElementById('captchaInput');
+    const submitBtn = document.getElementById('submitBtn');
+
+    // Validate email
+    if (!validateEmail(email.value)) {
+      showError(email, '請輸入有效的電子郵件地址');
+      isValid = false;
+    } else {
+      hideError(email);
+    }
+
+    // Validate category
+    if (category.value === '') {
+      showError(category, '請選擇異常類別');
+      isValid = false;
+    } else {
+      hideError(category);
+    }
+
+    // Validate description
+    if (description.value.trim().length < 10) {
+      showError(description, '問題描述至少需要10個字符');
+      isValid = false;
+    } else {
+      hideError(description);
+    }
+
+    // Validate captcha
+    if (captchaInput.value.toLowerCase() !== captchaText.toLowerCase()) {
+      captchaAttempts++;
+      if (captchaAttempts >= MAX_CAPTCHA_ATTEMPTS) {
+        showError(captchaInput, '驗證碼錯誤次數過多，請稍後再試');
+        submitBtn.disabled = true;
+      } else {
+        showError(captchaInput, `驗證碼不正確，還有 ${MAX_CAPTCHA_ATTEMPTS - captchaAttempts} 次機會`);
       }
+      isValid = false;
+      generateCaptcha();
+    } else {
+      hideError(captchaInput);
+    }
 
-      let isValid = true;
+    if (!isValid) {
+      return;
+    }
 
-      const email = document.getElementById('email');
-      const category = document.getElementById('category');
-      const description = document.getElementById('description');
-      const captchaInput = document.getElementById('captchaInput');
-      const submitBtn = document.getElementById('submitBtn');
+    submitBtn.disabled = true;
+    submitBtn.textContent = '提交中...';
 
-      if (email && !validateEmail(email.value)) {
-        showError(email, '請輸入有效的電子郵件地址');
-        isValid = false;
-      } else if (email) {
-        hideError(email);
-      }
+    var reportCode = generateReportCode();
 
-      if (category && category.value === '') {
-        showError(category, '請選擇異常類別');
-        isValid = false;
-      } else if (category) {
-        hideError(category);
-      }
+    var data = {
+      email: email.value,
+      category: category.value,
+      description: description.value,
+      reportCode: reportCode
+    };
 
-      if (description && description.value.trim().length < 10) {
-        showError(description, '問題描述至少需要10個字符');
-        isValid = false;
-      } else if (description) {
-        hideError(description);
-      }
-
-      if (captchaInput && captchaInput.value.toLowerCase() !== captchaText.toLowerCase()) {
-        showError(captchaInput, '驗證碼不正確');
-        isValid = false;
+    fetch('https://script.google.com/macros/s/AKfycbzAl0zsTrvn4UQpKtMXGolMAMHeeZ_mpJMUQkL9U2oEiZDbcAqMT0YGLF95BVdqyYKo4A/exec', {
+      method: 'POST',
+      body: JSON.stringify(data)
+    })
+    .then(response => response.json())
+    .then(data => {
+      if(data.result === 'success') {
+        document.getElementById('reportCode').textContent = reportCode;
+        document.getElementById('successMessage').style.display = 'block';
+        document.getElementById('errorMessage').style.display = 'none';
+        document.getElementById('reportForm').reset();
         generateCaptcha();
-      } else if (captchaInput) {
-        hideError(captchaInput);
+        captchaAttempts = 0;
+      } else {
+        throw new Error('Submission failed');
       }
-
-      if (!isValid) {
-        return;
-      }
-
-      submitBtn.disabled = true;
-      submitBtn.textContent = '提交中...';
-
-      var reportCode = generateReportCode();
-
-      var data = {
-        email: email.value,
-        category: category.value,
-        description: description.value,
-        reportCode: reportCode
-      };
-
-      fetch('https://script.google.com/macros/s/AKfycbzAl0zsTrvn4UQpKtMXGolMAMHeeZ_mpJMUQkL9U2oEiZDbcAqMT0YGLF95BVdqyYKo4A/exec', {
-        method: 'POST',
-        body: JSON.stringify(data)
-      })
-      .then(response => response.json())
-      .then(data => {
-        if(data.result === 'success') {
-          document.getElementById('reportCode').textContent = reportCode;
-          document.getElementById('successMessage').style.display = 'block';
-          document.getElementById('errorMessage').style.display = 'none';
-          reportForm.reset();
-          generateCaptcha();
-        } else {
-          throw new Error('Submission failed');
-        }
-      })
-      .catch((error) => {
-        console.error('Error:', error);
-        document.getElementById('errorMessage').style.display = 'block';
-        document.getElementById('successMessage').style.display = 'none';
-      })
-      .finally(() => {
-        submitBtn.disabled = false;
-        submitBtn.textContent = '提交回報';
-      });
+    })
+    .catch((error) => {
+      console.error('Error:', error);
+      document.getElementById('errorMessage').style.display = 'block';
+      document.getElementById('successMessage').style.display = 'none';
+    })
+    .finally(() => {
+      submitBtn.disabled = false;
+      submitBtn.textContent = '提交回報';
     });
-  }
+  });
 
   // Add some interactivity
   const inputs = document.querySelectorAll('input, select, textarea');
   inputs.forEach(input => {
     input.addEventListener('focus', function() {
-      const label = this.parentElement.querySelector('label');
-      if (label) label.style.color = '#4a90e2';
+      this.parentElement.querySelector('label').style.color = '#4a90e2';
     });
     input.addEventListener('blur', function() {
-      const label = this.parentElement.querySelector('label');
-      if (label) label.style.color = '#333';
+      this.parentElement.querySelector('label').style.color = '#333';
     });
     input.addEventListener('input', function() {
       hideError(this);
@@ -601,28 +586,26 @@ document.addEventListener('DOMContentLoaded', function() {
   const menuIcon = document.getElementById('menuIcon');
   const navMenu = document.getElementById('navMenu');
 
-  if (menuIcon && navMenu) {
-    menuIcon.addEventListener('click', () => {
-      navMenu.classList.toggle('active');
-    });
+  menuIcon.addEventListener('click', () => {
+    navMenu.classList.toggle('active');
+  });
 
-    // Close menu when clicking outside
-    document.addEventListener('click', (event) => {
-      const isClickInsideMenu = navMenu.contains(event.target);
-      const isClickOnMenuIcon = menuIcon.contains(event.target);
+  // Close menu when clicking outside
+  document.addEventListener('click', (event) => {
+    const isClickInsideMenu = navMenu.contains(event.target);
+    const isClickOnMenuIcon = menuIcon.contains(event.target);
 
-      if (!isClickInsideMenu && !isClickOnMenuIcon && navMenu.classList.contains('active')) {
-        navMenu.classList.remove('active');
-      }
-    });
+    if (!isClickInsideMenu && !isClickOnMenuIcon && navMenu.classList.contains('active')) {
+      navMenu.classList.remove('active');
+    }
+  });
 
-    // Close menu when window is resized
-    window.addEventListener('resize', () => {
-      if (window.innerWidth > 768 && navMenu.classList.contains('active')) {
-        navMenu.classList.remove('active');
-      }
-    });
-  }
+  // Close menu when window is resized
+  window.addEventListener('resize', () => {
+    if (window.innerWidth > 768 && navMenu.classList.contains('active')) {
+      navMenu.classList.remove('active');
+    }
+  });
 
   // Add smooth scrolling for internal links
   document.querySelectorAll('a[href^="#"]').forEach(anchor => {
@@ -637,19 +620,17 @@ document.addEventListener('DOMContentLoaded', function() {
 
   // Add custom animations
   const container = document.querySelector('.container');
-  if (container) {
-    container.addEventListener('mousemove', (e) => {
-      const { offsetX, offsetY } = e;
-      const { offsetWidth, offsetHeight } = container;
-      const moveX = (offsetX / offsetWidth - 0.5) * 20;
-      const moveY = (offsetY / offsetHeight - 0.5) * 20;
-      container.style.transform = `translateX(${moveX}px) translateY(${moveY}px)`;
-    });
+  container.addEventListener('mousemove', (e) => {
+    const { offsetX, offsetY } = e;
+    const { offsetWidth, offsetHeight } = container;
+    const moveX = (offsetX / offsetWidth - 0.5) * 20;
+    const moveY = (offsetY / offsetHeight - 0.5) * 20;
+    container.style.transform = `translateX(${moveX}px) translateY(${moveY}px)`;
+  });
 
-    container.addEventListener('mouseleave', () => {
-      container.style.transform = 'translateX(0) translateY(0)';
-    });
-  }
+  container.addEventListener('mouseleave', () => {
+    container.style.transform = 'translateX(0) translateY(0)';
+  });
 
   // 防止複製
   document.addEventListener('copy', function(e) {

@@ -1,4 +1,4 @@
-<html><head>
+<html><head></head>
   <title>桃聯區會考落點分析邀請碼</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
@@ -22,7 +22,7 @@
       font-family: 'Noto Sans TC', sans-serif;
       background-color: var(--background-color);
       margin: 0;
-      padding: 20px;
+      padding: 0;
       display: flex;
       flex-direction: column;
       justify-content: center;
@@ -30,6 +30,9 @@
       min-height: 100vh;
       color: var(--text-color);
       line-height: 1.6;
+      background-image: 
+        linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+      background-attachment: fixed;
     }
   
     .container {
@@ -42,6 +45,37 @@
       text-align: center;
       transition: var(--transition);
       margin-bottom: 2rem;
+      position: relative;
+      overflow: hidden;
+      backdrop-filter: blur(10px);
+      background-color: rgba(255, 255, 255, 0.8);
+    }
+  
+    .container::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: radial-gradient(circle, rgba(255,255,255,0.8) 0%, rgba(255,255,255,0) 70%);
+      opacity: 0;
+      transition: opacity 0.5s ease;
+      pointer-events: none;
+    }
+  
+    .container:hover::before {
+      opacity: 1;
+      animation: shine 1.5s infinite;
+    }
+  
+    @keyframes shine {
+      0% {
+        transform: rotate(0deg);
+      }
+      100% {
+        transform: rotate(360deg);
+      }
     }
   
     .container:hover {
@@ -86,6 +120,7 @@
       box-shadow: 0 5px 15px var(--shadow-color);
       border-radius: var(--border-radius);
       overflow: hidden;
+      position: relative;
     }
   
     .invitation-code {
@@ -98,6 +133,45 @@
       border: 2px solid var(--primary-color);
       border-right: none;
       border-radius: var(--border-radius) 0 0 var(--border-radius);
+      position: relative;
+      overflow: hidden;
+    }
+  
+    .invitation-code::after {
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: linear-gradient(
+        to right,
+        rgba(255, 255, 255, 0) 0%,
+        rgba(255, 255, 255, 0.3) 50%,
+        rgba(255, 255, 255, 0) 100%
+      );
+      transform: rotate(45deg);
+      transition: all 0.3s;
+      opacity: 0;
+    }
+  
+    .invitation-code:hover::after {
+      animation: shine 1s ease-in-out;
+      opacity: 1;
+    }
+  
+    @keyframes shine {
+      0% {
+        left: -50%;
+        opacity: 0;
+      }
+      50% {
+        opacity: 1;
+      }
+      100% {
+        left: 150%;
+        opacity: 0;
+      }
     }
   
     .copy-button {
@@ -109,10 +183,32 @@
       border-radius: 0 var(--border-radius) var(--border-radius) 0;
       cursor: pointer;
       transition: var(--transition);
+      position: relative;
+      overflow: hidden;
     }
   
     .copy-button:hover {
       background: var(--secondary-color);
+    }
+  
+    .copy-button::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(
+        to right,
+        transparent 0%,
+        rgba(255, 255, 255, 0.2) 50%,
+        transparent 100%
+      );
+      transition: all 0.3s;
+    }
+  
+    .copy-button:hover::before {
+      left: 100%;
     }
   
     .timer {
@@ -124,6 +220,33 @@
       padding: 0.5rem 1rem;
       border-radius: var(--border-radius);
       display: inline-block;
+      position: relative;
+      overflow: hidden;
+    }
+  
+    .timer::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(
+        to right,
+        transparent 0%,
+        rgba(255, 255, 255, 0.2) 50%,
+        transparent 100%
+      );
+      animation: timerShine 3s infinite;
+    }
+  
+    @keyframes timerShine {
+      0% {
+        left: -100%;
+      }
+      100% {
+        left: 100%;
+      }
     }
   
     .info {
@@ -133,16 +256,26 @@
       padding: 2rem;
       border-radius: var(--border-radius);
       box-shadow: 0 5px 15px var(--shadow-color);
+      transition: var(--transition);
+    }
+  
+    .info:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 8px 20px var(--shadow-color);
     }
   
     .info p {
       margin-bottom: 1.2rem;
       font-size: 1.1rem;
       line-height: 1.6;
+      position: relative;
+      padding-left: 30px;
     }
   
     .icon {
-      margin-right: 0.8rem;
+      position: absolute;
+      left: 0;
+      top: 3px;
       font-size: 1.2em;
       color: var(--primary-color);
     }
@@ -189,11 +322,29 @@
       color: var(--primary-color);
       text-decoration: none;
       transition: var(--transition);
+      position: relative;
     }
   
     a:hover {
       color: var(--secondary-color);
-      text-decoration: underline;
+    }
+  
+    a::after {
+      content: '';
+      position: absolute;
+      width: 100%;
+      height: 2px;
+      bottom: -2px;
+      left: 0;
+      background-color: var(--secondary-color);
+      transform: scaleX(0);
+      transform-origin: bottom right;
+      transition: transform 0.3s ease-out;
+    }
+  
+    a:hover::after {
+      transform: scaleX(1);
+      transform-origin: bottom left;
     }
   
     .button {
@@ -207,12 +358,42 @@
       transition: var(--transition);
       margin: 0.5rem;
       box-shadow: 0 2px 5px var(--shadow-color);
+      position: relative;
+      overflow: hidden;
     }
   
     .button:hover {
       background-color: var(--secondary-color);
       transform: translateY(-2px);
       box-shadow: 0 4px 8px var(--shadow-color);
+    }
+  
+    .button::after {
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: radial-gradient(circle, rgba(255,255,255,0.3) 0%, rgba(255,255,255,0) 70%);
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+  
+    .button:hover::after {
+      opacity: 1;
+      animation: ripple 0.6s linear;
+    }
+  
+    @keyframes ripple {
+      0% {
+        transform: scale(0.5);
+        opacity: 0.3;
+      }
+      100% {
+        transform: scale(2);
+        opacity: 0;
+      }
     }
   
     .modal {
@@ -237,6 +418,18 @@
       max-width: 500px;
       border-radius: var(--border-radius);
       box-shadow: 0 10px 30px var(--shadow-color);
+      animation: modalFadeIn 0.5s;
+    }
+  
+    @keyframes modalFadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(-50px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
     }
   
     .close {
@@ -255,14 +448,20 @@
     }
   
     #qrCode {
-  background-color: white;
-  padding: 10px;
-  border-radius: var(--border-radius);
-}
-
-.dark-mode #qrCode {
-  box-shadow: 0 0 10px rgba(255, 255, 255, 0.1);
-}
+      background-color: white;
+      padding: 10px;
+      border-radius: var(--border-radius);
+      transition: var(--transition);
+    }
+  
+    #qrCode:hover {
+      transform: scale(1.05);
+    }
+  
+    .dark-mode #qrCode {
+      box-shadow: 0 0 10px rgba(255, 255, 255, 0.1);
+    }
+  
     @media (max-width: 600px) {
       body {
         padding: 10px;
@@ -378,74 +577,93 @@
     }
 
     .dark-mode-toggle {
-  position: fixed;
-  top: 20px;
-  right: 20px;
-  background-color: var(--primary-color);
-  color: white;
-  border: none;
-  border-radius: 50%;
-  width: 50px;
-  height: 50px;
-  font-size: 1.5rem;
-  cursor: pointer;
-  transition: var(--transition);
-  box-shadow: 0 2px 5px var(--shadow-color);
-  z-index: 1000;
-}
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      background-color: var(--primary-color);
+      color: white;
+      border: none;
+      border-radius: 50%;
+      width: 50px;
+      height: 50px;
+      font-size: 1.5rem;
+      cursor: pointer;
+      transition: var(--transition);
+      box-shadow: 0 2px 5px var(--shadow-color);
+      z-index: 1000;
+    }
 
-.dark-mode-toggle:hover {
-  background-color: var(--secondary-color);
-  transform: scale(1.1);
-}
+    .dark-mode-toggle:hover {
+      background-color: var(--secondary-color);
+      transform: scale(1.1);
+    }
 
-body.dark-mode .dark-mode-toggle {
-  background-color: var(--accent-color);
-}
+    body.dark-mode .dark-mode-toggle {
+      background-color: var(--accent-color);
+    }
 
-body.dark-mode .dark-mode-toggle:hover {
-  background-color: var(--secondary-color);
-}
+    body.dark-mode .dark-mode-toggle:hover {
+      background-color: var(--secondary-color);
+    }
 
     body.dark-mode {
-  --primary-color: #64b5f6;
-  --secondary-color: #90caf9;
-  --background-color: #121212;
-  --text-color: #e0e0e0;
-  --card-background: #1e1e1e;
-  --shadow-color: rgba(255, 255, 255, 0.1);
-  --accent-color: #ff7043;
-  --success-color: #81c784;
-}
+      --primary-color: #64b5f6;
+      --secondary-color: #90caf9;
+      --background-color: #121212;
+      --text-color: #e0e0e0;
+      --card-background: #1e1e1e;
+      --shadow-color: rgba(255, 255, 255, 0.1);
+      --accent-color: #ff7043;
+      --success-color: #81c784;
+    }
 
-.dark-mode .container,
-.dark-mode .modal-content {
-  background-color: var(--card-background);
-}
+    .dark-mode .container,
+    .dark-mode .modal-content {
+      background-color: var(--card-background);
+    }
 
-.dark-mode .invitation-code {
-  background-color: rgba(100, 181, 246, 0.1);
-}
+    .dark-mode .invitation-code {
+      background-color: rgba(100, 181, 246, 0.1);
+    }
 
-.dark-mode .info {
-  background-color: var(--background-color);
-}
+    .dark-mode .info {
+      background-color: var(--background-color);
+    }
 
-.dark-mode a {
-  color: var(--secondary-color);
-}
+    .dark-mode a {
+      color: var(--secondary-color);
+    }
 
-.dark-mode a:hover {
-  color: var(--primary-color);
-}
+    .dark-mode a:hover {
+      color: var(--primary-color);
+    }
+
+    .dark-mode body {
+      background-image: 
+        linear-gradient(135deg, #1e3c72 0%, #1e3c72 1%, #2a5298 100%);
+    }
+
+    /* 新增的桃子圖標樣式 */
+    .peach-icon {
+      display: inline-block;
+      width: 30px;
+      height: 30px;
+      margin-right: 10px;
+      vertical-align: middle;
+    }
   </style>
   </head>
   <body>
 
-
-
     <div class="container">
-      <h1><i class="fas fa-key icon"></i>桃聯區會考落點分析邀請碼</h1>
+      <h1>
+        <svg class="peach-icon" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
+          <path d="M159.7 237a15 15 0 0 0-15 15c0 8.3 6.7 15 15 15s15-6.7 15-15-6.7-15-15-15zm0 0M394.3 237a15 15 0 0 0-15 15c0 8.3 6.7 15 15 15s15-6.7 15-15-6.7-15-15-15zm0 0" fill="#ff7043"/>
+          <path d="M256 0C114.6 0 0 114.6 0 256s114.6 256 256 256 256-114.6 256-256S397.4 0 256 0zm0 472c-119.3 0-216-96.7-216-216S136.7 40 256 40s216 96.7 216 216-96.7 216-216 216zm0 0" fill="#ff7043"/>
+          <path d="M256 128c-70.7 0-128 57.3-128 128s57.3 128 128 128 128-57.3 128-128-57.3-128-128-128zm0 216c-48.5 0-88-39.5-88-88s39.5-88 88-88 88 39.5 88 88-39.5 88-88 88zm0 0" fill="#ff7043"/>
+        </svg>
+        桃聯區會考落點分析邀請碼
+      </h1>
       <div class="invitation-code-container">
         <div class="invitation-code" id="invitationCode"></div>
         <button class="copy-button" onclick="copyInvitationCode()">
@@ -549,31 +767,31 @@ body.dark-mode .dark-mode-toggle:hover {
       }
   
       function showQRCode() {
-  const modal = document.getElementById("qrModal");
-  const span = document.getElementsByClassName("close")[0];
-  const qrCodeDiv = document.getElementById("qrCode");
-  
-  qrCodeDiv.innerHTML = '';
-  new QRCode(qrCodeDiv, {
-    text: document.getElementById('invitationCode').textContent,
-    width: 128,
-    height: 128,
-    colorDark : "#000000",
-    colorLight : document.body.classList.contains('dark-mode') ? "#ffffff" : "#ffffff"
-  });
-  
-  modal.style.display = "block";
-  
-  span.onclick = function() {
-    modal.style.display = "none";
-  }
-  
-  window.onclick = function(event) {
-    if (event.target == modal) {
-      modal.style.display = "none";
-    }
-  }
-}
+        const modal = document.getElementById("qrModal");
+        const span = document.getElementsByClassName("close")[0];
+        const qrCodeDiv = document.getElementById("qrCode");
+        
+        qrCodeDiv.innerHTML = '';
+        new QRCode(qrCodeDiv, {
+          text: document.getElementById('invitationCode').textContent,
+          width: 128,
+          height: 128,
+          colorDark : "#000000",
+          colorLight : document.body.classList.contains('dark-mode') ? "#ffffff" : "#ffffff"
+        });
+        
+        modal.style.display = "block";
+        
+        span.onclick = function() {
+          modal.style.display = "none";
+        }
+        
+        window.onclick = function(event) {
+          if (event.target == modal) {
+            modal.style.display = "none";
+          }
+        }
+      }
   
       function shareInvitationCode() {
         const invitationCode = document.getElementById('invitationCode').textContent;
@@ -594,7 +812,8 @@ body.dark-mode .dark-mode-toggle:hover {
   
       updateInvitationCode();
       setInterval(updateTimer, 1000);
-             // 防止複製
+  
+      // 防止複製
       document.addEventListener('copy', function(e) {
         e.preventDefault();
         return false;
@@ -618,41 +837,36 @@ body.dark-mode .dark-mode-toggle:hover {
         return false;
       };
 
-
       function toggleDarkMode() {
-  document.body.classList.toggle('dark-mode');
-  const isDarkMode = document.body.classList.contains('dark-mode');
-  localStorage.setItem('darkMode', isDarkMode);
-  updateDarkModeIcon();
-  
-  // 如果QR码模态框正在显示，重新生成QR码
-  if (document.getElementById("qrModal").style.display === "block") {
-    showQRCode();
-  }
-}
+        document.body.classList.toggle('dark-mode');
+        const isDarkMode = document.body.classList.contains('dark-mode');
+        localStorage.setItem('darkMode', isDarkMode);
+        updateDarkModeIcon();
+        
+        // 如果QR码模态框正在显示，重新生成QR码
+        if (document.getElementById("qrModal").style.display === "block") {
+          showQRCode();
+        }
+      }
 
-function updateDarkModeIcon() {
-  const darkModeToggle = document.getElementById('darkModeToggle');
-  const isDarkMode = document.body.classList.contains('dark-mode');
-  darkModeToggle.innerHTML = isDarkMode ? '<i class="fas fa-sun"></i>' : '<i class="fas fa-moon"></i>';
-}
+      function updateDarkModeIcon() {
+        const darkModeToggle = document.getElementById('darkModeToggle');
+        const isDarkMode = document.body.classList.contains('dark-mode');
+        darkModeToggle.innerHTML = isDarkMode ? '<i class="fas fa-sun"></i>' : '<i class="fas fa-moon"></i>';
+      }
 
-function initDarkMode() {
-  const darkModeToggle = document.getElementById('darkModeToggle');
-  const savedDarkMode = localStorage.getItem('darkMode');
+      function initDarkMode() {
+        const darkModeToggle = document.getElementById('darkModeToggle');
+        const savedDarkMode = localStorage.getItem('darkMode');
 
-  if (savedDarkMode === 'true') {
-    document.body.classList.add('dark-mode');
-  }
-  function updateInvitationCode() {
-  const invitationCodeElement = document.getElementById('invitationCode');
-  invitationCodeElement.textContent = generateInvitationCode();
-}
-  updateDarkModeIcon();
-  darkModeToggle.addEventListener('click', toggleDarkMode);
-}
+        if (savedDarkMode === 'true') {
+          document.body.classList.add('dark-mode');
+        }
+        updateDarkModeIcon();
+        darkModeToggle.addEventListener('click', toggleDarkMode);
+      }
 
-initDarkMode();
+      initDarkMode();
     </script>
   </body>
   </html>

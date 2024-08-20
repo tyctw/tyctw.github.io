@@ -994,7 +994,7 @@ body.dark-mode .modal-content li {
         </form>
         <div id="results"></div>
     <div class="copyright">
-        <p>&copy; 2024 TYCTW桃聯區會考落點分析系統. All rights reserved.</p>
+      © <span id="currentYear"></span>  TYCTW桃聯區會考落點分析系統. All rights reserved.
         <p>本網站由TYCTW會考落點分析平台開發維護。未經授權，禁止複製或轉載。</p>
       </div>
     </div>      
@@ -1490,6 +1490,21 @@ function toggleDarkMode() {
       // 添加事件監聽器2024/8/10
       document.getElementById('darkModeToggle').addEventListener('click', toggleDarkMode);
 
+
+
+    // 更新版權年份
+    document.getElementById('currentYear').textContent = new Date().getFullYear();
+
+    const canvas = document.getElementById('signatureCanvas');
+    const ctx = canvas.getContext('2d');
+    let isDrawing = false;
+    let lastX = 0;
+    let lastY = 0;
+
+    function startDrawing(e) {
+      isDrawing = true;
+      [lastX, lastY] = [e.offsetX, e.offsetY];
+    }
       </script>
 
 

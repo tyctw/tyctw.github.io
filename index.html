@@ -565,6 +565,183 @@ body.dark-mode .modal-content ul {
 body.dark-mode .modal-content li {
   margin-bottom: 10px;}
 
+
+
+
+
+
+
+
+    /* 增強美觀的免責聲明樣式 */
+    #disclaimerModal .modal-content {
+        background-color: #ffffff;
+        border-radius: 20px;
+        padding: 40px;
+        box-shadow: 0 15px 40px rgba(0, 0, 0, 0.1);
+        max-width: 600px;
+        margin: auto;
+        position: relative;
+      }
+
+      #disclaimerModal h2 {
+        color: #2c3e50;
+        font-size: 28px;
+        margin-bottom: 25px;
+        border-bottom: 3px solid #3498db;
+        padding-bottom: 15px;
+        text-align: center;
+      }
+
+      #disclaimerModal .icon {
+        color: #3498db;
+        margin-right: 10px;
+        font-size: 24px;
+      }
+
+      #disclaimerModal a {
+        color: #2980b9;
+        text-decoration: none;
+        transition: all 0.3s ease;
+        display: inline-block;
+        margin-bottom: 20px;
+        padding: 10px 15px;
+        background-color: #ecf0f1;
+        border-radius: 10px;
+      }
+
+      #disclaimerModal a:hover {
+        color: #3498db;
+        background-color: #d5dbdb;
+        transform: translateY(-2px);
+      }
+
+      #disclaimerModal p {
+        color: #34495e;
+        line-height: 1.8;
+        margin-bottom: 20px;
+        font-size: 16px;
+      }
+
+      #disclaimerModal ul {
+        list-style-type: none;
+        padding-left: 0;
+      }
+
+      #disclaimerModal li {
+        margin-bottom: 15px;
+        position: relative;
+        padding-left: 30px;
+        font-size: 16px;
+      }
+
+      #disclaimerModal li:before {
+        content: "\f0da";
+        font-family: "Font Awesome 5 Free";
+        font-weight: 900;
+        position: absolute;
+        left: 0;
+        color: #3498db;
+        font-size: 18px;
+      }
+
+      #disclaimerModal .confirm-button {
+        background-color: #2ecc71;
+        color: white;
+        border: none;
+        padding: 12px 25px;
+        border-radius: 10px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        font-weight: bold;
+        font-size: 16px;
+        margin-top: 25px;
+        display: block;
+        width: 100%;
+        text-align: center;
+      }
+
+      #disclaimerModal .confirm-button:hover {
+        background-color: #27ae60;
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(46, 204, 113, 0.3);
+      }
+
+      #disclaimerModal .close {
+        position: absolute;
+        right: 20px;
+        top: 20px;
+        color: #7f8c8d;
+        font-size: 24px;
+        transition: all 0.3s ease;
+      }
+
+      #disclaimerModal .close:hover {
+        color: #34495e;
+        transform: rotate(90deg);
+      }
+
+      /* 深色模式樣式 */
+      body.dark-mode #disclaimerModal .modal-content {
+        background-color: #2c3e50;
+        color: #ecf0f1;
+      }
+
+      body.dark-mode #disclaimerModal h2 {
+        color: #3498db;
+        border-bottom-color: #3498db;
+      }
+
+      body.dark-mode #disclaimerModal a {
+        color: #3498db;
+        background-color: #34495e;
+      }
+
+      body.dark-mode #disclaimerModal a:hover {
+        color: #2ecc71;
+        background-color: #2c3e50;
+      }
+
+      body.dark-mode #disclaimerModal p,
+      body.dark-mode #disclaimerModal li {
+        color: #bdc3c7;
+      }
+
+      body.dark-mode #disclaimerModal .confirm-button {
+        background-color: #3498db;
+      }
+
+      body.dark-mode #disclaimerModal .confirm-button:hover {
+        background-color: #2980b9;
+        box-shadow: 0 5px 15px rgba(52, 152, 219, 0.3);
+      }
+
+      body.dark-mode #disclaimerModal .close {
+        color: #bdc3c7;
+      }
+
+      body.dark-mode #disclaimerModal .close:hover {
+        color: #ecf0f1;
+      }
+
+      /* 添加動畫效果 */
+      @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(-20px); }
+        to { opacity: 1; transform: translateY(0); }
+      }
+
+      #disclaimerModal .modal-content {
+        animation: fadeIn 0.5s ease-out;
+      }
+
+      #disclaimerModal li {
+        opacity: 0;
+        animation: fadeIn 0.5s ease-out forwards;
+      }
+
+      #disclaimerModal li:nth-child(1) { animation-delay: 0.1s; }
+      #disclaimerModal li:nth-child(2) { animation-delay: 0.2s; }
+      #disclaimerModal li:nth-child(3) { animation-delay: 0.3s; }
+      #disclaimerModal li:nth-child(4) { animation-delay: 0.4s; }
     </style>
   </head>
   <body>
@@ -777,30 +954,31 @@ body.dark-mode .modal-content li {
 
 
 
-
-      <!-- Modal -->
-      <div id="disclaimerModal" class="modal">
-        <div class="modal-content">
-          <span class="close">&times;</span>
-          <h2><i class="fas fa-balance-scale icon"></i>免責聲明</h2>
-          <a href="https://forms.gle/ZKW3W58gcbQW3vdX9" target="_blank"><i class="fas fa-link icon"></i>如需獲取邀請碼請幫我們填寫表單</a>
-          <p>本網站提供的落點分析結果僅供參考，不代表實際錄取結果。實際錄取情況可能會因各種因素而有所不同，包括但不限於：</p>
-          <ul>
-            <li>各校的招生政策變化</li>
-            <li>當年度考生整體表現</li>
-            <li>特殊才能或其他加分項目</li>
-            <li>各校的實際招生名額調整</li>
-          </ul>
-          <p>我們強烈建議您：</p>
-          <ul>
-            <li>參考多方資訊，不要僅依賴本網站的分析結果</li>
-            <li>諮詢學校輔導老師或升學顧問的專業意見</li>
-            <li>關注各校的官方網站和招生簡章，以獲取最新和最準確的資訊</li>
-          </ul>
-          <p>本網站不對因使用本服務而產生的任何直接或間接損失負責。使用本服務即表示您同意本免責聲明的所有條款。</p>
-          <button class="confirm-button" onclick="closeDisclaimer()">我已了解並同意</button>
-        </div>
-      </div>
+   <!-- 修改後的美化版免責聲明 Modal -->
+   <div id="disclaimerModal" class="modal">
+    <div class="modal-content">
+      <span class="close">&times;</span>
+      <h2><i class="fas fa-balance-scale icon"></i> 免責聲明</h2>
+      <a href="https://forms.gle/ZKW3W58gcbQW3vdX9" target="_blank">
+        <i class="fas fa-link icon"></i> 填寫表單獲取邀請碼
+      </a>
+      <p>親愛的使用者，我們誠摯地提醒您：本網站提供的落點分析結果僅供參考，不代表實際錄取結果。實際錄取情況可能會因多種因素而有所不同，包括但不限於：</p>
+      <ul>
+        <li>各校的招生政策變化</li>
+        <li>當年度考生整體表現</li>
+        <li>特殊才能或其他加分項目</li>
+        <li>各校的實際招生名額調整</li>
+      </ul>
+      <p>為了確保您做出最佳的決定，我們強烈建議您：</p>
+      <ul>
+        <li>參考多方資訊，不要僅依賴本網站的分析結果</li>
+        <li>諮詢學校輔導老師或升學顧問的專業意見</li>
+        <li>密切關注各校的官方網站和招生簡章，以獲取最新和最準確的資訊</li>
+      </ul>
+      <p>本網站不對因使用本服務而產生的任何直接或間接損失負責。使用本服務即表示您同意本免責聲明的所有條款。祝您升學順利！</p>
+      <button class="confirm-button" onclick="closeDisclaimer()">我已了解並同意</button>
+    </div>
+  </div>
     
       <script>
         const vocationalGroups = {
@@ -1257,7 +1435,7 @@ function toggleDarkMode() {
       }
       updateDarkModeIcon(savedDarkMode);
 
-      // 添加事件監聽器2024/8/10
+      // 添加事件監聽器2024/8/20
       document.getElementById('darkModeToggle').addEventListener('click', toggleDarkMode);
 
       </script>

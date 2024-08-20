@@ -586,11 +586,14 @@
   </div>
 
   <footer class="copyright">
-    © 2024 桃聯區會考落點分析系統. All rights reserved.
+    © <span id="currentYear"></span> 桃聯區會考落點分析系統。版權所有。未經許可，禁止複製或轉載。
   </footer>
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.9.1/gsap.min.js"></script>
   <script>
+
+
+
     let captchaText = '';
 
     function generateCaptcha() {
@@ -815,6 +818,23 @@
         gsap.from(".nav-menu a", {duration: 0.3, opacity: 0, y: -20, stagger: 0.1, ease: "power2.out"});
       }
     });
+
+
+
+
+        // 更新版權年份
+        document.getElementById('currentYear').textContent = new Date().getFullYear();
+
+const canvas = document.getElementById('signatureCanvas');
+const ctx = canvas.getContext('2d');
+let isDrawing = false;
+let lastX = 0;
+let lastY = 0;
+
+function startDrawing(e) {
+  isDrawing = true;
+  [lastX, lastY] = [e.offsetX, e.offsetY];
+}
   </script>
 </body>
 </html>

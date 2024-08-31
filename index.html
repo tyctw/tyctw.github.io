@@ -17,6 +17,7 @@
         --card-background: #ffffff;
         --shadow-color: rgba(0, 0, 0, 0.1);
         --accent-color: #e74c3c;
+        --menu-background: rgba(52, 152, 219, 0.95);
       }
     
       body {
@@ -192,7 +193,7 @@
         font-size: 1.2em;
       }
     
-      /* Header styles */
+      /* 新的菜單樣式 */
       .header {
         background-color: var(--primary-color);
         color: white;
@@ -202,7 +203,7 @@
         left: 0;
         width: 100%;
         z-index: 1000;
-        box-shadow: 0 2px 4px var(--shadow-color);
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
       }
   
       .header-container {
@@ -217,68 +218,90 @@
       .header-logo {
         font-size: 1.5em;
         font-weight: bold;
+        display: flex;
+        align-items: center;
+      }
+  
+      .header-logo i {
+        margin-right: 10px;
       }
   
       .menu-icon {
-        display: none;
         font-size: 1.5em;
         cursor: pointer;
-      }
-  
-      .header-nav {
-        display: flex;
-      }
-  
-      .header-nav a {
-        color: white;
-        text-decoration: none;
-        margin-left: 20px;
         transition: color 0.3s ease;
-        font-weight: 500;
       }
   
-      .header-nav a:hover {
+      .menu-icon:hover {
         color: var(--accent-color);
       }
   
-      /* Mobile styles */
-      @media (max-width: 768px) {
-        .menu-icon {
-          display: block;
-        }
+      .fullscreen-menu {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: var(--menu-background);
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        z-index: 2000;
+        opacity: 0;
+        visibility: hidden;
+        transition: opacity 0.3s ease, visibility 0.3s ease;
+      }
   
-        .header-nav {
-          display: none;
-          position: fixed;
-          top: 0;
-          left: 0;
-          width: 100%;
-          height: 100%;
-          background-color: var(--primary-color);
-          flex-direction: column;
-          justify-content: center;
-          align-items: center;
-          z-index: 1001;
-        }
+      .fullscreen-menu.show {
+        opacity: 1;
+        visibility: visible;
+      }
   
-        .header-nav.show {
-          display: flex;
-        }
+      .fullscreen-menu a {
+        color: white;
+        text-decoration: none;
+        font-size: 1.5em;
+        margin: 20px 0;
+        transition: all 0.3s ease;
+        position: relative;
+        padding: 10px 0;
+      }
   
-        .header-nav a {
-          margin: 20px 0;
-          font-size: 1.5em;
-        }
-
-        .close-menu {
-      display: none;
-      position: absolute;
-      top: 20px;
-      right: 20px;
-      font-size: 2em;
-      color: white;
-      cursor: pointer;
-    }
+      .fullscreen-menu a::after {
+        content: '';
+        position: absolute;
+        width: 100%;
+        height: 2px;
+        bottom: 0;
+        left: 0;
+        background-color: var(--accent-color);
+        visibility: hidden;
+        transform: scaleX(0);
+        transition: all 0.3s ease-in-out;
+      }
+  
+      .fullscreen-menu a:hover::after {
+        visibility: visible;
+        transform: scaleX(1);
+      }
+  
+      .fullscreen-menu a:hover {
+        color: var(--accent-color);
+      }
+  
+      .close-menu {
+        position: absolute;
+        top: 20px;
+        right: 20px;
+        font-size: 2em;
+        color: white;
+        cursor: pointer;
+        transition: color 0.3s ease;
+      }
+  
+      .close-menu:hover {
+        color: var(--accent-color);
       }
   
       .qr-options {
@@ -832,25 +855,27 @@
   </head>
   <body>
 
-<header class="header">
-<div class="header-container">
-  <div class="header-logo">
-    <i class="fas fa-chart-line"></i> 桃聯區會考落點分析
-  </div>
-  <div class="menu-icon" onclick="toggleMenu()">
-    <i class="fas fa-bars"></i>
-  </div>
-  <nav class="header-nav" id="headerNav">
-    <div class="close-menu" onclick="toggleMenu()">
-      <i class="fas fa-times"></i>
+    <header class="header">
+      <div class="header-container">
+        <div class="header-logo">
+          <i class="fas fa-chart-line"></i>
+          <span>桃聯區會考落點分析</span>
+        </div>
+        <div class="menu-icon" onclick="toggleMenu()">
+          <i class="fas fa-bars"></i>
+        </div>
+      </div>
+    </header>
+
+    <div class="fullscreen-menu" id="fullscreenMenu">
+      <div class="close-menu" onclick="toggleMenu()">
+        <i class="fas fa-times"></i>
+      </div>
+      <a href="https://sites.google.com/view/tyctw/" target="_blank"><i class="fas fa-school"></i> 回到主網頁</a>
+      <a href="https://tyctw.github.io/sequence/" target="_blank"><i class="fas fa-pencil-alt"></i> 序位推估</a>
+      <a href="https://tyctw.github.io/report_form" target="_blank"><i class="fas fa-exclamation-triangle"></i> 系統異常回報</a>
+      <a href="https://tyctw.github.io/Navigation/"><i class="fas fa-university"></i> 更多資訊</a>
     </div>
-    <a href="https://sites.google.com/view/tyctw/" target="_blank"><i class="fas fa-school"></i> 回到主網頁</a>
-    <a href="https://tyctw.github.io/sequence/" target="_blank"><i class="fas fa-pencil-alt"></i> 序位推估</a>
-    <a href="https://tyctw.github.io/report_form" target="_blank"><i class="fas fa-exclamation-triangle"></i> 系統異常回報</a>
-    <a href="https://tyctw.github.io/Navigation/"><i class="fas fa-university"></i> 更多資訊</a>
-  </nav>
-</div>
-</header>
       <div class="container">
         <h1><i class="fas fa-chart-line icon"></i>桃聯區會考落點分析系統</h1>
         <a href="https://forms.gle/ZKW3W58gcbQW3vdX9" target="_blank" class="invite-link">
@@ -1475,27 +1500,10 @@ const html5QrCode = new Html5Qrcode("qr-reader");
 
 
   function toggleMenu() {
-const headerNav = document.getElementById('headerNav');
-headerNav.classList.toggle('show');
-}
-
-// 檢查視窗大小，如果不是移動設備，則隱藏關閉按鈕
-function checkWindowSize() {
-const closeMenu = document.querySelector('.close-menu');
-if (window.innerWidth > 768) {
-  closeMenu.style.display = 'none';
-} else {
-  closeMenu.style.display = 'block';
-}
-}
-
-// 頁面加載時檢查視窗大小
-window.addEventListener('load', checkWindowSize);
-
-// 當視窗大小改變時重新檢查
-window.addEventListener('resize', checkWindowSize);
-
-
+        var menu = document.getElementById("fullscreenMenu");
+        menu.classList.toggle("show");
+        document.body.style.overflow = menu.classList.contains("show") ? "hidden" : "auto";
+      }
 
 
 function toggleDarkMode() {
@@ -1528,7 +1536,7 @@ function toggleDarkMode() {
       }
       updateDarkModeIcon(savedDarkMode);
 
-      // 添加事件監聽器2024/8/31目前菜單正常
+      // 添加事件監聽器2024/8/31菜單測試版
       document.getElementById('darkModeToggle').addEventListener('click', toggleDarkMode);
 
 

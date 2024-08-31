@@ -1578,9 +1578,28 @@ window.addEventListener('load', checkWindowSize);
 
 // 當視窗大小改變時重新檢查
 window.addEventListener('resize', checkWindowSize);
-  
-  
-  
+
+// 添加滾動特效
+window.addEventListener('scroll', function() {
+  const header = document.querySelector('.header');
+  if (window.scrollY > 50) {
+    header.style.backgroundColor = 'rgba(52, 152, 219, 0.9)';
+    header.style.boxShadow = '0 2px 10px rgba(0, 0, 0, 0.2)';
+  } else {
+    header.style.backgroundColor = 'var(--primary-color)';
+    header.style.boxShadow = '0 2px 5px var(--shadow-color)';
+  }
+});
+
+// 新增動畫效果
+document.querySelectorAll('.header-nav a').forEach(link => {
+  link.addEventListener('mouseover', () => {
+    link.querySelector('i').style.transform = 'translateY(-5px) rotate(10deg)';
+  });
+  link.addEventListener('mouseout', () => {
+    link.querySelector('i').style.transform = 'translateY(0) rotate(0)';
+  });
+});
   
   function toggleDarkMode() {
             document.body.classList.toggle('dark-mode');

@@ -1,4 +1,4 @@
-<html><head>
+<html><head><base href="https://tyctw.github.io/grade_analysis/">
   <title>桃聯區會考落點分析</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -193,7 +193,7 @@
         font-size: 1.2em;
       }
     
-      /* 新的菜單樣式 */
+      /* 菜單樣式 */
       .header {
         background-color: var(--primary-color);
         color: white;
@@ -250,7 +250,7 @@
         z-index: 2000;
         opacity: 0;
         visibility: hidden;
-        transition: opacity 0.3s ease, visibility 0.3s ease;
+        transition: opacity 0.5s ease, visibility 0.5s ease;
       }
   
       .fullscreen-menu.show {
@@ -263,9 +263,16 @@
         text-decoration: none;
         font-size: 1.5em;
         margin: 20px 0;
-        transition: all 0.3s ease;
+        transition: all 0.5s ease;
         position: relative;
         padding: 10px 0;
+        opacity: 0;
+        transform: translateY(20px);
+      }
+  
+      .fullscreen-menu.show a {
+        opacity: 1;
+        transform: translateY(0);
       }
   
       .fullscreen-menu a::after {
@@ -297,12 +304,14 @@
         font-size: 2em;
         color: white;
         cursor: pointer;
-        transition: color 0.3s ease;
+        transition: color 0.3s ease, transform 0.3s ease;
       }
   
       .close-menu:hover {
         color: var(--accent-color);
+        transform: rotate(90deg);
       }
+  
   
       .qr-options {
         display: flex;
@@ -413,7 +422,34 @@
       .form-group, .result-item, .instruction-item {
         animation: slideIn 0.5s ease-out;
       }
+   /* 新增過渡動畫 */
+   @keyframes fadeIn {
+        from { opacity: 0; }
+        to { opacity: 1; }
+      }
   
+      @keyframes slideIn {
+        from { transform: translateY(-20px); opacity: 0; }
+        to { transform: translateY(0); opacity: 1; }
+      }
+  
+      .container {
+        animation: fadeIn 0.5s ease-out;
+      }
+  
+      .form-group, .instruction-toggle, .disclaimer-toggle {
+        animation: slideIn 0.5s ease-out;
+      }
+  
+      .fullscreen-menu a {
+        animation: slideIn 0.5s ease-out;
+        animation-fill-mode: backwards;
+      }
+  
+      .fullscreen-menu a:nth-child(1) { animation-delay: 0.1s; }
+      .fullscreen-menu a:nth-child(2) { animation-delay: 0.2s; }
+      .fullscreen-menu a:nth-child(3) { animation-delay: 0.3s; }
+      .fullscreen-menu a:nth-child(4) { animation-delay: 0.4s; }
       /* Modal styles */
       .modal {
         display: none;
@@ -1498,11 +1534,16 @@ const html5QrCode = new Html5Qrcode("qr-reader");
 
 
 
-
   function toggleMenu() {
         var menu = document.getElementById("fullscreenMenu");
         menu.classList.toggle("show");
         document.body.style.overflow = menu.classList.contains("show") ? "hidden" : "auto";
+
+        // 添加連結的動畫延遲
+        var links = menu.getElementsByTagName('a');
+        for (var i = 0; i < links.length; i++) {
+          links[i].style.animationDelay = (i * 0.1) + 's';
+        }
       }
 
 
@@ -1536,7 +1577,7 @@ function toggleDarkMode() {
       }
       updateDarkModeIcon(savedDarkMode);
 
-      // 添加事件監聽器2024/8/31菜單測試版
+      // 添加事件監聽器2024/8/31菜單測試版增加動畫
       document.getElementById('darkModeToggle').addEventListener('click', toggleDarkMode);
 
 

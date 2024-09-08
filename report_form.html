@@ -357,6 +357,82 @@ input.invalid, select.invalid, textarea.invalid {
   background-color: var(--secondary-color);
 }
 
+.confirm-dialog {
+  display: none;
+  position: fixed;
+  z-index: 1000;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0,0,0,0.5);
+  backdrop-filter: blur(5px);
+}
+
+.confirm-dialog-content {
+  background-color: var(--card-background);
+  margin: 15% auto;
+  padding: 30px;
+  border-radius: 15px;
+  max-width: 400px;
+  text-align: center;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+  animation: fadeInUp 0.3s ease-out;
+}
+
+.confirm-dialog h3 {
+  margin-top: 0;
+  color: var(--primary-color);
+  font-size: 24px;
+}
+
+.confirm-dialog p {
+  margin-bottom: 20px;
+  color: var(--text-color);
+}
+
+.confirm-dialog-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+}
+
+.confirm-dialog button {
+  padding: 10px 20px;
+  width: auto;
+  font-size: 16px;
+  border-radius: 25px;
+  transition: all 0.3s ease;
+}
+
+.confirm-yes {
+  background: var(--primary-color);
+}
+
+.confirm-no {
+  background: var(--error-color);
+}
+
+.confirm-dialog button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.fade-in-up {
+  animation: fadeInUp 0.6s ease-out;
+}
+
 @media screen and (max-width: 768px) {
   .menu-icon {
     display: block;
@@ -378,21 +454,6 @@ input.invalid, select.invalid, textarea.invalid {
     font-size: 16px;
     padding: 12px;
   }
-}
-
-@keyframes fadeInUp {
-  from {
-    opacity: 0;
-    transform: translate3d(0, 40px, 0);
-  }
-  to {
-    opacity: 1;
-    transform: translate3d(0, 0, 0);
-  }
-}
-
-.fade-in-up {
-  animation: fadeInUp 0.6s ease-out;
 }
 
 </style>
@@ -473,6 +534,18 @@ input.invalid, select.invalid, textarea.invalid {
   </div>
 </main>
 
+<div id="confirmDialog" class="confirm-dialog">
+  <div class="confirm-dialog-content">
+    <i class="fas fa-question-circle" style="font-size: 48px; color: var(--primary-color); margin-bottom: 20px;"></i>
+    <h3>確認提交</h3>
+    <p>您確定要提交這份回報嗎？提交後將無法修改。</p>
+    <div class="confirm-dialog-buttons">
+      <button id="confirmYes" class="confirm-yes"><i class="fas fa-check"></i> 確定</button>
+      <button id="confirmNo" class="confirm-no"><i class="fas fa-times"></i> 取消</button>
+    </div>
+  </div>
+</div>
+
 <footer class="copyright">
   © 2024 TYCTW會考落點分析系統異常回報平台。保留所有權利。
 </footer>
@@ -523,9 +596,26 @@ function hideError(inputElement) {
 }
 
 function showConfirmDialog(callback) {
-  if (confirm('確定要提交回報嗎？')) {
+  const confirmDialog = document.getElementById('confirmDialog');
+  const confirmYes = document.getElementById('confirmYes');
+  const confirmNo = document.getElementById('confirmNo');
+
+  confirmDialog.style.display = 'flex';
+
+  confirmYes.onclick = function() {
+    confirmDialog.style.display = 'none';
     callback();
-  }
+  };
+
+  confirmNo.onclick = function() {
+    confirmDialog.style.display = 'none';
+  };
+
+  confirmDialog.onclick = function(event) {
+    if (event.target === confirmDialog) {
+      confirmDialog.style.display = 'none';
+    }
+  };
 }
 
 document.addEventListener('DOMContentLoaded', function() {

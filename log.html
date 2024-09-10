@@ -287,111 +287,101 @@ body.dark-mode .loading-overlay {
 /* Responsive design improvements */
 @media (max-width: 768px) {
   .header h1 {
-    font-size: 2.8em;
+    font-size: 2.5em;
+    padding: 0 20px;
+  }
+
+  .container {
+    padding: 10px;
   }
 
   .changelog {
-    padding: 40px;
+    padding: 20px;
+    margin-top: 30px;
   }
 
-  .changelog-title {
-    font-size: 1.6em;
+  .changelog-item {
+    margin-bottom: 30px;
+  }
+
+  .changelog-item-header {
+    flex-direction: column;
+    align-items: flex-start;
   }
 
   .changelog-date {
-    font-size: 1.1em;
+    margin-bottom: 10px;
+  }
+
+  .changelog-title {
+    font-size: 1.4em;
+  }
+
+  .changelog-description li {
+    font-size: 1em;
+    padding-left: 25px;
+  }
+
+  .changelog-description li::before {
+    font-size: 1em;
   }
 
   .back-button {
-    padding: 15px 30px;
-    font-size: 1.1em;
+    padding: 12px 24px;
+    font-size: 1em;
+    margin-top: 30px;
   }
 
   .dark-mode-toggle {
-    width: 60px;
-    height: 60px;
-    font-size: 1.6em;
-    bottom: 30px;
-    right: 30px;
+    width: 50px;
+    height: 50px;
+    font-size: 1.4em;
+    bottom: 20px;
+    right: 20px;
+  }
+
+  footer {
+    padding: 40px 20px;
+    margin-top: 60px;
+  }
+
+  .copyright {
+    font-size: 0.9em;
+  }
+
+  .loading-spinner {
+    width: 40px;
+    height: 40px;
+    border-width: 4px;
+  }
+
+  .scroll-to-top {
+    width: 40px;
+    height: 40px;
+    font-size: 1em;
+    bottom: 80px;
+    right: 20px;
   }
 }
 
-/* Enhanced animations */
-@keyframes fadeInUp {
-  from {
-    opacity: 0;
-    transform: translateY(20px);
+/* Add styles for extra small devices */
+@media (max-width: 480px) {
+  .header h1 {
+    font-size: 2em;
   }
-  to {
-    opacity: 1;
-    transform: translateY(0);
+
+  .changelog-title {
+    font-size: 1.2em;
+  }
+
+  .changelog-version {
+    font-size: 0.8em;
+  }
+
+  .changelog-description li {
+    font-size: 0.9em;
   }
 }
-
-.changelog-item {
-  animation: fadeInUp 0.6s ease-out forwards;
-}
-
-.changelog-title, .changelog-date, .changelog-version {
-  animation: fadeInUp 0.8s ease-out forwards;
-}
-
-.changelog-description li {
-  animation: fadeInUp 1s ease-out forwards;
-  animation-fill-mode: both;
-}
-
-.changelog-description li:nth-child(1) { animation-delay: 0.2s; }
-.changelog-description li:nth-child(2) { animation-delay: 0.4s; }
-.changelog-description li:nth-child(3) { animation-delay: 0.6s; }
-.changelog-description li:nth-child(4) { animation-delay: 0.8s; }
-.changelog-description li:nth-child(5) { animation-delay: 1s; }
-
-/* Enhanced visual elements */
-.changelog-version {
-  background-color: var(--primary-color);
-  color: white;
-  padding: 5px 10px;
-  border-radius: 20px;
-  font-size: 0.9em;
-  font-weight: bold;
-}
-
-.changelog-date {
-  font-size: 1.1em;
-  color: var(--text-color);
-  opacity: 0.8;
-}
-
-.feature-icon {
-  margin-right: 10px;
-  color: var(--secondary-color);
-}
-
-/* Hover effects */
-.changelog-item:hover {
-  transform: translateY(-5px);
-  transition: transform 0.3s ease;
-}
-
-.changelog-item:hover .changelog-title {
-  color: var(--secondary-color);
-  transition: color 0.3s ease;
-}
-
-/* Accessibility improvements */
-.visually-hidden {
-  position: absolute;
-  width: 1px;
-  height: 1px;
-  margin: -1px;
-  padding: 0;
-  overflow: hidden;
-  clip: rect(0, 0, 0, 0);
-  white-space: nowrap;
-  border: 0;
-}
-
 </style>
 </head>
 <body>
@@ -593,6 +583,22 @@ scrollToTopButton.style.cssText = `
 
 document.body.appendChild(scrollToTopButton);
 
+function updateScrollToTopButton() {
+  const windowWidth = window.innerWidth;
+  if (windowWidth <= 768) {
+    scrollToTopButton.style.bottom = '80px';
+    scrollToTopButton.style.right = '20px';
+  } else {
+    scrollToTopButton.style.bottom = '120px';
+    scrollToTopButton.style.right = '40px';
+  }
+}
+
+// Call this function on load and resize
+window.addEventListener('load', updateScrollToTopButton);
+window.addEventListener('resize', updateScrollToTopButton);
+
+// Scroll to top button visibility
 window.addEventListener('scroll', () => {
   if (window.pageYOffset > 300) {
     scrollToTopButton.style.opacity = '1';
@@ -606,6 +612,9 @@ window.addEventListener('scroll', () => {
 scrollToTopButton.addEventListener('click', () => {
   window.scrollTo({ top: 0, behavior: 'smooth' });
 });
+
+// Improve touch interaction for mobile devices
+document.addEventListener('touchstart', function() {}, true);
 
 // Add subtle parallax effect to header
 window.addEventListener('scroll', () => {

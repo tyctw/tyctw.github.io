@@ -1487,12 +1487,26 @@
   const resultsElement = document.getElementById('results');
   const resultsText = resultsElement.innerText;
   
-  // Create ASCII art watermark
+  // Get current date and time
+  const now = new Date();
+  const dateTime = now.toLocaleString('zh-TW', { 
+    year: 'numeric', 
+    month: '2-digit', 
+    day: '2-digit', 
+    hour: '2-digit', 
+    minute: '2-digit', 
+    second: '2-digit',
+    hour12: false 
+  });
+
+  // Create ASCII art watermark with date and time
   const watermark = 
     "********************************\n" +
     "*                              *\n" +
     "*  TYCTW 桃聯區會考落點分析系統  *\n" +
-    "*       以下資料僅供參考       *\n" +
+    "*       以下資料僅供參考      *\n" +
+    "*                              *\n" +
+    `*   產生時間: ${dateTime}   *\n` +
     "*                              *\n" +
     "********************************\n\n";
 

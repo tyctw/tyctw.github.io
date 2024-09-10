@@ -1483,10 +1483,23 @@
   }, 100);
 }
 
-function exportResults() {
+  function exportResults() {
   const resultsElement = document.getElementById('results');
   const resultsText = resultsElement.innerText;
-  const blob = new Blob([resultsText], { type: 'text/plain;charset=utf-8' });
+  
+  // Create ASCII art watermark
+  const watermark = 
+    "********************************\n" +
+    "*                              *\n" +
+    "*  TYCTW 桃聯區會考落點分析系統  *\n" +
+    "*       以下資料僅供參考       *\n" +
+    "*                              *\n" +
+    "********************************\n\n";
+
+  // Combine watermark and results
+  const contentWithWatermark = watermark + resultsText;
+
+  const blob = new Blob([contentWithWatermark], { type: 'text/plain;charset=utf-8' });
   const url = URL.createObjectURL(blob);
   const a = document.createElement('a');
   a.style.display = 'none';
@@ -1628,7 +1641,7 @@ function toggleDarkMode() {
       }
       updateDarkModeIcon(savedDarkMode);
 
-      // 添加事件監聽器2024/8/31菜單測試版增加動畫
+      // 添加事件監聽器2024/9/10增加匯出功能
       document.getElementById('darkModeToggle').addEventListener('click', toggleDarkMode);
 
 

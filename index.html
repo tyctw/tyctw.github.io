@@ -1178,15 +1178,19 @@
       '餐旅群': ['觀光事業科', '餐飲管理科']
         };
     
-        function toggleVocationalGroup() {
-          const schoolType = document.getElementById('schoolType').value;
-          const vocationalGroupContainer = document.getElementById('vocationalGroupContainer');
-          if (schoolType === '職業類科') {
-            vocationalGroupContainer.style.display = 'block';
-          } else {
-            vocationalGroupContainer.style.display = 'none';
-          }
-        }
+          function toggleVocationalGroup() {
+  const schoolType = document.getElementById('schoolType').value;
+  const vocationalGroupContainer = document.getElementById('vocationalGroupContainer');
+  const vocationalGroup = document.getElementById('vocationalGroup');
+
+  if (schoolType === '職業類科') {
+    vocationalGroupContainer.style.display = 'block';
+  } else {
+    vocationalGroupContainer.style.display = 'none';
+    vocationalGroup.value = 'all'; // 清空職業類科的選擇，恢復到默認值
+  }
+}
+
     
         function toggleInstructions() {
           var instructions = document.getElementById('instructions');

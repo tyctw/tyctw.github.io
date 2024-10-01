@@ -1,0 +1,786 @@
+<html><head><base href="https://taoyuanacademy.edu.tw/admissions/">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>桃聯區會考落點分析平台</title>
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;700&display=swap" rel="stylesheet">
+<style>
+    body {
+        font-family: 'Noto Sans TC', sans-serif;
+        background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+        min-height: 100vh;
+        padding-top: 50px;
+        padding-bottom: 50px;
+    }
+    .container {
+        background-color: rgba(255, 255, 255, 0.9);
+        border-radius: 20px;
+        padding: 40px;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        max-width: 800px;
+    }
+    h1 {
+        color: #3a539b;
+        margin-bottom: 30px;
+        text-align: center;
+        font-weight: bold;
+        font-size: 2.5rem;
+        text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+    }
+    .form-group label {
+        font-weight: bold;
+        color: #34495e;
+        font-size: 1.1rem;
+    }
+    .btn-primary {
+        background-color: #3a539b;
+        border-color: #3a539b;
+        font-size: 1.2rem;
+        padding: 10px 20px;
+        transition: all 0.3s ease;
+    }
+    .btn-primary:hover {
+        background-color: #2c3e50;
+        border-color: #2c3e50;
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    }
+    .btn-secondary, .btn-info, .btn-warning {
+        font-size: 1.2rem;
+        padding: 10px 20px;
+        transition: all 0.3s ease;
+    }
+    .form-control {
+        border-radius: 10px;
+        border: 2px solid #e0e0e0;
+        transition: all 0.3s ease;
+    }
+    .form-control:focus {
+        border-color: #3a539b;
+        box-shadow: 0 0 0 0.2rem rgba(58, 83, 155, 0.25);
+    }
+    #scoreForm {
+        max-width: 600px;
+        margin: 0 auto;
+    }
+    .loading {
+        display: none;
+        text-align: center;
+        margin-top: 20px;
+    }
+    .loading-spinner {
+        width: 60px;
+        height: 60px;
+        border: 6px solid #f3f3f3;
+        border-top: 6px solid #3a539b;
+        border-radius: 50%;
+        animation: spin 1s linear infinite;
+    }
+    @keyframes spin {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
+    }
+    .form-row {
+        display: flex;
+        flex-wrap: wrap;
+        margin-right: -15px;
+        margin-left: -15px;
+    }
+    .form-row > .form-group {
+        flex: 0 0 50%;
+        max-width: 50%;
+        padding-right: 15px;
+        padding-left: 15px;
+    }
+    @media (max-width: 768px) {
+        .form-row > .form-group {
+            flex: 0 0 100%;
+            max-width: 100%;
+        }
+    }
+    .card {
+        border: none;
+        border-radius: 15px;
+        box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        transition: all 0.3s ease;
+    }
+    .card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 20px rgba(0,0,0,0.15);
+    }
+    .card-header {
+        background-color: #3a539b;
+        color: white;
+        border-radius: 15px 15px 0 0 !important;
+        font-weight: bold;
+    }
+    .chart-container {
+        position: relative;
+        height: 300px;
+        width: 100%;
+    }
+    #schoolCards .card {
+        transition: all 0.3s ease;
+    }
+    #schoolCards .card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    }
+</style>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.3/jquery.validate.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <div class="container">
+        <h1>桃聯區會考落點分析平台</h1>
+        <div class="card mb-4">
+            <div class="card-header">
+                請輸入您的會考成績
+            </div>
+            <div class="card-body">
+                <form id="scoreForm">
+                    <div class="form-row">
+                        <div class="form-group col-md-6">
+                            <label for="chinese">國文:</label>
+                            <select id="chinese" name="chinese" class="form-control">
+                                <option value="">請選擇</option>
+                                <option value="A++">A++</option>
+                                <option value="A+">A+</option>
+                                <option value="A">A</option>
+                                <option value="B++">B++</option>
+                                <option value="B+">B+</option>
+                                <option value="B">B</option>
+                                <option value="C">C</option>
+                            </select>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label for="english">英文:</label>
+                            <select id="english" name="english" class="form-control">
+                                <option value="">請選擇</option>
+                                <option value="A++">A++</option>
+                                <option value="A+">A+</option>
+                                <option value="A">A</option>
+                                <option value="B++">B++</option>
+                                <option value="B+">B+</option>
+                                <option value="B">B</option>
+                                <option value="C">C</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-md-6">
+                            <label for="math">數學:</label>
+                            <select id="math" name="math" class="form-control">
+                                <option value="">請選擇</option>
+                                <option value="A++">A++</option>
+                                <option value="A+">A+</option>
+                                <option value="A">A</option>
+                                <option value="B++">B++</option>
+                                <option value="B+">B+</option>
+                                <option value="B">B</option>
+                                <option value="C">C</option>
+                            </select>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label for="science">自然:</label>
+                            <select id="science" name="science" class="form-control">
+                                <option value="">請選擇</option>
+                                <option value="A++">A++</option>
+                                <option value="A+">A+</option>
+                                <option value="A">A</option>
+                                <option value="B++">B++</option>
+                                <option value="B+">B+</option>
+                                <option value="B">B</option>
+                                <option value="C">C</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-md-6">
+                            <label for="social">社會:</label>
+                            <select id="social" name="social" class="form-control">
+                                <option value="">請選擇</option>
+                                <option value="A++">A++</option>
+                                <option value="A+">A+</option>
+                                <option value="A">A</option>
+                                <option value="B++">B++</option>
+                                <option value="B+">B+</option>
+                                <option value="B">B</option>
+                                <option value="C">C</option>
+                            </select>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label for="composition">作文:</label>
+                            <select id="composition" name="composition" class="form-control">
+                                <option value="">請選擇</option>
+                                <option value="0">0</option>
+                                <option value="1">1</option>
+                                <option value="2">2</option>
+                                <option value="3">3</option>
+                                <option value="4">4</option>
+                                <option value="5">5</option>
+                                <option value="6">6</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-md-6">
+                            <label for="school_type">選擇類別:</label>
+                            <select id="school_type" name="school_type" class="form-control">
+                                <option value="">請選擇</option>
+                                <option value="all">全部</option>
+                                <option value="普通科">普通科</option>
+                                <option value="職業類科">職業類科</option>
+                            </select>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label for="school_ownership">學校類型:</label>
+                            <select id="school_ownership" name="school_ownership" class="form-control">
+                                <option value="">請選擇</option>
+                                <option value="all">全部</option>
+                                <option value="public">公立</option>
+                                <option value="private">私立</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-md-6">
+                            <label for="invitation_code">邀請碼:</label>
+                            <input type="text" id="invitation_code" name="invitation_code" class="form-control" placeholder="請輸入邀請碼">
+                        </div>
+                        <div class="form-group col-md-6" id="vocational_dept_group" style="display: none;">
+                            <label for="vocational_dept">職業科系:</label>
+                            <select id="vocational_dept" name="vocational_dept" class="form-control">
+                                <option value="">請選擇</option>
+                                <option value="all">全部</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-md-6" id="vocational_group_container" style="display: none;">
+                            <label for="vocational_group">職業群:</label>
+                            <select id="vocational_group" name="vocational_group" class="form-control">
+                                <option value="">請選擇</option>
+                                <option value="機械群">機械群</option>
+                                <option value="動力機械群">動力機械群</option>
+                                <option value="電機與電子群">電機與電子群</option>
+                                <option value="化工群">化工群</option>
+                                <option value="土木與建築群">土木與建築群</option>
+                                <option value="商業與管理群">商業與管理群</option>
+                                <option value="外語群">外語群</option>
+                                <option value="設計群">設計群</option>
+                                <option value="農業群">農業群</option>
+                                <option value="食品群">食品群</option>
+                                <option value="家政群">家政群</option>
+                                <option value="餐旅群">餐旅群</option>
+                            </select>
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn-primary btn-block mt-4">提交並分析</button>
+                    <button type="button" id="compareScores" class="btn btn-secondary btn-block mt-2">與往年成績比較</button>
+                    <div class="mt-2">
+                        <button type="button" id="saveScores" class="btn btn-info">儲存成績</button>
+                        <button type="button" id="loadScores" class="btn btn-warning">載入成績</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div class="card mt-4" id="results" style="display: none;">
+            <div class="card-header">
+                分析結果
+            </div>
+            <div class="card-body">
+                <div class="row" id="schoolCards"></div>
+            </div>
+        </div>
+        <div class="loading">
+            <div class="loading-spinner"></div>
+            <p class="mt-3">正在計算您的落點分析結果，請稍候...</p>
+        </div>
+        <div class="card mt-4">
+            <div class="card-header">
+                成績計算器
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <h4>積分計算</h4>
+                        <p>總分: <span id="totalScore2">0</span></p>
+                    </div>
+                    <div class="col-md-6">
+                        <h4>積點計算</h4>
+                        <p>總分: <span id="totalScore1">0</span></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="card mt-4">
+            <div class="card-header">
+                學校搜尋
+            </div>
+            <div class="card-body">
+                <div class="input-group">
+                    <input type="text" id="schoolSearch" class="form-control" placeholder="輸入學校名稱">
+                    <div class="input-group-append">
+                        <button class="btn btn-outline-secondary" type="button" id="searchButton">搜尋</button>
+                    </div>
+                </div>
+                <div id="searchResults" class="mt-3 row"></div>
+            </div>
+        </div>
+        <div class="card mt-4" id="comparisonCard" style="display: none;">
+            <div class="card-header">
+                與往年成績比較
+            </div>
+            <div class="card-body" id="comparisonResults">
+                <div class="chart-container">
+                    <canvas id="comparisonChart"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        $(document).ready(function() {
+            const schools = [
+                { name: "治平高中(綜合科)", minCredits: 15, minPoints: 6, type: "普通科", ownership: "private" },
+                { name: "振聲高中(普通科)", minCredits: 23, minPoints: 13, type: "普通科", ownership: "private" },
+                { name: "啟英高中(普通科)", minCredits: 21, minPoints: 10, type: "普通科", ownership: "private" },
+                { name: "育達高中(普通科)", minCredits: 20, minPoints: 14, type: "普通科", ownership: "private" },
+                { name: "新興高中(資料處理科)", minCredits: 19, minPoints: 9, type: "職業類科", ownership: "private", vocationalGroups: ["商業與管理群"], departments: ["資料處理科"] },
+                { name: "新興高中(應用英語科)", minCredits: 19, minPoints: 9, type: "職業類科", ownership: "private", vocationalGroups: ["外語群"], departments: ["應用英語科"] },
+                { name: "新興高中(電子科)", minCredits: 19, minPoints: 9, type: "職業類科", ownership: "private", vocationalGroups: ["電機與電子群"], departments: ["電子科"] },
+                { name: "中壢高商(商業經營科)", minCredits: 23, minPoints: 12, type: "職業類科", ownership: "public", vocationalGroups: ["商業與管理群"], departments: ["商業經營科"] },
+                { name: "中壢高商(資料處理科)", minCredits: 23, minPoints: 13, type: "職業類科", ownership: "public", vocationalGroups: ["商業與管理群"], departments: ["資料處理科"] },
+                { name: "中壢高商(國際貿易科)", minCredits: 23, minPoints: 14, type: "職業類科", ownership: "public", vocationalGroups: ["商業與管理群"], departments: ["國際貿易科"] },
+            ];
+
+            const vocationalGroups = {
+                '機械群': ['機械科', '鑄造科', '板金科', '機械木模科', '配管科', '模具科', '機電科', '製圖科', '生物產業機電科', '電腦機械製圖科'],
+                '動力機械群': ['汽車科', '重機科', '飛機修護科', '動力機械科', '農業機械科', '軌道車輛科'],
+                '電機與電子群': ['資訊科', '電子科', '控制科', '電機科', '冷凍空調科', '航空電子科', '電機空調科'],
+                '化工群': ['化工科', '紡織科', '染整科'],
+                '土木與建築群': ['建築科', '土木科', '消防工程科', '空間測繪科'],
+                '商業與管理群': ['商業經營科', '國際貿易科', '會計事務科', '資料處理科', '不動產事務科', '電子商務科', '流通管理科', '農產行銷科', '航運管理科'],
+                '外語群': ['應用外語科（英文組）', '應用外語科（日文組）'],
+                '設計群': ['家具木工科', '美工科', '陶瓷工程科', '室內空間設計科', '圖文傳播科', '金屬工藝科', '家具設計科', '廣告設計科', '多媒體設計科', '多媒體應用科', '室內設計科'],
+                '農業群': ['農場經營科', '園藝科', '森林科', '野生動物保育科', '造園科', '畜產保健科'],
+                '食品群': ['食品加工科', '食品科', '水產食品科', '烘焙科'],
+                '家政群': ['家政科', '服裝科', '幼兒保育科', '美容科', '時尚模特兒科', '流通服飾科', '時尚造型科', '照顧服務科'],
+                '餐旅群': ['觀光事業科', '餐飲管理科']
+            };
+
+            function calculatePoints(scores) {
+                const gradeValues = {
+                    'A++': 7, 'A+': 6, 'A': 5, 'B++': 4, 'B+': 3, 'B': 2, 'C': 1
+                };
+                let total = 0;
+                for (let subject in scores) {
+                    if (subject !== 'composition') {
+                        total += gradeValues[scores[subject]];
+                    }
+                }
+                return total;
+            }
+
+            function calculatePoints2(scores) {
+                const gradeValues = {
+                    'A++': 6, 'A+': 6, 'A': 6, 'B++': 4, 'B+': 4, 'B': 4, 'C': 2
+                };
+                const compositionValues = {
+                    '6': 3, '5': 3, '4': 3, '3': 2, '2': 2, '1': 1, '0': 0
+                };
+                let total = 0;
+                for (let subject in scores) {
+                    if (subject !== 'composition') {
+                        total += gradeValues[scores[subject]];
+                    } else {
+                        total += compositionValues[scores[subject]];
+                    }
+                }
+                return total;
+            }
+
+            function getEligibleSchools(scores, schoolType, vocationalGroup, vocationalDept, schoolOwnership) {
+                const totalPoints = calculatePoints(scores);
+                const totalCredits = calculatePoints2(scores);
+                
+                return schools.filter(school => {
+                    if (schoolType !== 'all' && school.type !== schoolType) return false;
+                    if (schoolOwnership !== 'all' && school.ownership !== schoolOwnership) return false;
+                    if (school.type === "職業類科") {
+                        if (vocationalGroup !== 'all' && (!school.vocationalGroups || !school.vocationalGroups.includes(vocationalGroup))) return false;
+                        if (vocationalDept !== "all" && vocationalDept && (!school.departments || !school.departments.includes(vocationalDept))) return false;
+                    }
+                    return totalCredits >= school.minCredits && totalPoints >= school.minPoints;
+                });
+            }
+
+            $.validator.addMethod("notEqual", function(value, element, param) {
+                return this.optional(element) || value != param;
+            }, "請選擇一個選項");
+
+            $('#scoreForm').validate({
+                rules: {
+                    chinese: {
+                        required: true,
+                        notEqual: ""
+                    },
+                    english: {
+                        required: true,
+                        notEqual: ""
+                    },
+                    math: {
+                        required: true,
+                        notEqual: ""
+                    },
+                    science: {
+                        required: true,
+                        notEqual: ""
+                    },
+                    social: {
+                        required: true,
+                        notEqual: ""
+                    },
+                    composition: {
+                        required: true,
+                        notEqual: ""
+                    },
+                    school_type: {
+                        required: true,
+                        notEqual: ""
+                    },
+                    school_ownership: {
+                        required: true,
+                        notEqual: ""
+                    },
+                    invitation_code: {
+                        required: true,
+                        minlength: 6,
+                        maxlength: 6
+                    },
+                    vocational_group: {
+                        required: function(element) {
+                            return $("#school_type").val() === "職業類科";
+                        },
+                        notEqual: ""
+                    },
+                    vocational_dept: {
+                        required: function(element) {
+                            return $("#school_type").val() === "職業類科";
+                        },
+                        notEqual: ""
+                    }
+                },
+                messages: {
+                    chinese: {
+                        required: "請選擇國文成績",
+                        notEqual: "請選擇國文成績"
+                    },
+                    english: {
+                        required: "請選擇英文成績",
+                        notEqual: "請選擇英文成績"
+                    },
+                    math: {
+                        required: "請選擇數學成績",
+                        notEqual: "請選擇數學成績"
+                    },
+                    science: {
+                        required: "請選擇自然成績",
+                        notEqual: "請選擇自然成績"
+                    },
+                    social: {
+                        required: "請選擇社會成績",
+                        notEqual: "請選擇社會成績"
+                    },
+                    composition: {
+                        required: "請選擇作文成績",
+                        notEqual: "請選擇作文成績"
+                    },
+                    school_type: {
+                        required: "請選擇學校類別",
+                        notEqual: "請選擇學校類別"
+                    },
+                    school_ownership: {
+                        required: "請選擇學校類型",
+                        notEqual: "請選擇學校類型"
+                    },
+                    invitation_code: {
+                        required: "請輸入邀請碼",
+                        minlength: "邀請碼必須為6位",
+                        maxlength: "邀請碼必須為6位"
+                    },
+                    vocational_group: {
+                        required: "請選擇職業群",
+                        notEqual: "請選擇職業群"
+                    },
+                    vocational_dept: {
+                        required: "請選擇職業科系",
+                        notEqual: "請選擇職業科系"
+                    }
+                },
+                errorElement: "div",
+                errorPlacement: function(error, element) {
+                    error.addClass("invalid-feedback");
+                    error.insertAfter(element);
+                },
+                highlight: function(element) {
+                    $(element).addClass("is-invalid").removeClass("is-valid");
+                },
+                unhighlight: function(element) {
+                    $(element).addClass("is-valid").removeClass("is-invalid");
+                },
+                submitHandler: function(form) {
+                    analyzeScores();
+                }
+            });
+
+            function sanitizeInput(input) {
+                return input.replace(/[<>&"']/g, function (c) {
+                    return {'<':'&lt;', '>':'&gt;', '&':'&amp;', '"':'&quot;', "'":"&#039;"}[c];
+                });
+            }
+
+            function analyzeScores() {
+                $('.loading').show();
+                $('button[type="submit"]').prop('disabled', true);
+
+                var scores = {
+                    'chinese': sanitizeInput($('#chinese').val()),
+                    'english': sanitizeInput($('#english').val()),
+                    'math': sanitizeInput($('#math').val()),
+                    'science': sanitizeInput($('#science').val()),
+                    'social': sanitizeInput($('#social').val()),
+                    'composition': sanitizeInput($('#composition').val())
+                };
+
+                const schoolType = sanitizeInput($('#school_type').val());
+                const vocationalGroup = sanitizeInput($('#vocational_group').val());
+                const vocationalDept = sanitizeInput($('#vocational_dept').val());
+                const schoolOwnership = sanitizeInput($('#school_ownership').val());
+
+                const totalPoints1 = calculatePoints(scores);
+                const totalPoints2 = calculatePoints2(scores);
+                const eligibleSchools = getEligibleSchools(scores, schoolType, vocationalGroup, vocationalDept, schoolOwnership);
+
+                let cardsHtml = '';
+                eligibleSchools.forEach(school => {
+                    cardsHtml += `
+                        <div class="col-md-4 mb-3">
+                            <div class="card h-100">
+                                <div class="card-header">${school.name}</div>
+                                <div class="card-body">
+                                    <p class="card-text">類型: ${school.type}</p>
+                                    <p class="card-text">學校類別: ${school.ownership === 'public' ? '公立' : '私立'}</p>
+                                    <p class="card-text">最低積分: ${school.minCredits}</p>
+                                    <p class="card-text">最低積點: ${school.minPoints}</p>
+                                    ${school.vocationalGroups ? `<p class="card-text">職業群: ${school.vocationalGroups.join(', ')}</p>` : ''}
+                                    ${school.departments ? `<p class="card-text">科系: ${school.departments.join(', ')}</p>` : ''}
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                });
+
+                $('#schoolCards').html(cardsHtml);
+                $('#results').show();
+
+                $('.loading').hide();
+                $('button[type="submit"]').prop('disabled', false);
+            }
+
+            $('select').change(function() {
+                const scores = {
+                    'chinese': $('#chinese').val(),
+                    'english': $('#english').val(),
+                    'math': $('#math').val(),
+                    'science': $('#science').val(),
+                    'social': $('#social').val(),
+                    'composition': $('#composition').val()
+                };
+                $('#totalScore1').text(calculatePoints(scores));
+                $('#totalScore2').text(calculatePoints2(scores));
+            });
+
+            $('#compareScores').click(function() {
+                const currentScores = {
+                    chinese: $('#chinese').val(),
+                    english: $('#english').val(),
+                    math: $('#math').val(),
+                    science: $('#science').val(),
+                    social: $('#social').val(),
+                    composition: $('#composition').val()
+                };
+                
+                const previousYearsData = generatePreviousYearsData();
+                
+                let comparisonHtml = '<h4>成績比較</h4><table class="table"><thead><tr><th>年份</th><th>國文</th><th>英文</th><th>數學</th><th>自然</th><th>社會</th><th>作文</th><th>積分</th><th>積點</th></tr></thead><tbody>';
+                
+                const currentYear = new Date().getFullYear();
+                const currentTotalPoints1 = calculatePoints(currentScores);
+                const currentTotalPoints2 = calculatePoints2(currentScores);
+                comparisonHtml += `<tr><td>${currentYear}</td><td>${currentScores.chinese}</td><td>${currentScores.english}</td><td>${currentScores.math}</td><td>${currentScores.science}</td><td>${currentScores.social}</td><td>${currentScores.composition}</td><td>${currentTotalPoints1}</td><td>${currentTotalPoints2}</td></tr>`;
+                
+                previousYearsData.forEach(yearData => {
+                    const totalPoints1 = calculatePoints(yearData.scores);
+                    const totalPoints2 = calculatePoints2(yearData.scores);
+                    comparisonHtml += `<tr><td>${yearData.year}</td><td>${yearData.scores.chinese}</td><td>${yearData.scores.english}</td><td>${yearData.scores.math}</td><td>${yearData.scores.science}</td><td>${yearData.scores.social}</td><td>${yearData.scores.composition}</td><td>${totalPoints1}</td><td>${totalPoints2}</td></tr>`;
+                });
+                
+                comparisonHtml += '</tbody></table>';
+                
+                $('#comparisonResults').html(comparisonHtml);
+                $('#comparisonCard').show();
+
+                const ctx = document.getElementById('comparisonChart').getContext('2d');
+                new Chart(ctx, {
+                    type: 'line',
+                    data: {
+                        labels: [2020, 2021, 2022, currentYear],
+                        datasets: [{
+                            label: '總分',
+                            data: [
+                                calculatePoints(previousYearsData[0].scores),
+                                calculatePoints(previousYearsData[1].scores),
+                                calculatePoints(previousYearsData[2].scores),
+                                currentTotalPoints1
+                            ],
+                            borderColor: 'rgb(75, 192, 192)',
+                            tension: 0.1
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        scales: {
+                            y: {
+                                beginAtZero: true
+                            }
+                        }
+                    }
+                });
+            });
+
+            $('#saveScores').click(function() {
+                Swal.fire({
+                    title: '確定要儲存成績嗎？',
+                    text: "這將覆蓋之前儲存的成績",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: '是的，儲存',
+                    cancelButtonText: '取消'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        const scores = {
+                            chinese: sanitizeInput($('#chinese').val()),
+                            english: sanitizeInput($('#english').val()),
+                            math: sanitizeInput($('#math').val()),
+                            science: sanitizeInput($('#science').val()),
+                            social: sanitizeInput($('#social').val()),
+                            composition: sanitizeInput($('#composition').val())
+                        };
+                        localStorage.setItem('savedScores', JSON.stringify(scores));
+                        Swal.fire({
+                            icon: 'success',
+                            title: '成績已儲存',
+                            showConfirmButton: false,
+                            timer: 1500
+                        });
+                    }
+                });
+            });
+
+            $('#loadScores').click(function() {
+                const scores = JSON.parse(localStorage.getItem('savedScores'));
+                if (scores) {
+                    for (let subject in scores) {
+                        $(`#${subject}`).val(scores[subject]);
+                    }
+                    const scoresData = {
+                        'chinese': $('#chinese').val(),
+                        'english': $('#english').val(),
+                        'math': $('#math').val(),
+                        'science': $('#science').val(),
+                        'social': $('#social').val(),
+                        'composition': $('#composition').val()
+                    };
+                    $('#totalScore1').text(calculatePoints(scoresData));
+                    $('#totalScore2').text(calculatePoints2(scoresData));
+                    Swal.fire({
+                        icon: 'success',
+                        title: '成績已載入',
+                        showConfirmButton: false,
+                        timer: 1500
+                    });
+                } else {
+                    Swal.fire({
+                        icon: 'error',
+                        title: '沒有儲存的成績',
+                        text: '請先儲存成績再進行載入。'
+                    });
+                }
+            });
+
+            $('#searchButton').click(function() {
+                const searchTerm = $('#schoolSearch').val().toLowerCase();
+                const matchedSchools = schools.filter(school => 
+                    school.name.toLowerCase().includes(searchTerm)
+                );
+
+                let resultsHtml = '';
+                if (matchedSchools.length > 0) {
+                    matchedSchools.forEach(school => {
+                        resultsHtml += `
+                            <div class="col-md-4 mb-3">
+                                <div class="card h-100">
+                                    <div class="card-header">${school.name}</div>
+                                    <div class="card-body">
+                                        <p class="card-text">類型: ${school.type}</p>
+                                        <p class="card-text">學校類別: ${school.ownership === 'public' ? '公立' : '私立'}</p>
+                                        <p class="card-text">最低積分: ${school.minCredits}</p>
+                                        <p class="card-text">最低積點: ${school.minPoints}</p>
+                                        ${school.vocationalGroups ? `<p class="card-text">職業群: ${school.vocationalGroups.join(', ')}</p>` : ''}
+                                        ${school.departments ? `<p class="card-text">科系: ${school.departments.join(', ')}</p>` : ''}
+                                    </div>
+                                </div>
+                            </div>
+                        `;
+                    });
+                } else {
+                    resultsHtml = '<div class="col-12"><p>沒有找到符合的學校。</p></div>';
+                }
+
+                $('#searchResults').html(resultsHtml);
+            });
+
+            $('#school_type').change(function() {
+                if ($(this).val() === "職業類科") {
+                    $('#vocational_group_container').show();
+                    $('#vocational_dept_group').show();
+                } else {
+                    $('#vocational_group_container').hide();
+                    $('#vocational_dept_group').hide();
+                    $('#vocational_group').val('');
+                    $('#vocational_dept').val('');
+                }
+            });
+
+            $('#vocational_group').change(function() {
+                const selectedGroup = $(this).val();
+                const $deptSelect = $('#vocational_dept');
+                $deptSelect.empty().append('<option value="">請選擇</option>');
+                $deptSelect.append('<option value="all">全部</option>');
+                
+                if (selectedGroup in vocationalGroups) {
+                    vocationalGroups[selectedGroup].forEach(dept => {
+                        $deptSelect.append(`<option value="${dept}">${dept}</option>`);
+                    });
+                }
+            });
+        });
+    </script>
+</body>
+</html>

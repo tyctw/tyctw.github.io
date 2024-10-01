@@ -575,7 +575,6 @@
                                     <p class="card-text">類型: ${school.type}</p>
                                     <p class="card-text">學校類別: ${school.ownership === 'public' ? '公立' : '私立'}</p>
                                     <p class="card-text">最低積分: ${school.minCredits}</p>
-                                    <p class="card-text">最低積點: ${school.minPoints}</p>
                                     ${school.vocationalGroups ? `<p class="card-text">職業群: ${school.vocationalGroups.join(', ')}</p>` : ''}
                                     ${school.departments ? `<p class="card-text">科系: ${school.departments.join(', ')}</p>` : ''}
                                 </div>
@@ -740,8 +739,6 @@
                                     <div class="card-body">
                                         <p class="card-text">類型: ${school.type}</p>
                                         <p class="card-text">學校類別: ${school.ownership === 'public' ? '公立' : '私立'}</p>
-                                        <p class="card-text">最低積分: ${school.minCredits}</p>
-                                        <p class="card-text">最低積點: ${school.minPoints}</p>
                                         ${school.vocationalGroups ? `<p class="card-text">職業群: ${school.vocationalGroups.join(', ')}</p>` : ''}
                                         ${school.departments ? `<p class="card-text">科系: ${school.departments.join(', ')}</p>` : ''}
                                     </div>

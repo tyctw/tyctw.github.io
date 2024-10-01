@@ -306,12 +306,12 @@
             <div class="card-body">
                 <div class="row">
                     <div class="col-md-6">
-                        <h4>積分計算</h4>
-                        <p>總分: <span id="totalScore2">0</span></p>
-                    </div>
-                    <div class="col-md-6">
                         <h4>積點計算</h4>
                         <p>總分: <span id="totalScore1">0</span></p>
+                    </div>
+                    <div class="col-md-6">
+                        <h4>積分計算</h4>
+                        <p>總分: <span id="totalScore2">0</span></p>
                     </div>
                 </div>
             </div>
@@ -345,32 +345,83 @@
     <script>
         $(document).ready(function() {
             const schools = [
-                { name: "治平高中(綜合科)", minCredits: 15, minPoints: 6, type: "普通科", ownership: "private" },
-                { name: "振聲高中(普通科)", minCredits: 23, minPoints: 13, type: "普通科", ownership: "private" },
-                { name: "啟英高中(普通科)", minCredits: 21, minPoints: 10, type: "普通科", ownership: "private" },
-                { name: "育達高中(普通科)", minCredits: 20, minPoints: 14, type: "普通科", ownership: "private" },
-                { name: "新興高中(資料處理科)", minCredits: 19, minPoints: 9, type: "職業類科", ownership: "private", vocationalGroups: ["商業與管理群"], departments: ["資料處理科"] },
-                { name: "新興高中(應用英語科)", minCredits: 19, minPoints: 9, type: "職業類科", ownership: "private", vocationalGroups: ["外語群"], departments: ["應用英語科"] },
-                { name: "新興高中(電子科)", minCredits: 19, minPoints: 9, type: "職業類科", ownership: "private", vocationalGroups: ["電機與電子群"], departments: ["電子科"] },
-                { name: "中壢高商(商業經營科)", minCredits: 23, minPoints: 12, type: "職業類科", ownership: "public", vocationalGroups: ["商業與管理群"], departments: ["商業經營科"] },
-                { name: "中壢高商(資料處理科)", minCredits: 23, minPoints: 13, type: "職業類科", ownership: "public", vocationalGroups: ["商業與管理群"], departments: ["資料處理科"] },
-                { name: "中壢高商(國際貿易科)", minCredits: 23, minPoints: 14, type: "職業類科", ownership: "public", vocationalGroups: ["商業與管理群"], departments: ["國際貿易科"] },
+                { name: "武陵高中(普通科)", points: 33, credits: 32, type: "普通科", ownership: "public" },
+                { name: "中壢高中(普通科)", points: 31, credits: 28, type: "普通科", ownership: "public" },
+                { name: "內壢高中(普通科)", points: 29, credits: 24, type: "普通科", ownership: "public" },
+                { name: "陽明高中(普通科)", points: 27, credits: 22, type: "普通科", ownership: "public" },
+                { name: "平鎮高中(普通科)", points: 27, credits: 21, type: "普通科", ownership: "public" },
+                { name: "永豐高中(普通科)", points: 25, credits: 20, type: "普通科", ownership: "public" },
+                { name: "大園高中(普通科)", points: 25, credits: 19, type: "普通科", ownership: "public" },
+                { name: "南崁高中(普通科)", points: 25, credits: 16, type: "普通科", ownership: "public" },
+                { name: "壽山高中(普通科)", points: 25, credits: 14, type: "普通科", ownership: "public" },
+                { name: "龍潭高中(普通科)", points: 23, credits: 17, type: "普通科", ownership: "public" },
+                { name: "楊梅高中(普通科)", points: 23, credits: 13, type: "普通科", ownership: "public" },
+                { name: "觀音高中(普通科)", points: 23, credits: 11, type: "普通科", ownership: "public" },
+                { name: "復旦高中(普通科)", points: 29, credits: 28, type: "普通科", ownership: "private" },
+                { name: "新興高中(普通科)", points: 23, credits: 10, type: "普通科", ownership: "private" },
+                { name: "大溪高中(普通科)", points: 23, credits: 10, type: "普通科", ownership: "public" },
+                { name: "中壢高商(綜合科)", points: 25, credits: 18, type: "普通科", ownership: "public" },
+                { name: "治平高中(普通科)", points: 15, credits: 6, type: "普通科", ownership: "private" },
+                { name: "治平高中(綜合科)", points: 15, credits: 6, type: "普通科", ownership: "private" },
+                { name: "振聲高中(普通科)", points: 23, credits: 13, type: "普通科", ownership: "private" },
+                { name: "啟英高中(普通科)", points: 21, credits: 10, type: "普通科", ownership: "private" },
+                { name: "育達高中(普通科)", points: 20, credits: 14, type: "普通科", ownership: "private" },
+                { name: "新興高中(資料處理科)", points: 19, credits: 9, type: "職業類科", ownership: "private", group: "商業與管理群" },
+                { name: "新興高中(應用英語科)", points: 19, credits: 9, type: "職業類科", ownership: "private", group: "外語群" },
+                { name: "新興高中(電子科)", points: 19, credits: 9, type: "職業類科", ownership: "private", group: "電機與電子群" },
+                { name: "中壢高商(商業經營科)", points: 23, credits: 12, type: "職業類科", ownership: "public", group: "商業與管理群" },
+                { name: "中壢高商(資料處理科)", points: 23, credits: 13, type: "職業類科", ownership: "public", group: "商業與管理群" },
+                { name: "中壢高商(國際貿易科)", points: 23, credits: 14, type: "職業類科", ownership: "public", group: "商業與管理群" },
+                { name: "壽山高中(國際貿易)", points: 23, credits: 15, type: "職業類科", ownership: "public", group: "商業與管理群" },
+                { name: "壽山高中(應用英語科)", points: 23, credits: 15, type: "職業類科", ownership: "public", group: "外語群" },
+                { name: "壽山高中(廣告設計科)", points: 23, credits: 14, type: "職業類科", ownership: "public", group: "設計群" },
+                { name: "中壢家商(應用英語科)", points: 23, credits: 16, type: "職業類科", ownership: "public", group: "外語群" },
+                { name: "中壢家商(資料處理科)", points: 23, credits: 13, type: "職業類科", ownership: "public", group: "商業與管理群" },
+                { name: "中壢家商(商業經營科)", points: 23, credits: 13, type: "職業類科", ownership: "public", group: "商業與管理群" },
+                { name: "中壢家商(家政科)", points: 23, credits: 12, type: "職業類科", ownership: "public", group: "家政群" },
+                { name: "北科附工(電機科)", points: 25, credits: 16, type: "職業類科", ownership: "public", group: "電機與電子群" },
+                { name: "北科附工(電子科)", points: 25, credits: 18, type: "職業類科", ownership: "public", group: "電機與電子群" },
+                { name: "北科附工(畜產保健)", points: 25, credits: 16, type: "職業類科", ownership: "public", group: "農業群" },
+                { name: "北科附工(機械科)", points: 23, credits: 16, type: "職業類科", ownership: "public", group: "機械群" },
+                { name: "北科附工(化工科)", points: 23, credits: 16, type: "職業類科", ownership: "public", group: "化工群" },
+                { name: "北科附工(動力機械)", points: 23, credits: 14, type: "職業類科", ownership: "public", group: "動力機械群" },
+                { name: "北科附工(汽車科)", points: 23, credits: 12, type: "職業類科", ownership: "public", group: "動力機械群" },
+                { name: "北科附工(生物產業機電)", points: 23, credits: 13, type: "職業類科", ownership: "public", group: "機械群" },
+                { name: "北科附工(模具科)", points: 23, credits: 13, type: "職業類科", ownership: "public", group: "機械群" },
+                { name: "北科附工(農場經營科)", points: 23, credits: 12, type: "職業類科", ownership: "public", group: "農業群" },
+                { name: "北科附工(園藝科)", points: 23, credits: 12, type: "職業類科", ownership: "public", group: "農業群" },
+                { name: "楊梅高中(電子科)", points: 23, credits: 10, type: "職業類科", ownership: "public", group: "電機與電子群" },
+                { name: "楊梅高中(資訊科)", points: 23, credits: 10, type: "職業類科", ownership: "public", group: "電機與電子群" },
+                { name: "龍潭高中(造園科)", points: 21, credits: 10, type: "職業類科", ownership: "public", group: "設計群" },
+                { name: "龍潭高中(園藝科)", points: 21, credits: 10, type: "職業類科", ownership: "public", group: "農業群" },
+                { name: "龍潭高中(機械科)", points: 21, credits: 11, type: "職業類科", ownership: "public", group: "機械群" },
+                { name: "龍潭高中(電子科)", points: 23, credits: 13, type: "職業類科", ownership: "public", group: "電機與電子群" },
+                { name: "龍潭高中(畜產保健科)", points: 21, credits: 14, type: "職業類科", ownership: "public", group: "農業群" },
+                { name: "關西高中(園藝科)", points: 21, credits: 9, type: "職業類科", ownership: "public", group: "農業群" },
+                { name: "關西高中(畜產保健科)", points: 19, credits: 8, type: "職業類科", ownership: "public", group: "農業群" },
+                { name: "關西高中(家政科)", points: 21, credits: 10, type: "職業類科", ownership: "public", group: "家政群" },
+                { name: "振聲高中(電子商務科)", points: 21, credits: 9, type: "職業類科", ownership: "private", group: "商業與管理群" },
+                { name: "振聲高中(多媒體設計)", points: 21, credits: 9, type: "職業類科", ownership: "private", group: "設計群" },
+                { name: "振聲高中(觀光事業科)", points: 21, credits: 12, type: "職業類科", ownership: "private", group: "商業與管理群" },
+                { name: "振聲高中(資訊科)", points: 23, credits: 11, type: "職業類科", ownership: "private", group: "電機與電子群" },
+                { name: "振聲高中(應用英語科)", points: 23, credits: 13, type: "職業類科", ownership: "private", group: "外語群" },
+                { name: "振聲高中(商業經營科)", points: 23, credits: 10, type: "職業類科", ownership: "private", group: "商業與管理群" },
+                { name: "新興高中(應用日語科)", points: 29, credits: 13, type: "職業類科", ownership: "private", group: "外語群" },
+                { name: "新興高中(廣告設計科)", points: 19, credits: 9, type: "職業類科", ownership: "private", group: "設計群" },
+                { name: "新興高中(機械科)", points: 19, credits: 9, type: "職業類科", ownership: "private", group: "機械群" },
+                { name: "新興高中(汽車科)", points: 17, credits: 9, type: "職業類科", ownership: "private", group: "動力機械群" },
+                { name: "新興高中(飛機修護科)", points: 19, credits: 8, type: "職業類科", ownership: "private", group: "動力機械群" },
+                { name: "新興高中(觀光事業科)", points: 19, credits: 8, type: "職業類科", ownership: "private", group: "餐旅群" },
+                { name: "新興高中(電子商務科)", points: 19, credits: 8, type: "職業類科", ownership: "private", group: "設計群" },
+                { name: "新興高中(家具木工科)", points: 19, credits: 8, type: "職業類科", ownership: "private", group: "商業與管理群" },
+                { name: "啟英高中(餐飲管理科)", points: 15, credits: 6, type: "職業類科", ownership: "private", group: "餐旅群" },
+                { name: "啟英高中(汽車科)", points: 18, credits: 8, type: "職業類科", ownership: "private", group: "動力機械群" },
+                { name: "啟英高中(時尚造型科)", points: 15, credits: 6, type: "職業類科", ownership: "private", group: "家政群" },
+                { name: "啟英高中(資訊科)", points: 16, credits: 7, type: "職業類科", ownership: "private", group: "電機與電子群" },
+                { name: "啟英高中(應用英語科)", points: 19, credits: 8, type: "職業類科", ownership: "private", group: "外語群" },
+                { name: "啟英高中(室內設計科)", points: 21, credits: 9, type: "職業類科", ownership: "private", group: "設計群" },
+                { name: "啟英高中(資料處理科)", points: 22, credits: 10, type: "職業類科", ownership: "private", group: "商業與管理群" }
             ];
-
-            const vocationalGroups = {
-                '機械群': ['機械科', '鑄造科', '板金科', '機械木模科', '配管科', '模具科', '機電科', '製圖科', '生物產業機電科', '電腦機械製圖科'],
-                '動力機械群': ['汽車科', '重機科', '飛機修護科', '動力機械科', '農業機械科', '軌道車輛科'],
-                '電機與電子群': ['資訊科', '電子科', '控制科', '電機科', '冷凍空調科', '航空電子科', '電機空調科'],
-                '化工群': ['化工科', '紡織科', '染整科'],
-                '土木與建築群': ['建築科', '土木科', '消防工程科', '空間測繪科'],
-                '商業與管理群': ['商業經營科', '國際貿易科', '會計事務科', '資料處理科', '不動產事務科', '電子商務科', '流通管理科', '農產行銷科', '航運管理科'],
-                '外語群': ['應用外語科（英文組）', '應用外語科（日文組）'],
-                '設計群': ['家具木工科', '美工科', '陶瓷工程科', '室內空間設計科', '圖文傳播科', '金屬工藝科', '家具設計科', '廣告設計科', '多媒體設計科', '多媒體應用科', '室內設計科'],
-                '農業群': ['農場經營科', '園藝科', '森林科', '野生動物保育科', '造園科', '畜產保健科'],
-                '食品群': ['食品加工科', '食品科', '水產食品科', '烘焙科'],
-                '家政群': ['家政科', '服裝科', '幼兒保育科', '美容科', '時尚模特兒科', '流通服飾科', '時尚造型科', '照顧服務科'],
-                '餐旅群': ['觀光事業科', '餐飲管理科']
-            };
 
             function calculatePoints(scores) {
                 const gradeValues = {
@@ -387,7 +438,7 @@
 
             function calculatePoints2(scores) {
                 const gradeValues = {
-                    'A++': 6, 'A+': 6, 'A': 6, 'B++': 4, 'B+': 4, 'B': 4, 'C': 2
+                    'A++': 6, 'A+': 6, 'A': 6, 'B++': 5, 'B+': 4, 'B': 3, 'C': 2
                 };
                 const compositionValues = {
                     '6': 3, '5': 3, '4': 3, '3': 2, '2': 2, '1': 1, '0': 0
@@ -411,10 +462,10 @@
                     if (schoolType !== 'all' && school.type !== schoolType) return false;
                     if (schoolOwnership !== 'all' && school.ownership !== schoolOwnership) return false;
                     if (school.type === "職業類科") {
-                        if (vocationalGroup !== 'all' && (!school.vocationalGroups || !school.vocationalGroups.includes(vocationalGroup))) return false;
-                        if (vocationalDept !== "all" && vocationalDept && (!school.departments || !school.departments.includes(vocationalDept))) return false;
+                        if (vocationalGroup !== 'all' && school.group !== vocationalGroup) return false;
+                        if (vocationalDept !== "all" && vocationalDept) return false; 
                     }
-                    return totalCredits >= school.minCredits && totalPoints >= school.minPoints;
+                    return totalCredits >= school.credits && totalPoints >= school.points;
                 });
             }
 
@@ -574,9 +625,9 @@
                                 <div class="card-body">
                                     <p class="card-text">類型: ${school.type}</p>
                                     <p class="card-text">學校類別: ${school.ownership === 'public' ? '公立' : '私立'}</p>
-                                    <p class="card-text">最低積分: ${school.minCredits}</p>
-                                    ${school.vocationalGroups ? `<p class="card-text">職業群: ${school.vocationalGroups.join(', ')}</p>` : ''}
-                                    ${school.departments ? `<p class="card-text">科系: ${school.departments.join(', ')}</p>` : ''}
+                                    <p class="card-text">最低積分: ${school.credits}</p>
+                                    <p class="card-text">最低積點: ${school.points}</p>
+                                    ${school.group ? `<p class="card-text">職業群: ${school.group}</p>` : ''}
                                 </div>
                             </div>
                         </div>
@@ -739,8 +790,9 @@
                                     <div class="card-body">
                                         <p class="card-text">類型: ${school.type}</p>
                                         <p class="card-text">學校類別: ${school.ownership === 'public' ? '公立' : '私立'}</p>
-                                        ${school.vocationalGroups ? `<p class="card-text">職業群: ${school.vocationalGroups.join(', ')}</p>` : ''}
-                                        ${school.departments ? `<p class="card-text">科系: ${school.departments.join(', ')}</p>` : ''}
+                                        <p class="card-text">最低積分: ${school.credits}</p>
+                                        <p class="card-text">最低積點: ${school.points}</p>
+                                        ${school.group ? `<p class="card-text">職業群: ${school.group}</p>` : ''}
                                     </div>
                                 </div>
                             </div>

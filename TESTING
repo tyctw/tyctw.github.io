@@ -126,6 +126,12 @@
         transform: translateY(-5px);
         box-shadow: 0 4px 15px rgba(0,0,0,0.1);
     }
+    footer {
+        background-color: #f8f9fa;
+        border-top: 1px solid #e9ecef;
+        color: #6c757d;
+        font-size: 0.9rem;
+    }
 </style>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.3/jquery.validate.min.js"></script>
@@ -336,11 +342,15 @@
             </div>
             <div class="card-body" id="comparisonResults">
                 <div class="chart-container">
-                    <canvas id="comparisonChart"></canvas>
                 </div>
             </div>
         </div>
     </div>
+    <footer class="mt-5 py-3 text-center">
+        <div class="container">
+            <p>&copy; 2024 TYCTW會考落點分析. All rights reserved.</p>
+        </div>
+    </footer>
 
     <script>
         function generateInvitationCode() {

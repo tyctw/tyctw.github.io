@@ -1,4 +1,4 @@
-<html><head>
+<html><head><base href="https://taoyuanacademy.edu.tw/admissions/">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>桃聯區會考落點分析平台</title>
@@ -214,6 +214,7 @@
                     </div>
                 </div>
                 <div class="col-md-4 text-md-right mt-3 mt-md-0">
+
                 </div>
             </div>
         </div>
@@ -228,7 +229,7 @@
                 <form id="scoreForm">
                     <div class="form-row">
                         <div class="form-group col-md-6">
-                            <label for="chinese">國文:</label>
+                            <label for="chinese"><i class="fas fa-book"></i> 國文:</label>
                             <select id="chinese" name="chinese" class="form-control">
                                 <option value="">請選擇</option>
                                 <option value="A++">A++</option>
@@ -241,7 +242,7 @@
                             </select>
                         </div>
                         <div class="form-group col-md-6">
-                            <label for="english">英文:</label>
+                            <label for="english"><i class="fas fa-language"></i> 英文:</label>
                             <select id="english" name="english" class="form-control">
                                 <option value="">請選擇</option>
                                 <option value="A++">A++</option>
@@ -256,7 +257,7 @@
                     </div>
                     <div class="form-row">
                         <div class="form-group col-md-6">
-                            <label for="math">數學:</label>
+                            <label for="math"><i class="fas fa-calculator"></i> 數學:</label>
                             <select id="math" name="math" class="form-control">
                                 <option value="">請選擇</option>
                                 <option value="A++">A++</option>
@@ -269,7 +270,7 @@
                             </select>
                         </div>
                         <div class="form-group col-md-6">
-                            <label for="science">自然:</label>
+                            <label for="science"><i class="fas fa-flask"></i> 自然:</label>
                             <select id="science" name="science" class="form-control">
                                 <option value="">請選擇</option>
                                 <option value="A++">A++</option>
@@ -284,7 +285,7 @@
                     </div>
                     <div class="form-row">
                         <div class="form-group col-md-6">
-                            <label for="social">社會:</label>
+                            <label for="social"><i class="fas fa-globe-asia"></i> 社會:</label>
                             <select id="social" name="social" class="form-control">
                                 <option value="">請選擇</option>
                                 <option value="A++">A++</option>
@@ -297,7 +298,7 @@
                             </select>
                         </div>
                         <div class="form-group col-md-6">
-                            <label for="composition">作文:</label>
+                            <label for="composition"><i class="fas fa-pen-fancy"></i> 作文:</label>
                             <select id="composition" name="composition" class="form-control">
                                 <option value="">請選擇</option>
                                 <option value="0">0</option>
@@ -312,7 +313,7 @@
                     </div>
                     <div class="form-row">
                         <div class="form-group col-md-6">
-                            <label for="school_type">選擇類別:</label>
+                            <label for="school_type"><i class="fas fa-school"></i> 選擇學校類別:</label>
                             <select id="school_type" name="school_type" class="form-control">
                                 <option value="all">全部</option>
                                 <option value="普通科">普通科</option>
@@ -320,7 +321,7 @@
                             </select>
                         </div>
                         <div class="form-group col-md-6">
-                            <label for="school_ownership">學校類型:</label>
+                            <label for="school_ownership"><i class="fas fa-building"></i> 學校類型:</label>
                             <select id="school_ownership" name="school_ownership" class="form-control">
                                 <option value="all">全部</option>
                                 <option value="public">公立</option>
@@ -330,7 +331,7 @@
                     </div>          
                               <div class="form-row"></div>
                         <div class="form-group col-md-6" id="vocational_group_container" style="display: none;">
-                            <label for="vocational_group">職業群:</label>
+                            <label for="vocational_group"><i class="fas fa-tools"></i> 職業群:</label>
                             <select id="vocational_group" name="vocational_group" class="form-control">
                                 <option value="">請選擇</option>
                                 <option value="機械群">機械群</option>
@@ -348,30 +349,24 @@
                             </select>
                         </div>
                         <div class="form-group col-md-6" id="vocational_dept_group" style="display: none;">
-                            <label for="vocational_dept">職業科系:</label>
+                            <label for="vocational_dept"><i class="fas fa-graduation-cap"></i> 職業科系:</label>
                             <select id="vocational_dept" name="vocational_dept" class="form-control">
                                 <option value="all">全部</option>
                             </select>
                         </div>
                     <div class="form-row">
                         <div class="form-group col-md-6">
-                            <label for="invitation_code">邀請碼:</label>
+                            <label for="invitation_code"><i class="fas fa-key"></i> 邀請碼:</label>
                             <input type="text" id="invitation_code" name="invitation_code" class="form-control" placeholder="請輸入邀請碼">
                         </div>
-                        <div class="form-group col-md-6" id="vocational_dept_group" style="display: none;">
-                            <label for="vocational_dept">職業科系:</label>
-                            <select id="vocational_dept" name="vocational_dept" class="form-control">
-                                <option value="all">全部</option>
-                            </select>
-                        </div>
-                    </div>
 
-                    <button type="submit" class="btn btn-primary btn-block mt-4">提交並分析</button>
-                    <button type="button" id="compareScores" class="btn btn-secondary btn-block mt-2">與往年成績比較</button>
-                    <div class="mt-2">
-                        <button type="button" id="saveScores" class="btn btn-info">儲存成績</button>
-                        <button type="button" id="loadScores" class="btn btn-warning">載入成績</button>
-                    </div>
+
+                        <button type="submit" class="btn btn-primary btn-block mt-4"><i class="fas fa-search"></i> 提交並分析</button>
+                        <button type="button" id="compareScores" class="btn btn-secondary btn-block mt-2"><i class="fas fa-chart-line"></i> 與往年成績比較</button>
+                        <div class="mt-2">
+                            <button type="button" id="saveScores" class="btn btn-info"><i class="fas fa-save"></i> 儲存成績</button>
+                            <button type="button" id="loadScores" class="btn btn-warning"><i class="fas fa-upload"></i> 載入成績</button>
+                        </div>
                 </form>
             </div>
         </div>

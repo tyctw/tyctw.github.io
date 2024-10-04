@@ -1,4 +1,4 @@
-<html><head><base href="https://taoyuanacademy.edu.tw/admissions/">
+<html><head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>桃聯區會考落點分析平台</title>
@@ -6,26 +6,29 @@
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
     <style>
-        body {
+  body {
             font-family: 'Noto Sans TC', sans-serif;
             background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
             min-height: 100vh;
             padding-top: 0;
+            transition: background-color 0.3s ease;
         }
         .container {
             background-color: rgba(255, 255, 255, 0.9);
-            border-radius: 20px;
+            border-radius: 30px;
             padding: 40px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.08);
             max-width: 800px;
             padding-top: 30px;
+            transition: all 0.3s ease;
         }
         .site-header {
             background: linear-gradient(135deg, #3a539b 0%, #1c3170 100%);
             color: white;
             padding: 30px 0;
             margin-bottom: 30px;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            border-radius: 0 0 30px 30px;
+            box-shadow: 0 6px 12px rgba(0,0,0,0.08);
         }
         .site-title {
             margin: 0;
@@ -45,9 +48,11 @@
         @media (max-width: 768px) {
             .container {
                 padding: 20px;
+                border-radius: 20px;
             }
             .site-header {
                 padding: 15px 0;
+                border-radius: 0 0 20px 20px;
             }
             .site-title {
                 font-size: 1.8rem;
@@ -65,6 +70,8 @@
             .btn-primary, .btn-secondary, .btn-info, .btn-warning {
                 font-size: 1rem;
                 padding: 8px 16px;
+                border-radius: 25px;
+                transition: all 0.3s ease;
             }
             .form-group label {
                 font-size: 1rem;
@@ -95,11 +102,17 @@
             color: #34495e;
             font-size: 1.1rem;
         }
+        .form-group label i {
+            margin-right: 5px;
+            width: 20px;
+            text-align: center;
+        }
         .btn-primary {
             background-color: #3a539b;
             border-color: #3a539b;
             font-size: 1.2rem;
             padding: 10px 20px;
+            border-radius: 25px;
             transition: all 0.3s ease;
         }
         .btn-primary:hover {
@@ -111,25 +124,56 @@
         .btn-secondary, .btn-info, .btn-warning {
             font-size: 1.2rem;
             padding: 10px 20px;
+            border-radius: 25px;
             transition: all 0.3s ease;
         }
-        .form-control {
-            border-radius: 10px;
-            border: 2px solid #e0e0e0;
+        .btn i {
+            margin-right: 5px;
+        }
+        .card {
+            border: none;
+            border-radius: 20px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.08);
             transition: all 0.3s ease;
         }
-        .form-control:focus {
-            border-color: #3a539b;
-            box-shadow: 0 0 0 0.2rem rgba(58, 83, 155, 0.25);
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.15);
         }
-        #scoreForm {
-            max-width: 600px;
-            margin: 0 auto;
+        .card-header {
+            background-color: #3a539b;
+            color: white;
+            border-radius: 20px 20px 0 0 !important;
+            font-weight: bold;
+        }
+        .card-header i {
+            margin-right: 10px;
+        }
+        .chart-container {
+            position: relative;
+            height: 300px;
+            width: 100%;
+        }
+        #schoolCards .card {
+            transition: all 0.3s ease;
+        }
+        #schoolCards .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+        footer {
+            background-color: #f8f9fa;
+            border-top: 1px solid #e9ecef;
+            color: #6c757d;
+            font-size: 0.9rem;
         }
         .loading {
             display: none;
             text-align: center;
             margin-top: 20px;
+        }
+        .loading i {
+            color: #3a539b;
         }
         .loading-spinner {
             width: 60px;
@@ -161,39 +205,29 @@
                 max-width: 100%;
             }
         }
-        .card {
-            border: none;
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+        .card-body {
+            padding: 1.5rem;
+        }
+        .form-control {
             border-radius: 15px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
             transition: all 0.3s ease;
         }
-        .card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 20px rgba(0,0,0,0.15);
+        .form-control:focus {
+            box-shadow: 0 0 0 0.2rem rgba(58, 83, 155, 0.25);
         }
-        .card-header {
-            background-color: #3a539b;
-            color: white;
-            border-radius: 15px 15px 0 0 !important;
-            font-weight: bold;
+        .input-group .form-control:not(:last-child) {
+            border-top-right-radius: 0;
+            border-bottom-right-radius: 0;
         }
-        .chart-container {
-            position: relative;
-            height: 300px;
-            width: 100%;
+        .input-group-append .btn {
+            border-top-left-radius: 0;
+            border-bottom-left-radius: 0;
         }
-        #schoolCards .card {
-            transition: all 0.3s ease;
-        }
-        #schoolCards .card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-        }
-        footer {
-            background-color: #f8f9fa;
-            border-top: 1px solid #e9ecef;
-            color: #6c757d;
-            font-size: 0.9rem;
+        .loading-spinner {
+            border-radius: 50%;
         }
 </style>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>

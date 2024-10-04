@@ -17,6 +17,7 @@
         --card-background: #ffffff;
         --shadow-color: rgba(0, 0, 0, 0.1);
         --accent-color: #e74c3c;
+        --menu-background: rgba(52, 152, 219, 0.95);
       }
     
       body {
@@ -192,7 +193,7 @@
         font-size: 1.2em;
       }
     
-      /* Header styles */
+      /* 菜單樣式 */
       .header {
         background-color: var(--primary-color);
         color: white;
@@ -202,7 +203,7 @@
         left: 0;
         width: 100%;
         z-index: 1000;
-        box-shadow: 0 2px 4px var(--shadow-color);
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
       }
   
       .header-container {
@@ -217,61 +218,100 @@
       .header-logo {
         font-size: 1.5em;
         font-weight: bold;
+        display: flex;
+        align-items: center;
+      }
+  
+      .header-logo i {
+        margin-right: 10px;
       }
   
       .menu-icon {
-        display: none;
         font-size: 1.5em;
         cursor: pointer;
-      }
-  
-      .header-nav {
-        display: flex;
-      }
-  
-      .header-nav a {
-        color: white;
-        text-decoration: none;
-        margin-left: 20px;
         transition: color 0.3s ease;
-        font-weight: 500;
       }
   
-      .header-nav a:hover {
+      .menu-icon:hover {
         color: var(--accent-color);
       }
   
-      /* Mobile styles */
-      @media (max-width: 768px) {
-        .menu-icon {
-          display: block;
-        }
-  
-        .header-nav {
-          display: none;
-          position: absolute;
-          top: 100%;
-          left: 0;
-          width: 100%;
-          background-color: var(--primary-color);
-          flex-direction: column;
-          padding: 10px 0;
-        }
-  
-        .header-nav.show {
-          display: flex;
-        }
-  
-        .header-nav a {
-          margin: 10px 20px;
-          padding: 5px 0;
-          border-bottom: 1px solid rgba(255, 255, 255, 0.2);
-        }
-  
-        .header-nav a:last-child {
-          border-bottom: none;
-        }
+      .fullscreen-menu {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: var(--menu-background);
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        z-index: 2000;
+        opacity: 0;
+        visibility: hidden;
+        transition: opacity 0.5s ease, visibility 0.5s ease;
       }
+  
+      .fullscreen-menu.show {
+        opacity: 1;
+        visibility: visible;
+      }
+  
+      .fullscreen-menu a {
+        color: white;
+        text-decoration: none;
+        font-size: 1.5em;
+        margin: 20px 0;
+        transition: all 0.5s ease;
+        position: relative;
+        padding: 10px 0;
+        opacity: 0;
+        transform: translateY(20px);
+      }
+  
+      .fullscreen-menu.show a {
+        opacity: 1;
+        transform: translateY(0);
+      }
+  
+      .fullscreen-menu a::after {
+        content: '';
+        position: absolute;
+        width: 100%;
+        height: 2px;
+        bottom: 0;
+        left: 0;
+        background-color: var(--accent-color);
+        visibility: hidden;
+        transform: scaleX(0);
+        transition: all 0.3s ease-in-out;
+      }
+  
+      .fullscreen-menu a:hover::after {
+        visibility: visible;
+        transform: scaleX(1);
+      }
+  
+      .fullscreen-menu a:hover {
+        color: var(--accent-color);
+      }
+  
+      .close-menu {
+        position: absolute;
+        top: 20px;
+        right: 20px;
+        font-size: 2em;
+        color: white;
+        cursor: pointer;
+        transition: color 0.3s ease, transform 0.3s ease;
+      }
+  
+      .close-menu:hover {
+        color: var(--accent-color);
+        transform: rotate(90deg);
+      }
+  
   
       .qr-options {
         display: flex;
@@ -382,7 +422,34 @@
       .form-group, .result-item, .instruction-item {
         animation: slideIn 0.5s ease-out;
       }
+   /* 新增過渡動畫 */
+   @keyframes fadeIn {
+        from { opacity: 0; }
+        to { opacity: 1; }
+      }
   
+      @keyframes slideIn {
+        from { transform: translateY(-20px); opacity: 0; }
+        to { transform: translateY(0); opacity: 1; }
+      }
+  
+      .container {
+        animation: fadeIn 0.5s ease-out;
+      }
+  
+      .form-group, .instruction-toggle, .disclaimer-toggle {
+        animation: slideIn 0.5s ease-out;
+      }
+  
+      .fullscreen-menu a {
+        animation: slideIn 0.5s ease-out;
+        animation-fill-mode: backwards;
+      }
+  
+      .fullscreen-menu a:nth-child(1) { animation-delay: 0.1s; }
+      .fullscreen-menu a:nth-child(2) { animation-delay: 0.2s; }
+      .fullscreen-menu a:nth-child(3) { animation-delay: 0.3s; }
+      .fullscreen-menu a:nth-child(4) { animation-delay: 0.4s; }
       /* Modal styles */
       .modal {
         display: none;
@@ -442,13 +509,8 @@
         background-color: #2980b9;
       }
 
-
-
-
-
-
-       /* 深色模式樣式 */
-       body.dark-mode {
+      /* 深色模式樣式 */
+      body.dark-mode {
           --background-color: #2c3e50;
           --text-color: #ecf0f1;
           --card-background: #34495e;
@@ -519,74 +581,337 @@
           }
       }
 
+      /* 深色模式樣式 */
+      body.dark-mode .modal-content {
+        background-color: #2c3e50;
+        color: #ecf0f1;
+        border-color: #34495e;
+      }
+
+      body.dark-mode .close {
+        color: #ecf0f1;
+      }
+
+      body.dark-mode .close:hover,
+      body.dark-mode .close:focus {
+        color: #bdc3c7;
+      }
+
+      body.dark-mode .confirm-button {
+        background-color: #3498db;
+        color: #ecf0f1;
+      }
+
+      body.dark-mode .confirm-button:hover {
+        background-color: #2980b9;
+      }
+
+      body.dark-mode .modal-content h2 {
+        color: #3498db;
+      }
+
+      body.dark-mode .modal-content a {
+        color: #2ecc71;
+      }
+
+      body.dark-mode .modal-content a:hover {
+        color: #27ae60;
+      }
+
+      body.dark-mode .modal-content ul {
+        border-left: 2px solid #3498db;
+        padding-left: 20px;
+      }
+
+      body.dark-mode .modal-content li {
+        margin-bottom: 10px;
+      }
+
+      /* 增強美觀的免責聲明樣式 */
+      #disclaimerModal .modal-content {
+        background-color: #ffffff;
+        border-radius: 30px;
+        padding: 50px;
+        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
+        max-width: 700px;
+        margin: auto;
+        position: relative;
+        backdrop-filter: blur(10px);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+      }
+
+      #disclaimerModal h2 {
+        color: #2c3e50;
+        font-size: 32px;
+        margin-bottom: 30px;
+        border-bottom: 4px solid #3498db;
+        padding-bottom: 20px;
+        text-align: center;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        text-transform: uppercase;
+        letter-spacing: 2px;
+      }
+
+      #disclaimerModal .icon {
+        color: #3498db;
+        margin-right: 15px;
+        font-size: 28px;
+      }
+
+      #disclaimerModal a {
+        color: #2980b9;
+        text-decoration: none;
+        transition: all 0.4s ease;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 25px;
+        padding: 20px;
+        background-color: #ecf0f1;
+        border-radius: 15px;
+        font-weight: bold;
+        font-size: 18px;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+      }
+
+      #disclaimerModal a:hover {
+        color: #ffffff;
+        background-color: #3498db;
+        transform: translateY(-5px) scale(1.02);
+        box-shadow: 0 10px 25px rgba(52, 152, 219, 0.4);
+      }
+
+      #disclaimerModal p {
+        color: #34495e;
+        line-height: 2;
+        margin-bottom: 25px;
+        font-size: 18px;
+        display: flex;
+        align-items: flex-start;
+        text-align: justify;
+      }
+
+      #disclaimerModal p .icon {
+        margin-right: 15px;
+        font-size: 22px;
+        margin-top: 5px;
+      }
+
+      #disclaimerModal ul {
+        list-style-type: none;
+        padding-left: 0;
+      }
+
+      #disclaimerModal li {
+        margin-bottom: 20px;
+        position: relative;
+        padding-left: 40px;
+        font-size: 18px;
+        display: flex;
+        align-items: center;
+        color: #34495e;
+      }
+
+      #disclaimerModal li:before {
+        content: "\f058";
+        font-family: "Font Awesome 5 Free";
+        font-weight: 900;
+        position: absolute;
+        left: 0;
+        color: #2ecc71;
+        font-size: 22px;
+      }
+
+      #disclaimerModal .confirm-button {
+        background-color: #2ecc71;
+        color: white;
+        border: none;
+        padding: 15px 30px;
+        border-radius: 50px;
+        cursor: pointer;
+        transition: all 0.4s ease;
+        font-weight: bold;
+        font-size: 18px;
+        margin-top: 30px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 100%;
+        text-align: center;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+      }
+
+      #disclaimerModal .confirm-button:hover {
+        background-color: #27ae60;
+        transform: translateY(-5px) scale(1.02);
+        box-shadow: 0 10px 25px rgba(46, 204, 113, 0.4);
+      }
+
+      #disclaimerModal .close {
+        position: absolute;
+        right: 25px;
+        top: 25px;
+        color: #7f8c8d;
+        font-size: 28px;
+        transition: all 0.4s ease;
+        background: none;
+        border: none;
+        cursor: pointer;
+      }
+
+      #disclaimerModal .close:hover {
+        color: #34495e;
+        transform: rotate(90deg) scale(1.2);
+      }
 
       /* 深色模式樣式 */
-body.dark-mode .modal-content {
-  background-color: #2c3e50;
-  color: #ecf0f1;
-  border-color: #34495e;
-}
+      body.dark-mode #disclaimerModal .modal-content {
+        background-color: #2c3e50;
+        color: #ecf0f1;
+        border: 1px solid rgba(255, 255, 255, 0.1);
+      }
 
-body.dark-mode .close {
-  color: #ecf0f1;
-}
+      body.dark-mode #disclaimerModal h2 {
+        color: #3498db;
+        border-bottom-color: #3498db;
+      }
 
-body.dark-mode .close:hover,
-body.dark-mode .close:focus {
-  color: #bdc3c7;
-}
+      body.dark-mode #disclaimerModal a {
+        color: #3498db;
+        background-color: #34495e;
+      }
 
-body.dark-mode .confirm-button {
-  background-color: #3498db;
-  color: #ecf0f1;
-}
+      body.dark-mode #disclaimerModal a:hover {
+        color: #2c3e50;
+        background-color: #3498db;
+      }
 
-body.dark-mode .confirm-button:hover {
-  background-color: #2980b9;
-}
+      body.dark-mode #disclaimerModal p,
+      body.dark-mode #disclaimerModal li {
+        color: #bdc3c7;
+      }
 
-body.dark-mode .modal-content h2 {
-  color: #3498db;
-}
+      body.dark-mode #disclaimerModal .confirm-button {
+        background-color: #3498db;
+      }
 
-body.dark-mode .modal-content a {
-  color: #2ecc71;
-}
+      body.dark-mode #disclaimerModal .confirm-button:hover {
+        background-color: #2980b9;
+        box-shadow: 0 10px 25px rgba(52, 152, 219, 0.4);
+      }
 
-body.dark-mode .modal-content a:hover {
-  color: #27ae60;
-}
+      body.dark-mode #disclaimerModal .close {
+        color: #bdc3c7;
+      }
 
-body.dark-mode .modal-content ul {
-  border-left: 2px solid #3498db;
-  padding-left: 20px;
-}
+      body.dark-mode #disclaimerModal .close:hover {
+        color: #ecf0f1;
+      }
 
-body.dark-mode .modal-content li {
-  margin-bottom: 10px;}
+      /* 添加動畫效果 */
+      @keyframes fadeInUp {
+        from { opacity: 0; transform: translateY(20px); }
+        to { opacity: 1; transform: translateY(0); }
+      }
 
+      @keyframes scaleIn {
+        from { transform: scale(0.9); opacity: 0; }
+        to { transform: scale(1); opacity: 1; }
+      }
+
+      #disclaimerModal .modal-content {
+        animation: scaleIn 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94) both;
+      }
+
+      #disclaimerModal h2,
+      #disclaimerModal a,
+      #disclaimerModal p,
+      #disclaimerModal ul,
+      #disclaimerModal .confirm-button {
+        opacity: 0;
+        animation: fadeInUp 0.5s ease-out forwards;
+      }
+
+      #disclaimerModal h2 { animation-delay: 0.1s; }
+      #disclaimerModal a { animation-delay: 0.2s; }
+      #disclaimerModal p { animation-delay: 0.3s; }
+      #disclaimerModal ul { animation-delay: 0.4s; }
+      #disclaimerModal .confirm-button { animation-delay: 0.5s; }
+
+      #disclaimerModal li {
+        opacity: 0;
+        animation: fadeInUp 0.5s ease-out forwards;
+      }
+
+      #disclaimerModal li:nth-child(1) { animation-delay: 0.5s; }
+      #disclaimerModal li:nth-child(2) { animation-delay: 0.6s; }
+      #disclaimerModal li:nth-child(3) { animation-delay: 0.7s; }
+      #disclaimerModal li:nth-child(4) { animation-delay: 0.8s; }
+
+
+
+
+         /* Mobile styles */
+    @media (max-width: 768px) {
+      .menu-icon {
+        display: block;
+      }
+
+      .header-nav {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: var(--primary-color);
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        z-index: 1001;
+      }
+
+      .header-nav.show {
+        display: flex;
+      }
+
+      .header-nav a {
+        margin: 20px 0;
+        font-size: 1.5em;
+      }
+
+      .close-menu {
+        display: block;
+      }
+    }
     </style>
   </head>
   <body>
 
+    <header class="header">
+      <div class="header-container">
+        <div class="header-logo">
+          <i class="fas fa-chart-line"></i>
+          <span>桃聯區會考落點分析</span>
+        </div>
+        <div class="menu-icon" onclick="toggleMenu()">
+          <i class="fas fa-bars"></i>
+        </div>
+      </div>
+    </header>
 
-<header class="header">
-  <div class="header-container">
-    <div class="header-logo">
-      <i class="fas fa-chart-line"></i> 桃聯區會考落點分析
-    </div>
-    <div class="menu-icon" onclick="toggleMenu()">
-      <i class="fas fa-bars"></i>
-    </div>
-    <nav class="header-nav" id="headerNav">
+    <div class="fullscreen-menu" id="fullscreenMenu">
+      <div class="close-menu" onclick="toggleMenu()">
+        <i class="fas fa-times"></i>
+      </div>
       <a href="https://sites.google.com/view/tyctw/" target="_blank"><i class="fas fa-school"></i> 回到主網頁</a>
-      <a href="https://tyctw.github.io/sequence/" target="_blank"><i class="fas fa-pencil-alt"></i> 序位推估</a>
-      <a href="https://tyctw.github.io/Navigation/"><i class="fas fa-university"></i> 更多資訊</a>
-    </nav>
-  </div>
-</header>
-
-
+      <a href="https://tyctw.github.io/sequence/" target="_blank"><i class="fas fa-pencil-alt"></i> 各校序位推估</a>
+      <a href="https://tyctw.github.io/report_form" target="_blank"><i class="fas fa-exclamation-triangle"></i> 系統異常回報</a>
+      <a href="https://tyctw.github.io/Navigation/"><i class="fas fa-university"></i> 查看更多資訊</a>
+    </div>
       <div class="container">
         <h1><i class="fas fa-chart-line icon"></i>桃聯區會考落點分析系統</h1>
         <a href="https://forms.gle/ZKW3W58gcbQW3vdX9" target="_blank" class="invite-link">
@@ -604,20 +929,53 @@ body.dark-mode .modal-content li {
                           <p>在"邀請碼"欄位中輸入有效的邀請碼。邀請碼每小時自動更新，請確保使用最新的邀請碼。</p>
           </div>
           <div class="instruction-item">
-            <h3><i class="fas fa-school icon"></i>2. 選擇學校屬性和類型</h3>
-            <p>從下拉菜單中選擇您感興趣的學校屬性（公立/私立）和類型（普通科/職業類科）。</p>
+            <h3><i class="fas fa-key icon"></i>1. 獲取並輸入邀請碼</h3>
+            <p>每小時更新一次邀請碼。您可以通過以下方式獲取：</p>
+            <ul>
+              <li>填寫我們的序位回報表單</li>
+              <li>即可進入邀請碼頁面</li>
+
+            </ul>
+            <p>將獲得的邀請碼輸入到"邀請碼"欄位中。</p>
+          </div>
+          <div class="instruction-item">
+            <h3><i class="fas fa-filter icon"></i>2. 選擇學校屬性和類型</h3>
+            <p>您可以根據需求進行以下篩選：</p>
+            <ul>
+              <li>學校屬性：選擇全部、公立或私立</li>
+              <li>學校類型：選擇全部、普通科或職業類科</li>
+              <li>職業群別（如選擇職業類科）：選擇特定職業群或全部</li>
+            </ul>
           </div>
           <div class="instruction-item">
             <h3><i class="fas fa-pencil-alt icon"></i>3. 輸入會考成績</h3>
-            <p>為每個科目（國文、英文、數學、自然、社會）選擇您的會考等級，從A++到C。</p>
+            <p>為每個科目選擇您的會考等級：</p>
+            <ul>
+              <li>國文、英文、數學、自然、社會：從A++到C</li>
+              <li>作文：從0到6級</li>
+            </ul>
+            <p>請確保所有科目都有選擇成績，否則系統將無法進行分析。</p>
           </div>
           <div class="instruction-item">
-            <h3><i class="fas fa-pen-fancy icon"></i>4. 選擇作文級分</h3>
-            <p>從0到6級中選擇您的作文成績。</p>
+            <h3><i class="fas fa-search icon"></i>4. 分析落點</h3>
+            <p>點擊"分析落點"按鈕後，系統將：</p>
+            <ul>
+              <li>計算您的總積分和總積點</li>
+              <li>根據您的成績和篩選條件列出可能錄取的學校</li>
+            </ul>
           </div>
           <div class="instruction-item">
-            <h3><i class="fas fa-search icon"></i>5. 分析結果</h3>
-            <p>點擊"分析落點"按鈕，系統將根據您的成績計算總積分，並顯示您可能錄取的學校列表。</p>
+            <h3><i class="fas fa-info-circle icon"></i>5. 解讀結果</h3>
+            <p>分析結果將顯示：</p>
+            <ul>
+              <li>您的總積分和總積點</li>
+              <li>按學校類型分類的可能錄取學校列表</li>
+            </ul>
+            <p>請注意，這些結果僅供參考，實際錄取情況可能因多種因素而有所不同。</p>
+          </div>
+          <div class="instruction-item">
+            <h3><i class="fas fa-redo icon"></i>6. 重新分析</h3>
+            <p>您可以隨時調整選項或成績，然後再次點擊"分析落點"來獲得新的結果。</p>
           </div>
         </div>
         <form id="analysisForm">
@@ -751,20 +1109,22 @@ body.dark-mode .modal-content li {
             <select id="composition">
               <option value="">請選擇您的作文會考分數</option>
 
-              <option value="0">0 級</option>
-              <option value="1">1 級</option>
-              <option value="2">2 級</option>
-              <option value="3">3 級</option>
-              <option value="4">4 級</option>
-              <option value="5">5 級</option>
-              <option value="6">6 級</option>
+              <option value="0">0 級分</option>
+              <option value="1">1 級分</option>
+              <option value="2">2 級分</option>
+              <option value="3">3 級分</option>
+              <option value="4">4 級分</option>
+              <option value="5">5 級分</option>
+              <option value="6">6 級分</option>
             </select>
           </div>
           <button type="button" onclick="analyzeScores()"><i class="fas fa-search icon"></i>分析落點</button>
+          <button id="exportResults" style="display: none;" onclick="exportResults()"><i class="fas fa-file-export icon"></i>匯出結果</button> 
+
         </form>
         <div id="results"></div>
     <div class="copyright">
-        <p>&copy; 2024 TYCTW桃聯區會考落點分析系統. All rights reserved.</p>
+      © <span id="currentYear"></span>  TYCTW桃聯區會考落點分析系統. All rights reserved.
         <p>本網站由TYCTW會考落點分析平台開發維護。未經授權，禁止複製或轉載。</p>
       </div>
     </div>      
@@ -776,30 +1136,31 @@ body.dark-mode .modal-content li {
 
 
 
-
-      <!-- Modal -->
-      <div id="disclaimerModal" class="modal">
-        <div class="modal-content">
-          <span class="close">&times;</span>
-          <h2><i class="fas fa-balance-scale icon"></i>免責聲明</h2>
-          <a href="https://forms.gle/ZKW3W58gcbQW3vdX9" target="_blank"><i class="fas fa-link icon"></i>如需獲取邀請碼請幫我們填寫表單</a>
-          <p>本網站提供的落點分析結果僅供參考，不代表實際錄取結果。實際錄取情況可能會因各種因素而有所不同，包括但不限於：</p>
-          <ul>
-            <li>各校的招生政策變化</li>
-            <li>當年度考生整體表現</li>
-            <li>特殊才能或其他加分項目</li>
-            <li>各校的實際招生名額調整</li>
-          </ul>
-          <p>我們強烈建議您：</p>
-          <ul>
-            <li>參考多方資訊，不要僅依賴本網站的分析結果</li>
-            <li>諮詢學校輔導老師或升學顧問的專業意見</li>
-            <li>關注各校的官方網站和招生簡章，以獲取最新和最準確的資訊</li>
-          </ul>
-          <p>本網站不對因使用本服務而產生的任何直接或間接損失負責。使用本服務即表示您同意本免責聲明的所有條款。</p>
-          <button class="confirm-button" onclick="closeDisclaimer()">我已了解並同意</button>
-        </div>
+    <!-- 修改後的美化版免責聲明 Modal -->
+    <div id="disclaimerModal" class="modal">
+      <div class="modal-content">
+        <button class="close" onclick="closeDisclaimer()">&times;</button>
+        <h2><i class="fas fa-balance-scale icon"></i> 免責聲明</h2>
+        <a href="https://forms.gle/ZKW3W58gcbQW3vdX9" target="_blank">
+          <i class="fas fa-link icon"></i> 填寫表單獲取邀請碼
+        </a>
+        <p><i class="fas fa-info-circle icon"></i> 親愛的使用者，我們誠摯地提醒您：本網站提供的落點分析結果僅供參考，不代表實際錄取結果。實際錄取情況可能會因多種因素而有所不同，包括但不限於：</p>
+        <ul>
+          <li><i class="fas fa-university icon"></i> 各校的招生政策變化</li>
+          <li><i class="fas fa-users icon"></i> 當年度考生整體表現</li>
+          <li><i class="fas fa-star icon"></i> 特殊才能或其他加分項目</li>
+          <li><i class="fas fa-clipboard-list icon"></i> 各校的實際招生名額調整</li>
+        </ul>
+        <p><i class="fas fa-exclamation-triangle icon"></i> 為了確保您做出最佳的決定，我們強烈建議您：</p>
+        <ul>
+          <li><i class="fas fa-search icon"></i> 參考多方資訊，不要僅依賴本網站的分析結果</li>
+          <li><i class="fas fa-comments icon"></i> 諮詢學校輔導老師或升學顧問的專業意見</li>
+          <li><i class="fas fa-globe icon"></i> 密切關注各校的官方網站和招生簡章，以獲取最新和最準確的資訊</li>
+        </ul>
+        <p><i class="fas fa-shield-alt icon"></i> 本網站不對因使用本服務而產生的任何直接或間接損失負責。使用本服務即表示您同意本免責聲明的所有條款。祝您升學順利！</p>
+        <button class="confirm-button" onclick="closeDisclaimer()"><i class="fas fa-check-circle icon"></i> 我已了解並同意</button>
       </div>
+    </div>
     
       <script>
         const vocationalGroups = {
@@ -817,15 +1178,19 @@ body.dark-mode .modal-content li {
       '餐旅群': ['觀光事業科', '餐飲管理科']
         };
     
-        function toggleVocationalGroup() {
-          const schoolType = document.getElementById('schoolType').value;
-          const vocationalGroupContainer = document.getElementById('vocationalGroupContainer');
-          if (schoolType === '職業類科') {
-            vocationalGroupContainer.style.display = 'block';
-          } else {
-            vocationalGroupContainer.style.display = 'none';
-          }
-        }
+          function toggleVocationalGroup() {
+  const schoolType = document.getElementById('schoolType').value;
+  const vocationalGroupContainer = document.getElementById('vocationalGroupContainer');
+  const vocationalGroup = document.getElementById('vocationalGroup');
+
+  if (schoolType === '職業類科') {
+    vocationalGroupContainer.style.display = 'block';
+  } else {
+    vocationalGroupContainer.style.display = 'none';
+    vocationalGroup.value = 'all'; // 清空職業類科的選擇，恢復到默認值
+  }
+}
+
     
         function toggleInstructions() {
           var instructions = document.getElementById('instructions');
@@ -996,8 +1361,9 @@ body.dark-mode .modal-content li {
     
           const schoolData = {
                '武陵高中(普通科)': { points: 33, credits: 32, type: '普通科', ownership: 'public' },
-               '中壢高中(普通科)': { points: 31, credits: 28, type: '普通科', ownership: 'public' },             
-               '內壢高中(普通科)': { points: 29, credits: 24, type: '普通科', ownership: 'public' },
+               '中壢高中(普通科)': { points: 31, credits: 28, type: '普通科', ownership: 'public' },
+               '桃園高中(普通科)': { points: 31, credits: 24, type: '普通科', ownership: 'public' },             
+               '內壢高中(普通科)': { points: 29, credits: 23, type: '普通科', ownership: 'public' },
                '陽明高中(普通科)': { points: 27, credits: 22, type: '普通科', ownership: 'public' },
                 '平鎮高中(普通科)': { points: 27, credits: 21, type: '普通科' , ownership: 'public'},
                 '永豐高中(普通科)': { points: 25, credits: 20, type: '普通科' , ownership: 'public'},
@@ -1005,7 +1371,7 @@ body.dark-mode .modal-content li {
                 '南崁高中(普通科)': { points: 25, credits: 16, type: '普通科' , ownership: 'public'},
                 '壽山高中(普通科)': { points: 25, credits: 14, type: '普通科' , ownership: 'public'},
                 '龍潭高中(普通科)': { points: 23, credits: 17, type: '普通科' , ownership: 'public'},
-                '楊梅高中(普通科)': { points: 23, credits: 13, type: '普通科' , ownership: 'public'},
+                '楊梅高中(普通科)': { points: 23, credits: 14, type: '普通科' , ownership: 'public'},
                 '觀音高中(普通科)': { points: 23, credits: 11, type: '普通科' , ownership: 'public'},
                 '復旦高中(普通科)': { points: 29, credits: 28, type: '普通科', ownership: 'private' },      
                 '新興高中(普通科)': { points: 23, credits: 10, type: '普通科', ownership: 'private' },   
@@ -1073,7 +1439,19 @@ body.dark-mode .modal-content li {
       '啟英高中(資訊科)': { points: 16, credits: 7, type: '職業類科', ownership: 'private', group: '電機與電子群' },
       '啟英高中(應用英語科)': { points: 19, credits: 8, type: '職業類科', ownership: 'private', group: '外語群' },    
       '啟英高中(室內設計科)': { points: 21, credits: 9, type: '職業類科', ownership: 'private', group: '設計群' },   
-      '啟英高中(資料處理科)': { points: 22, credits: 10, type: '職業類科', ownership: 'private', group: '商業與管理群' }  
+      '啟英高中(資料處理科)': { points: 22, credits: 10, type: '職業類科', ownership: 'private', group: '商業與管理群' },
+
+      '育達高中(資訊科)': { points: 21, credits: 9, type: '職業類科', ownership: 'private', group: '電機與電子群' },
+      '育達高中(商業經營科)': { points: 19, credits: 8, type: '職業類科', ownership: 'private', group: '商業與管理群' },  
+      '育達高中(應用英語科)': { points: 19, credits: 8, type: '職業類科', ownership: 'private', group: '外語群' },  
+      '育達高中(廣告設計科)': { points: 19, credits: 10, type: '職業類科', ownership: 'private', group: '設計群' },  
+      '育達高中(應用日語科)': { points: 16, credits: 8, type: '職業類科', ownership: 'private', group: '外語群' } , 
+      '育達高中(幼兒保育科)': { points: 19, credits: 8, type: '職業類科', ownership: 'private', group: '家政群' }  ,
+      '育達高中(觀光事業科)': { points: 16, credits: 9, type: '職業類科', ownership: 'private', group: '商業與管理群' } , 
+      '育達高中(會計事務科)': { points: 19, credits: 8, type: '職業類科', ownership: 'private', group: '商業與管理群' }  ,
+      '育達高中(餐飲管理科)': { points: 17, credits: 5, type: '職業類科', ownership: 'private', group: '餐旅群' } , 
+      '育達高中(多媒體設計科)': { points: 13, credits: 5, type: '職業類科', ownership: 'private', group: '設計群' }  
+
 
 
 
@@ -1112,13 +1490,55 @@ body.dark-mode .modal-content li {
           }
     
           const resultsElement = document.getElementById('results');
-          resultsElement.innerHTML = results;
-          resultsElement.style.display = 'none';
-          setTimeout(() => {
-            resultsElement.style.display = 'block';
-            resultsElement.style.animation = 'fadeIn 0.5s ease-out';
-          }, 100);
-        }
+  resultsElement.innerHTML = results;
+  resultsElement.style.display = 'none';
+  setTimeout(() => {
+    resultsElement.style.display = 'block';
+    resultsElement.style.animation = 'fadeIn 0.5s ease-out';
+    document.getElementById('exportResults').style.display = 'inline-block';
+  }, 100);
+}
+
+  function exportResults() {
+  const resultsElement = document.getElementById('results');
+  const resultsText = resultsElement.innerText;
+  
+  // Get current date and time
+  const now = new Date();
+  const dateTime = now.toLocaleString('zh-TW', { 
+    year: 'numeric', 
+    month: '2-digit', 
+    day: '2-digit', 
+    hour: '2-digit', 
+    minute: '2-digit', 
+    second: '2-digit',
+    hour12: false 
+  });
+
+  // Create ASCII art watermark with date and time
+  const watermark = 
+    "********************************\n" +
+    "*                              *\n" +
+    "*  TYCTW 桃聯區會考落點分析系統  *\n" +
+    "*       以下資料僅供參考      *\n" +
+    "*                              *\n" +
+    `*   產生時間: ${dateTime}   *\n` +
+    "*                              *\n" +
+    "********************************\n\n";
+
+  // Combine watermark and results
+  const contentWithWatermark = watermark + resultsText;
+
+  const blob = new Blob([contentWithWatermark], { type: 'text/plain;charset=utf-8' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.style.display = 'none';
+  a.href = url;
+  a.download = '桃聯區會考落點分析結果.txt';
+  document.body.appendChild(a);
+  a.click();
+  URL.revokeObjectURL(url);
+}
     
         // 初始顯示免責聲明
         window.onload = function() {
@@ -1208,22 +1628,17 @@ const html5QrCode = new Html5Qrcode("qr-reader");
 
 
 
-
   function toggleMenu() {
-    var nav = document.getElementById("headerNav");
-    nav.classList.toggle("show");
-  }
+        var menu = document.getElementById("fullscreenMenu");
+        menu.classList.toggle("show");
+        document.body.style.overflow = menu.classList.contains("show") ? "hidden" : "auto";
 
-  // Close the menu when clicking outside
-  document.addEventListener('click', function(event) {
-    var nav = document.getElementById("headerNav");
-    var menuIcon = document.querySelector(".menu-icon");
-    if (!nav.contains(event.target) && !menuIcon.contains(event.target)) {
-      nav.classList.remove("show");
-    }
-  });
-
-
+        // 添加連結的動畫延遲
+        var links = menu.getElementsByTagName('a');
+        for (var i = 0; i < links.length; i++) {
+          links[i].style.animationDelay = (i * 0.1) + 's';
+        }
+      }
 
 
 function toggleDarkMode() {
@@ -1256,8 +1671,26 @@ function toggleDarkMode() {
       }
       updateDarkModeIcon(savedDarkMode);
 
-      // 添加事件監聽器2024/8/1
+      // 添加事件監聽器2024/9/10增加匯出功能
       document.getElementById('darkModeToggle').addEventListener('click', toggleDarkMode);
+
+
+
+    // 更新版權年份
+    document.getElementById('currentYear').textContent = new Date().getFullYear();
+
+    const canvas = document.getElementById('signatureCanvas');
+    const ctx = canvas.getContext('2d');
+    let isDrawing = false;
+    let lastX = 0;
+    let lastY = 0;
+
+    function startDrawing(e) {
+      isDrawing = true;
+      [lastX, lastY] = [e.offsetX, e.offsetY];
+    }
+
+
 
       </script>
 

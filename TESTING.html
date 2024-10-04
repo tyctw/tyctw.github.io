@@ -1,4 +1,4 @@
-<html><head><base href="https://taoyuanacademy.edu.tw/admissions/">
+<html><head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>桃聯區會考落點分析平台</title>
@@ -314,7 +314,6 @@
                         <div class="form-group col-md-6">
                             <label for="school_type">選擇類別:</label>
                             <select id="school_type" name="school_type" class="form-control">
-                                <option value="">請選擇</option>
                                 <option value="all">全部</option>
                                 <option value="普通科">普通科</option>
                                 <option value="職業類科">職業類科</option>
@@ -323,27 +322,13 @@
                         <div class="form-group col-md-6">
                             <label for="school_ownership">學校類型:</label>
                             <select id="school_ownership" name="school_ownership" class="form-control">
-                                <option value="">請選擇</option>
                                 <option value="all">全部</option>
                                 <option value="public">公立</option>
                                 <option value="private">私立</option>
                             </select>
                         </div>
-                    </div>
-                    <div class="form-row">
-                        <div class="form-group col-md-6">
-                            <label for="invitation_code">邀請碼:</label>
-                            <input type="text" id="invitation_code" name="invitation_code" class="form-control" placeholder="請輸入邀請碼">
-                        </div>
-                        <div class="form-group col-md-6" id="vocational_dept_group" style="display: none;">
-                            <label for="vocational_dept">職業科系:</label>
-                            <select id="vocational_dept" name="vocational_dept" class="form-control">
-                                <option value="">請選擇</option>
-                                <option value="all">全部</option>
-                            </select>
-                        </div>
-                    </div>
-                    <div class="form-row">
+                    </div>          
+                              <div class="form-row"></div>
                         <div class="form-group col-md-6" id="vocational_group_container" style="display: none;">
                             <label for="vocational_group">職業群:</label>
                             <select id="vocational_group" name="vocational_group" class="form-control">
@@ -362,7 +347,25 @@
                                 <option value="餐旅群">餐旅群</option>
                             </select>
                         </div>
+                        <div class="form-group col-md-6" id="vocational_dept_group" style="display: none;">
+                            <label for="vocational_dept">職業科系:</label>
+                            <select id="vocational_dept" name="vocational_dept" class="form-control">
+                                <option value="all">全部</option>
+                            </select>
+                        </div>
+                    <div class="form-row">
+                        <div class="form-group col-md-6">
+                            <label for="invitation_code">邀請碼:</label>
+                            <input type="text" id="invitation_code" name="invitation_code" class="form-control" placeholder="請輸入邀請碼">
+                        </div>
+                        <div class="form-group col-md-6" id="vocational_dept_group" style="display: none;">
+                            <label for="vocational_dept">職業科系:</label>
+                            <select id="vocational_dept" name="vocational_dept" class="form-control">
+                                <option value="all">全部</option>
+                            </select>
+                        </div>
                     </div>
+
                     <button type="submit" class="btn btn-primary btn-block mt-4">提交並分析</button>
                     <button type="button" id="compareScores" class="btn btn-secondary btn-block mt-2">與往年成績比較</button>
                     <div class="mt-2">
@@ -532,6 +535,7 @@
 { name: "育達高中(會計事務科)", minPoints: 19, minCredits: 8, type: "職業類科", ownership: "private", vocationalGroups: ["商業與管理群"], departments: ["會計事務科"] },
 { name: "育達高中(餐飲管理科)", minPoints: 17, minCredits: 5, type: "職業類科", ownership: "private", vocationalGroups: ["餐旅群"], departments: ["餐飲管理科"] },
 { name: "育達高中(多媒體設計科)", minPoints: 13, minCredits: 5, type: "職業類科", ownership: "private", vocationalGroups: ["設計群"], departments: ["多媒體設計科"] }
+
 
 
             ];

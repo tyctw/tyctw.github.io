@@ -912,6 +912,56 @@ font-size: 0.9em;
   100% { transform: rotate(360deg); }
 }
 
+/* Loading animation styles */
+.loading-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.7);
+  display: none;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+  backdrop-filter: blur(5px);
+}
+
+.loading-spinner {
+  width: 120px;
+  height: 120px;
+  padding: 20px;
+  background: rgba(255, 255, 255, 0.95);
+  border-radius: 16px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+}
+
+.spinner {
+  width: 40px;
+  height: 40px;
+  border: 4px solid #f3f3f3;
+  border-top: 4px solid var(--primary-color);
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin-bottom: 10px;
+}
+
+.loading-text {
+  color: var(--text-color);
+  font-size: 14px;
+  text-align: center;
+  font-weight: 500;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
 /* Mobile Responsive Styles */
 @media (max-width: 768px) {
   .container {
@@ -1057,6 +1107,71 @@ font-size: 0.9em;
   .form-group label {
     margin-bottom: 8px;
     font-size: 0.95rem;
+  }
+
+  /* Adjusted close button styles for mobile */
+  #disclaimerModal .close {
+    position: absolute;
+    right: 15px;
+    top: 15px;
+    font-size: 24px; 
+    width: 30px; 
+    height: 30px; 
+    line-height: 30px; 
+    text-align: center; 
+    background: rgba(0, 0, 0, 0.1); 
+    border-radius: 50%; 
+    padding: 0; 
+    touch-action: manipulation; 
+  }
+
+  #disclaimerModal .modal-content {
+    padding-top: 40px; 
+  }
+}
+
+/* Additional optimizations for very small screens */
+@media (max-width: 320px) {
+  .container {
+    padding: 1rem;
+  }
+
+  h1 {
+    font-size: 1.5rem;
+  }
+
+  .form-group label {
+    font-size: 0.85rem;
+  }
+
+  select, 
+  input[type="text"] {
+    font-size: 0.85rem;
+  }
+
+  #disclaimerModal .close {
+    font-size: 20px; 
+    width: 26px; 
+    height: 26px; 
+    line-height: 26px;
+  }
+}
+
+/* Ensure touch targets are large enough on mobile */
+@media (hover: none) and (pointer: coarse) {
+  button,
+  select,
+  input[type="text"],
+  .instruction-toggle,
+  .disclaimer-toggle,
+  .file-input-label,
+  #scanQRCode {
+    min-height: 44px;
+    touch-action: manipulation;
+  }
+
+  .form-group {
+    margin-bottom: 16px;
   }
 }
 

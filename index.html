@@ -1838,40 +1838,6 @@
           }
       
 
-          
-
-
-
-
-
-
-          // 新增從後端獲取邀請碼的函數
-async function fetchInvitationCode() {
-    try {
-        const response = await fetch('https://script.google.com/macros/s/YOUR_GOOGLE_APPS_SCRIPT_URL/exec?action=getInvitationCode');
-        if (!response.ok) {
-            throw new Error('無法取得邀請碼');
-        }
-        const data = await response.json();
-        return data.invitationCode;
-    } catch (error) {
-        console.error('獲取邀請碼失敗:', error);
-        return null;
-    }
-}
-
-// 在頁面加載時獲取邀請碼並顯示
-window.addEventListener('load', async () => {
-    const invitationCode = await fetchInvitationCode();
-    if (invitationCode) {
-        document.getElementById('invitationCode').value = invitationCode;
-    }
-});
-
-
-
-
-
 
       // Add showLoading and hideLoading functions
   function showLoading() {

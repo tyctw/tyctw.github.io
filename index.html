@@ -1,2279 +1,411 @@
-<html><head>
+<html lang="zh-TW">
+  <head>
+    <meta charset="UTF-8" />
     <title>桃聯區會考落點分析</title>
-      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
-<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
-<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
-<link rel="manifest" href="/site.webmanifest">      <meta name="viewport" content="width=device-width, initial-scale=1.0">
-      <meta name="google-adsense-account" content="ca-pub-3350304014189563">
-      <meta name="description" content="桃聯區會考落點分析，幫助使用者分析會考成績，提供學校落點參考。">
-      <meta name="keywords" content="桃聯區, 會考, 落點分析, 教育, 學校,武陵高中,中壢高中,內壢高中,平鎮高中,大園高中,永豐高中,南崁高中,振聲高中,楊梅高中,治平高中,新興高中,關西高中,大溪高中">
-      <meta name="author" content="桃聯區教育局">
-      <style>
-        @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;700&display=swap');
-        
-        :root {
-          --primary-color: #3498db;
-          --secondary-color: #2ecc71;
-          --background-color: #ecf0f1;
-          --text-color: #34495e;
-          --card-background: #ffffff;
-          --shadow-color: rgba(0, 0, 0, 0.1);
-          --accent-color: #e74c3c;
-          --menu-background: rgba(52, 152, 219, 0.95);
-        }
-      
-        body {
-          font-family: 'Noto Sans TC', sans-serif;
-          background-color: var(--background-color);
-          margin: 0;
-          padding: 0;
-          color: var(--text-color);
-          -webkit-user-select: none;
-          -moz-user-select: none;
-          -ms-user-select: none;
-          user-select: none;
-        }
-      
-        .container {
-          background: var(--card-background);
-          padding: 2.5rem;
-          border-radius: 20px;
-          box-shadow: 0 10px 30px var(--shadow-color);
-          max-width: 800px;
-          width: 90%;
-          margin: 80px auto 20px;
-          text-align: center;
-          transition: all 0.3s ease;
-        }
-      /* 添加單科標示相關樣式 */
-  .subject-requirements {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-  margin-top: 8px;
-  font-size: 0.9em;
-  }
-  
-        .container:hover {
-          transform: translateY(-5px);
-          box-shadow: 0 15px 35px var(--shadow-color);
-        }
-      
-        h1, h2, h3 {
-          color: var(--primary-color);
-          margin-bottom: 1rem;
-        }
-      
-        h1 {
-          font-size: 2.5rem;
-          position: relative;
-          display: inline-block;
-          margin-bottom: 2rem;
-        }
-      
-        h1::after {
-          content: '';
-          position: absolute;
-          bottom: -10px;
-          left: 50%;
-          transform: translateX(-50%);
-          width: 50%;
-          height: 3px;
-          background-color: var(--accent-color);
-          border-radius: 2px;
-        }
-      
-        h2 {
-          font-size: 1.8rem;
-          margin-top: 2rem;
-        }
-      
-        h3 {
-          font-size: 1.5rem;
-          margin-top: 1.5rem;
-        }
-      
-        .form-group {
-          margin-bottom: 1.5rem;
-          text-align: left;
-        }
-      
-        label {
-          display: block;
-          margin-bottom: 0.5rem;
-          font-weight: 500;
-          color: var(--text-color);
-          transition: color 0.3s ease;
-        }
-      
-        label:hover {
-          color: var(--primary-color);
-        }
-      
-        select, input[type="text"] {
-          width: 100%;
-          padding: 0.75rem;
-          border: 2px solid #bdc3c7;
-          border-radius: 8px;
-          font-size: 1rem;
-          transition: all 0.3s ease;
-          background-color: #f9f9f9;
-        }
-      
-        select:focus, input[type="text"]:focus {
-          outline: none;
-          border-color: var(--primary-color);
-          box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.2);
-          background-color: #fff;
-        }
-      
-        button {
-          background-color: var(--primary-color);
-          color: #fff;
-          border: none;
-          padding: 1rem 2rem;
-          font-size: 1.1rem;
-          border-radius: 30px;
-          cursor: pointer;
-          transition: all 0.3s ease;
-          box-shadow: 0 4px 6px var(--shadow-color);
-        }
-      
-        button:hover {
-          background-color: #2980b9;
-          transform: translateY(-2px);
-          box-shadow: 0 6px 8px var(--shadow-color);
-        }
-      
-        #results, #instructions {
-          margin-top: 2.5rem;
-          text-align: left;
-          background: #f9f9f9;
-          padding: 1.5rem;
-          border-radius: 10px;
-          box-shadow: inset 0 2px 4px var(--shadow-color);
-          transition: all 0.3s ease;
-        }
-      
-        #results:hover, #instructions:hover {
-          background: #f0f0f0;
-          box-shadow: inset 0 3px 6px var(--shadow-color);
-        }
-      
-        .result-item, .instruction-item {
-          margin-bottom: 1rem;
-          padding: 1rem;
-          background: var(--card-background);
-          border-radius: 8px;
-          box-shadow: 0 2px 4px var(--shadow-color);
-          transition: all 0.3s ease;
-        }
-      
-        .result-item:hover, .instruction-item:hover {
-          transform: translateY(-3px);
-          box-shadow: 0 4px 8px var(--shadow-color);
-        }
-      
-        .result-item h3, .instruction-item h3 {
-          margin-bottom: 0.5rem;
-          color: var(--primary-color);
-        }
-      
-        .instruction-toggle, .disclaimer-toggle {
-          background-color: var(--secondary-color);
-          color: #fff;
-          border: none;
-          padding: 0.5rem 1rem;
-          font-size: 1rem;
-          border-radius: 20px;
-          cursor: pointer;
-          transition: all 0.3s ease;
-          margin-bottom: 1rem;
-          margin-right: 0.5rem;
-        }
-      
-        .instruction-toggle:hover, .disclaimer-toggle:hover {
-          background-color: #27ae60;
-          transform: translateY(-2px);
-          box-shadow: 0 4px 6px var(--shadow-color);
-        }
-      
-        .icon {
-          margin-right: 0.5rem;
-          font-size: 1.2em;
-        }
-      
-        /* 菜單樣式 */
-        .header {
-          background-color: var(--primary-color);
-          color: white;
-          padding: 15px 0;
-          position: fixed;
-          top: 0;
-          left: 0;
-          width: 100%;
-          z-index: 1000;
-          box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-        }
-    
-        .header-container {
-          display: flex;
-          justify-content: space-between;
-          align-items: center;
-          max-width: 1200px;
-          margin: 0 auto;
-          padding: 0 20px;
-        }
-    
-        .header-logo {
-          font-size: 1.5em;
-          font-weight: bold;
-          display: flex;
-          align-items: center;
-        }
-    
-        .header-logo i {
-          margin-right: 10px;
-        }
-    
-        .menu-icon {
-          font-size: 1.5em;
-          cursor: pointer;
-          transition: color 0.3s ease;
-        }
-    
-        .menu-icon:hover {
-          color: var(--accent-color);
-        }
-    
-        .fullscreen-menu {
-          position: fixed;
-          top: 0;
-          left: 0;
-          width: 100%;
-          height: 100%;
-          background-color: var(--menu-background);
-          display: flex;
-          flex-direction: column;
-          justify-content: center;
-          align-items: center;
-          z-index: 2000;
-          opacity: 0;
-          visibility: hidden;
-          transition: opacity 0.5s ease, visibility 0.5s ease;
-        }
-    
-        .fullscreen-menu.show {
-          opacity: 1;
-          visibility: visible;
-        }
-    
-        .fullscreen-menu a {
-          color: white;
-          text-decoration: none;
-          font-size: 1.5em;
-          margin: 20px 0;
-          transition: all 0.5s ease;
-          position: relative;
-          padding: 10px 0;
-          opacity: 0;
-          transform: translateY(20px);
-        }
-    
-        .fullscreen-menu.show a {
-          opacity: 1;
-          transform: translateY(0);
-        }
-    
-        .fullscreen-menu a::after {
-          content: '';
-          position: absolute;
-          width: 100%;
-          height: 2px;
-          bottom: 0;
-          left: 0;
-          background-color: var(--accent-color);
-          visibility: hidden;
-          transform: scaleX(0);
-          transition: all 0.3s ease-in-out;
-        }
-    
-        .fullscreen-menu a:hover::after {
-          visibility: visible;
-          transform: scaleX(1);
-        }
-    
-        .fullscreen-menu a:hover {
-          color: var(--accent-color);
-        }
-    
-        .close-menu {
-          position: absolute;
-          top: 20px;
-          right: 20px;
-          font-size: 2em;
-          color: white;
-          cursor: pointer;
-          transition: color 0.3s ease, transform 0.3s ease;
-        }
-    
-        .close-menu:hover {
-          color: var(--accent-color);
-          transform: rotate(90deg);
-        }
-    
-    
-        .qr-options {
-          display: flex;
-          justify-content: center;
-          flex-wrap: wrap;
-          gap: 15px;
-          margin-bottom: 30px;
-        }
-    
-        #fileInput {
-          display: none;
-        }
-    
-        .file-input-label, #scanQRCode {
-          background-color: var(--secondary-color);
-          color: #fff;
-          padding: 12px 24px;
-          border-radius: 30px;
-          cursor: pointer;
-          transition: all 0.3s ease;
-          text-align: center;
-          flex: 1;
-          min-width: 200px;
-          font-weight: 500;
-          border: none;
-          box-shadow: 0 4px 6px var(--shadow-color);
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          height: 50px;
-          box-sizing: border-box;
-        }
-    
-        .file-input-label:hover, #scanQRCode:hover {
-          background-color: #27ae60;
-          transform: translateY(-2px);
-          box-shadow: 0 6px 8px var(--shadow-color);
-        }
-    
-        #qr-result {
-          margin-top: 20px;
-          font-weight: bold;
-          color: var(--primary-color);
-          text-align: center;
-          padding: 10px;
-          background-color: var(--card-background);
-          border-radius: 5px;
-          box-shadow: 0 2px 4px var(--shadow-color);
-        }
-    
-        #qr-reader {
-          margin-top: 20px;
-          text-align: center;
-        }
-    
-        .invite-link {
-          display: inline-block;
-          margin: 20px 0;
-          padding: 15px 30px;
-          background-color: var(--accent-color);
-          color: white;
-          text-decoration: none;
-          border-radius: 30px;
-          font-weight: bold;
-          transition: all 0.3s ease;
-          box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-        }
-    
-        .invite-link:hover {
-          background-color: #c0392b;
-          transform: translateY(-2px);
-          box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
-        }
-    
-        .invite-link .icon {
-          margin-right: 10px;
-        }
-    
-        /* 修改底部版權聲明樣式 */
-        .copyright {
-          background-color: var(--primary-color);
-          color: white;
-          text-align: center;
-          padding: 1rem;
-          margin-top: 2rem;
-          font-size: 0.9rem;
-        }
-    
-        .copyright p {
-          margin: 0.5rem 0;
-        }
-    
-        /* Animations */
-        @keyframes fadeIn {
-          from { opacity: 0; }
-          to { opacity: 1; }
-        }
-      
-        @keyframes slideIn {
-          from { transform: translateY(20px); opacity: 0; }
-          to { transform: translateY(0); opacity: 1; }
-        }
-      
-        .container {
-          animation: fadeIn 0.5s ease-out;
-        }
-        
-        .form-group, .result-item, .instruction-item {
-          animation: slideIn 0.5s ease-out;
-        }
-     /* 新增過渡動畫 */
-     @keyframes fadeIn {
-          from { opacity: 0; }
-          to { opacity: 1; }
-        }
-    
-        @keyframes slideIn {
-          from { transform: translateY(-20px); opacity: 0; }
-          to { transform: translateY(0); opacity: 1; }
-        }
-    
-        .container {
-          animation: fadeIn 0.5s ease-out;
-        }
-    
-        .form-group, .instruction-toggle, .disclaimer-toggle {
-          animation: slideIn 0.5s ease-out;
-        }
-    
-        .fullscreen-menu a {
-          animation: slideIn 0.5s ease-out;
-          animation-fill-mode: backwards;
-        }
-    
-        .fullscreen-menu a:nth-child(1) { animation-delay: 0.1s; }
-        .fullscreen-menu a:nth-child(2) { animation-delay: 0.2s; }
-        .fullscreen-menu a:nth-child(3) { animation-delay: 0.3s; }
-        .fullscreen-menu a:nth-child(4) { animation-delay: 0.4s; }
-        /* Modal styles */
-        .modal {
-          display: none;
-          position: fixed;
-          z-index: 1000;
-          left: 0;
-          top: 0;
-          width: 100%;
-          height: 100%;
-          overflow: auto;
-          background-color: rgba(0,0,0,0.4);
-        }
-      
-        .modal-content {
-          background-color: #fefefe;
-          margin: 15% auto;
-          padding: 20px;
-          border: 1px solid #888;
-          width: 80%;
-          max-width: 600px;
-          border-radius: 10px;
-          box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-          position: relative;
-        }
-      
-        .close {
-          color: #aaa;
-          float: right;
-          font-size: 28px;
-          font-weight: bold;
-          cursor: pointer;
-        }
-      
-        .close:hover,
-        .close:focus {
-          color: #000;
-          text-decoration: none;
-          cursor: pointer;
-        }
-      
-        .confirm-button {
-          background-color: var(--primary-color);
-          color: white;
-          border: none;
-          padding: 10px 20px;
-          text-align: center;
-          text-decoration: none;
-          display: inline-block;
-          font-size: 16px;
-          margin: 4px 2px;
-          cursor: pointer;
-          border-radius: 5px;
-          transition: background-color 0.3s ease;
-        }
-      
-        .confirm-button:hover {
-          background-color: #2980b9;
-        }
-  
-        /* 深色模式樣式 */
-        body.dark-mode {
-            --background-color: #2c3e50;
-            --text-color: #ecf0f1;
-            --card-background: #34495e;
-            --shadow-color: rgba(0, 0, 0, 0.2);
-        }
-  
-        /* 深色模式切換按鈕樣式 */
-        .dark-mode-toggle {
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            background-color: var(--primary-color);
-            color: white;
-            border: none;
-            border-radius: 50%;
-            width: 60px;
-            height: 60px;
-            font-size: 1.5em;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            z-index: 1000;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            outline: none;
-        }
-  
-        .dark-mode-toggle:hover {
-            background-color: var(--secondary-color);
-            transform: scale(1.1) rotate(360deg);
-            box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
-        }
-  
-        .dark-mode-toggle:active {
-            transform: scale(0.95);
-        }
-  
-        .dark-mode-toggle i {
-            transition: all 0.3s ease;
-        }
-  
-        body.dark-mode .dark-mode-toggle {
-            background-color: var(--accent-color);
-        }
-  
-        body.dark-mode .dark-mode-toggle:hover {
-            background-color: var(--secondary-color);
-        }
-  
-        @keyframes float {
-            0% { transform: translateY(0px); }
-            50% { transform: translateY(-10px); }
-            100% { transform: translateY(0px); }
-        }
-  
-        .dark-mode-toggle {
-            animation: float 4s ease-in-out infinite;
-        }
-  
-        @media (max-width: 768px) {
-            .dark-mode-toggle {
-                width: 50px;
-                height: 50px;
-                font-size: 1.2em;
-                bottom: 10px;
-                right: 10px;
-            }
-        }
-  
-        /* 深色模式樣式 */
-        body.dark-mode .modal-content {
-          background-color: #2c3e50;
-          color: #ecf0f1;
-          border-color: #34495e;
-        }
-  
-        body.dark-mode .close {
-          color: #ecf0f1;
-        }
-  
-        body.dark-mode .close:hover,
-        body.dark-mode .close:focus {
-          color: #bdc3c7;
-        }
-  
-        body.dark-mode .confirm-button {
-          background-color: #3498db;
-          color: #ecf0f1;
-        }
-  
-        body.dark-mode .confirm-button:hover {
-          background-color: #2980b9;
-        }
-  
-        body.dark-mode .modal-content h2 {
-          color: #3498db;
-        }
-  
-        body.dark-mode .modal-content a {
-          color: #2ecc71;
-        }
-  
-        body.dark-mode .modal-content a:hover {
-          color: #27ae60;
-        }
-  
-        body.dark-mode .modal-content ul {
-          border-left: 2px solid #3498db;
-          padding-left: 20px;
-        }
-  
-        body.dark-mode .modal-content li {
-          margin-bottom: 10px;
-        }
-  
-        /* 增強美觀的免責聲明樣式 */
-        #disclaimerModal .modal-content {
-          background-color: #ffffff;
-          border-radius: 30px;
-          padding: 50px;
-          box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
-          max-width: 700px;
-          margin: auto;
-          position: relative;
-          backdrop-filter: blur(10px);
-          border: 1px solid rgba(255, 255, 255, 0.2);
-        }
-  
-        #disclaimerModal h2 {
-          color: #2c3e50;
-          font-size: 32px;
-          margin-bottom: 30px;
-          border-bottom: 4px solid #3498db;
-          padding-bottom: 20px;
-          text-align: center;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          text-transform: uppercase;
-          letter-spacing: 2px;
-        }
-  
-        #disclaimerModal .icon {
-          color: #3498db;
-          margin-right: 15px;
-          font-size: 28px;
-        }
-  
-        #disclaimerModal a {
-          color: #2980b9;
-          text-decoration: none;
-          transition: all 0.4s ease;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          margin-bottom: 25px;
-          padding: 20px;
-          background-color: #ecf0f1;
-          border-radius: 15px;
-          font-weight: bold;
-          font-size: 18px;
-          box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-        }
-  
-        #disclaimerModal a:hover {
-          color: #ffffff;
-          background-color: #3498db;
-          transform: translateY(-5px) scale(1.02);
-          box-shadow: 0 10px 25px rgba(52, 152, 219, 0.4);
-        }
-  
-        #disclaimerModal p {
-          color: #34495e;
-          line-height: 2;
-          margin-bottom: 25px;
-          font-size: 18px;
-          display: flex;
-          align-items: flex-start;
-          text-align: justify;
-        }
-  
-        #disclaimerModal p .icon {
-          margin-right: 15px;
-          font-size: 22px;
-          margin-top: 5px;
-        }
-  
-        #disclaimerModal ul {
-          list-style-type: none;
-          padding-left: 0;
-        }
-  
-        #disclaimerModal li {
-          margin-bottom: 20px;
-          position: relative;
-          padding-left: 40px;
-          font-size: 18px;
-          display: flex;
-          align-items: center;
-          color: #34495e;
-        }
-  
-        #disclaimerModal li:before {
-          content: "\f058";
-          font-family: "Font Awesome 5 Free";
-          font-weight: 900;
-          position: absolute;
-          left: 0;
-          color: #2ecc71;
-          font-size: 22px;
-        }
-  
-        #disclaimerModal .confirm-button {
-          background-color: #2ecc71;
-          color: white;
-          border: none;
-          padding: 15px 30px;
-          border-radius: 50px;
-          cursor: pointer;
-          transition: all 0.4s ease;
-          font-weight: bold;
-          font-size: 18px;
-          margin-top: 30px;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          width: 100%;
-          text-align: center;
-          text-transform: uppercase;
-          letter-spacing: 1px;
-        }
-  
-        #disclaimerModal .confirm-button:hover {
-          background-color: #27ae60;
-          transform: translateY(-5px) scale(1.02);
-          box-shadow: 0 10px 25px rgba(46, 204, 113, 0.4);
-        }
-  
-        #disclaimerModal .close {
-          position: absolute;
-          right: 25px;
-          top: 25px;
-          color: #7f8c8d;
-          font-size: 28px;
-          transition: all 0.4s ease;
-          background: none;
-          border: none;
-          cursor: pointer;
-        }
-  
-        #disclaimerModal .close:hover {
-          color: #34495e;
-          transform: rotate(90deg) scale(1.2);
-        }
-  
-        /* 深色模式樣式 */
-        body.dark-mode #disclaimerModal .modal-content {
-          background-color: #2c3e50;
-          color: #ecf0f1;
-          border: 1px solid rgba(255, 255, 255, 0.1);
-        }
-  
-        body.dark-mode #disclaimerModal h2 {
-          color: #3498db;
-          border-bottom-color: #3498db;
-        }
-  
-        body.dark-mode #disclaimerModal a {
-          color: #3498db;
-          background-color: #34495e;
-        }
-  
-        body.dark-mode #disclaimerModal a:hover {
-          color: #2c3e50;
-          background-color: #3498db;
-        }
-  
-        body.dark-mode #disclaimerModal p,
-        body.dark-mode #disclaimerModal li {
-          color: #bdc3c7;
-        }
-  
-        body.dark-mode #disclaimerModal .confirm-button {
-          background-color: #3498db;
-        }
-  
-        body.dark-mode #disclaimerModal .confirm-button:hover {
-          background-color: #2980b9;
-          box-shadow: 0 10px 25px rgba(52, 152, 219, 0.4);
-        }
-  
-        body.dark-mode #disclaimerModal .close {
-          color: #bdc3c7;
-        }
-  
-        body.dark-mode #disclaimerModal .close:hover {
-          color: #ecf0f1;
-        }
-  
-        /* 添加動畫效果 */
-        @keyframes fadeInUp {
-          from { opacity: 0; transform: translateY(20px); }
-          to { opacity: 1; transform: translateY(0); }
-        }
-  
-        @keyframes scaleIn {
-          from { transform: scale(0.9); opacity: 0; }
-          to { transform: scale(1); opacity: 1; }
-        }
-  
-        #disclaimerModal .modal-content {
-          animation: scaleIn 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94) both;
-        }
-  
-        #disclaimerModal h2,
-        #disclaimerModal a,
-        #disclaimerModal p,
-        #disclaimerModal ul,
-        #disclaimerModal .confirm-button {
-          opacity: 0;
-          animation: fadeInUp 0.5s ease-out forwards;
-        }
-  
-        #disclaimerModal h2 { animation-delay: 0.1s; }
-        #disclaimerModal a { animation-delay: 0.2s; }
-        #disclaimerModal p { animation-delay: 0.3s; }
-        #disclaimerModal ul { animation-delay: 0.4s; }
-        #disclaimerModal .confirm-button { animation-delay: 0.5s; }
-  
-        #disclaimerModal li {
-          opacity: 0;
-          animation: fadeInUp 0.5s ease-out forwards;
-        }
-  
-        #disclaimerModal li:nth-child(1) { animation-delay: 0.5s; }
-        #disclaimerModal li:nth-child(2) { animation-delay: 0.6s; }
-        #disclaimerModal li:nth-child(3) { animation-delay: 0.7s; }
-        #disclaimerModal li:nth-child(4) { animation-delay: 0.8s; }
-  
-  
-  
-  
-  /* Loading animation styles */
-  .loading-overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0, 0, 0, 0.7);
-    display: none;
-    justify-content: center;
-    align-items: center;
-    z-index: 9999;
-    backdrop-filter: blur(5px);
-  }
-  
-  .loading-spinner {
-    width: 120px;
-    height: 120px;
-    padding: 20px;
-    background: rgba(255, 255, 255, 0.95);
-    border-radius: 16px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
-  }
-  
-  .spinner {
-    width: 40px;
-    height: 40px;
-    border: 4px solid #f3f3f3;
-    border-top: 4px solid var(--primary-color);
-    border-radius: 50%;
-    animation: spin 1s linear infinite;
-    margin-bottom: 10px;
-  }
-  
-  .loading-text {
-    color: var(--text-color);
-    font-size: 14px;
-    text-align: center;
-    font-weight: 500;
-  }
-  
-  @keyframes spin {
-    0% { transform: rotate(0deg); }
-    100% { transform: rotate(360deg); }
-  }
-  
-  /* Loading animation styles */
-  .loading-overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0, 0, 0, 0.7);
-    display: none;
-    justify-content: center;
-    align-items: center;
-    z-index: 9999;
-    backdrop-filter: blur(5px);
-  }
-  
-  .loading-spinner {
-    width: 120px;
-    height: 120px;
-    padding: 20px;
-    background: rgba(255, 255, 255, 0.95);
-    border-radius: 16px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
-  }
-  
-  .spinner {
-    width: 40px;
-    height: 40px;
-    border: 4px solid #f3f3f3;
-    border-top: 4px solid var(--primary-color);
-    border-radius: 50%;
-    animation: spin 1s linear infinite;
-    margin-bottom: 10px;
-  }
-  
-  .loading-text {
-    color: var(--text-color);
-    font-size: 14px;
-    text-align: center;
-    font-weight: 500;
-  }
-  
-  @keyframes spin {
-    0% { transform: rotate(0deg); }
-    100% { transform: rotate(360deg); }
-  }
-  
-  /* Loading animation styles */
-  .loading-overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0, 0, 0, 0.7);
-    display: none;
-    justify-content: center;
-    align-items: center;
-    z-index: 9999;
-    backdrop-filter: blur(5px);
-  }
-  
-  .loading-spinner {
-    width: 120px;
-    height: 120px;
-    padding: 20px;
-    background: rgba(255, 255, 255, 0.95);
-    border-radius: 16px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
-  }
-  
-  .spinner {
-    width: 40px;
-    height: 40px;
-    border: 4px solid #f3f3f3;
-    border-top: 4px solid var(--primary-color);
-    border-radius: 50%;
-    animation: spin 1s linear infinite;
-    margin-bottom: 10px;
-  }
-  
-  .loading-text {
-    color: var(--text-color);
-    font-size: 14px;
-    text-align: center;
-    font-weight: 500;
-  }
-  
-  @keyframes spin {
-    0% { transform: rotate(0deg); }
-    100% { transform: rotate(360deg); }
-  }
-  
-  /* Mobile Responsive Styles */
-  @media (max-width: 768px) {
-    .container {
-      width: 95%;
-      padding: 1.5rem;
-      margin: 60px auto 20px;
-    }
-  
-    h1 {
-      font-size: 1.8rem;
-    }
-  
-    h2 {
-      font-size: 1.5rem;
-    }
-  
-    h3 {
-      font-size: 1.3rem;
-    }
-  
-    .form-group {
-      margin-bottom: 1rem;
-    }
-  
-    select, input[type="text"] {
-      padding: 0.5rem;
-      font-size: 0.9rem;
-    }
-  
-    button {
-      width: 100%;
-      padding: 0.8rem 1.5rem;
-      margin-bottom: 0.5rem;
-    }
-  
-    .instruction-toggle, 
-    .disclaimer-toggle {
-      width: 100%;
-      margin-bottom: 0.5rem;
-    }
-  
-    .qr-options {
-      flex-direction: column;
-      gap: 10px;
-    }
-  
-    .file-input-label, 
-    #scanQRCode {
-      width: 100%;
-      min-width: unset;
-    }
-  
-    #qr-reader {
-      width: 100% !important;
-    }
-  
-    /* Header and menu adjustments */
-    .header-container {
-      padding: 0 15px;
-    }
-  
-    .header-logo {
-      font-size: 1.2em;
-    }
-  
-    .header-logo i {
-      margin-right: 5px;
-    }
-  
-    /* Modal adjustments */
-    .modal-content {
-      width: 90%;
-      margin: 10% auto;
-      padding: 15px;
-    }
-  
-    #disclaimerModal .modal-content {
-      width: 85%;
-      max-height: 80vh;
-      margin: 10% auto;
-      padding: 1.2rem;
-      overflow-y: auto;
-      font-size: 0.9rem;
-    }
-  
-    #disclaimerModal h2 {
-      font-size: 1.3rem;
-      margin-bottom: 1rem;
-      padding-bottom: 0.8rem;
-    }
-  
-    #disclaimerModal a {
-      padding: 0.8rem;
-      font-size: 0.9rem;
-      margin-bottom: 1rem;
-    }
-  
-    #disclaimerModal p {
-      font-size: 0.85rem;
-      margin-bottom: 0.8rem;
-    }
-  
-    #disclaimerModal ul {
-      margin-bottom: 0.8rem;
-    }
-  
-    #disclaimerModal li {
-      font-size: 0.85rem;
-      margin-bottom: 0.5rem;
-      padding-left: 1.5rem;
-    }
-  
-    #disclaimerModal .icon {
-      font-size: 1rem;
-    }
-  
-    #disclaimerModal .confirm-button {
-      padding: 0.8rem;
-      font-size: 0.9rem;
-      margin-top: 1rem;
-    }
-  
-    #disclaimerModal .close {
-      font-size: 1.2rem;
-      top: 0.5rem;
-      right: 0.5rem;
-      padding: 0.3rem;
-      width: 1.8rem;
-      height: 1.8rem;
-      line-height: 1.8rem;
-    }
-  
-    .loading-spinner {
-      width: 100px;
-      height: 100px;
-    }
-  
-    .spinner {
-      width: 30px;
-      height: 30px;
-    }
-  
-    .loading-text {
-      font-size: 12px;
-    }
-  
-    /* Results display adjustments */
-    .result-item {
-      padding: 0.8rem;
-      margin-bottom: 0.8rem;
-      font-size: 0.9rem;
-    }
-  
-    /* Dark mode toggle button adjustments */
-    .dark-mode-toggle {
-      width: 45px;
-      height: 45px;
-      font-size: 1.2em;
-      bottom: 15px;
-      right: 15px;
-    }
-  
-    /* Copyright section adjustments */
-    .copyright {
-      font-size: 0.8rem;
-      padding: 0.8rem;
-    }
-  
-    /* Menu improvements */
-    .fullscreen-menu a {
-      font-size: 1.3em;
-      margin: 15px 0;
-    }
-  
-    .close-menu {
-      top: 15px;
-      right: 15px;
-      font-size: 1.5em;
-    }
-  
-    /* Touch-friendly improvements */
-    select, 
-    input[type="text"], 
-    button {
-      min-height: 44px; /* Minimum touch target size */
-    }
-  
-    .form-group label {
-      margin-bottom: 8px;
-      font-size: 0.95rem;
-    }
-  
-    /* Adjusted close button styles for mobile */
-    #disclaimerModal .close {
-      position: absolute;
-      right: 15px;
-      top: 15px;
-      font-size: 24px; 
-      width: 30px; 
-      height: 30px; 
-      line-height: 30px; 
-      text-align: center; 
-      background: rgba(0, 0, 0, 0.1); 
-      border-radius: 50%; 
-      padding: 0; 
-      touch-action: manipulation; 
-    }
-  
-    #disclaimerModal .modal-content {
-      padding-top: 40px; 
-    }
-  }
-  
-  /* Additional optimizations for very small screens */
-  @media (max-width: 320px) {
-    .container {
-      padding: 1rem;
-    }
-  
-    h1 {
-      font-size: 1.5rem;
-    }
-  
-    .form-group label {
-      font-size: 0.85rem;
-    }
-  
-    select, 
-    input[type="text"] {
-      font-size: 0.85rem;
-    }
-  
-    #disclaimerModal .modal-content {
-      width: 90%;
-      padding: 1rem;
-      margin: 5% auto;
-    }
-  
-    #disclaimerModal h2 {
-      font-size: 1.1rem;
-    }
-  
-    #disclaimerModal p,
-    #disclaimerModal li {
-      font-size: 0.8rem;
-    }
-  
-    #disclaimerModal .confirm-button {
-      font-size: 0.85rem;
-      padding: 0.7rem;
-    }
-  
-    #disclaimerModal .close {
-      font-size: 20px; 
-      width: 26px; 
-      height: 26px; 
-      line-height: 26px;
-    }
-  }
-  
-  /* Ensure touch targets are large enough on mobile */
-  @media (hover: none) and (pointer: coarse) {
-    button,
-    select,
-    input[type="text"],
-    .instruction-toggle,
-    .disclaimer-toggle,
-    .file-input-label,
-    #scanQRCode {
-      min-height: 44px;
-      touch-action: manipulation;
-    }
-  
-    .form-group {
-      margin-bottom: 16px;
-    }
-  
-    /* Touch-friendly improvements */
-    select, 
-    input[type="text"], 
-    button {
-      min-height: 44px; /* Minimum touch target size */
-    }
-  
-    .form-group label {
-      margin-bottom: 8px;
-      font-size: 0.95rem;
-    }
-  
-    /* Adjusted close button styles for mobile */
-    #disclaimerModal .close {
-      position: absolute;
-      right: 15px;
-      top: 15px;
-      font-size: 24px; 
-      width: 30px; 
-      height: 30px; 
-      line-height: 30px; 
-      text-align: center; 
-      background: rgba(0, 0, 0, 0.1); 
-      border-radius: 50%; 
-      padding: 0; 
-      touch-action: manipulation; 
-    }
-  
-    #disclaimerModal .modal-content {
-      padding-top: 40px; 
-    }
-  }
-  
-  /* Additional optimizations for very small screens */
-  @media (max-width: 320px) {
-    .container {
-      padding: 1rem;
-    }
-  
-    h1 {
-      font-size: 1.5rem;
-    }
-  
-    .form-group label {
-      font-size: 0.85rem;
-    }
-  
-    select, 
-    input[type="text"] {
-      font-size: 0.85rem;
-    }
-  
-    #disclaimerModal .close {
-      font-size: 20px; 
-      width: 26px; 
-      height: 26px; 
-      line-height: 26px;
-    }
-  }
-  
-  /* Ensure touch targets are large enough on mobile */
-  @media (hover: none) and (pointer: coarse) {
-    button,
-    select,
-    input[type="text"],
-    .instruction-toggle,
-    .disclaimer-toggle,
-    .file-input-label,
-    #scanQRCode {
-      min-height: 44px;
-      touch-action: manipulation;
-    }
-  
-    .form-group {
-      margin-bottom: 16px;
-    }
-  }
-  
-  /* Additional optimizations for very small screens */
-  @media (max-width: 320px) {
-    .container {
-      padding: 1rem;
-    }
-  
-    h1 {
-      font-size: 1.5rem;
-    }
-  
-    .form-group label {
-      font-size: 0.85rem;
-    }
-  
-    select, 
-    input[type="text"] {
-      font-size: 0.85rem;
-    }
-  }
-  
-  /* Ensure touch targets are large enough on mobile */
-  @media (hover: none) and (pointer: coarse) {
-    button,
-    select,
-    input[type="text"],
-    .instruction-toggle,
-    .disclaimer-toggle,
-    .file-input-label,
-    #scanQRCode {
-      min-height: 44px;
-      touch-action: manipulation;
-    }
-  
-    .form-group {
-      margin-bottom: 16px;
-    }
-  }
-  
-      /* Loading animation styles */
-  .loading-overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(0, 0, 0, 0.7);
-  display: none;
-  justify-content: center;
-  align-items: center;
-  z-index: 9999;
-  backdrop-filter: blur(5px);
-  }
-  
-  .loading-spinner {
-  width: 120px;
-  height: 120px;
-  padding: 20px;
-  background: rgba(255, 255, 255, 0.95);
-  border-radius: 16px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
-  }
-  
-  .spinner {
-  width: 40px;
-  height: 40px;
-  border: 4px solid #f3f3f3;
-  border-top: 4px solid var(--primary-color);
-  border-radius: 50%;
-  animation: spin 1s linear infinite;
-  margin-bottom: 10px;
-  }
-  
-  .loading-text {
-  color: var(--text-color);
-  font-size: 14px;
-  text-align: center;
-  font-weight: 500;
-  }
-  
-  @keyframes spin {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
-  }
-  
-  
-      </style>
-    </head>
-    <body>
-  
-      <header class="header">
-        <div class="header-container">
-          <div class="header-logo">
-            <i class="fas fa-chart-line"></i>
-            <span>桃聯區會考落點分析</span>
-          </div>
-          <div class="menu-icon" onclick="toggleMenu()">
-            <i class="fas fa-bars"></i>
-          </div>
+    <link rel="stylesheet" href="styles.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
+    />
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
+    <link rel="manifest" href="/site.webmanifest" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="google-adsense-account" content="ca-pub-3350304014189563" />
+    <meta
+      name="description"
+      content="桃聯區會考落點分析，幫助使用者分析會考成績，提供學校落點參考。"
+    />
+    <meta
+      name="keywords"
+      content="桃聯區, 會考, 落點分析, 教育, 學校,武陵高中,中壢高中,內壢高中,平鎮高中,大園高中,永豐高中,南崁高中,振聲高中,楊梅高中,治平高中,新興高中,關西高中,大溪高中"
+    />
+    <meta name="author" content="桃聯區教育局" />
+    <!-- External JS Libraries -->
+    <script src="https://unpkg.com/html5-qrcode" type="text/javascript"></script>
+    <script src="https://cdn.jsdelivr.net/npm/jsqr@1.3.1/dist/jsQR.min.js"></script>
+  </head>
+  <body>
+    <header class="header">
+      <div class="header-container">
+        <div class="header-logo">
+          <i class="fas fa-chart-line"></i>
+          <span>桃聯區會考落點分析</span>
         </div>
-      </header>
-  
-      <div class="fullscreen-menu" id="fullscreenMenu">
-        <div class="close-menu" onclick="toggleMenu()">
-          <i class="fas fa-times"></i>
+        <div class="menu-icon" onclick="toggleMenu()">
+          <i class="fas fa-bars"></i>
         </div>
-        <a href="https://sites.google.com/view/tyctw/" target="_blank"><i class="fas fa-school"></i> 回到主網頁</a>
-        <a href="https://tyctw.github.io/sequence/" target="_blank"><i class="fas fa-pencil-alt"></i> 各校序位推估</a>
-        <a href="https://tyctw.github.io/report_form" target="_blank"><i class="fas fa-exclamation-triangle"></i> 系統異常回報</a>
-        <a href="https://tyctw.github.io/Navigation/"><i class="fas fa-university"></i> 查看更多資訊</a>
       </div>
-        <div class="container">
-          <h1><i class="fas fa-chart-line icon"></i>桃聯區會考落點分析系統</h1>
-          <a href="https://forms.gle/ZKW3W58gcbQW3vdX9" target="_blank" class="invite-link">
+    </header>
+
+    <div class="fullscreen-menu" id="fullscreenMenu">
+      <div class="close-menu" onclick="toggleMenu()">
+        <i class="fas fa-times"></i>
+      </div>
+      <a href="https://sites.google.com/view/tyctw/" target="_blank">
+        <i class="fas fa-school"></i> 回到主網頁
+      </a>
+      <a href="https://tyctw.github.io/sequence/" target="_blank">
+        <i class="fas fa-pencil-alt"></i> 各校序位推估
+      </a>
+      <a href="https://tyctw.github.io/report_form" target="_blank">
+        <i class="fas fa-exclamation-triangle"></i> 系統異常回報
+      </a>
+      <a href="https://tyctw.github.io/Navigation/">
+        <i class="fas fa-university"></i> 查看更多資訊
+      </a>
+    </div>
+
+    <div class="container">
+      <h1>
+        <i class="fas fa-chart-line icon"></i>桃聯區會考落點分析系統
+      </h1>
+      <a
+        href="https://forms.gle/ZKW3W58gcbQW3vdX9"
+        target="_blank"
+        class="invite-link"
+      >
+        <i class="fas fa-envelope-open-text icon"></i>填寫表單獲取邀請碼
+      </a>
+      <button class="instruction-toggle" onclick="toggleInstructions()">
+        <i class="fas fa-info-circle icon"></i>使用說明
+      </button>
+      <button class="disclaimer-toggle" onclick="showDisclaimer()">
+        <i class="fas fa-exclamation-triangle icon"></i>免責聲明
+      </button>
+      <div id="instructions" style="display: none;">
+        <h2>
+          <i class="fas fa-book icon"></i>使用說明
+        </h2>
+        <div class="instruction-item">
+          <h3>
+            <i class="fas fa-key icon"></i>1. 輸入邀請碼
+          </h3>
+          <a
+            href="https://forms.gle/ZKW3W58gcbQW3vdX9"
+            target="_blank"
+            class="invite-link"
+          >
             <i class="fas fa-envelope-open-text icon"></i>填寫表單獲取邀請碼
           </a>
-                    <button class="instruction-toggle" onclick="toggleInstructions()"><i class="fas fa-info-circle icon"></i>使用說明</button>
-          <button class="disclaimer-toggle" onclick="showDisclaimer()"><i class="fas fa-exclamation-triangle icon"></i>免責聲明</button>
-          <div id="instructions" style="display: none;">
-            <h2><i class="fas fa-book icon"></i>使用說明</h2>
-            <div class="instruction-item">
-              <h3><i class="fas fa-key icon"></i>1. 輸入邀請碼</h3>
-              <a href="https://forms.gle/ZKW3W58gcbQW3vdX9" target="_blank" class="invite-link">
-                <i class="fas fa-envelope-open-text icon"></i>填寫表單獲取邀請碼
-              </a>
-                            <p>在"邀請碼"欄位中輸入有效的邀請碼。邀請碼每小時自動更新，請確保使用最新的邀請碼。</p>
-            </div>
-            <div class="instruction-item">
-              <h3><i class="fas fa-key icon"></i>1. 獲取並輸入邀請碼</h3>
-              <p>每小時更新一次邀請碼。您可以通過以下方式獲取：</p>
-              <ul>
-                <li>填寫我們的序位回報表單</li>
-                <li>即可進入邀請碼頁面</li>
-  
-              </ul>
-              <p>將獲得的邀請碼輸入到"邀請碼"欄位中。</p>
-            </div>
-            <div class="instruction-item">
-              <h3><i class="fas fa-filter icon"></i>2. 選擇學校屬性和類型</h3>
-              <p>您可以根據需求進行以下篩選：</p>
-              <ul>
-                <li>學校屬性：選擇全部、公立或私立</li>
-                <li>學校類型：選擇全部、普通科或職業類科</li>
-                <li>職業群別（如選擇職業類科）：選擇特定職業群或全部</li>
-              </ul>
-            </div>
-            <div class="instruction-item">
-              <h3><i class="fas fa-pencil-alt icon"></i>3. 輸入會考成績</h3>
-              <p>為每個科目選擇您的會考等級：</p>
-              <ul>
-                <li>國文、英文、數學、自然、社會：從A++到C</li>
-                <li>作文：從0到6級</li>
-              </ul>
-              <p>請確保所有科目都有選擇成績，否則系統將無法進行分析。</p>
-            </div>
-            <div class="instruction-item">
-              <h3><i class="fas fa-search icon"></i>4. 分析落點</h3>
-              <p>點擊"分析落點"按鈕後，系統將：</p>
-              <ul>
-                <li>計算您的總積分和總積點</li>
-                <li>根據您的成績和篩選條件列出可能錄取的學校</li>
-              </ul>
-            </div>
-            <div class="instruction-item">
-              <h3><i class="fas fa-info-circle icon"></i>5. 解讀結果</h3>
-              <p>分析結果將顯示：</p>
-              <ul>
-                <li>您的總積分和總積點</li>
-                <li>按學校類型分類的可能錄取學校列表</li>
-              </ul>
-              <p>請注意，這些結果僅供參考，實際錄取情況可能因多種因素而有所不同。</p>
-            </div>
-            <div class="instruction-item">
-              <h3><i class="fas fa-redo icon"></i>6. 重新分析</h3>
-              <p>您可以隨時調整選項或成績，然後再次點擊"分析落點"來獲得新的結果。</p>
-            </div>
-          </div>
-          <form id="analysisForm">
-            <div class="form-group">
-                <label for="invitationCode"><i class="fas fa-key icon"></i>邀請碼：</label>
-                <input type="text" id="invitationCode" required placeholder="請輸入邀請碼">
-                          </div>
-  
-              <div class="qr-options">
-                <button type="button" id="scanQRCode"><i class="fas fa-camera icon"></i>掃描 QR 碼</button>
-                <label for="fileInput" class="file-input-label">
-                  <i class="fas fa-image icon"></i>上傳 QR 碼
-                </label>
-                <input type="file" id="fileInput" accept="image/*">
-            </div>
-  
-            </form>
-            <div id="qr-reader" style="display: none;"></div>
-            <div id="qr-result"></div>
-  
-  
-            
-  <script src="https://unpkg.com/html5-qrcode" type="text/javascript"></script>
-  <script src="https://cdn.jsdelivr.net/npm/jsqr@1.3.1/dist/jsQR.min.js"></script>
-            <div class="form-group">
-              <label for="schoolOwnership"><i class="fas fa-building icon"></i>學校屬性：</label>
-              <select id="schoolOwnership">
-                <option value="all">全部</option>
-                <option value="public">公立</option>
-                <option value="private">私立</option>
-              </select>
-            </div>
-            <div class="form-group">
-              <label for="schoolType"><i class="fas fa-graduation-cap icon"></i>學校類型：</label>
-              <select id="schoolType" onchange="toggleVocationalGroup()">
-                <option value="all">全部</option>
-                <option value="普通科">普通科</option>
-                <option value="職業類科">職業類科</option>
-              </select>
-            </div>
-            <div class="form-group" id="vocationalGroupContainer" style="display: none;">
-              <label for="vocationalGroup"><i class="fas fa-tools icon"></i>職業群別：</label>
-              <select id="vocationalGroup">
-                  <option value="all">全部</option>
-                  <option value="機械群">機械群</option>
-                  <option value="動力機械群">動力機械群</option>
-                  <option value="電機與電子群">電機與電子群</option>
-                  <option value="化工群">化工群</option>
-                  <option value="土木與建築群">土木與建築群</option>
-                  <option value="商業與管理群">商業與管理群</option>
-                  <option value="外語群">外語群</option>
-                  <option value="設計群">設計群</option>
-                  <option value="農業群">農業群</option>
-                  <option value="食品群">食品群</option>
-                  <option value="家政群">家政群</option>
-                  <option value="餐旅群">餐旅群</option>
-              </select>
-            </div>
-            <div class="form-group">
-              <label for="chinese"><i class="fas fa-book icon"></i>國文：</label>
-              <select id="chinese">
-                <option value="">請選擇您的國文會考分數</option>
-  
-                <option value="A++">A++</option>
-                <option value="A+">A+</option>
-                <option value="A">A</option>
-                <option value="B++">B++</option>
-                <option value="B+">B+</option>
-                <option value="B">B</option>
-                <option value="C">C</option>
-              </select>
-            </div>
-            <div class="form-group">
-              <label for="english"><i class="fas fa-language icon"></i>英文：</label>
-              <select id="english">
-                <option value="">請選擇您的英文會考分數</option>
-  
-                <option value="A++">A++</option>
-                <option value="A+">A+</option>
-                <option value="A">A</option>
-                <option value="B++">B++</option>
-                <option value="B+">B+</option>
-                <option value="B">B</option>
-                <option value="C">C</option>
-              </select>
-            </div>
-            <div class="form-group">
-              <label for="math"><i class="fas fa-calculator icon"></i>數學：</label>
-              <select id="math">
-                <option value="">請選擇您的數學會考分數</option>
-  
-                <option value="A++">A++</option>
-                <option value="A+">A+</option>
-                <option value="A">A</option>
-                <option value="B++">B++</option>
-                <option value="B+">B+</option>
-                <option value="B">B</option>
-                <option value="C">C</option>
-              </select>
-            </div>
-            <div class="form-group">
-              <label for="science"><i class="fas fa-flask icon"></i>自然：</label>
-              <select id="science">
-                <option value="">請選擇您的自然會考分數</option>
-  
-                <option value="A++">A++</option>
-                <option value="A+">A+</option>
-                <option value="A">A</option>
-                <option value="B++">B++</option>
-                <option value="B+">B+</option>
-                <option value="B">B</option>
-                <option value="C">C</option>
-              </select>
-            </div>
-            <div class="form-group">
-              <label for="social"><i class="fas fa-globe icon"></i>社會：</label>
-              <select id="social">
-                <option value="">請選擇您的社會會考分數</option>
-  
-                <option value="A++">A++</option>
-                <option value="A+">A+</option>
-                <option value="A">A</option>
-                <option value="B++">B++</option>
-                <option value="B+">B+</option>
-                <option value="B">B</option>
-                <option value="C">C</option>
-              </select>
-            </div>
-            <div class="form-group">
-              <label for="composition"><i class="fas fa-pen-nib icon"></i>作文：</label>
-              <select id="composition">
-                <option value="">請選擇您的作文會考分數</option>
-  
-                <option value="0">0 級分</option>
-                <option value="1">1 級分</option>
-                <option value="2">2 級分</option>
-                <option value="3">3 級分</option>
-                <option value="4">4 級分</option>
-                <option value="5">5 級分</option>
-                <option value="6">6 級分</option>
-              </select>
-            </div>
-            <button type="button" onclick="analyzeScores()"><i class="fas fa-search icon"></i>分析落點</button>
-            <button id="exportResults" style="display: none;" onclick="exportResults()"><i class="fas fa-file-export icon"></i>匯出結果</button> 
-  
-          </form>
-          <div id="results"></div>
-      <div class="copyright">
-        © <span id="currentYear"></span>  TYCTW桃聯區會考落點分析系統. All rights reserved.
-          <p>本網站由TYCTW會考落點分析平台開發維護。未經授權，禁止複製或轉載。</p>
+          <p>
+            在"邀請碼"欄位中輸入有效的邀請碼。邀請碼每小時自動更新，請確保使用最新的邀請碼。
+          </p>
         </div>
-      </div>      
-  
-  
-      <button id="darkModeToggle" class="dark-mode-toggle" aria-label="切換深色模式">
-        <i class="fas fa-moon"></i>
-    </button>
-  
-  
-  
-      <!-- 修改後的美化版免責聲明 Modal -->
-      <div id="disclaimerModal" class="modal">
-        <div class="modal-content">
-          <button class="close" onclick="closeDisclaimer()">&times;</button>
-          <h2><i class="fas fa-balance-scale icon"></i> 免責聲明</h2>
-          <a href="https://forms.gle/ZKW3W58gcbQW3vdX9" target="_blank">
-            <i class="fas fa-link icon"></i> 填寫表單獲取邀請碼
-          </a>
-          <p><i class="fas fa-info-circle icon"></i> 親愛的使用者，我們誠摯地提醒您：本網站提供的落點分析結果僅供參考，不代表實際錄取結果。實際錄取情況可能會因多種因素而有所不同，包括但不限於：</p>
+        <div class="instruction-item">
+          <h3>
+            <i class="fas fa-key icon"></i>1. 獲取並輸入邀請碼
+          </h3>
+          <p>
+            每小時更新一次邀請碼。您可以通過以下方式獲取：
+          </p>
           <ul>
-            <li><i class="fas fa-university icon"></i> 各校的招生政策變化</li>
-            <li><i class="fas fa-users icon"></i> 當年度考生整體表現</li>
-            <li><i class="fas fa-star icon"></i> 特殊才能或其他加分項目</li>
-            <li><i class="fas fa-clipboard-list icon"></i> 各校的實際招生名額調整</li>
+            <li>填寫我們的序位回報表單</li>
+            <li>即可進入邀請碼頁面</li>
           </ul>
-          <p><i class="fas fa-exclamation-triangle icon"></i> 為了確保您做出最佳的決定，我們強烈建議您：</p>
+          <p>將獲得的邀請碼輸入到"邀請碼"欄位中。</p>
+        </div>
+        <div class="instruction-item">
+          <h3>
+            <i class="fas fa-filter icon"></i>2. 選擇學校屬性和類型
+          </h3>
+          <p>
+            您可以根據需求進行以下篩選：
+          </p>
           <ul>
-            <li><i class="fas fa-search icon"></i> 參考多方資訊，不要僅依賴本網站的分析結果</li>
-            <li><i class="fas fa-comments icon"></i> 諮詢學校輔導老師或升學顧問的專業意見</li>
-            <li><i class="fas fa-globe icon"></i> 密切關注各校的官方網站和招生簡章，以獲取最新和最準確的資訊</li>
+            <li>學校屬性：選擇全部、公立或私立</li>
+            <li>學校類型：選擇全部、普通科或職業類科</li>
+            <li>職業群別（如選擇職業類科）：選擇特定職業群或全部</li>
           </ul>
-          <p><i class="fas fa-shield-alt icon"></i> 本網站不對因使用本服務而產生的任何直接或間接損失負責。使用本服務即表示您同意本免責聲明的所有條款。祝您升學順利！</p>
-          <button class="confirm-button" onclick="closeDisclaimer()"><i class="fas fa-check-circle icon"></i> 我已了解並同意</button>
+        </div>
+        <div class="instruction-item">
+          <h3>
+            <i class="fas fa-pencil-alt icon"></i>3. 輸入會考成績
+          </h3>
+          <p>
+            為每個科目選擇您的會考等級：
+          </p>
+          <ul>
+            <li>國文、英文、數學、自然、社會：從A++到C</li>
+            <li>作文：從0到6級</li>
+          </ul>
+          <p>
+            請確保所有科目都有選擇成績，否則系統將無法進行分析。
+          </p>
+        </div>
+        <div class="instruction-item">
+          <h3>
+            <i class="fas fa-search icon"></i>4. 分析落點
+          </h3>
+          <p>
+            點擊"分析落點"按鈕後，系統將：
+          </p>
+          <ul>
+            <li>計算您的總積分和總積點</li>
+            <li>根據您的成績和篩選條件列出可能錄取的學校</li>
+          </ul>
+        </div>
+        <div class="instruction-item">
+          <h3>
+            <i class="fas fa-info-circle icon"></i>5. 解讀結果
+          </h3>
+          <p>
+            分析結果將顯示：
+          </p>
+          <ul>
+            <li>您的總積分和總積點</li>
+            <li>按學校類型分類的可能錄取學校列表</li>
+          </ul>
+          <p>
+            請注意，這些結果僅供參考，實際錄取情況可能因多種因素而有所不同。
+          </p>
+        </div>
+        <div class="instruction-item">
+          <h3>
+            <i class="fas fa-redo icon"></i>6. 重新分析
+          </h3>
+          <p>
+            您可以隨時調整選項或成績，然後再次點擊"分析落點"來獲得新的結果。
+          </p>
         </div>
       </div>
-      
-        <script>
-          const vocationalGroups = {
-        '機械群': ['機械科', '鑄造科', '板金科', '機械木模科', '配管科', '模具科', '機電科', '製圖科', '生物產業機電科', '電腦機械製圖科'],
-        '動力機械群': ['汽車科', '重機科', '飛機修護科', '動力機械科', '農業機械科', '軌道車輛科'],
-        '電機與電子群': ['資訊科', '電子科', '控制科', '電機科', '冷凍空調科', '航空電子科', '電機空調科'],
-        '化工群': ['化工科', '紡織科', '染整科'],
-        '土木與建築群': ['建築科', '土木科', '消防工程科', '空間測繪科'],
-        '商業與管理群': ['商業經營科', '國際貿易科', '會計事務科', '資料處理科', '不動產事務科', '電子商務科', '流通管理科', '農產行銷科', '航運管理科'],
-        '外語群': ['應用外語科（英文組）', '應用外語科（日文組）'],
-        '設計群': ['家具木工科', '美工科', '陶瓷工程科', '室內空間設計科', '圖文傳播科', '金屬工藝科', '家具設計科', '廣告設計科', '多媒體設計科', '多媒體應用科', '室內設計科'],
-        '農業群': ['農場經營科', '園藝科', '森林科', '野生動物保育科', '造園科', '畜產保健科'],
-        '食品群': ['食品加工科', '食品科', '水產食品科', '烘焙科'],
-        '家政群': ['家政科', '服裝科', '幼兒保育科', '美容科', '時尚模特兒科', '流行服飾科', '時尚造型科', '照顧服務科'],
-        '餐旅群': ['觀光事業科', '餐飲管理科']
-          };
-      
-            function toggleVocationalGroup() {
-    const schoolType = document.getElementById('schoolType').value;
-    const vocationalGroupContainer = document.getElementById('vocationalGroupContainer');
-    const vocationalGroup = document.getElementById('vocationalGroup');
-  
-    if (schoolType === '職業類科') {
-      vocationalGroupContainer.style.display = 'block';
-    } else {
-      vocationalGroupContainer.style.display = 'none';
-      vocationalGroup.value = 'all'; // 清空職業類科的選擇，恢復到默認值
-    }
-  }
-  
-      
-          function toggleInstructions() {
-            var instructions = document.getElementById('instructions');
-            if (instructions.style.display === 'none') {
-              instructions.style.display = 'block';
-              instructions.style.animation = 'fadeIn 0.5s ease-out';
-            } else {
-              instructions.style.animation = 'fadeOut 0.5s ease-out';
-              setTimeout(() => {
-                instructions.style.display = 'none';
-              }, 500);
-            }
-          }
-      
-          let isDragging = false;
-          let startY;
-          let startTop;
-      
-          function showDisclaimer() {
-            var modal = document.getElementById('disclaimerModal');
-            var modalContent = modal.querySelector('.modal-content');
-            modal.style.display = 'block';
-            
-            modalContent.addEventListener('mousedown', startDragging);
-            document.addEventListener('mousemove', drag);
-            document.addEventListener('mouseup', stopDragging);
-            
-            modalContent.addEventListener('touchstart', startDragging);
-            document.addEventListener('touchmove', drag);
-            document.addEventListener('touchend', stopDragging);
-          }
-      
-          function startDragging(e) {
-            isDragging = true;
-            startY = e.type === 'mousedown' ? e.clientY : e.touches[0].clientY;
-            startTop = parseInt(window.getComputedStyle(this).top);
-            this.style.cursor = 'grabbing';
-          }
-      
-          function drag(e) {
-            if (!isDragging) return;
-            e.preventDefault();
-            let modalContent = document.querySelector('.modal-content');
-            let currentY = e.type === 'mousemove' ? e.clientY : e.touches[0].clientY;
-            let deltaY = currentY - startY;
-            modalContent.style.top = `${startTop + deltaY}px`;
-          }
-      
-          function stopDragging() {
-            isDragging = false;
-            document.querySelector('.modal-content').style.cursor = 'grab';
-          }
-      
-          function closeDisclaimer() {
-            var modal = document.getElementById('disclaimerModal');
-            modal.style.display = 'none';
-          }
-      
-          // Get the <span> element that closes the modal
-          var span = document.getElementsByClassName('close')[0];
-      
-          // When the user clicks on <span> (x), close the modal
-          span.onclick = function() {
-            closeDisclaimer();
-          }
-      
-          // When the user clicks anywhere outside of the modal, close it
-          window.onclick = function(event) {
-            var modal = document.getElementById('disclaimerModal');
-            if (event.target == modal) {
-              closeDisclaimer();
-            }
-          }
-      
 
+      <form id="analysisForm">
+        <div class="form-group">
+          <label for="invitationCode">
+            <i class="fas fa-key icon"></i>邀請碼：
+          </label>
+          <input
+            type="text"
+            id="invitationCode"
+            required
+            placeholder="請輸入邀請碼"
+          />
+        </div>
 
-      // Add showLoading and hideLoading functions
-  function showLoading() {
-  const loadingOverlay = document.createElement('div');
-  loadingOverlay.className = 'loading-overlay';
-  loadingOverlay.innerHTML = `
-    <div class="loading-spinner">
-      <div class="spinner"></div>
-      <div class="loading-text">分析中，請稍候...</div>
+        <div class="qr-options">
+          <button type="button" id="scanQRCode">
+            <i class="fas fa-camera icon"></i>掃描 QR 碼
+          </button>
+          <label for="fileInput" class="file-input-label">
+            <i class="fas fa-image icon"></i>上傳 QR 碼
+          </label>
+          <input type="file" id="fileInput" accept="image/*" />
+        </div>
+      </form>
+      <div id="qr-reader" style="display: none;"></div>
+      <div id="qr-result"></div>
+
+      <div class="form-group">
+        <label for="schoolOwnership">
+          <i class="fas fa-building icon"></i>學校屬性：
+        </label>
+        <select id="schoolOwnership">
+          <option value="all">全部</option>
+          <option value="public">公立</option>
+          <option value="private">私立</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label for="schoolType">
+          <i class="fas fa-graduation-cap icon"></i>學校類型：
+        </label>
+        <select id="schoolType" onchange="toggleVocationalGroup()">
+          <option value="all">全部</option>
+          <option value="普通科">普通科</option>
+          <option value="職業類科">職業類科</option>
+        </select>
+      </div>
+      <div
+        class="form-group"
+        id="vocationalGroupContainer"
+        style="display: none;"
+      >
+        <label for="vocationalGroup">
+          <i class="fas fa-tools icon"></i>職業群別：
+        </label>
+        <select id="vocationalGroup">
+          <option value="all">全部</option>
+          <option value="機械群">機械群</option>
+          <option value="動力機械群">動力機械群</option>
+          <option value="電機與電子群">電機與電子群</option>
+          <option value="化工群">化工群</option>
+          <option value="土木與建築群">土木與建築群</option>
+          <option value="商業與管理群">商業與管理群</option>
+          <option value="外語群">外語群</option>
+          <option value="設計群">設計群</option>
+          <option value="農業群">農業群</option>
+          <option value="食品群">食品群</option>
+          <option value="家政群">家政群</option>
+          <option value="餐旅群">餐旅群</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label for="chinese">
+          <i class="fas fa-book icon"></i>國文：
+        </label>
+        <select id="chinese">
+          <option value="">請選擇您的國文會考分數</option>
+          <option value="A++">A++</option>
+          <option value="A+">A+</option>
+          <option value="A">A</option>
+          <option value="B++">B++</option>
+          <option value="B+">B+</option>
+          <option value="B">B</option>
+          <option value="C">C</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label for="english">
+          <i class="fas fa-language icon"></i>英文：
+        </label>
+        <select id="english">
+          <option value="">請選擇您的英文會考分數</option>
+          <option value="A++">A++</option>
+          <option value="A+">A+</option>
+          <option value="A">A</option>
+          <option value="B++">B++</option>
+          <option value="B+">B+</option>
+          <option value="B">B</option>
+          <option value="C">C</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label for="math">
+          <i class="fas fa-calculator icon"></i>數學：
+        </label>
+        <select id="math">
+          <option value="">請選擇您的數學會考分數</option>
+          <option value="A++">A++</option>
+          <option value="A+">A+</option>
+          <option value="A">A</option>
+          <option value="B++">B++</option>
+          <option value="B+">B+</option>
+          <option value="B">B</option>
+          <option value="C">C</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label for="science">
+          <i class="fas fa-flask icon"></i>自然：
+        </label>
+        <select id="science">
+          <option value="">請選擇您的自然會考分數</option>
+          <option value="A++">A++</option>
+          <option value="A+">A+</option>
+          <option value="A">A</option>
+          <option value="B++">B++</option>
+          <option value="B+">B+</option>
+          <option value="B">B</option>
+          <option value="C">C</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label for="social">
+          <i class="fas fa-globe icon"></i>社會：
+        </label>
+        <select id="social">
+          <option value="">請選擇您的社會會考分數</option>
+          <option value="A++">A++</option>
+          <option value="A+">A+</option>
+          <option value="A">A</option>
+          <option value="B++">B++</option>
+          <option value="B+">B+</option>
+          <option value="B">B</option>
+          <option value="C">C</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label for="composition">
+          <i class="fas fa-pen-nib icon"></i>作文：
+        </label>
+        <select id="composition">
+          <option value="">請選擇您的作文會考分數</option>
+          <option value="0">0 級分</option>
+          <option value="1">1 級分</option>
+          <option value="2">2 級分</option>
+          <option value="3">3 級分</option>
+          <option value="4">4 級分</option>
+          <option value="5">5 級分</option>
+          <option value="6">6 級分</option>
+        </select>
+      </div>
+      <button type="button" id="analyzeButton" onclick="analyzeScores()">
+        <i class="fas fa-search icon"></i>分析落點
+      </button>
+      <button id="exportResults" style="display: none;" onclick="exportResults()">
+        <i class="fas fa-file-export icon"></i>匯出結果
+      </button>
+      <div id="results"></div>
+      <div class="copyright">
+        &copy; <span id="currentYear"></span> TYCTW桃聯區會考落點分析系統. All rights reserved.
+        <p>本網站由TYCTW會考落點分析平台開發維護。未經授權，禁止複製或轉載。</p>
+      </div>
     </div>
-  `;
-  document.body.appendChild(loadingOverlay);
-  
-  // Fade in animation
-  requestAnimationFrame(() => {
-    loadingOverlay.style.display = 'flex';
-    loadingOverlay.style.opacity = '0';
-    requestAnimationFrame(() => {
-      loadingOverlay.style.transition = 'opacity 0.3s ease';
-      loadingOverlay.style.opacity = '1';
-    });
-  });
-  }
-  
-  function hideLoading() {
-  const loadingOverlay = document.querySelector('.loading-overlay');
-  if (loadingOverlay) {
-    loadingOverlay.style.opacity = '0';
-    setTimeout(() => {
-      loadingOverlay.remove();
-    }, 300);
-  }
-  }
-  
-  
-  
-  
-  async function logUserActivity(action, details = {}) {
-      try {
-        const userAgent = navigator.userAgent;
-        const screenResolution = `${window.screen.width}x${window.screen.height}`;
-        const viewportSize = `${window.innerWidth}x${window.innerHeight}`;
-        const timestamp = new Date().toISOString();
-        
-        const data = {
-          timestamp,
-          action,
-          userAgent,
-          screenResolution,
-          viewportSize,
-          darkMode: document.body.classList.contains('dark-mode'),
-          ...details
-        };
-  
-        // Send to Google Apps Script endpoint
-        const response = await fetch('https://script.google.com/macros/s/AKfycbwLvuhN61rsleYwwdycQLZ13qHcDTE_6XfIH5Iu6GHNsgEVyjGKirk7jVnTEGn-_ZB8tQ/exec', {
-          method: 'POST',
-          body: JSON.stringify(data)
-        });
-  
-        if (!response.ok) {
-          throw new Error('Failed to log activity');
-        }
-      } catch (error) {
-        console.error('Error logging activity:', error);
-      }
-    }
-  
-  
-  
-    async function analyzeScores() {
-    try {
-        const invitationCode = document.getElementById('invitationCode').value;
 
-        // 向後端驗證邀請碼
-        const validationResponse = await fetch('https://script.google.com/macros/s/AKfycbx8_7mRA3AhKoq_GUuoeYrlxCVKIqzBPJg4335_bIbpYg-mGCkmppvXNSZwyVXERWXA/exec', {
-            method: 'POST',
-            body: JSON.stringify({
-                action: 'validateInvitationCode',
-                invitationCode: invitationCode
-            })
-        });
+    <button id="darkModeToggle" class="dark-mode-toggle" aria-label="切換深色模式">
+      <i class="fas fa-moon"></i>
+    </button>
 
-        if (!validationResponse.ok) {
-            throw new Error('邀請碼驗證失敗');
-        }
+    <!-- 美化版免責聲明 Modal -->
+    <div id="disclaimerModal" class="modal">
+      <div class="modal-content">
+        <button class="close" onclick="closeDisclaimer()">&times;</button>
+        <h2>
+          <i class="fas fa-balance-scale icon"></i> 免責聲明
+        </h2>
+        <a href="https://forms.gle/ZKW3W58gcbQW3vdX9" target="_blank">
+          <i class="fas fa-link icon"></i> 填寫表單獲取邀請碼
+        </a>
+        <p>
+          <i class="fas fa-info-circle icon"></i> 親愛的使用者，我們誠摯地提醒您：本網站提供的落點分析結果僅供參考，不代表實際錄取結果。實際錄取情況可能會因多種因素而有所不同，包括但不限於：
+        </p>
+        <ul>
+          <li>
+            <i class="fas fa-university icon"></i> 各校的招生政策變化
+          </li>
+          <li>
+            <i class="fas fa-users icon"></i> 當年度考生整體表現
+          </li>
+          <li>
+            <i class="fas fa-star icon"></i> 特殊才能或其他加分項目
+          </li>
+          <li>
+            <i class="fas fa-clipboard-list icon"></i> 各校的實際招生名額調整
+          </li>
+        </ul>
+        <p>
+          <i class="fas fa-exclamation-triangle icon"></i> 為了確保您做出最佳的決定，我們強烈建議您：
+        </p>
+        <ul>
+          <li>
+            <i class="fas fa-search icon"></i> 參考多方資訊，不要僅依賴本網站的分析結果
+          </li>
+          <li>
+            <i class="fas fa-comments icon"></i> 諮詢學校輔導老師或升學顧問的專業意見
+          </li>
+          <li>
+            <i class="fas fa-globe icon"></i> 密切關注各校的官方網站和招生簡章，以獲取最新和最準確的資訊
+          </li>
+        </ul>
+        <p>
+          <i class="fas fa-shield-alt icon"></i> 本網站不對因使用本服務而產生的任何直接或間接損失負責。使用本服務即表示您同意本免責聲明的所有條款。祝您升學順利！
+        </p>
+        <button class="confirm-button" onclick="closeDisclaimer()">
+          <i class="fas fa-check-circle icon"></i> 我已了解並同意
+        </button>
+      </div>
+    </div>
 
-        const validationResult = await validationResponse.json();
-        if (!validationResult.valid) {
-            alert('邀請碼錯誤或已過期，請確認最新的邀請碼。');
-            return;
-        }
-
-        // 繼續進行成績分析...
-        const schoolOwnership = document.getElementById('schoolOwnership').value;
-        const schoolType = document.getElementById('schoolType').value;
-        const vocationalGroup = document.getElementById('vocationalGroup').value;
-
-        // 檢查所有成績欄位是否填寫
-        const fields = ['chinese', 'english', 'math', 'science', 'social', 'composition'];
-        let isAllFieldsFilled = true;
-        let emptyFields = [];
-
-        fields.forEach(field => {
-            const value = document.getElementById(field).value;
-            if (value === "") {
-                isAllFieldsFilled = false;
-                emptyFields.push(field);
-            }
-        });
-
-        if (!isAllFieldsFilled) {
-            let errorMessage = '請填寫以下欄位會考成績：\n';
-            const fieldNames = {
-                'chinese': '國文',
-                'english': '英文',
-                'math': '數學',
-                'science': '自然',
-                'social': '社會',
-                'composition': '作文'
-            };
-            emptyFields.forEach(field => {
-                errorMessage += `- ${fieldNames[field]}\n`;
-            });
-            alert(errorMessage);
-            return;
-        }
-
-        // 顯示加載動畫
-        showLoading();
-
-        // 記錄使用者嘗試分析行為
-        await logUserActivity('analyze_scores', {
-            scores: {
-                chinese: document.getElementById('chinese').value,
-                english: document.getElementById('english').value,
-                math: document.getElementById('math').value,
-                science: document.getElementById('science').value,
-                social: document.getElementById('social').value,
-                composition: document.getElementById('composition').value
-            },
-            filters: {
-                schoolOwnership,
-                schoolType,
-                vocationalGroup
-            }
-        });
-
-        // 準備成績資料
-        const scores = {
-            chinese: document.getElementById('chinese').value,
-            english: document.getElementById('english').value,
-            math: document.getElementById('math').value,
-            science: document.getElementById('science').value,
-            social: document.getElementById('social').value,
-            composition: parseInt(document.getElementById('composition').value)
-        };
-
-        // 請求學校資料
-        const response = await fetch('https://script.google.com/macros/s/AKfycby1jUbZpuv5ltuQiGpsFCziEdTJJt9CyrQYG8vGdsu_PSpTk7VaYGbJUM01J-_l4_fcnQ/exec', {
-            method: 'POST',
-            body: JSON.stringify({
-                scores,
-                filters: {
-                    schoolOwnership,
-                    schoolType,
-                    vocationalGroup
-                }
-            })
-        });
-
-        if (!response.ok) {
-            throw new Error('無法取得學校資料');
-        }
-
-        const data = await response.json();
-        displayResults(data);
-    } catch (error) {
-        // 記錄錯誤活動
-        await logUserActivity('analyze_error', { error: error.message });
-        alert('發生錯誤：' + error.message);
-    } finally {
-        // 隱藏加載動畫
-        hideLoading();
-    }
-}
-  
-  
-  
-function displayResults(data) {
-  const { totalPoints, totalCredits, eligibleSchools } = data;
-  
-  let results = `<h2><i class="fas fa-clipboard-check icon"></i>分析結果</h2>
-                 <p class="result-item"><i class="fas fa-star icon"></i>總積分：${totalPoints}</p>
-                 <p class="result-item"><i class="fas fa-award icon"></i>總積點：${totalCredits}</p>`;
-  
-  results += '<h3><i class="fas fa-list-ul icon"></i>可能錄取的學校：</h3>';
-  
-  if (eligibleSchools && eligibleSchools.length > 0) {
-    // 添加學校總數
-    results += `<p class="result-item"><i class="fas fa-building icon"></i>共有 ${eligibleSchools.length} 所學校可能錄取</p>`;
-
-    let groupedSchools = {};
-    eligibleSchools.forEach(school => {
-      if (!groupedSchools[school.type]) {
-        groupedSchools[school.type] = [];
-      }
-      groupedSchools[school.type].push(school.name);
-    });
-  
-    Object.entries(groupedSchools).forEach(([type, schools]) => {
-      // 添加各類型學校數量
-      results += `<h3>${type} (${schools.length}所)</h3><ul>`;
-      schools.forEach(schoolName => {
-        results += `<li class="result-item"><i class="fas fa-check-circle icon"></i>${schoolName}</li>`;
-      });
-      results += '</ul>';
-    });
-  } else {
-    results += '<p class="result-item"><i class="fas fa-exclamation-triangle icon"></i>根據您的成績，暫時沒有符合條件的學校。</p>';
-  }
-  
-  const resultsElement = document.getElementById('results');
-  resultsElement.innerHTML = results;
-  resultsElement.style.display = 'none';
-  setTimeout(() => {
-    resultsElement.style.display = 'block';
-    resultsElement.style.animation = 'fadeIn 0.5s ease-out';
-    document.getElementById('exportResults').style.display = 'inline-block';
-  }, 100);
-}
-  
-    function exportResults() {
-      logUserActivity('export_results');
-    const resultsElement = document.getElementById('results');
-    const resultsText = resultsElement.innerText;
-    
-    // Get current date and time
-    const now = new Date();
-    const dateTime = now.toLocaleString('zh-TW', { 
-      year: 'numeric', 
-      month: '2-digit', 
-      day: '2-digit', 
-      hour: '2-digit', 
-      minute: '2-digit', 
-      second: '2-digit',
-      hour12: false 
-    });
-  
-    // Create ASCII art watermark with date and time
-    const watermark = 
-      "********************************\n" +
-      "*                              *\n" +
-      "*  TYCTW 桃聯區會考落點分析系統  *\n" +
-      "*       以下資料僅供參考      *\n" +
-      "*                              *\n" +
-      `*   產生時間: ${dateTime}   *\n` +
-      "*                              *\n" +
-      "********************************\n\n";
-  
-    // Combine watermark and results
-    const contentWithWatermark = watermark + resultsText;
-  
-    const blob = new Blob([contentWithWatermark], { type: 'text/plain;charset=utf-8' });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.style.display = 'none';
-    a.href = url;
-    a.download = '桃聯區會考落點分析結果.txt';
-    document.body.appendChild(a);
-    a.click();
-    URL.revokeObjectURL(url);
-  }
-      
-          // 初始顯示免責聲明
-          window.onload = function() {
-            showDisclaimer();
-          }
-        </script>
-            <!-- Google tag (gtag.js) -->
-  <script async src="https://www.googletagmanager.com/gtag/js?id=G-VKP55N96DC"></script>
-  <script>
-    window.dataLayer = window.dataLayer || [];
-    function gtag(){dataLayer.push(arguments);}
-    gtag('js', new Date());
-  
-    gtag('config', 'G-VKP55N96DC');
-  </script>
-  
-  <script>
-  
-  document.oncontextmenu = function (){
-  return false;
-  }
-  </script>
-        <script>
-  
-  document.body.onkeydown = function(e){
-  var keyCode = e.keyCode || e.which || e.charCode;
-  var ctrlKey = e.ctrlKey || e.metaKey;
-  if(ctrlKey && (keyCode == 83 || keyCode == 85 || keyCode == 73)) {
-  e.preventDefault();
-  return false;
-  }else if(keyCode && keyCode == 123){
-  return false;
-  }
-  }
-  const html5QrCode = new Html5Qrcode("qr-reader");
-    const qrConfig = { fps: 10, qrbox: { width: 250, height: 250 } };
-  
-    document.getElementById('scanQRCode').addEventListener('click', () => {
-      const qrReader = document.getElementById('qr-reader');
-      if (qrReader.style.display === 'none') {
-        qrReader.style.display = 'block';
-        html5QrCode.start({ facingMode: "environment" }, qrConfig, onScanSuccess);
-      } else {
-        qrReader.style.display = 'none';
-        html5QrCode.stop();
-      }
-    });
-  
-    function onScanSuccess(decodedText, decodedResult) {
-      document.getElementById('invitationCode').value = decodedText;
-      html5QrCode.stop();
-      document.getElementById('qr-reader').style.display = 'none';
-      document.getElementById('qr-result').textContent = `您的邀請碼是：${decodedText}`;
-      
-      logUserActivity('qr_scan_success', { invitationCode: decodedText });
-    }
-  
-    function handleQRCodeImage(file) {
-      logUserActivity('qr_image_upload', { fileName: file.name });
-  
-      const reader = new FileReader();
-      reader.onload = e => {
-        const img = new Image();
-        img.onload = () => {
-          const canvas = document.createElement('canvas');
-          canvas.width = img.width;
-          canvas.height = img.height;
-          const ctx = canvas.getContext('2d');
-          ctx.drawImage(img, 0, 0, img.width, img.height);
-          const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
-          const code = jsQR(imageData.data, imageData.width, imageData.height);
-          if (code) {
-            document.getElementById('invitationCode').value = code.data;
-            document.getElementById('qr-result').textContent = `您的邀請碼是：${code.data}`;
-          } else {
-            document.getElementById('qr-result').textContent = '無法識別 QR 碼，請嘗試其他圖片';
-          }
-        };
-        img.src = e.target.result;
-      };
-      reader.readAsDataURL(file);
-    }
-  
-    document.getElementById('fileInput').addEventListener('change', event => {
-      const file = event.target.files[0];
-      if (file) {
-        handleQRCodeImage(file);
-      }
-    });
-  
-  
-  
-  
-    function toggleMenu() {
-          var menu = document.getElementById("fullscreenMenu");
-          menu.classList.toggle("show");
-          document.body.style.overflow = menu.classList.contains("show") ? "hidden" : "auto";
-  
-          // 添加連結的動畫延遲
-          var links = menu.getElementsByTagName('a');
-          for (var i = 0; i < links.length; i++) {
-            links[i].style.animationDelay = (i * 0.1) + 's';
-          }
-        }
-  
-  
-        function toggleDarkMode() {
-      document.body.classList.toggle('dark-mode');
-      const isDarkMode = document.body.classList.contains('dark-mode');
-      localStorage.setItem('darkMode', isDarkMode);
-      updateDarkModeIcon(isDarkMode);
-      
-      // Log dark mode toggle
-      logUserActivity('toggle_dark_mode', { enabled: isDarkMode });
-    }
-  
-        function updateDarkModeIcon(isDarkMode) {
-            const icon = document.querySelector('#darkModeToggle i');
-            icon.style.transform = 'scale(0)';
-            
-            setTimeout(() => {
-                if (isDarkMode) {
-                    icon.classList.remove('fa-moon');
-                    icon.classList.add('fa-sun');
-                } else {
-                    icon.classList.remove('fa-sun');
-                    icon.classList.add('fa-moon');
-                }
-                icon.style.transform = 'scale(1)';
-            }, 150);
-        }
-  
-        // 檢查用戶之前的深色模式偏好
-        const savedDarkMode = localStorage.getItem('darkMode') === 'true';
-        if (savedDarkMode) {
-            document.body.classList.add('dark-mode');
-        }
-        updateDarkModeIcon(savedDarkMode);
-  
-        // 添加事件監聽器2025/01/19改為後端管理錄取分數測試版增加手機談窗框,增加記錄使用者LOG
-        document.getElementById('darkModeToggle').addEventListener('click', toggleDarkMode);
-  
-  
-  
-      // 更新版權年份
-      document.getElementById('currentYear').textContent = new Date().getFullYear();
-  
-      const canvas = document.getElementById('signatureCanvas');
-      const ctx = canvas.getContext('2d');
-      let isDrawing = false;
-      let lastX = 0;
-      let lastY = 0;
-  
-      function startDrawing(e) {
-        isDrawing = true;
-        [lastX, lastY] = [e.offsetX, e.offsetY];
-      }
-  
-
-  
-        </script>
-  
-  
-      
-      
-      </body></html>
+    <script src="script.js"></script>
+    <!-- Google Tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-VKP55N96DC"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-VKP55N96DC');
+    </script>
+  </body>
+</html>

@@ -1109,8 +1109,61 @@ body.dark-mode #disclaimerModal .close:hover {
   }
 }
 
-/* Disabled 按鈕樣式 */
+/* Invitation Code Validation Animation styles already defined in script.js */
+
+/* 新增 Disabled 按鈕樣式 */
 button:disabled {
   opacity: 0.6;
   cursor: not-allowed;
+}
+
+/* Rating Section Styles */
+#ratingSection {
+  margin-top: 20px;
+  padding: 20px;
+  background: var(--card-background);
+  border-radius: 8px;
+  box-shadow: 0 2px 4px var(--shadow-color);
+  animation: fadeIn 0.5s ease-out;
+  text-align: center;
+}
+
+#ratingSection h2 {
+  margin-bottom: 15px;
+}
+
+#starsContainer {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  font-size: 2.5rem;
+  margin-bottom: 15px;
+}
+
+#starsContainer .star {
+  cursor: pointer;
+  color: #bdc3c7;
+  transition: transform 0.2s ease, color 0.2s ease;
+}
+
+#starsContainer .star.active {
+  color: #f1c40f;
+  transform: scale(1.2);
+}
+
+#submitRating.rating-button {
+  padding: 0.8rem 1.5rem;
+  font-size: 1.1rem;
+  border-radius: 30px;
+  background-color: var(--secondary-color);
+  border: none;
+  cursor: pointer;
+  transition: transform 0.3s ease, background-color 0.3s ease;
+  box-shadow: 0 4px 6px var(--shadow-color);
+}
+
+#submitRating.rating-button:hover {
+  background-color: #27ae60;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 8px var(--shadow-color);
 }

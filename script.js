@@ -551,3 +551,28 @@ function updateStarDisplay(rating) {
 }
 
 document.addEventListener("DOMContentLoaded", initRating);
+
+
+// 禁用常見的開發工具鍵盤快速鍵：F12、Ctrl+Shift+I/J/C、Ctrl+U
+document.body.onkeydown = function(e) {
+  var keyCode = e.keyCode || e.which;
+  if (
+    keyCode === 123 || // F12
+    (e.ctrlKey && e.shiftKey && (keyCode === 73 || keyCode === 74 || keyCode === 67)) || // Ctrl+Shift+I, Ctrl+Shift+J, Ctrl+Shift+C
+    (e.ctrlKey && keyCode === 85) // Ctrl+U
+  ) {
+    e.preventDefault();
+    return false;
+  }
+};
+
+// 檢測視窗尺寸變化，若開發者工具可能被打開則封鎖頁面
+(function() {
+  var threshold = 160;
+  setInterval(function() {
+    if (window.outerWidth - window.innerWidth > threshold || window.outerHeight - window.innerHeight > threshold) {
+      document.body.innerHTML = "<h1>禁止使用開發者工具</h1>";
+      throw "開發者工具被禁用";
+    }
+  }, 1000);
+})();

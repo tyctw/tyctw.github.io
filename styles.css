@@ -231,61 +231,42 @@ button:hover {
 .fullscreen-menu {
   position: fixed;
   top: 0;
-  left: 0;
-  width: 100%;
+  right: -100%;
+  width: 300px;
   height: 100%;
   background-color: var(--menu-background);
   display: flex;
   flex-direction: column;
-  justify-content: center;
-  align-items: center;
+  justify-content: flex-start;
+  padding-top: 60px;
   z-index: 2000;
-  opacity: 0;
-  visibility: hidden;
-  transition: opacity 0.5s ease, visibility 0.5s ease;
+  transition: right 0.3s ease;
+  box-shadow: -2px 0 10px rgba(0, 0, 0, 0.2);
 }
 
 .fullscreen-menu.show {
-  opacity: 1;
-  visibility: visible;
+  right: 0;
 }
 
 .fullscreen-menu a {
   color: white;
   text-decoration: none;
-  font-size: 1.5em;
-  margin: 20px 0;
-  transition: all 0.5s ease;
-  position: relative;
-  padding: 10px 0;
+  font-size: 1.2em;
+  margin: 10px 20px;
+  padding: 15px;
+  transition: all 0.3s ease;
+  border-radius: 10px;
   opacity: 0;
-  transform: translateY(20px);
+  transform: translateX(20px);
 }
 
 .fullscreen-menu.show a {
   opacity: 1;
-  transform: translateY(0);
-}
-
-.fullscreen-menu a::after {
-  content: '';
-  position: absolute;
-  width: 100%;
-  height: 2px;
-  bottom: 0;
-  left: 0;
-  background-color: var(--accent-color);
-  visibility: hidden;
-  transform: scaleX(0);
-  transition: all 0.3s ease-in-out;
-}
-
-.fullscreen-menu a:hover::after {
-  visibility: visible;
-  transform: scaleX(1);
+  transform: translateX(0);
 }
 
 .fullscreen-menu a:hover {
+  background-color: rgba(255, 255, 255, 0.1);
   color: var(--accent-color);
 }
 
@@ -293,15 +274,48 @@ button:hover {
   position: absolute;
   top: 20px;
   right: 20px;
-  font-size: 2em;
+  font-size: 1.5em;
   color: white;
   cursor: pointer;
-  transition: color 0.3s ease, transform 0.3s ease;
+  transition: all 0.3s ease;
+  opacity: 0;
+  transform: scale(0.8);
 }
 
-.close-menu:hover {
-  color: var(--accent-color);
-  transform: rotate(90deg);
+.fullscreen-menu.show .close-menu {
+  opacity: 1;
+  transform: scale(1);
+}
+
+.menu-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  opacity: 0;
+  visibility: hidden;
+  transition: all 0.3s ease;
+  z-index: 1999;
+}
+
+.menu-overlay.show {
+  opacity: 1;
+  visibility: visible;
+}
+
+/* Mobile responsive adjustments */
+@media (max-width: 768px) {
+  .fullscreen-menu {
+    width: 80%;
+  }
+  
+  .fullscreen-menu a {
+    font-size: 1.1em;
+    margin: 8px 15px;
+    padding: 12px;
+  }
 }
 
 .qr-options {

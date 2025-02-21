@@ -496,14 +496,10 @@ function toggleDarkMode() {
   document.body.classList.toggle('dark-mode');
   const isDarkMode = document.body.classList.contains('dark-mode');
   localStorage.setItem('darkMode', isDarkMode);
-  updateDarkModeIcon(isDarkMode);
-
-  logUserActivity('toggle_dark_mode', { enabled: isDarkMode });
-}
-
-function updateDarkModeIcon(isDarkMode) {
+  
   const icon = document.querySelector('#darkModeToggle i');
-  icon.style.transform = 'scale(0)';
+  icon.classList.add('transitioning');
+  
   setTimeout(() => {
     if (isDarkMode) {
       icon.classList.remove('fa-moon');
@@ -512,15 +508,23 @@ function updateDarkModeIcon(isDarkMode) {
       icon.classList.remove('fa-sun');
       icon.classList.add('fa-moon');
     }
-    icon.style.transform = 'scale(1)';
-  }, 150);
+    
+    setTimeout(() => {
+      icon.classList.remove('transitioning');
+    }, 600);
+  }, 300);
+
+  logUserActivity('toggle_dark_mode', { enabled: isDarkMode });
 }
 
+// Initial dark mode setup
 const savedDarkMode = localStorage.getItem('darkMode') === 'true';
 if (savedDarkMode) {
   document.body.classList.add('dark-mode');
+  const icon = document.querySelector('#darkModeToggle i');
+  icon.classList.remove('fa-moon');
+  icon.classList.add('fa-sun');
 }
-updateDarkModeIcon(savedDarkMode);
 
 document.getElementById('darkModeToggle').addEventListener('click', toggleDarkMode);
 

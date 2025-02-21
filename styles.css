@@ -495,121 +495,201 @@ button:hover {
 }
 
 /* 深色模式樣式 */
-body.dark-mode {
-  --background-color: #2c3e50;
-  --text-color: #ecf0f1;
-  --card-background: #34495e;
-  --shadow-color: rgba(0, 0, 0, 0.2);
+.dark-mode {
+  --background-color: #1a1a2e;
+  --text-color: #e6e6e6;
+  --card-background: #162447;
+  --shadow-color: rgba(0, 0, 0, 0.3);
+  --input-background: #1f4068;
+  --border-color: #1f4068;
+  transition: background-color 0.5s ease, color 0.5s ease;
+}
+
+.dark-mode .container {
+  background: var(--card-background);
+  box-shadow: 0 10px 30px var(--shadow-color);
+}
+
+.dark-mode select,
+.dark-mode input[type="text"] {
+  background-color: var(--input-background);
+  color: var(--text-color);
+  border-color: var(--border-color);
+}
+
+.dark-mode select option {
+  background-color: var(--input-background);
+  color: var(--text-color);
 }
 
 .dark-mode-toggle {
   position: fixed;
-  bottom: 20px;
-  right: 20px;
-  background-color: var(--primary-color);
-  color: white;
-  border: none;
+  bottom: 30px;
+  right: 30px;
+  width: 56px;
+  height: 56px;
   border-radius: 50%;
-  width: 60px;
-  height: 60px;
-  font-size: 1.5em;
+  background: linear-gradient(145deg, #ffffff, #e6e6e6);
+  border: none;
+  color: #2c3e50;
   cursor: pointer;
-  transition: all 0.3s ease;
-  z-index: 1000;
   display: flex;
   align-items: center;
   justify-content: center;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  outline: none;
+  font-size: 1.5em;
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  box-shadow: 
+    -8px -8px 15px rgba(255, 255, 255, 0.7),
+    8px 8px 15px rgba(0, 0, 0, 0.08),
+    inset 0 0 0 rgba(255, 255, 255, 0.7),
+    inset 0 0 0 rgba(0, 0, 0, 0.08);
+  z-index: 1000;
+  overflow: hidden;
+  padding: 0;
+}
+
+.dark-mode-toggle i {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  line-height: 1;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.dark-mode-toggle::before {
+  content: '';
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background: radial-gradient(circle at center, rgba(255, 255, 255, 0.8) 0%, transparent 70%);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  pointer-events: none;
 }
 
 .dark-mode-toggle:hover {
-  background-color: var(--secondary-color);
-  transform: scale(1.1) rotate(360deg);
-  box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
+  transform: scale(1.1) rotate(8deg);
+  box-shadow: 
+    -12px -12px 20px rgba(255, 255, 255, 0.8),
+    12px 12px 20px rgba(0, 0, 0, 0.1);
+}
+
+.dark-mode-toggle:hover::before {
+  opacity: 1;
 }
 
 .dark-mode-toggle:active {
   transform: scale(0.95);
+  box-shadow: 
+    0 0 0 rgba(255, 255, 255, 0.7),
+    0 0 0 rgba(0, 0, 0, 0.08),
+    inset -8px -8px 15px rgba(255, 255, 255, 0.7),
+    inset 8px 8px 15px rgba(0, 0, 0, 0.08);
 }
 
 .dark-mode-toggle i {
-  transition: all 0.3s ease;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-body.dark-mode .dark-mode-toggle {
-  background-color: var(--accent-color);
+.dark-mode .dark-mode-toggle {
+  background: linear-gradient(145deg, #2c3e50, #1a1a2e);
+  color: #ffd700;
+  box-shadow: 
+    -8px -8px 15px rgba(255, 255, 255, 0.1),
+    8px 8px 15px rgba(0, 0, 0, 0.3),
+    inset 0 0 0 rgba(255, 255, 255, 0.1),
+    inset 0 0 0 rgba(0, 0, 0, 0.3);
 }
 
-body.dark-mode .dark-mode-toggle:hover {
-  background-color: var(--secondary-color);
+.dark-mode .dark-mode-toggle:hover {
+  box-shadow: 
+    -12px -12px 20px rgba(255, 255, 255, 0.15),
+    12px 12px 20px rgba(0, 0, 0, 0.4);
 }
 
-@keyframes float {
-  0% { transform: translateY(0px); }
-  50% { transform: translateY(-10px); }
-  100% { transform: translateY(0px); }
-}
-
-.dark-mode-toggle {
-  animation: float 4s ease-in-out infinite;
+.dark-mode .dark-mode-toggle:active {
+  box-shadow: 
+    0 0 0 rgba(255, 255, 255, 0.1),
+    0 0 0 rgba(0, 0, 0, 0.3),
+    inset -8px -8px 15px rgba(255, 255, 255, 0.1),
+    inset 8px 8px 15px rgba(0, 0, 0, 0.3);
 }
 
 @media (max-width: 768px) {
   .dark-mode-toggle {
-    width: 50px;
-    height: 50px;
-    font-size: 1.2em;
-    bottom: 10px;
-    right: 10px;
+    width: 48px;
+    height: 48px;
+    bottom: 20px;
+    right: 20px;
+    font-size: 1.3em;
   }
 }
 
-body.dark-mode .modal-content {
-  background-color: #2c3e50;
-  color: #ecf0f1;
-  border-color: #34495e;
+@media (max-width: 480px) {
+  .dark-mode-toggle {
+    width: 42px;
+    height: 42px;
+    bottom: 15px;
+    right: 15px;
+    font-size: 1.2em;
+  }
 }
 
-body.dark-mode .close {
-  color: #ecf0f1;
+@keyframes iconTransition {
+  0% { transform: rotate(0) scale(1); }
+  50% { transform: rotate(180deg) scale(0.5); }
+  100% { transform: rotate(360deg) scale(1); }
 }
 
-body.dark-mode .close:hover,
-body.dark-mode .close:focus {
-  color: #bdc3c7;
+.dark-mode-toggle i.transitioning {
+  animation: iconTransition 0.6s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-body.dark-mode .confirm-button {
-  background-color: #3498db;
-  color: #ecf0f1;
+/* Dark mode hover effects */
+.dark-mode button:hover,
+.dark-mode .instruction-toggle:hover,
+.dark-mode .disclaimer-toggle:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 15px rgba(0, 0, 0, 0.3);
 }
 
-body.dark-mode .confirm-button:hover {
-  background-color: #2980b9;
+/* Dark mode form elements */
+.dark-mode .form-group label {
+  color: #e6e6e6;
 }
 
-body.dark-mode .modal-content h2 {
-  color: #3498db;
+.dark-mode select:focus,
+.dark-mode input[type="text"]:focus {
+  border-color: #4a69bd;
+  box-shadow: 0 0 0 3px rgba(74, 105, 189, 0.3);
 }
 
-body.dark-mode .modal-content a {
-  color: #2ecc71;
+/* Smooth transition for all elements */
+* {
+  transition: background-color 0.5s ease,
+              color 0.5s ease,
+              border-color 0.5s ease,
+              box-shadow 0.5s ease;
 }
 
-body.dark-mode .modal-content a:hover {
-  color: #27ae60;
+/* Dark mode hover feedback */
+.dark-mode button:active,
+.dark-mode .dark-mode-toggle:active {
+  transform: scale(0.98);
+  box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.2);
 }
 
-body.dark-mode .modal-content ul {
-  border-left: 2px solid #3498db;
-  padding-left: 20px;
+/* Enhanced readability in dark mode */
+.dark-mode h1,
+.dark-mode h2,
+.dark-mode h3 {
+  color: #4a69bd;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
 }
 
-body.dark-mode .modal-content li {
-  margin-bottom: 10px;
-}
-
+/* ...rest of existing code... */
 #disclaimerModal .modal-content {
   background-color: #ffffff;
   border-radius: 30px;
@@ -864,49 +944,49 @@ body.dark-mode .modal-content li {
 }
 
 /* Dark mode adjustments */
-body.dark-mode #disclaimerModal .modal-content {
+.dark-mode #disclaimerModal .modal-content {
   background-color: #2c3e50;
   color: #ecf0f1;
   box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
 }
 
-body.dark-mode #disclaimerModal .content-wrapper {
+.dark-mode #disclaimerModal .content-wrapper {
   background: rgba(52, 73, 94, 0.5);
 }
 
-body.dark-mode #disclaimerModal h2 {
+.dark-mode #disclaimerModal h2 {
   color: #3498db;
   border-bottom-color: #3498db;
 }
 
-body.dark-mode #disclaimerModal a {
+.dark-mode #disclaimerModal a {
   color: #3498db;
   background-color: #34495e;
 }
 
-body.dark-mode #disclaimerModal a:hover {
+.dark-mode #disclaimerModal a:hover {
   color: #2c3e50;
   background-color: #3498db;
 }
 
-body.dark-mode #disclaimerModal p,
-body.dark-mode #disclaimerModal li {
+.dark-mode #disclaimerModal p,
+.dark-mode #disclaimerModal li {
   color: #bdc3c7;
 }
 
-body.dark-mode #disclaimerModal .confirm-button {
+.dark-mode #disclaimerModal .confirm-button {
   background-color: #3498db;
 }
 
-body.dark-mode #disclaimerModal .confirm-button:hover {
+.dark-mode #disclaimerModal .confirm-button:hover {
   background-color: #2980b9;
 }
 
-body.dark-mode #disclaimerModal .close {
+.dark-mode #disclaimerModal .close {
   color: #bdc3c7;
 }
 
-body.dark-mode #disclaimerModal .close:hover {
+.dark-mode #disclaimerModal .close:hover {
   color: #ecf0f1;
   background: rgba(255, 255, 255, 0.1);
 }
@@ -1276,21 +1356,21 @@ body.dark-mode #disclaimerModal .close:hover {
 }
 
 /* Dark mode adjustments */
-body.dark-mode .instruction-item {
+.dark-mode .instruction-item {
   background: rgba(0, 0, 0, 0.2);
   border-left-color: var(--accent-color);
 }
 
-body.dark-mode .instruction-item h3 {
+.dark-mode .instruction-item h3 {
   color: var(--accent-color);
 }
 
-body.dark-mode .instruction-item .highlight {
+.dark-mode .instruction-item .highlight {
   background: rgba(52, 152, 219, 0.2);
   color: #3498db;
 }
 
-body.dark-mode .instruction-item li::before {
+.dark-mode .instruction-item li::before {
   color: var(--accent-color);
 }
 

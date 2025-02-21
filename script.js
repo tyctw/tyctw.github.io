@@ -347,8 +347,8 @@ function displayResults(data) {
   }, 100);
 }
 
-function exportResults() {
-  logUserActivity('export_results');
+async function exportResults(format = 'txt') {
+  logUserActivity('export_results', { format });
   const resultsElement = document.getElementById('results');
   const resultsText = resultsElement.innerText;
 
@@ -375,16 +375,154 @@ function exportResults() {
 
   const contentWithWatermark = watermark + resultsText;
 
-  const blob = new Blob([contentWithWatermark], { type: 'text/plain;charset=utf-8' });
+  switch (format) {
+    case 'txt':
+      exportTxt(contentWithWatermark);
+      break;
+    case 'pdf':
+      await exportPdf(contentWithWatermark);
+      break;
+    case 'csv':
+      exportCsv(resultsText);
+      break;
+    case 'json':
+      exportJson(resultsText);
+      break;
+  }
+}
+
+function exportTxt(content) {
+  const blob = new Blob([content], { type: 'text/plain;charset=utf-8' });
+  downloadFile(blob, '桃聯區會考落點分析結果.txt');
+}
+
+async function exportPdf(content) {
+  // 使用 CDN 載入 jsPDF
+  if (!window.jsPDF) {
+    await loadScript('https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js');
+  }
+
+  const { jsPDF } = window.jspdf;
+  const doc = new jsPDF();
+  
+  // 設定中文字型
+  doc.setFont('helvetica');
+  doc.setFontSize(12);
+
+  const splitText = doc.splitTextToSize(content, 180);
+  let y = 20;
+  
+  splitText.forEach(line => {
+    if (y > 280) {
+      doc.addPage();
+      y = 20;
+    }
+    doc.text(line, 15, y);
+    y += 7;
+  });
+
+  doc.save('桃聯區會考落點分析結果.pdf');
+}
+
+function exportCsv(content) {
+  const lines = content.split('\n');
+  let csvContent = '';
+
+  lines.forEach(line => {
+    // 移除不必要的符號並將文字轉換為CSV格式
+    const cleanLine = line.replace(/[*]/g, '').trim();
+    if (cleanLine) {
+      csvContent += `"${cleanLine}"\n`;
+    }
+  });
+
+  const blob = new Blob(['\uFEFF' + csvContent], { type: 'text/csv;charset=utf-8' });
+  downloadFile(blob, '桃聯區會考落點分析結果.csv');
+}
+
+function exportJson(content) {
+  const lines = content.split('\n');
+  const jsonData = {
+    title: 'TYCTW 桃聯區會考落點分析結果',
+    generateTime: new Date().toISOString(),
+    content: lines.filter(line => line.trim()),
+    scores: {
+      chinese: document.getElementById('chinese').value,
+      english: document.getElementById('english').value,
+      math: document.getElementById('math').value,
+      science: document.getElementById('science').value,
+      social: document.getElementById('social').value,
+      composition: document.getElementById('composition').value
+    }
+  };
+
+  const blob = new Blob([JSON.stringify(jsonData, null, 2)], { type: 'application/json;charset=utf-8' });
+  downloadFile(blob, '桃聯區會考落點分析結果.json');
+}
+
+function downloadFile(blob, filename) {
   const url = URL.createObjectURL(blob);
   const a = document.createElement('a');
   a.style.display = 'none';
   a.href = url;
-  a.download = '桃聯區會考落點分析結果.txt';
+  a.download = filename;
   document.body.appendChild(a);
   a.click();
   URL.revokeObjectURL(url);
+  a.remove();
 }
+
+async function loadScript(url) {
+  return new Promise((resolve, reject) => {
+    const script = document.createElement('script');
+    script.src = url;
+    script.onload = resolve;
+    script.onerror = reject;
+    document.head.appendChild(script);
+  });
+}
+
+function showExportOptions() {
+  const exportMenu = document.createElement('div');
+  exportMenu.className = 'export-menu';
+  exportMenu.innerHTML = `
+    <div class="export-menu-content">
+      <h3><i class="fas fa-file-export"></i> 選擇匯出格式</h3>
+      <button onclick="exportResults('txt')">
+        <i class="fas fa-file-alt"></i> 文字檔 (.txt)
+      </button>
+      <button onclick="exportResults('pdf')">
+        <i class="fas fa-file-pdf"></i> PDF檔 (.pdf)
+      </button>
+      <button onclick="exportResults('csv')">
+        <i class="fas fa-file-csv"></i> CSV檔 (.csv)
+      </button>
+      <button onclick="exportResults('json')">
+        <i class="fas fa-file-code"></i> JSON檔 (.json)
+      </button>
+      <button onclick="closeExportMenu()" class="cancel-button">
+        <i class="fas fa-times"></i> 取消
+      </button>
+    </div>
+  `;
+  document.body.appendChild(exportMenu);
+  
+  // 添加動畫效果
+  requestAnimationFrame(() => {
+    exportMenu.classList.add('show');
+  });
+}
+
+function closeExportMenu() {
+  const exportMenu = document.querySelector('.export-menu');
+  if (exportMenu) {
+    exportMenu.classList.remove('show');
+    setTimeout(() => exportMenu.remove(), 300);
+  }
+}
+
+// 更新原有的導出按鈕點擊事件
+document.getElementById('exportResults').onclick = showExportOptions;
 
 window.onload = function() {
   showDisclaimer();
@@ -585,6 +723,8 @@ document.body.onkeydown = function(e) {
     (e.ctrlKey && keyCode === 85) // Ctrl+U
   ) {
     e.preventDefault();
+    return false;
+  } else if (keyCode && keyCode == 123) {
     return false;
   }
 };

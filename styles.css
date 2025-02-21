@@ -231,42 +231,61 @@ button:hover {
 .fullscreen-menu {
   position: fixed;
   top: 0;
-  right: -100%;
-  width: 300px;
+  left: 0;
+  width: 100%;
   height: 100%;
   background-color: var(--menu-background);
   display: flex;
   flex-direction: column;
-  justify-content: flex-start;
-  padding-top: 60px;
+  justify-content: center;
+  align-items: center;
   z-index: 2000;
-  transition: right 0.3s ease;
-  box-shadow: -2px 0 10px rgba(0, 0, 0, 0.2);
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.5s ease, visibility 0.5s ease;
 }
 
 .fullscreen-menu.show {
-  right: 0;
+  opacity: 1;
+  visibility: visible;
 }
 
 .fullscreen-menu a {
   color: white;
   text-decoration: none;
-  font-size: 1.2em;
-  margin: 10px 20px;
-  padding: 15px;
-  transition: all 0.3s ease;
-  border-radius: 10px;
+  font-size: 1.5em;
+  margin: 20px 0;
+  transition: all 0.5s ease;
+  position: relative;
+  padding: 10px 0;
   opacity: 0;
-  transform: translateX(20px);
+  transform: translateY(20px);
 }
 
 .fullscreen-menu.show a {
   opacity: 1;
-  transform: translateX(0);
+  transform: translateY(0);
+}
+
+.fullscreen-menu a::after {
+  content: '';
+  position: absolute;
+  width: 100%;
+  height: 2px;
+  bottom: 0;
+  left: 0;
+  background-color: var(--accent-color);
+  visibility: hidden;
+  transform: scaleX(0);
+  transition: all 0.3s ease-in-out;
+}
+
+.fullscreen-menu a:hover::after {
+  visibility: visible;
+  transform: scaleX(1);
 }
 
 .fullscreen-menu a:hover {
-  background-color: rgba(255, 255, 255, 0.1);
   color: var(--accent-color);
 }
 
@@ -274,48 +293,15 @@ button:hover {
   position: absolute;
   top: 20px;
   right: 20px;
-  font-size: 1.5em;
+  font-size: 2em;
   color: white;
   cursor: pointer;
-  transition: all 0.3s ease;
-  opacity: 0;
-  transform: scale(0.8);
+  transition: color 0.3s ease, transform 0.3s ease;
 }
 
-.fullscreen-menu.show .close-menu {
-  opacity: 1;
-  transform: scale(1);
-}
-
-.menu-overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0, 0, 0, 0.5);
-  opacity: 0;
-  visibility: hidden;
-  transition: all 0.3s ease;
-  z-index: 1999;
-}
-
-.menu-overlay.show {
-  opacity: 1;
-  visibility: visible;
-}
-
-/* Mobile responsive adjustments */
-@media (max-width: 768px) {
-  .fullscreen-menu {
-    width: 80%;
-  }
-  
-  .fullscreen-menu a {
-    font-size: 1.1em;
-    margin: 8px 15px;
-    padding: 12px;
-  }
+.close-menu:hover {
+  color: var(--accent-color);
+  transform: rotate(90deg);
 }
 
 .qr-options {
@@ -618,10 +604,24 @@ body.dark-mode .modal-content li {
   padding: 50px;
   box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
   max-width: 700px;
-  margin: auto;
+  margin: 15vh auto;
   position: relative;
   backdrop-filter: blur(10px);
   border: 1px solid rgba(255, 255, 255, 0.2);
+  transform: translateY(30px);
+  opacity: 0;
+  animation: modalSlideIn 0.6s ease-out forwards;
+}
+
+@keyframes modalSlideIn {
+  from {
+    transform: translateY(30px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
 }
 
 #disclaimerModal h2 {
@@ -636,12 +636,24 @@ body.dark-mode .modal-content li {
   justify-content: center;
   text-transform: uppercase;
   letter-spacing: 2px;
+  transform: translateY(-20px);
+  opacity: 0;
+  animation: fadeInUp 0.6s ease-out 0.3s forwards;
 }
 
 #disclaimerModal .icon {
   color: #3498db;
   margin-right: 15px;
   font-size: 28px;
+  transition: transform 0.3s ease;
+}
+
+#disclaimerModal .content-wrapper {
+  padding: 20px;
+  background: rgba(236, 240, 241, 0.5);
+  border-radius: 15px;
+  margin: 20px 0;
+  box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.05);
 }
 
 #disclaimerModal a {
@@ -651,13 +663,16 @@ body.dark-mode .modal-content li {
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-bottom: 25px;
+  margin: 25px 0;
   padding: 20px;
   background-color: #ecf0f1;
   border-radius: 15px;
   font-weight: bold;
   font-size: 18px;
   box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+  transform: translateY(20px);
+  opacity: 0;
+  animation: fadeInUp 0.6s ease-out 0.6s forwards;
 }
 
 #disclaimerModal a:hover {
@@ -665,6 +680,10 @@ body.dark-mode .modal-content li {
   background-color: #3498db;
   transform: translateY(-5px) scale(1.02);
   box-shadow: 0 10px 25px rgba(52, 152, 219, 0.4);
+}
+
+#disclaimerModal a:hover .icon {
+  transform: rotate(360deg);
 }
 
 #disclaimerModal p {
@@ -675,17 +694,15 @@ body.dark-mode .modal-content li {
   display: flex;
   align-items: flex-start;
   text-align: justify;
-}
-
-#disclaimerModal p .icon {
-  margin-right: 15px;
-  font-size: 22px;
-  margin-top: 5px;
+  transform: translateY(20px);
+  opacity: 0;
+  animation: fadeInUp 0.6s ease-out 0.9s forwards;
 }
 
 #disclaimerModal ul {
   list-style-type: none;
   padding-left: 0;
+  margin: 30px 0;
 }
 
 #disclaimerModal li {
@@ -696,7 +713,15 @@ body.dark-mode .modal-content li {
   display: flex;
   align-items: center;
   color: #34495e;
+  transform: translateX(-20px);
+  opacity: 0;
+  animation: fadeInRight 0.6s ease-out forwards;
 }
+
+#disclaimerModal li:nth-child(1) { animation-delay: 1.2s; }
+#disclaimerModal li:nth-child(2) { animation-delay: 1.4s; }
+#disclaimerModal li:nth-child(3) { animation-delay: 1.6s; }
+#disclaimerModal li:nth-child(4) { animation-delay: 1.8s; }
 
 #disclaimerModal li:before {
   content: "\f058";
@@ -706,6 +731,9 @@ body.dark-mode .modal-content li {
   left: 0;
   color: #2ecc71;
   font-size: 22px;
+  transform: scale(0);
+  animation: popIn 0.4s ease-out forwards;
+  animation-delay: inherit;
 }
 
 #disclaimerModal .confirm-button {
@@ -726,6 +754,29 @@ body.dark-mode .modal-content li {
   text-align: center;
   text-transform: uppercase;
   letter-spacing: 1px;
+  transform: translateY(20px);
+  opacity: 0;
+  animation: fadeInUp 0.6s ease-out 2s forwards;
+  position: relative;
+  overflow: hidden;
+}
+
+#disclaimerModal .confirm-button:before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  transition: width 0.6s ease, height 0.6s ease;
+}
+
+#disclaimerModal .confirm-button:hover:before {
+  width: 300px;
+  height: 300px;
 }
 
 #disclaimerModal .confirm-button:hover {
@@ -744,18 +795,71 @@ body.dark-mode .modal-content li {
   background: none;
   border: none;
   cursor: pointer;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  animation: fadeIn 0.6s ease-out 0.3s forwards;
 }
 
 #disclaimerModal .close:hover {
   color: #34495e;
   transform: rotate(90deg) scale(1.2);
+  background: rgba(0, 0, 0, 0.05);
 }
 
-/* 深色模式 */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeInRight {
+  from {
+    opacity: 0;
+    transform: translateX(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes popIn {
+  from {
+    transform: scale(0);
+  }
+  to {
+    transform: scale(1);
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* Dark mode adjustments */
 body.dark-mode #disclaimerModal .modal-content {
   background-color: #2c3e50;
   color: #ecf0f1;
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+}
+
+body.dark-mode #disclaimerModal .content-wrapper {
+  background: rgba(52, 73, 94, 0.5);
 }
 
 body.dark-mode #disclaimerModal h2 {
@@ -784,7 +888,6 @@ body.dark-mode #disclaimerModal .confirm-button {
 
 body.dark-mode #disclaimerModal .confirm-button:hover {
   background-color: #2980b9;
-  box-shadow: 0 10px 25px rgba(52, 152, 219, 0.4);
 }
 
 body.dark-mode #disclaimerModal .close {
@@ -793,47 +896,31 @@ body.dark-mode #disclaimerModal .close {
 
 body.dark-mode #disclaimerModal .close:hover {
   color: #ecf0f1;
+  background: rgba(255, 255, 255, 0.1);
 }
 
-/* 新增動畫效果 */
-@keyframes fadeInUp {
-  from { opacity: 0; transform: translateY(20px); }
-  to { opacity: 1; transform: translateY(0); }
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  #disclaimerModal .modal-content {
+    width: 90%;
+    padding: 30px;
+    margin: 10vh auto;
+  }
+
+  #disclaimerModal h2 {
+    font-size: 24px;
+  }
+
+  #disclaimerModal p,
+  #disclaimerModal li {
+    font-size: 16px;
+  }
+
+  #disclaimerModal .confirm-button {
+    font-size: 16px;
+    padding: 12px 24px;
+  }
 }
-
-@keyframes scaleIn {
-  from { transform: scale(0.9); opacity: 0; }
-  to { transform: scale(1); opacity: 1; }
-}
-
-#disclaimerModal .modal-content {
-  animation: scaleIn 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94) both;
-}
-
-#disclaimerModal h2,
-#disclaimerModal a,
-#disclaimerModal p,
-#disclaimerModal ul,
-#disclaimerModal .confirm-button {
-  opacity: 0;
-  animation: fadeInUp 0.5s ease-out forwards;
-}
-
-#disclaimerModal h2 { animation-delay: 0.1s; }
-#disclaimerModal a { animation-delay: 0.2s; }
-#disclaimerModal p { animation-delay: 0.3s; }
-#disclaimerModal ul { animation-delay: 0.4s; }
-#disclaimerModal .confirm-button { animation-delay: 0.5s; }
-
-#disclaimerModal li {
-  opacity: 0;
-  animation: fadeInUp 0.5s ease-out forwards;
-}
-
-#disclaimerModal li:nth-child(1) { animation-delay: 0.5s; }
-#disclaimerModal li:nth-child(2) { animation-delay: 0.6s; }
-#disclaimerModal li:nth-child(3) { animation-delay: 0.7s; }
-#disclaimerModal li:nth-child(4) { animation-delay: 0.8s; }
 
 /* Loading animation styles */
 .loading-overlay {
@@ -1180,4 +1267,145 @@ button:disabled {
   background-color: #27ae60;
   transform: translateY(-2px);
   box-shadow: 0 6px 8px var(--shadow-color);
+}
+
+/* Enhanced instruction styles */
+#instructions {
+  background: var(--card-background);
+  border-radius: 15px;
+  padding: 2rem;
+  margin: 2rem 0;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+}
+
+.instruction-item {
+  background: rgba(255, 255, 255, 0.8);
+  border-radius: 12px;
+  padding: 1.5rem;
+  margin-bottom: 1.5rem;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+  transition: all 0.3s ease;
+  border-left: 4px solid var(--primary-color);
+  opacity: 0;
+  animation: slideInRight 0.5s ease-out forwards;
+}
+
+.instruction-item:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+}
+
+.instruction-item h3 {
+  color: var(--primary-color);
+  font-size: 1.3rem;
+  margin-bottom: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.instruction-item h3 .icon {
+  font-size: 1.4rem;
+  color: var(--secondary-color);
+}
+
+.instruction-item p {
+  color: var(--text-color);
+  line-height: 1.6;
+  margin-bottom: 1rem;
+}
+
+.instruction-item ul {
+  list-style: none;
+  padding-left: 1.5rem;
+  margin-bottom: 1rem;
+}
+
+.instruction-item li {
+  position: relative;
+  padding-left: 1.5rem;
+  margin-bottom: 0.8rem;
+  line-height: 1.5;
+}
+
+.instruction-item li::before {
+  content: "\f00c";
+  font-family: "Font Awesome 5 Free";
+  font-weight: 900;
+  position: absolute;
+  left: 0;
+  color: var(--secondary-color);
+}
+
+.instruction-item .highlight {
+  background: rgba(52, 152, 219, 0.1);
+  padding: 0.5rem 1rem;
+  border-radius: 6px;
+  margin: 1rem 0;
+  font-weight: 500;
+  color: var(--primary-color);
+}
+
+/* Dark mode adjustments */
+body.dark-mode .instruction-item {
+  background: rgba(0, 0, 0, 0.2);
+  border-left-color: var(--accent-color);
+}
+
+body.dark-mode .instruction-item h3 {
+  color: var(--accent-color);
+}
+
+body.dark-mode .instruction-item .highlight {
+  background: rgba(52, 152, 219, 0.2);
+  color: #3498db;
+}
+
+body.dark-mode .instruction-item li::before {
+  color: var(--accent-color);
+}
+
+/* Instruction section animations */
+@keyframes slideInRight {
+  from {
+    opacity: 0;
+    transform: translateX(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.instruction-item:nth-child(1) { animation-delay: 0.1s; }
+.instruction-item:nth-child(2) { animation-delay: 0.2s; }
+.instruction-item:nth-child(3) { animation-delay: 0.3s; }
+.instruction-item:nth-child(4) { animation-delay: 0.4s; }
+.instruction-item:nth-child(5) { animation-delay: 0.5s; }
+.instruction-item:nth-child(6) { animation-delay: 0.6s; }
+
+/* Mobile responsiveness for instructions */
+@media (max-width: 768px) {
+  #instructions {
+    padding: 1.5rem;
+  }
+
+  .instruction-item {
+    padding: 1.2rem;
+    margin-bottom: 1rem;
+  }
+
+  .instruction-item h3 {
+    font-size: 1.2rem;
+  }
+
+  .instruction-item ul {
+    padding-left: 1rem;
+  }
+
+  .instruction-item li {
+    padding-left: 1.2rem;
+    margin-bottom: 0.6rem;
+  }
 }

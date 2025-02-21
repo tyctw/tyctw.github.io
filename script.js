@@ -405,32 +405,6 @@ document.body.onkeydown = function(e) {
   }
 };
 
-function toggleMenu() {
-  const menu = document.getElementById("fullscreenMenu");
-  const overlay = document.getElementById("menuOverlay");
-  menu.classList.toggle("show");
-  overlay.classList.toggle("show");
-  
-  // Toggle body scroll
-  document.body.style.overflow = menu.classList.contains("show") ? "hidden" : "auto";
-
-  // Add animation delays to links
-  const links = menu.getElementsByTagName('a');
-  for (let i = 0; i < links.length; i++) {
-    links[i].style.transitionDelay = menu.classList.contains("show") ? 
-      (0.1 + i * 0.1) + 's' : '0s';
-  }
-}
-
-document.addEventListener('keydown', (e) => {
-  if (e.key === 'Escape') {
-    const menu = document.getElementById("fullscreenMenu");
-    if (menu.classList.contains("show")) {
-      toggleMenu();
-    }
-  }
-});
-
 const html5QrCode = new Html5Qrcode("qr-reader");
 const qrConfig = { fps: 10, qrbox: { width: 250, height: 250 } };
 
@@ -486,6 +460,17 @@ document.getElementById('fileInput').addEventListener('change', event => {
     handleQRCodeImage(file);
   }
 });
+
+function toggleMenu() {
+  var menu = document.getElementById("fullscreenMenu");
+  menu.classList.toggle("show");
+  document.body.style.overflow = menu.classList.contains("show") ? "hidden" : "auto";
+
+  var links = menu.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    links[i].style.animationDelay = (i * 0.1) + 's';
+  }
+}
 
 function toggleDarkMode() {
   document.body.classList.toggle('dark-mode');
@@ -567,6 +552,8 @@ function updateStarDisplay(rating) {
 
 document.addEventListener("DOMContentLoaded", initRating);
 
+
+// 禁用常見的開發工具鍵盤快速鍵：F12、Ctrl+Shift+I/J/C、Ctrl+U
 document.body.onkeydown = function(e) {
   var keyCode = e.keyCode || e.which;
   if (
@@ -579,6 +566,7 @@ document.body.onkeydown = function(e) {
   }
 };
 
+// 檢測視窗尺寸變化，若開發者工具可能被打開則封鎖頁面
 (function() {
   var threshold = 160;
   setInterval(function() {

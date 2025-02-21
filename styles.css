@@ -231,61 +231,46 @@ button:hover {
 .fullscreen-menu {
   position: fixed;
   top: 0;
-  left: 0;
-  width: 100%;
+  right: -100%; /* Start off-screen to the right */
+  width: 300px; /* Fixed width */
   height: 100%;
   background-color: var(--menu-background);
   display: flex;
   flex-direction: column;
   justify-content: center;
-  align-items: center;
+  align-items: stretch;
   z-index: 2000;
-  opacity: 0;
-  visibility: hidden;
-  transition: opacity 0.5s ease, visibility 0.5s ease;
+  transition: right 0.3s ease;
+  box-shadow: -2px 0 10px rgba(0, 0, 0, 0.2);
+  padding: 60px 20px 20px 20px;
 }
 
 .fullscreen-menu.show {
-  opacity: 1;
-  visibility: visible;
+  right: 0;
 }
 
 .fullscreen-menu a {
   color: white;
   text-decoration: none;
-  font-size: 1.5em;
-  margin: 20px 0;
-  transition: all 0.5s ease;
-  position: relative;
-  padding: 10px 0;
+  font-size: 1.2em;
+  margin: 10px 0;
+  padding: 15px 20px;
+  border-radius: 10px;
+  transition: all 0.3s ease;
+  background: rgba(255, 255, 255, 0.1);
+  text-align: left;
   opacity: 0;
-  transform: translateY(20px);
+  transform: translateX(20px);
 }
 
 .fullscreen-menu.show a {
   opacity: 1;
-  transform: translateY(0);
-}
-
-.fullscreen-menu a::after {
-  content: '';
-  position: absolute;
-  width: 100%;
-  height: 2px;
-  bottom: 0;
-  left: 0;
-  background-color: var(--accent-color);
-  visibility: hidden;
-  transform: scaleX(0);
-  transition: all 0.3s ease-in-out;
-}
-
-.fullscreen-menu a:hover::after {
-  visibility: visible;
-  transform: scaleX(1);
+  transform: translateX(0);
 }
 
 .fullscreen-menu a:hover {
+  background: rgba(255, 255, 255, 0.2);
+  transform: translateX(5px);
   color: var(--accent-color);
 }
 
@@ -293,15 +278,42 @@ button:hover {
   position: absolute;
   top: 20px;
   right: 20px;
-  font-size: 2em;
   color: white;
+  font-size: 24px;
   cursor: pointer;
-  transition: color 0.3s ease, transform 0.3s ease;
+  background: rgba(255, 255, 255, 0.1);
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
 }
 
 .close-menu:hover {
-  color: var(--accent-color);
+  background: rgba(255, 255, 255, 0.2);
   transform: rotate(90deg);
+  color: var(--accent-color);
+}
+
+.menu-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  opacity: 0;
+  visibility: hidden;
+  transition: all 0.3s ease;
+  z-index: 1999;
+  backdrop-filter: blur(3px);
+}
+
+.menu-overlay.show {
+  opacity: 1;
+  visibility: visible;
 }
 
 .qr-options {
@@ -1407,5 +1419,11 @@ body.dark-mode .instruction-item li::before {
   .instruction-item li {
     padding-left: 1.2rem;
     margin-bottom: 0.6rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .fullscreen-menu {
+    width: 85%;
   }
 }

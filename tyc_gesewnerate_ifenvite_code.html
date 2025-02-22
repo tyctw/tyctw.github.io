@@ -538,6 +538,31 @@
       background-color: var(--secondary-color);
       transform: scale(1.1);
     }
+
+    /* 新增的載入動畫：邀請碼 Spinner 及淡入效果 */
+    .spinner {
+      border: 4px solid #f3f3f3;
+      border-top: 4px solid var(--primary-color);
+      border-radius: 50%;
+      width: 30px;
+      height: 30px;
+      margin: auto;
+      animation: spin 1s linear infinite;
+    }
+
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    .fade-in {
+      animation: fadeIn 0.5s ease-in-out;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
   </style>
 </head>
 <body>
@@ -616,14 +641,19 @@
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
   <script>
-    // 從後端 Google Apps Script 讀取邀請碼
+    // 從後端 Google Apps Script 讀取邀請碼，並加入載入動畫效果
     function updateInvitationCode() {
+      const codeEl = document.getElementById('invitationCode');
+      // 顯示 loading spinner
+      codeEl.innerHTML = '<div class="spinner"></div>';
       const backendURL = 'https://script.google.com/macros/s/AKfycbzGtW72kd6iAv3WVfNZXlB4h3h5T1EgNZIjHvaiCxtHx31Xfo8JGCjRNlsZd9h4XQgx/exec';
       fetch(backendURL)
         .then(response => response.json())
         .then(data => {
           const code = data.invitationCode;
-          document.getElementById('invitationCode').textContent = code;
+          codeEl.textContent = code;
+          codeEl.classList.add('fade-in');
+          setTimeout(() => codeEl.classList.remove('fade-in'), 500);
           document.getElementById('lastUpdate').textContent = "最後更新：" + new Date().toLocaleString();
         })
         .catch(error => {
@@ -679,7 +709,7 @@
       }
     }
 
-    // 顯示 Toast 提示，可自訂訊息內容
+    // 顯示 Toast 提示
     function showToast(message = "已成功複製邀請碼！") {
       const toast = document.getElementById('toast');
       toast.textContent = message;

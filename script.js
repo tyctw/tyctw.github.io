@@ -110,50 +110,21 @@ function hideInvitationValidationAnimation() {
 function showLoading() {
   const loadingOverlay = document.createElement('div');
   loadingOverlay.className = 'loading-overlay';
-  
   loadingOverlay.innerHTML = `
-    <div class="loading-spinner-container">
-      <div class="loading-spinner"></div>
+    <div class="loading-spinner">
+      <div class="spinner"></div>
       <div class="loading-text">分析中，請稍候...</div>
-      <div class="loading-progress"></div>
-      <div class="loading-steps">
-        <div class="loading-step" data-step="1">
-          <i class="fas fa-check-circle"></i>
-          <span>驗證邀請碼</span>
-        </div>
-        <div class="loading-step" data-step="2">
-          <i class="fas fa-check-circle"></i>
-          <span>計算總積分</span>
-        </div>
-        <div class="loading-step" data-step="3">
-          <i class="fas fa-check-circle"></i>
-          <span>分析落點區間</span>
-        </div>
-        <div class="loading-step" data-step="4">
-          <i class="fas fa-check-circle"></i>
-          <span>生成分析報告</span>
-        </div>
-      </div>
     </div>
   `;
-
   document.body.appendChild(loadingOverlay);
-  
-  // Show loading overlay with animation
+
   requestAnimationFrame(() => {
     loadingOverlay.style.display = 'flex';
-    simulateLoadingSteps();
-  });
-}
-
-function simulateLoadingSteps() {
-  const steps = document.querySelectorAll('.loading-step');
-  const stepDelay = 500; // Time between each step
-
-  steps.forEach((step, index) => {
-    setTimeout(() => {
-      step.classList.add('active');
-    }, stepDelay * (index + 1));
+    loadingOverlay.style.opacity = '0';
+    requestAnimationFrame(() => {
+      loadingOverlay.style.transition = 'opacity 0.3s ease';
+      loadingOverlay.style.opacity = '1';
+    });
   });
 }
 
@@ -161,8 +132,6 @@ function hideLoading() {
   const loadingOverlay = document.querySelector('.loading-overlay');
   if (loadingOverlay) {
     loadingOverlay.style.opacity = '0';
-    loadingOverlay.style.transition = 'opacity 0.3s ease';
-    
     setTimeout(() => {
       loadingOverlay.remove();
     }, 300);
@@ -200,22 +169,53 @@ async function logUserActivity(action, details = {}) {
 }
 
 async function analyzeScores() {
+  // Lock the analysis button while verifying the invitation code
   const analyzeButton = document.getElementById('analyzeButton');
+  let originalButtonText = '';
   if (analyzeButton) {
+    originalButtonText = analyzeButton.innerHTML;
     analyzeButton.disabled = true;
-    analyzeButton.innerHTML = '<i class="fas fa-spinner fa-spin"></i> 分析中...';
+    analyzeButton.innerHTML = '<i class="fas fa-spinner fa-spin"></i> 驗證中...';
   }
 
   try {
     const invitationCode = document.getElementById('invitationCode').value;
-    if (!invitationCode.trim()) {
+    // 增加驗證邀請碼是否有填寫
+    if (invitationCode.trim() === "") {
       alert("請填寫邀請碼");
+      if (analyzeButton) {
+        analyzeButton.disabled = false;
+        analyzeButton.innerHTML = originalButtonText;
+      }
       return;
     }
 
-    showLoading();
+    showInvitationValidationAnimation();
+    let validationResponse;
+    try {
+      validationResponse = await fetch('https://script.google.com/macros/s/AKfycbx8_7mRA3AhKoq_GUuoeYrlxCVKIqzBPJg4335_bIbpYg-mGCkmppvXNSZwyVXERWXA/exec', {
+        method: 'POST',
+        body: JSON.stringify({
+          action: 'validateInvitationCode',
+          invitationCode: invitationCode
+        })
+      });
+    } catch (error) {
+      hideInvitationValidationAnimation();
+      throw error;
+    }
+    hideInvitationValidationAnimation();
 
-    // Rest of the existing analyzeScores function...
+    if (!validationResponse.ok) {
+      throw new Error('邀請碼驗證失敗');
+    }
+
+    const validationResult = await validationResponse.json();
+    if (!validationResult.valid) {
+      alert('邀請碼錯誤或已過期，請確認最新的邀請碼。');
+      return;
+    }
+
     const schoolOwnership = document.getElementById('schoolOwnership').value;
     const schoolType = document.getElementById('schoolType').value;
     const vocationalGroup = document.getElementById('vocationalGroup').value;
@@ -248,6 +248,8 @@ async function analyzeScores() {
       alert(errorMessage);
       return;
     }
+
+    showLoading();
 
     await logUserActivity('analyze_scores', {
       scores: {
@@ -298,46 +300,148 @@ async function analyzeScores() {
   } finally {
     if (analyzeButton) {
       analyzeButton.disabled = false;
-      analyzeButton.innerHTML = '<i class="fas fa-search icon"></i>分析落點';
+      analyzeButton.innerHTML = originalButtonText;
     }
-    setTimeout(hideLoading, 2000); // Add minimum loading time for better UX
+    hideLoading();
   }
 }
 
 function displayResults(data) {
   const { totalPoints, totalCredits, eligibleSchools } = data;
 
-  let results = `<h2><i class="fas fa-clipboard-check icon"></i>分析結果</h2>
-                 <p class="result-item"><i class="fas fa-star icon"></i>總積分：${totalPoints}</p>
-                 <p class="result-item"><i class="fas fa-award icon"></i>總積點：${totalCredits}</p>`;
+  // Get user scores
+  const userScores = {
+    chinese: document.getElementById('chinese').value,
+    english: document.getElementById('english').value,
+    math: document.getElementById('math').value,
+    science: document.getElementById('science').value,
+    social: document.getElementById('social').value,
+    composition: document.getElementById('composition').value
+  };
 
-  results += '<h3><i class="fas fa-list-ul icon"></i>可能錄取的學校：</h3>';
+  let results = `
+    <div class="analysis-section">
+      <h2><i class="fas fa-clipboard-check icon"></i>分析結果總覽</h2>
+      
+      <div class="user-scores-grid">
+        <div class="user-score-card">
+          <i class="fas fa-book icon"></i>
+          <h3>國文</h3>
+          <div class="score">${userScores.chinese}</div>
+        </div>
+        <div class="user-score-card">
+          <i class="fas fa-language icon"></i>
+          <h3>英文</h3>
+          <div class="score">${userScores.english}</div>
+        </div>
+        <div class="user-score-card">
+          <i class="fas fa-calculator icon"></i>
+          <h3>數學</h3>
+          <div class="score">${userScores.math}</div>
+        </div>
+        <div class="user-score-card">
+          <i class="fas fa-flask icon"></i>
+          <h3>自然</h3>
+          <div class="score">${userScores.science}</div>
+        </div>
+        <div class="user-score-card">
+          <i class="fas fa-globe icon"></i>
+          <h3>社會</h3>
+          <div class="score">${userScores.social}</div>
+        </div>
+        <div class="user-score-card">
+          <i class="fas fa-pen-nib icon"></i>
+          <h3>作文</h3>
+          <div class="score">${userScores.composition} 級分</div>
+        </div>
+      </div>
+
+      <div class="analysis-grid">
+        <div class="analysis-card">
+          <i class="fas fa-star icon"></i>
+          <h3>總積分</h3>
+          <div class="score">${totalPoints}</div>
+          <div class="score-details">包含基本分數與加權計算</div>
+        </div>
+        <div class="analysis-card">
+          <i class="fas fa-award icon"></i>
+          <h3>總積點</h3>
+          <div class="score">${totalCredits}</div>
+          <div class="score-details">依照各科權重計算</div>
+        </div>
+      </div>
+    </div>`;
 
   if (eligibleSchools && eligibleSchools.length > 0) {
-    results += `<p class="result-item"><i class="fas fa-building icon"></i>共有 ${eligibleSchools.length} 所學校可能錄取</p>`;
+    // 計算各類型學校數量統計
+    const schoolStats = eligibleSchools.reduce((acc, school) => {
+      acc.total++;
+      acc[school.type] = (acc[school.type] || 0) + 1;
+      acc[school.ownership] = (acc[school.ownership] || 0) + 1;
+      return acc;
+    }, { total: 0 });
 
-    let groupedSchools = {};
-    eligibleSchools.forEach(school => {
-      if (!groupedSchools[school.type]) {
-        groupedSchools[school.type] = [];
-      }
-      groupedSchools[school.type].push(school.name);
-    });
+    results += `
+      <div class="school-stats-section">
+        <h3><i class="fas fa-chart-pie icon"></i>學校統計</h3>
+        <div class="stats-grid">
+          <div class="stat-card">
+            <i class="fas fa-school icon"></i>
+            <span class="stat-label">總計學校數</span>
+            <span class="stat-value">${schoolStats.total}</span>
+          </div>
+          ${Object.entries(schoolStats)
+            .filter(([key]) => key !== 'total')
+            .map(([type, count]) => `
+              <div class="stat-card">
+                <i class="fas fa-building icon"></i>
+                <span class="stat-label">${type}</span>
+                <span class="stat-value">${count}</span>
+              </div>
+            `).join('')}
+        </div>
+      </div>
 
-    Object.entries(groupedSchools).forEach(([type, schools]) => {
-      results += `<h3>${type} (${schools.length}所)</h3><ul>`;
-      schools.forEach(schoolName => {
-        results += `<li class="result-item"><i class="fas fa-check-circle icon"></i>${schoolName}</li>`;
-      });
-      results += '</ul>';
-    });
+      <div class="eligible-schools-section">
+        <h3><i class="fas fa-list-ul icon"></i>可能錄取學校列表</h3>
+        ${Object.entries(groupSchoolsByType(eligibleSchools)).map(([type, schools]) => `
+          <div class="school-group">
+            <h4>${type} (${schools.length}所)</h4>
+            <div class="schools-grid">
+              ${schools.map(school => `
+                <div class="school-card">
+                  <div class="school-name">
+                    <i class="fas fa-graduation-cap icon"></i>
+                    ${school.name}
+                  </div>
+                  <div class="school-details">
+                    <span><i class="fas fa-building icon"></i>${school.ownership}</span>
+                    ${school.department ? `<span><i class="fas fa-book icon"></i>${school.department}</span>` : ''}
+                  </div>
+                  ${school.note ? `<div class="school-note"><i class="fas fa-info-circle icon"></i>${school.note}</div>` : ''}
+                </div>
+              `).join('')}
+            </div>
+          </div>
+        `).join('')}
+      </div>`;
   } else {
-    results += '<p class="result-item"><i class="fas fa-exclamation-triangle icon"></i>根據您的成績，暫時沒有符合條件的學校。</p>';
+    results += `
+      <div class="no-results">
+        <i class="fas fa-exclamation-triangle icon"></i>
+        <p>根據您的成績，暫時沒有符合條件的學校。建議您：</p>
+        <ul>
+          <li>檢查是否有輸入錯誤</li>
+          <li>調整篩選條件</li>
+          <li>諮詢輔導老師尋求建議</li>
+        </ul>
+      </div>`;
   }
 
   const resultsElement = document.getElementById('results');
   resultsElement.innerHTML = results;
   resultsElement.style.display = 'none';
+  
   setTimeout(() => {
     resultsElement.style.display = 'block';
     resultsElement.style.animation = 'fadeIn 0.5s ease-out';
@@ -345,7 +449,17 @@ function displayResults(data) {
   }, 100);
 }
 
-async function exportResults(format = 'txt') {
+function groupSchoolsByType(schools) {
+  return schools.reduce((acc, school) => {
+    if (!acc[school.type]) {
+      acc[school.type] = [];
+    }
+    acc[school.type].push(school);
+    return acc;
+  }, {});
+}
+
+function exportResults(format = 'txt') {
   logUserActivity('export_results', { format });
   const resultsElement = document.getElementById('results');
   const resultsText = resultsElement.innerText;
@@ -378,7 +492,7 @@ async function exportResults(format = 'txt') {
       exportTxt(contentWithWatermark);
       break;
     case 'pdf':
-      await exportPdf(contentWithWatermark);
+      exportPdf(contentWithWatermark);
       break;
     case 'csv':
       exportCsv(resultsText);

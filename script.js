@@ -1,4 +1,4 @@
-// Define vocational groups data (currently not used directly in UI)
+// Vocational groups data definition
 const vocationalGroups = {
   '機械群': ['機械科', '鑄造科', '板金科', '機械木模科', '配管科', '模具科', '機電科', '製圖科', '生物產業機電科', '電腦機械製圖科'],
   '動力機械群': ['汽車科', '重機科', '飛機修護科', '動力機械科', '農業機械科', '軌道車輛科'],
@@ -13,6 +13,8 @@ const vocationalGroups = {
   '家政群': ['家政科', '服裝科', '幼兒保育科', '美容科', '時尚模特兒科', '流行服飾科', '時尚造型科', '照顧服務科'],
   '餐旅群': ['觀光事業科', '餐飲管理科']
 };
+
+// ...existing utility functions and event handlers...
 
 function toggleVocationalGroup() {
   const schoolType = document.getElementById('schoolType').value;
@@ -110,21 +112,50 @@ function hideInvitationValidationAnimation() {
 function showLoading() {
   const loadingOverlay = document.createElement('div');
   loadingOverlay.className = 'loading-overlay';
+  
   loadingOverlay.innerHTML = `
-    <div class="loading-spinner">
-      <div class="spinner"></div>
+    <div class="loading-spinner-container">
+      <div class="loading-spinner"></div>
       <div class="loading-text">分析中，請稍候...</div>
+      <div class="loading-progress"></div>
+      <div class="loading-steps">
+        <div class="loading-step" data-step="1">
+          <i class="fas fa-check-circle"></i>
+          <span>驗證邀請碼</span>
+        </div>
+        <div class="loading-step" data-step="2">
+          <i class="fas fa-check-circle"></i>
+          <span>計算總積分</span>
+        </div>
+        <div class="loading-step" data-step="3">
+          <i class="fas fa-check-circle"></i>
+          <span>分析落點區間</span>
+        </div>
+        <div class="loading-step" data-step="4">
+          <i class="fas fa-check-circle"></i>
+          <span>生成分析報告</span>
+        </div>
+      </div>
     </div>
   `;
-  document.body.appendChild(loadingOverlay);
 
+  document.body.appendChild(loadingOverlay);
+  
+  // Show loading overlay with animation
   requestAnimationFrame(() => {
     loadingOverlay.style.display = 'flex';
-    loadingOverlay.style.opacity = '0';
-    requestAnimationFrame(() => {
-      loadingOverlay.style.transition = 'opacity 0.3s ease';
-      loadingOverlay.style.opacity = '1';
-    });
+    simulateLoadingSteps();
+  });
+}
+
+function simulateLoadingSteps() {
+  const steps = document.querySelectorAll('.loading-step');
+  const stepDelay = 500; // Time between each step
+
+  steps.forEach((step, index) => {
+    setTimeout(() => {
+      step.classList.add('active');
+    }, stepDelay * (index + 1));
   });
 }
 
@@ -132,6 +163,8 @@ function hideLoading() {
   const loadingOverlay = document.querySelector('.loading-overlay');
   if (loadingOverlay) {
     loadingOverlay.style.opacity = '0';
+    loadingOverlay.style.transition = 'opacity 0.3s ease';
+    
     setTimeout(() => {
       loadingOverlay.remove();
     }, 300);
@@ -155,7 +188,7 @@ async function logUserActivity(action, details = {}) {
       ...details
     };
 
-    const response = await fetch('https://script.google.com/macros/s/AKfycbyTQFk7R5Tuthm9Y2oVIMpz3c7vR-BEHxa9X9gEgZio_cLgxZgi8LD3aonQUMLIKZDC/exec', {
+    const response = await fetch('https://script.google.com/macros/s/AKfycbwLvuhN61rsleYwwdycQLZ13qHcDTE_6XfIH5Iu6GHNsgEVyjGKirk7jVnTEGn-_ZB8tQ/exec', {
       method: 'POST',
       body: JSON.stringify(data)
     });
@@ -168,28 +201,22 @@ async function logUserActivity(action, details = {}) {
   }
 }
 
+// UPDATED analyzeScores FUNCTION WITH INVITATION CODE VALIDATION
 async function analyzeScores() {
-  // Lock the analysis button while verifying the invitation code
   const analyzeButton = document.getElementById('analyzeButton');
-  let originalButtonText = '';
   if (analyzeButton) {
-    originalButtonText = analyzeButton.innerHTML;
     analyzeButton.disabled = true;
-    analyzeButton.innerHTML = '<i class="fas fa-spinner fa-spin"></i> 驗證中...';
+    analyzeButton.innerHTML = '<i class="fas fa-spinner fa-spin"></i> 分析中...';
   }
 
   try {
     const invitationCode = document.getElementById('invitationCode').value;
-    // 增加驗證邀請碼是否有填寫
-    if (invitationCode.trim() === "") {
+    if (!invitationCode.trim()) {
       alert("請填寫邀請碼");
-      if (analyzeButton) {
-        analyzeButton.disabled = false;
-        analyzeButton.innerHTML = originalButtonText;
-      }
       return;
     }
-
+    
+    // Validate invitation code with animation
     showInvitationValidationAnimation();
     let validationResponse;
     try {
@@ -215,6 +242,8 @@ async function analyzeScores() {
       alert('邀請碼錯誤或已過期，請確認最新的邀請碼。');
       return;
     }
+    
+    showLoading();
 
     const schoolOwnership = document.getElementById('schoolOwnership').value;
     const schoolType = document.getElementById('schoolType').value;
@@ -248,8 +277,6 @@ async function analyzeScores() {
       alert(errorMessage);
       return;
     }
-
-    showLoading();
 
     await logUserActivity('analyze_scores', {
       scores: {
@@ -300,125 +327,375 @@ async function analyzeScores() {
   } finally {
     if (analyzeButton) {
       analyzeButton.disabled = false;
-      analyzeButton.innerHTML = originalButtonText;
+      analyzeButton.innerHTML = '<i class="fas fa-search icon"></i>分析落點';
     }
-    hideLoading();
+    setTimeout(hideLoading, 2000);
   }
 }
+
+// ...existing displayResults, exportResults, downloadFile, loadScript, and other functions...
+
+// Update event listeners and initialization
+document.getElementById('exportResults').onclick = showExportOptions;
+
+window.onload = function() {
+  showDisclaimer();
+};
+
+document.oncontextmenu = function () {
+  return false;
+};
+
+document.body.onkeydown = function(e) {
+  var keyCode = e.keyCode || e.which || e.charCode;
+  if (
+    keyCode === 123 ||
+    (e.ctrlKey && e.shiftKey && (keyCode === 73 || keyCode === 74 || keyCode === 67)) ||
+    (e.ctrlKey && keyCode === 85)
+  ) {
+    e.preventDefault();
+    return false;
+  }
+};
+
+(function() {
+  var threshold = 160;
+  setInterval(function() {
+    if (window.outerWidth - window.innerWidth > threshold || window.outerHeight - window.innerHeight > threshold) {
+      document.body.innerHTML = "<h1>禁止使用開發者工具</h1>";
+      throw "開發者工具被禁用";
+    }
+  }, 1000);
+})();
+
+let userRating = 0;
+
+function initRating() {
+  const stars = document.querySelectorAll("#starsContainer .star");
+  
+  stars.forEach((star, index) => {
+    star.addEventListener("click", function() {
+      userRating = Number(this.getAttribute("data-value"));
+      updateStarDisplay(userRating);
+      
+      stars.forEach((s, i) => {
+        if (i <= index) {
+          s.style.animationDelay = `${i * 0.1}s`;
+          s.classList.add('active');
+        }
+      });
+    });
+    
+    star.addEventListener("mouseover", function() {
+      const rating = Number(this.getAttribute("data-value"));
+      stars.forEach((s, i) => {
+        if (i < rating) {
+          s.style.transform = `scale(${1 + (rating - i) * 0.1})`;
+        } else {
+          s.style.transform = 'scale(1)';
+        }
+      });
+    });
+    
+    star.addEventListener("mouseout", function() {
+      stars.forEach(s => {
+        s.style.transform = s.classList.contains('active') ? 'scale(1.2)' : 'scale(1)';
+      });
+    });
+  });
+
+  const submitRatingButton = document.getElementById("submitRating");
+  submitRatingButton.addEventListener("click", async function() {
+    if (userRating === 0) {
+      alert("請選擇評分星數！");
+      return;
+    }
+    
+    this.disabled = true;
+    this.innerHTML = '<i class="fas fa-spinner fa-spin"></i> 提交中...';
+    
+    try {
+      await logUserActivity("user_rating", { rating: userRating });
+      
+      const ratingMsg = document.getElementById("ratingMessage");
+      ratingMsg.textContent = "感謝您的評分！您的意見對我們很重要。";
+      ratingMsg.classList.add('show');
+      ratingMsg.style.display = "block";
+      
+      this.innerHTML = '<i class="fas fa-check-circle"></i> 評分成功';
+      this.style.background = 'linear-gradient(135deg, #2ecc71, #27ae60)';
+    } catch (error) {
+      console.error('Rating submission error:', error);
+      this.disabled = false;
+      this.innerHTML = '<i class="fas fa-paper-plane"></i> 重新提交';
+      alert('評分提交失敗，請稍後再試！');
+    }
+  });
+}
+
+function updateStarDisplay(rating) {
+  const stars = document.querySelectorAll("#starsContainer .star");
+  stars.forEach((star, index) => {
+    if (index < rating) {
+      star.classList.add("active");
+    } else {
+      star.classList.remove("active");
+    }
+  });
+}
+
+function toggleMenu() {
+  var menu = document.getElementById("fullscreenMenu");
+  var overlay = document.getElementById("menuOverlay");
+  menu.classList.toggle("show");
+  overlay.classList.toggle("show");
+  
+  var links = menu.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    links[i].style.animationDelay = (i * 0.1) + 's';
+  }
+}
+
+function closeMenu() {
+  var menu = document.getElementById("fullscreenMenu");
+  var overlay = document.getElementById("menuOverlay");
+  menu.classList.remove("show");
+  overlay.classList.remove("show");
+}
+
+document.addEventListener('click', function(event) {
+  var menu = document.getElementById("fullscreenMenu");
+  var menuIcon = document.querySelector(".menu-icon");
+  if (menu.classList.contains('show') && !menu.contains(event.target) && !menuIcon.contains(event.target)) {
+    closeMenu();
+  }
+});
+
+const html5QrCode = new Html5Qrcode("qr-reader");
+const qrConfig = { fps: 10, qrbox: { width: 250, height: 250 } };
+
+document.getElementById('scanQRCode').addEventListener('click', () => {
+  const qrReader = document.getElementById('qr-reader');
+  if (qrReader.style.display === 'none' || qrReader.style.display === '') {
+    qrReader.style.display = 'block';
+    html5QrCode.start({ facingMode: "environment" }, qrConfig, onScanSuccess);
+  } else {
+    qrReader.style.display = 'none';
+    html5QrCode.stop();
+  }
+});
+
+function onScanSuccess(decodedText, decodedResult) {
+  document.getElementById('invitationCode').value = decodedText;
+  html5QrCode.stop();
+  document.getElementById('qr-reader').style.display = 'none';
+  document.getElementById('qr-result').textContent = `您的邀請碼是：${decodedText}`;
+
+  logUserActivity('qr_scan_success', { invitationCode: decodedText });
+}
+
+function handleQRCodeImage(file) {
+  logUserActivity('qr_image_upload', { fileName: file.name });
+
+  const reader = new FileReader();
+  reader.onload = e => {
+    const img = new Image();
+    img.onload = () => {
+      const canvas = document.createElement('canvas');
+      canvas.width = img.width;
+      canvas.height = img.height;
+      const ctx = canvas.getContext('2d');
+      ctx.drawImage(img, 0, 0, img.width, img.height);
+      const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+      const code = jsQR(imageData.data, imageData.width, imageData.height);
+      if (code) {
+        document.getElementById('invitationCode').value = code.data;
+        document.getElementById('qr-result').textContent = `您的邀請碼是：${code.data}`;
+      } else {
+        document.getElementById('qr-result').textContent = '無法識別 QR 碼，請嘗試其他圖片';
+      }
+    };
+    img.src = e.target.result;
+  };
+  reader.readAsDataURL(file);
+}
+
+document.getElementById('fileInput').addEventListener('change', event => {
+  const file = event.target.files[0];
+  if (file) {
+    handleQRCodeImage(file);
+  }
+});
+
+function toggleDarkMode() {
+  document.body.classList.toggle('dark-mode');
+  const isDarkMode = document.body.classList.contains('dark-mode');
+  localStorage.setItem('darkMode', isDarkMode);
+  
+  const icon = document.querySelector('#darkModeToggle i');
+  icon.classList.add('transitioning');
+  
+  setTimeout(() => {
+    if (isDarkMode) {
+      icon.classList.remove('fa-moon');
+      icon.classList.add('fa-sun');
+    } else {
+      icon.classList.remove('fa-sun');
+      icon.classList.add('fa-moon');
+    }
+    
+    setTimeout(() => {
+      icon.classList.remove('transitioning');
+    }, 600);
+  }, 300);
+
+  logUserActivity('toggle_dark_mode', { enabled: isDarkMode });
+}
+
+const savedDarkMode = localStorage.getItem('darkMode') === 'true';
+if (savedDarkMode) {
+  document.body.classList.add('dark-mode');
+  const icon = document.querySelector('#darkModeToggle i');
+  icon.classList.remove('fa-moon');
+  icon.classList.add('fa-sun');
+}
+
+document.getElementById('darkModeToggle').addEventListener('click', toggleDarkMode);
+
+document.getElementById('currentYear').textContent = new Date().getFullYear();
 
 function displayResults(data) {
   const { totalPoints, totalCredits, eligibleSchools } = data;
 
-  // Get user scores
-  const userScores = {
-    chinese: document.getElementById('chinese').value,
-    english: document.getElementById('english').value,
-    math: document.getElementById('math').value,
-    science: document.getElementById('science').value,
-    social: document.getElementById('social').value,
-    composition: document.getElementById('composition').value
-  };
-
   let results = `
-    <div class="analysis-section">
-      <h2><i class="fas fa-clipboard-check icon"></i>分析結果總覽</h2>
-      
-      <div class="user-scores-grid">
-        <div class="user-score-card">
-          <i class="fas fa-book icon"></i>
-          <h3>國文</h3>
-          <div class="score">${userScores.chinese}</div>
-        </div>
-        <div class="user-score-card">
-          <i class="fas fa-language icon"></i>
-          <h3>英文</h3>
-          <div class="score">${userScores.english}</div>
-        </div>
-        <div class="user-score-card">
-          <i class="fas fa-calculator icon"></i>
-          <h3>數學</h3>
-          <div class="score">${userScores.math}</div>
-        </div>
-        <div class="user-score-card">
-          <i class="fas fa-flask icon"></i>
-          <h3>自然</h3>
-          <div class="score">${userScores.science}</div>
-        </div>
-        <div class="user-score-card">
-          <i class="fas fa-globe icon"></i>
-          <h3>社會</h3>
-          <div class="score">${userScores.social}</div>
-        </div>
-        <div class="user-score-card">
-          <i class="fas fa-pen-nib icon"></i>
-          <h3>作文</h3>
-          <div class="score">${userScores.composition} 級分</div>
+    <div class="results-container">
+      <div class="results-header">
+        <h2><i class="fas fa-clipboard-check icon"></i>分析結果總覽</h2>
+        <div class="results-summary">
+          <div class="result-card total-points">
+            <i class="fas fa-star icon"></i>
+            <div class="result-value">${totalPoints}</div>
+            <div class="result-label">總積分</div>
+          </div>
+          <div class="result-card total-credits">
+            <i class="fas fa-award icon"></i>
+            <div class="result-value">${totalCredits}</div>
+            <div class="result-label">總積點</div>
+          </div>
+          <div class="result-card schools-count">
+            <i class="fas fa-school icon"></i>
+            <div class="result-value">${eligibleSchools ? eligibleSchools.length : 0}</div>
+            <div class="result-label">符合條件學校數</div>
+          </div>
         </div>
       </div>
 
-      <div class="analysis-grid">
-        <div class="analysis-card">
-          <i class="fas fa-star icon"></i>
-          <h3>總積分</h3>
-          <div class="score">${totalPoints}</div>
-          <div class="score-details">包含基本分數與加權計算</div>
-        </div>
-        <div class="analysis-card">
-          <i class="fas fa-award icon"></i>
-          <h3>總積點</h3>
-          <div class="score">${totalCredits}</div>
-          <div class="score-details">依照各科權重計算</div>
-        </div>
-      </div>
-    </div>`;
+      <div class="results-details">
+        <h3><i class="fas fa-chart-bar icon"></i>成績分析</h3>
+        <div class="scores-summary">
+          <div class="score-item">
+            <span class="score-label">國文：</span>
+            <span class="score-value ${getScoreClass(document.getElementById('chinese').value)}">
+              ${document.getElementById('chinese').value}
+            </span>
+          </div>
+          <div class="score-item">
+            <span class="score-label">英文：</span>
+            <span class="score-value ${getScoreClass(document.getElementById('english').value)}">
+              ${document.getElementById('english').value}
+            </span>
+          </div>
+          <div class="score-item">
+            <span class="score-label">數學：</span>
+            <span class="score-value ${getScoreClass(document.getElementById('math').value)}">
+              ${document.getElementById('math').value}
+            </span>
+          </div>
+          <div class="score-item">
+            <span class="score-label">自然：</span>
+            <span class="score-value ${getScoreClass(document.getElementById('science').value)}">
+              ${document.getElementById('science').value}
+            </span>
+          </div>
+          <div class="score-item">
+            <span class="score-label">社會：</span>
+            <span class="score-value ${getScoreClass(document.getElementById('social').value)}">
+              ${document.getElementById('social').value}
+            </span>
+          </div>
+          <div class="score-item">
+            <span class="score-label">作文：</span>
+            <span class="score-value composition-score">
+              ${document.getElementById('composition').value} 級分
+            </span>
+          </div>
+        </div>`;
 
   if (eligibleSchools && eligibleSchools.length > 0) {
-    // 計算各類型學校數量統計
-    const schoolStats = eligibleSchools.reduce((acc, school) => {
-      acc.total++;
-      acc[school.type] = (acc[school.type] || 0) + 1;
-      acc[school.ownership] = (acc[school.ownership] || 0) + 1;
-      return acc;
-    }, { total: 0 });
+    let groupedSchools = {};
+    eligibleSchools.forEach(school => {
+      if (!groupedSchools[school.type]) {
+        groupedSchools[school.type] = [];
+      }
+      groupedSchools[school.type].push(school);
+    });
 
     results += `
-      
-
-      <div class="eligible-schools-section">
-        <h3><i class="fas fa-list-ul icon"></i>可能錄取學校列表</h3>
-        ${Object.entries(groupSchoolsByType(eligibleSchools)).map(([type, schools]) => `
-          <div class="school-group">
-            <h4>${type} (${schools.length}所)</h4>
-            <div class="schools-grid">
-              ${schools.map(school => `
-                <div class="school-card">
-                  <div class="school-name">
-                    <i class="fas fa-graduation-cap icon"></i>
-                    ${school.name}
+      <div class="schools-analysis">
+        <h3><i class="fas fa-university icon"></i>學校分析</h3>
+        <div class="school-type-summary">
+          ${Object.entries(groupedSchools).map(([type, schools]) => `
+            <div class="school-type-card">
+              <div class="school-type-header">
+                <i class="fas fa-building icon"></i>
+                <h4>${type}</h4>
+                <span class="school-count">${schools.length}所</span>
+              </div>
+              <div class="school-list">
+                ${schools.map(school => `
+                  <div class="school-item">
+                    <div class="school-name">
+                      <i class="fas fa-graduation-cap icon"></i>
+                      ${school.name}
+                    </div>
+                    <div class="school-details">
+                      ${school.lastYearCutoff ? `
+                        <span class="cutoff-score">
+                          <i class="fas fa-chart-line icon"></i>
+                          去年最低錄取: ${school.lastYearCutoff}
+                        </span>
+                      ` : ''}
+                    </div>
                   </div>
-                  <div class="school-details">
-                    <span><i class="fas fa-building icon"></i>${school.ownership}</span>
-                    ${school.department ? `<span><i class="fas fa-book icon"></i>${school.department}</span>` : ''}
-                  </div>
-                  ${school.note ? `<div class="school-note"><i class="fas fa-info-circle icon"></i>${school.note}</div>` : ''}
-                </div>
-              `).join('')}
+                `).join('')}
+              </div>
             </div>
-          </div>
-        `).join('')}
+          `).join('')}
+        </div>
+      </div>
+      
+      <div class="analysis-notes">
+        <h3><i class="fas fa-info-circle icon"></i>分析說明</h3>
+        <ul>
+          <li><i class="fas fa-lightbulb icon"></i>建議同時考慮學校特色、地理位置等因素</li>
+          <li><i class="fas fa-book icon"></i>請詳閱各校招生簡章了解詳細資訊</li>
+          <li><i class="fas fa-comments icon"></i>建議諮詢師長意見做為參考</li>
+        </ul>
       </div>`;
   } else {
     results += `
       <div class="no-results">
-        <i class="fas fa-exclamation-triangle icon"></i>
-        <p>根據您的成績，暫時沒有符合條件的學校。建議您：</p>
-        <ul>
-          <li>檢查是否有輸入錯誤</li>
-          <li>調整篩選條件</li>
-          <li>諮詢輔導老師尋求建議</li>
+        <i class="fas fa-search icon"></i>
+        <p>根據您的成績，暫時沒有符合條件的學校。</p>
+        <ul class="suggestions">
+          <li>嘗試調整篩選條件</li>
+          <li>考慮更多類型的學校</li>
+          <li>諮詢老師獲取更多建議</li>
         </ul>
       </div>`;
   }
+
+  results += '</div></div>';
 
   const resultsElement = document.getElementById('results');
   resultsElement.innerHTML = results;
@@ -431,17 +708,59 @@ function displayResults(data) {
   }, 100);
 }
 
-function groupSchoolsByType(schools) {
-  return schools.reduce((acc, school) => {
-    if (!acc[school.type]) {
-      acc[school.type] = [];
-    }
-    acc[school.type].push(school);
-    return acc;
-  }, {});
+function getScoreClass(score) {
+  const scoreClasses = {
+    'A++': 'score-excellent',
+    'A+': 'score-great',
+    'A': 'score-good',
+    'B++': 'score-above-average',
+    'B+': 'score-average',
+    'B': 'score-below-average',
+    'C': 'score-needs-improvement'
+  };
+  return scoreClasses[score] || '';
 }
 
-function exportResults(format = 'txt') {
+function showExportOptions() {
+  const exportMenu = document.createElement('div');
+  exportMenu.className = 'export-menu';
+  exportMenu.innerHTML = `
+    <div class="export-menu-content">
+      <h3><i class="fas fa-file-export"></i> 選擇匯出格式</h3>
+      <button onclick="exportResults('txt')">
+        <i class="fas fa-file-alt"></i> 文字檔 (.txt)
+      </button>
+      <button onclick="exportResults('pdf')">
+        <i class="fas fa-file-pdf"></i> PDF檔 (.pdf)
+      </button>
+      <button onclick="exportResults('csv')">
+        <i class="fas fa-file-csv"></i> CSV檔 (.csv)
+      </button>
+      <button onclick="exportResults('json')">
+        <i class="fas fa-file-code"></i> JSON檔 (.json)
+      </button>
+      <button onclick="closeExportMenu()" class="cancel-button">
+        <i class="fas fa-times"></i> 取消
+      </button>
+    </div>
+  `;
+  document.body.appendChild(exportMenu);
+  
+  // 添加動畫效果
+  requestAnimationFrame(() => {
+    exportMenu.classList.add('show');
+  });
+}
+
+function closeExportMenu() {
+  const exportMenu = document.querySelector('.export-menu');
+  if (exportMenu) {
+    exportMenu.classList.remove('show');
+    setTimeout(() => exportMenu.remove(), 300);
+  }
+}
+
+async function exportResults(format = 'txt') {
   logUserActivity('export_results', { format });
   const resultsElement = document.getElementById('results');
   const resultsText = resultsElement.innerText;
@@ -474,7 +793,7 @@ function exportResults(format = 'txt') {
       exportTxt(contentWithWatermark);
       break;
     case 'pdf':
-      exportPdf(contentWithWatermark);
+      await exportPdf(contentWithWatermark);
       break;
     case 'csv':
       exportCsv(resultsText);
@@ -575,285 +894,3 @@ async function loadScript(url) {
     document.head.appendChild(script);
   });
 }
-
-function showExportOptions() {
-  const exportMenu = document.createElement('div');
-  exportMenu.className = 'export-menu';
-  exportMenu.innerHTML = `
-    <div class="export-menu-content">
-      <h3><i class="fas fa-file-export"></i> 選擇匯出格式</h3>
-      <button onclick="exportResults('txt')">
-        <i class="fas fa-file-alt"></i> 文字檔 (.txt)
-      </button>
-      <button onclick="exportResults('pdf')">
-        <i class="fas fa-file-pdf"></i> PDF檔 (.pdf)
-      </button>
-      <button onclick="exportResults('csv')">
-        <i class="fas fa-file-csv"></i> CSV檔 (.csv)
-      </button>
-      <button onclick="exportResults('json')">
-        <i class="fas fa-file-code"></i> JSON檔 (.json)
-      </button>
-      <button onclick="closeExportMenu()" class="cancel-button">
-        <i class="fas fa-times"></i> 取消
-      </button>
-    </div>
-  `;
-  document.body.appendChild(exportMenu);
-  
-  // 添加動畫效果
-  requestAnimationFrame(() => {
-    exportMenu.classList.add('show');
-  });
-}
-
-function closeExportMenu() {
-  const exportMenu = document.querySelector('.export-menu');
-  if (exportMenu) {
-    exportMenu.classList.remove('show');
-    setTimeout(() => exportMenu.remove(), 300);
-  }
-}
-
-// 更新原有的導出按鈕點擊事件
-document.getElementById('exportResults').onclick = showExportOptions;
-
-window.onload = function() {
-  showDisclaimer();
-};
-
-document.oncontextmenu = function () {
-  return false;
-};
-
-document.body.onkeydown = function(e) {
-  var keyCode = e.keyCode || e.which || e.charCode;
-  var ctrlKey = e.ctrlKey || e.metaKey;
-  if (
-    keyCode === 123 || // F12
-    (e.ctrlKey && e.shiftKey && (keyCode === 73 || keyCode === 74 || keyCode === 67)) || // Ctrl+Shift+I, Ctrl+Shift+J, Ctrl+Shift+C
-    (e.ctrlKey && keyCode === 85) // Ctrl+U
-  ) {
-    e.preventDefault();
-    return false;
-  } else if (keyCode && keyCode == 123) {
-    return false;
-  }
-};
-
-// 檢測視窗尺寸變化，若開發者工具可能被打開則封鎖頁面
-(function() {
-  var threshold = 160;
-  setInterval(function() {
-    if (window.outerWidth - window.innerWidth > threshold || window.outerHeight - window.innerHeight > threshold) {
-      document.body.innerHTML = "<h1>禁止使用開發者工具</h1>";
-      throw "開發者工具被禁用";
-    }
-  }, 1000);
-})();
-
-let userRating = 0;
-
-function initRating() {
-  const stars = document.querySelectorAll("#starsContainer .star");
-  
-  stars.forEach((star, index) => {
-    star.addEventListener("click", function() {
-      userRating = Number(this.getAttribute("data-value"));
-      updateStarDisplay(userRating);
-      
-      // Add animation class
-      stars.forEach((s, i) => {
-        if (i <= index) {
-          s.style.animationDelay = `${i * 0.1}s`;
-          s.classList.add('active');
-        }
-      });
-    });
-    
-    star.addEventListener("mouseover", function() {
-      const rating = Number(this.getAttribute("data-value"));
-      stars.forEach((s, i) => {
-        if (i < rating) {
-          s.style.transform = `scale(${1 + (rating - i) * 0.1})`;
-        } else {
-          s.style.transform = 'scale(1)';
-        }
-      });
-    });
-    
-    star.addEventListener("mouseout", function() {
-      stars.forEach(s => {
-        s.style.transform = s.classList.contains('active') ? 'scale(1.2)' : 'scale(1)';
-      });
-    });
-  });
-
-  const submitRatingButton = document.getElementById("submitRating");
-  submitRatingButton.addEventListener("click", async function() {
-    if (userRating === 0) {
-      alert("請選擇評分星數！");
-      return;
-    }
-    
-    this.disabled = true;
-    this.innerHTML = '<i class="fas fa-spinner fa-spin"></i> 提交中...';
-    
-    try {
-      await logUserActivity("user_rating", { rating: userRating });
-      
-      const ratingMsg = document.getElementById("ratingMessage");
-      ratingMsg.textContent = "感謝您的評分！您的意見對我們很重要。";
-      ratingMsg.classList.add('show');
-      ratingMsg.style.display = "block";
-      
-      // Add success animation to button
-      this.innerHTML = '<i class="fas fa-check-circle"></i> 評分成功';
-      this.style.background = 'linear-gradient(135deg, #2ecc71, #27ae60)';
-    } catch (error) {
-      console.error('Rating submission error:', error);
-      this.disabled = false;
-      this.innerHTML = '<i class="fas fa-paper-plane"></i> 重新提交';
-      alert('評分提交失敗，請稍後再試！');
-    }
-  });
-}
-
-function updateStarDisplay(rating) {
-  const stars = document.querySelectorAll("#starsContainer .star");
-  stars.forEach((star, index) => {
-    if (index < rating) {
-      star.classList.add("active");
-    } else {
-      star.classList.remove("active");
-    }
-  });
-}
-
-// Initialize rating system when DOM is loaded
-document.addEventListener("DOMContentLoaded", initRating);
-
-function toggleMenu() {
-  var menu = document.getElementById("fullscreenMenu");
-  var overlay = document.getElementById("menuOverlay");
-  menu.classList.toggle("show");
-  overlay.classList.toggle("show");
-  
-  // Animate menu items
-  var links = menu.getElementsByTagName('a');
-  for (var i = 0; i < links.length; i++) {
-    links[i].style.animationDelay = (i * 0.1) + 's';
-  }
-}
-
-function closeMenu() {
-  var menu = document.getElementById("fullscreenMenu");
-  var overlay = document.getElementById("menuOverlay");
-  menu.classList.remove("show");
-  overlay.classList.remove("show");
-}
-
-// Close menu when clicking outside
-document.addEventListener('click', function(event) {
-  var menu = document.getElementById("fullscreenMenu");
-  var menuIcon = document.querySelector(".menu-icon");
-  if (menu.classList.contains('show') && 
-      !menu.contains(event.target) && 
-      !menuIcon.contains(event.target)) {
-    closeMenu();
-  }
-});
-
-const html5QrCode = new Html5Qrcode("qr-reader");
-const qrConfig = { fps: 10, qrbox: { width: 250, height: 250 } };
-
-document.getElementById('scanQRCode').addEventListener('click', () => {
-  const qrReader = document.getElementById('qr-reader');
-  if (qrReader.style.display === 'none' || qrReader.style.display === '') {
-    qrReader.style.display = 'block';
-    html5QrCode.start({ facingMode: "environment" }, qrConfig, onScanSuccess);
-  } else {
-    qrReader.style.display = 'none';
-    html5QrCode.stop();
-  }
-});
-
-function onScanSuccess(decodedText, decodedResult) {
-  document.getElementById('invitationCode').value = decodedText;
-  html5QrCode.stop();
-  document.getElementById('qr-reader').style.display = 'none';
-  document.getElementById('qr-result').textContent = `您的邀請碼是：${decodedText}`;
-
-  logUserActivity('qr_scan_success', { invitationCode: decodedText });
-}
-
-function handleQRCodeImage(file) {
-  logUserActivity('qr_image_upload', { fileName: file.name });
-
-  const reader = new FileReader();
-  reader.onload = e => {
-    const img = new Image();
-    img.onload = () => {
-      const canvas = document.createElement('canvas');
-      canvas.width = img.width;
-      canvas.height = img.height;
-      const ctx = canvas.getContext('2d');
-      ctx.drawImage(img, 0, 0, img.width, img.height);
-      const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
-      const code = jsQR(imageData.data, imageData.width, imageData.height);
-      if (code) {
-        document.getElementById('invitationCode').value = code.data;
-        document.getElementById('qr-result').textContent = `您的邀請碼是：${code.data}`;
-      } else {
-        document.getElementById('qr-result').textContent = '無法識別 QR 碼，請嘗試其他圖片';
-      }
-    };
-    img.src = e.target.result;
-  };
-  reader.readAsDataURL(file);
-}
-
-document.getElementById('fileInput').addEventListener('change', event => {
-  const file = event.target.files[0];
-  if (file) {
-    handleQRCodeImage(file);
-  }
-});
-
-function toggleDarkMode() {
-  document.body.classList.toggle('dark-mode');
-  const isDarkMode = document.body.classList.contains('dark-mode');
-  localStorage.setItem('darkMode', isDarkMode);
-  
-  const icon = document.querySelector('#darkModeToggle i');
-  icon.classList.add('transitioning');
-  
-  setTimeout(() => {
-    if (isDarkMode) {
-      icon.classList.remove('fa-moon');
-      icon.classList.add('fa-sun');
-    } else {
-      icon.classList.remove('fa-sun');
-      icon.classList.add('fa-moon');
-    }
-    
-    setTimeout(() => {
-      icon.classList.remove('transitioning');
-    }, 600);
-  }, 300);
-
-  logUserActivity('toggle_dark_mode', { enabled: isDarkMode });
-}
-
-// Initial dark mode setup
-const savedDarkMode = localStorage.getItem('darkMode') === 'true';
-if (savedDarkMode) {
-  document.body.classList.add('dark-mode');
-  const icon = document.querySelector('#darkModeToggle i');
-  icon.classList.remove('fa-moon');
-  icon.classList.add('fa-sun');
-}
-
-document.getElementById('darkModeToggle').addEventListener('click', toggleDarkMode);
-
-document.getElementById('currentYear').textContent = new Date().getFullYear();

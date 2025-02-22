@@ -2076,3 +2076,46 @@ button:disabled {
     transform: translateY(0);
   }
 }
+
+/* Invitation Code Validation Animation Styles */
+.validation-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.6);
+  border-radius: inherit;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: row;
+  gap: 10px;
+  z-index: 10;
+  animation: fadeIn 0.4s ease;
+}
+
+.validation-spinner {
+  width: 30px;
+  height: 30px;
+  border: 4px solid rgba(255, 255, 255, 0.3);
+  border-top: 4px solid #fff;
+  border-radius: 50%;
+  animation: spinner 1s linear infinite;
+}
+
+.validation-text {
+  color: #fff;
+  font-size: 1rem;
+  font-weight: bold;
+}
+
+@keyframes spinner {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+@keyframes fadeOut {
+  from { opacity: 1; }
+  to { opacity: 0; }
+}

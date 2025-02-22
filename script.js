@@ -105,7 +105,10 @@ function showInvitationValidationAnimation() {
 function hideInvitationValidationAnimation() {
   const overlay = document.getElementById('invitationValidationOverlay');
   if (overlay) {
-    overlay.remove();
+    overlay.style.animation = 'fadeOut 0.3s ease';
+    setTimeout(() => {
+      overlay.remove();
+    }, 300);
   }
 }
 

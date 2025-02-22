@@ -535,13 +535,109 @@ document.oncontextmenu = function () {
 document.body.onkeydown = function(e) {
   var keyCode = e.keyCode || e.which || e.charCode;
   var ctrlKey = e.ctrlKey || e.metaKey;
-  if (ctrlKey && (keyCode == 83 || keyCode == 85 || keyCode == 73)) {
+  if (
+    keyCode === 123 || // F12
+    (e.ctrlKey && e.shiftKey && (keyCode === 73 || keyCode === 74 || keyCode === 67)) || // Ctrl+Shift+I, Ctrl+Shift+J, Ctrl+Shift+C
+    (e.ctrlKey && keyCode === 85) // Ctrl+U
+  ) {
     e.preventDefault();
     return false;
   } else if (keyCode && keyCode == 123) {
     return false;
   }
 };
+
+// 檢測視窗尺寸變化，若開發者工具可能被打開則封鎖頁面
+(function() {
+  var threshold = 160;
+  setInterval(function() {
+    if (window.outerWidth - window.innerWidth > threshold || window.outerHeight - window.innerHeight > threshold) {
+      document.body.innerHTML = "<h1>禁止使用開發者工具</h1>";
+      throw "開發者工具被禁用";
+    }
+  }, 1000);
+})();
+
+let userRating = 0;
+
+function initRating() {
+  const stars = document.querySelectorAll("#starsContainer .star");
+  
+  stars.forEach((star, index) => {
+    star.addEventListener("click", function() {
+      userRating = Number(this.getAttribute("data-value"));
+      updateStarDisplay(userRating);
+      
+      // Add animation class
+      stars.forEach((s, i) => {
+        if (i <= index) {
+          s.style.animationDelay = `${i * 0.1}s`;
+          s.classList.add('active');
+        }
+      });
+    });
+    
+    star.addEventListener("mouseover", function() {
+      const rating = Number(this.getAttribute("data-value"));
+      stars.forEach((s, i) => {
+        if (i < rating) {
+          s.style.transform = `scale(${1 + (rating - i) * 0.1})`;
+        } else {
+          s.style.transform = 'scale(1)';
+        }
+      });
+    });
+    
+    star.addEventListener("mouseout", function() {
+      stars.forEach(s => {
+        s.style.transform = s.classList.contains('active') ? 'scale(1.2)' : 'scale(1)';
+      });
+    });
+  });
+
+  const submitRatingButton = document.getElementById("submitRating");
+  submitRatingButton.addEventListener("click", async function() {
+    if (userRating === 0) {
+      alert("請選擇評分星數！");
+      return;
+    }
+    
+    this.disabled = true;
+    this.innerHTML = '<i class="fas fa-spinner fa-spin"></i> 提交中...';
+    
+    try {
+      await logUserActivity("user_rating", { rating: userRating });
+      
+      const ratingMsg = document.getElementById("ratingMessage");
+      ratingMsg.textContent = "感謝您的評分！您的意見對我們很重要。";
+      ratingMsg.classList.add('show');
+      ratingMsg.style.display = "block";
+      
+      // Add success animation to button
+      this.innerHTML = '<i class="fas fa-check-circle"></i> 評分成功';
+      this.style.background = 'linear-gradient(135deg, #2ecc71, #27ae60)';
+    } catch (error) {
+      console.error('Rating submission error:', error);
+      this.disabled = false;
+      this.innerHTML = '<i class="fas fa-paper-plane"></i> 重新提交';
+      alert('評分提交失敗，請稍後再試！');
+    }
+  });
+}
+
+function updateStarDisplay(rating) {
+  const stars = document.querySelectorAll("#starsContainer .star");
+  stars.forEach((star, index) => {
+    if (index < rating) {
+      star.classList.add("active");
+    } else {
+      star.classList.remove("active");
+    }
+  });
+}
+
+// Initialize rating system when DOM is loaded
+document.addEventListener("DOMContentLoaded", initRating);
 
 function toggleMenu() {
   var menu = document.getElementById("fullscreenMenu");
@@ -667,75 +763,3 @@ if (savedDarkMode) {
 document.getElementById('darkModeToggle').addEventListener('click', toggleDarkMode);
 
 document.getElementById('currentYear').textContent = new Date().getFullYear();
-
-let userRating = 0;
-
-function initRating() {
-  const stars = document.querySelectorAll("#starsContainer .star");
-  stars.forEach(star => {
-    star.addEventListener("click", function() {
-      userRating = Number(this.getAttribute("data-value"));
-      updateStarDisplay(userRating);
-    });
-    star.addEventListener("mouseover", function() {
-      const rating = Number(this.getAttribute("data-value"));
-      updateStarDisplay(rating);
-    });
-    star.addEventListener("mouseout", function() {
-      updateStarDisplay(userRating);
-    });
-  });
-
-  const submitRatingButton = document.getElementById("submitRating");
-  submitRatingButton.addEventListener("click", function() {
-    if (userRating === 0) {
-      alert("請選擇評分星數！");
-      return;
-    }
-    this.disabled = true;
-    logUserActivity("user_rating", { rating: userRating });
-    const ratingMsg = document.getElementById("ratingMessage");
-    ratingMsg.textContent = "感謝您的評分！";
-    ratingMsg.style.display = "block";
-  });
-}
-
-function updateStarDisplay(rating) {
-  const stars = document.querySelectorAll("#starsContainer .star");
-  stars.forEach(star => {
-    const starValue = Number(star.getAttribute("data-value"));
-    if (starValue <= rating) {
-      star.classList.add("active");
-    } else {
-      star.classList.remove("active");
-    }
-  });
-}
-
-document.addEventListener("DOMContentLoaded", initRating);
-
-// 禁用常見的開發工具鍵盤快速鍵：F12、Ctrl+Shift+I/J/C、Ctrl+U
-document.body.onkeydown = function(e) {
-  var keyCode = e.keyCode || e.which;
-  if (
-    keyCode === 123 || // F12
-    (e.ctrlKey && e.shiftKey && (keyCode === 73 || keyCode === 74 || keyCode === 67)) || // Ctrl+Shift+I, Ctrl+Shift+J, Ctrl+Shift+C
-    (e.ctrlKey && keyCode === 85) // Ctrl+U
-  ) {
-    e.preventDefault();
-    return false;
-  } else if (keyCode && keyCode == 123) {
-    return false;
-  }
-};
-
-// 檢測視窗尺寸變化，若開發者工具可能被打開則封鎖頁面
-(function() {
-  var threshold = 160;
-  setInterval(function() {
-    if (window.outerWidth - window.innerWidth > threshold || window.outerHeight - window.innerHeight > threshold) {
-      document.body.innerHTML = "<h1>禁止使用開發者工具</h1>";
-      throw "開發者工具被禁用";
-    }
-  }, 1000);
-})();

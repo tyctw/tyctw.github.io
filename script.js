@@ -155,7 +155,7 @@ async function logUserActivity(action, details = {}) {
       ...details
     };
 
-    const response = await fetch('https://script.google.com/macros/s/AKfycbwLvuhN61rsleYwwdycQLZ13qHcDTE_6XfIH5Iu6GHNsgEVyjGKirk7jVnTEGn-_ZB8tQ/exec', {
+    const response = await fetch('https://script.google.com/macros/s/AKfycbyTQFk7R5Tuthm9Y2oVIMpz3c7vR-BEHxa9X9gEgZio_cLgxZgi8LD3aonQUMLIKZDC/exec', {
       method: 'POST',
       body: JSON.stringify(data)
     });
@@ -382,25 +382,7 @@ function displayResults(data) {
     }, { total: 0 });
 
     results += `
-      <div class="school-stats-section">
-        <h3><i class="fas fa-chart-pie icon"></i>學校統計</h3>
-        <div class="stats-grid">
-          <div class="stat-card">
-            <i class="fas fa-school icon"></i>
-            <span class="stat-label">總計學校數</span>
-            <span class="stat-value">${schoolStats.total}</span>
-          </div>
-          ${Object.entries(schoolStats)
-            .filter(([key]) => key !== 'total')
-            .map(([type, count]) => `
-              <div class="stat-card">
-                <i class="fas fa-building icon"></i>
-                <span class="stat-label">${type}</span>
-                <span class="stat-value">${count}</span>
-              </div>
-            `).join('')}
-        </div>
-      </div>
+      
 
       <div class="eligible-schools-section">
         <h3><i class="fas fa-list-ul icon"></i>可能錄取學校列表</h3>

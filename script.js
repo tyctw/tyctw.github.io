@@ -14,7 +14,7 @@ const vocationalGroups = {
   '餐旅群': ['觀光事業科', '餐飲管理科']
 };
 
-// ...existing utility functions and event handlers...
+// Utility functions and event handlers
 
 function toggleVocationalGroup() {
   const schoolType = document.getElementById('schoolType').value;
@@ -144,7 +144,6 @@ function showLoading() {
 
   document.body.appendChild(loadingOverlay);
   
-  // Show loading overlay with animation
   requestAnimationFrame(() => {
     loadingOverlay.style.display = 'flex';
     simulateLoadingSteps();
@@ -335,8 +334,6 @@ async function analyzeScores() {
     setTimeout(hideLoading, 2000);
   }
 }
-
-// ...existing displayResults, exportResults, downloadFile, loadScript, and other functions...
 
 // Update event listeners and initialization
 document.getElementById('exportResults').onclick = showExportOptions;
@@ -633,7 +630,7 @@ function displayResults(data) {
             </span>
           </div>
         </div>`;
-
+  
   if (eligibleSchools && eligibleSchools.length > 0) {
     let groupedSchools = {};
     eligibleSchools.forEach(school => {
@@ -642,7 +639,7 @@ function displayResults(data) {
       }
       groupedSchools[school.type].push(school);
     });
-
+  
     results += `
       <div class="schools-analysis">
         <h3><i class="fas fa-university icon"></i>學校分析</h3>
@@ -697,9 +694,9 @@ function displayResults(data) {
         </ul>
       </div>`;
   }
-
+  
   results += '</div></div>';
-
+  
   const resultsElement = document.getElementById('results');
   resultsElement.innerHTML = results;
   resultsElement.style.display = 'none';
@@ -749,7 +746,6 @@ function showExportOptions() {
   `;
   document.body.appendChild(exportMenu);
   
-  // 添加動畫效果
   requestAnimationFrame(() => {
     exportMenu.classList.add('show');
   });
@@ -767,7 +763,7 @@ async function exportResults(format = 'txt') {
   logUserActivity('export_results', { format });
   const resultsElement = document.getElementById('results');
   const resultsText = resultsElement.innerText;
-
+  
   const now = new Date();
   const dateTime = now.toLocaleString('zh-TW', {
     year: 'numeric',
@@ -778,7 +774,7 @@ async function exportResults(format = 'txt') {
     second: '2-digit',
     hour12: false
   });
-
+  
   const watermark =
     "********************************\n" +
     "*                              *\n" +
@@ -788,9 +784,9 @@ async function exportResults(format = 'txt') {
     `*   產生時間: ${dateTime}   *\n` +
     "*                              *\n" +
     "********************************\n\n";
-
+  
   const contentWithWatermark = watermark + resultsText;
-
+  
   switch (format) {
     case 'txt':
       exportTxt(contentWithWatermark);
@@ -813,18 +809,16 @@ function exportTxt(content) {
 }
 
 async function exportPdf(content) {
-  // 使用 CDN 載入 jsPDF
   if (!window.jsPDF) {
     await loadScript('https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js');
   }
-
+  
   const { jsPDF } = window.jspdf;
   const doc = new jsPDF();
   
-  // 設定中文字型
   doc.setFont('helvetica');
   doc.setFontSize(12);
-
+  
   const splitText = doc.splitTextToSize(content, 180);
   let y = 20;
   
@@ -836,22 +830,21 @@ async function exportPdf(content) {
     doc.text(line, 15, y);
     y += 7;
   });
-
+  
   doc.save('桃聯區會考落點分析結果.pdf');
 }
 
 function exportCsv(content) {
   const lines = content.split('\n');
   let csvContent = '';
-
+  
   lines.forEach(line => {
-    // 移除不必要的符號並將文字轉換為CSV格式
     const cleanLine = line.replace(/[*]/g, '').trim();
     if (cleanLine) {
       csvContent += `"${cleanLine}"\n`;
     }
   });
-
+  
   const blob = new Blob(['\uFEFF' + csvContent], { type: 'text/csv;charset=utf-8' });
   downloadFile(blob, '桃聯區會考落點分析結果.csv');
 }
@@ -871,7 +864,7 @@ function exportJson(content) {
       composition: document.getElementById('composition').value
     }
   };
-
+  
   const blob = new Blob([JSON.stringify(jsonData, null, 2)], { type: 'application/json;charset=utf-8' });
   downloadFile(blob, '桃聯區會考落點分析結果.json');
 }
@@ -897,3 +890,6 @@ async function loadScript(url) {
     document.head.appendChild(script);
   });
 }
+
+// Initialize rating functionality after the DOM is loaded
+initRating();

@@ -42,44 +42,11 @@ function toggleInstructions() {
   }
 }
 
-let isDragging = false;
-let startY;
-let startTop;
+// Removed draggable functionality for disclaimer modal
 
 function showDisclaimer() {
   var modal = document.getElementById('disclaimerModal');
-  var modalContent = modal.querySelector('.modal-content');
   modal.style.display = 'block';
-
-  modalContent.addEventListener('mousedown', startDragging);
-  document.addEventListener('mousemove', drag);
-  document.addEventListener('mouseup', stopDragging);
-
-  modalContent.addEventListener('touchstart', startDragging);
-  document.addEventListener('touchmove', drag);
-  document.addEventListener('touchend', stopDragging);
-}
-
-function startDragging(e) {
-  isDragging = true;
-  startY = e.type === 'mousedown' ? e.clientY : e.touches[0].clientY;
-  startTop = parseInt(window.getComputedStyle(this).top) || 0;
-  this.style.cursor = 'grabbing';
-}
-
-function drag(e) {
-  if (!isDragging) return;
-  e.preventDefault();
-  let modalContent = document.querySelector('.modal-content');
-  let currentY = e.type === 'mousemove' ? e.clientY : e.touches[0].clientY;
-  let deltaY = currentY - startY;
-  modalContent.style.top = `${startTop + deltaY}px`;
-}
-
-function stopDragging() {
-  isDragging = false;
-  const modalContent = document.querySelector('.modal-content');
-  if(modalContent) modalContent.style.cursor = 'grab';
 }
 
 function closeDisclaimer() {

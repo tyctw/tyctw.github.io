@@ -2119,3 +2119,12 @@ button:disabled {
   from { opacity: 1; }
   to { opacity: 0; }
 }
+
+/* 新增資料更新時間樣式 */
+.data-update-time {
+  text-align: right;
+  margin-top: 20px;
+  font-size: 0.9rem;
+  color: var(--text-color);
+  font-style: italic;
+}

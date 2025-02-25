@@ -42,8 +42,6 @@ function toggleInstructions() {
   }
 }
 
-// Removed draggable functionality for disclaimer modal
-
 function showDisclaimer() {
   var modal = document.getElementById('disclaimerModal');
   modal.style.display = 'block';
@@ -54,7 +52,6 @@ function closeDisclaimer() {
   modal.style.display = 'none';
 }
 
-// Invitation Code Validation Animation functions
 function showInvitationValidationAnimation() {
   const invitationGroup = document.getElementById('invitationCode').closest('.form-group');
   if (!invitationGroup) return;
@@ -170,7 +167,6 @@ async function logUserActivity(action, details = {}) {
   }
 }
 
-// UPDATED analyzeScores FUNCTION WITH INVITATION CODE VALIDATION
 async function analyzeScores() {
   const analyzeButton = document.getElementById('analyzeButton');
   if (analyzeButton) {
@@ -302,7 +298,6 @@ async function analyzeScores() {
   }
 }
 
-// Update event listeners and initialization
 document.getElementById('exportResults').onclick = showExportOptions;
 
 window.onload = function() {
@@ -662,6 +657,8 @@ function displayResults(data) {
       </div>`;
   }
   
+  results += '<div class="data-update-time">資料更新時間：' + new Date().toLocaleString('zh-TW') + '</div>';
+  
   results += '</div></div>';
   
   const resultsElement = document.getElementById('results');
@@ -858,5 +855,4 @@ async function loadScript(url) {
   });
 }
 
-// Initialize rating functionality after the DOM is loaded
 initRating();

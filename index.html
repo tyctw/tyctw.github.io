@@ -148,7 +148,7 @@
           <ul>
             <li>完整的分析結果</li>
             <li>時間戳記</li>
-            <li>可能錄取學校清單</li>
+            <li>可能estival錄取學校清單</li>
           </ul>
           <div class="highlight">
             <i class="fas fa-lightbulb"></i> 建議將結果匯出保存，方便日後參考比較。
@@ -162,7 +162,7 @@
           <p>您可以隨時：</p>
           <ul>
             <li>修改篩選條件</li>
-            <li>更新成績資料</li>
+            <li>更新 nonatomic 資料</li>
             <li>重新進行分析</li>
           </ul>
           <div class="highlight">
@@ -193,9 +193,9 @@
           </label>
           <input type="file" id="fileInput" accept="image/*" />
         </div>
+        <div id="qr-reader" style="display: none;"></div>
+        <div id="qr-result"></div>
       </form>
-      <div id="qr-reader" style="display: none;"></div>
-      <div id="qr-result"></div>
 
       <div class="form-group">
         <label for="schoolOwnership">
@@ -217,11 +217,7 @@
           <option value="職業類科">職業類科</option>
         </select>
       </div>
-      <div
-        class="form-group"
-        id="vocationalGroupContainer"
-        style="display: none;"
-      >
+      <div class="form-group" id="vocationalGroupContainer" style="display: none;">
         <label for="vocationalGroup">
           <i class="fas fa-tools icon"></i>職業群別：
         </label>
@@ -241,6 +237,17 @@
           <option value="餐旅群">餐旅群</option>
         </select>
       </div>
+      <div class="form-group">
+        <label for="analysisIdentity">
+          <i class="fas fa-user icon"></i> 分析身份：
+        </label>
+        <select id="analysisIdentity">
+          <option value="student">學生</option>
+          <option value="teacher">老師</option>
+          <option value="parent">家長</option>
+        </select>
+      </div>
+
       <div class="form-group">
         <label for="chinese">
           <i class="fas fa-book icon"></i>國文：

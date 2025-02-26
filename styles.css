@@ -1014,7 +1014,7 @@ button:hover {
 #disclaimerModal .close:hover {
   color: #34495e;
   transform: rotate(90deg) scale(1.2);
-  background: rgba(0, 0, 0, 0.05);
+  background: rgba(255, 255, 255, 0.1);
 }
 
 @keyframes fadeInUp {
@@ -2127,4 +2127,20 @@ button:disabled {
   font-size: 0.9rem;
   color: var(--text-color);
   font-style: italic;
+}
+
+/* 新增顯示公私立的樣式 */
+.school-ownership {
+  display: inline-block;
+  background-color: #f0f0f0;
+  color: #555;
+  font-size: 0.8rem;
+  padding: 2px 6px;
+  margin-left: 5px;
+  border-radius: 3px;
+}
+
+.dark-mode .school-ownership {
+  background-color: #444;
+  color: #ccc;
 }

@@ -213,6 +213,7 @@ async function analyzeScores() {
     const schoolOwnership = document.getElementById('schoolOwnership').value;
     const schoolType = document.getElementById('schoolType').value;
     const vocationalGroup = document.getElementById('vocationalGroup').value;
+    const analysisIdentity = document.getElementById('analysisIdentity').value;
 
     const fields = ['chinese', 'english', 'math', 'science', 'social', 'composition'];
     let isAllFieldsFilled = true;
@@ -255,7 +256,8 @@ async function analyzeScores() {
       filters: {
         schoolOwnership,
         schoolType,
-        vocationalGroup
+        vocationalGroup,
+        analysisIdentity
       }
     });
 
@@ -275,7 +277,8 @@ async function analyzeScores() {
         filters: {
           schoolOwnership,
           schoolType,
-          vocationalGroup
+          vocationalGroup,
+          analysisIdentity
         }
       })
     });
@@ -619,6 +622,7 @@ function displayResults(data) {
                     <div class="school-name">
                       <i class="fas fa-graduation-cap icon"></i>
                       ${school.name}
+                      ${school.ownership ? `<span class="school-ownership">【${school.ownership}】</span>` : ''}
                     </div>
                     <div class="school-details">
                       ${school.lastYearCutoff ? `

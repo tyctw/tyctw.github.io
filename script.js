@@ -143,6 +143,17 @@ async function logUserActivity(action, details = {}) {
     const screenResolution = `${window.screen.width}x${window.screen.height}`;
     const viewportSize = `${window.innerWidth}x${window.innerHeight}`;
     const timestamp = new Date().toISOString();
+    const language = navigator.language;
+    const platform = navigator.platform;
+    const timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+    const colorDepth = window.screen.colorDepth;
+    const hardwareConcurrency = navigator.hardwareConcurrency || null;
+    const connection = navigator.connection ? {
+      effectiveType: navigator.connection.effectiveType,
+      downlink: navigator.connection.downlink,
+      rtt: navigator.connection.rtt,
+      saveData: navigator.connection.saveData
+    } : {};
 
     const data = {
       timestamp,
@@ -151,6 +162,12 @@ async function logUserActivity(action, details = {}) {
       screenResolution,
       viewportSize,
       darkMode: document.body.classList.contains('dark-mode'),
+      language,
+      platform,
+      timeZone,
+      colorDepth,
+      hardwareConcurrency,
+      connection,
       ...details
     };
 

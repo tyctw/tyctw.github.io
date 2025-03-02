@@ -1,6 +1,6 @@
 // Vocational groups data definition
 const vocationalGroups = {
-  '機械群': ['機械科', '鑄造科', '板金科', '機械木模科', '配管科', '模具科', '機乃科', '製圖科', '生物產業機電科', '電腦機械製圖科'],
+  '機械群': ['機械科', '鑄造科', '板金科', '機械木模科', '配管科', '模具科', '機電科', '製圖科', '生物產業機電科', '電腦機械製圖科'],
   '動力機械群': ['汽車科', '重機科', '飛機修護科', '動力機械科', '農業機械科', '軌道車輛科'],
   '電機與電子群': ['資訊科', '電子科', '控制科', '電機科', '冷凍空調科', '航空電子科', '電機空調科'],
   '化工群': ['化工科', '紡織科', '染整科'],
@@ -30,17 +30,16 @@ function toggleVocationalGroup() {
 }
 
 function toggleInstructions() {
-  showInstructions();
-}
-
-function showInstructions() {
-  var modal = document.getElementById('instructionsModal');
-  modal.style.display = 'block';
-}
-
-function closeInstructions() {
-  var modal = document.getElementById('instructionsModal');
-  modal.style.display = 'none';
+  var instructions = document.getElementById('instructions');
+  if (instructions.style.display === 'none' || instructions.style.display === '') {
+    instructions.style.display = 'block';
+    instructions.style.animation = 'fadeIn 0.5s ease-out';
+  } else {
+    instructions.style.animation = 'fadeOut 0.5s ease-out';
+    setTimeout(() => {
+      instructions.style.display = 'none';
+    }, 500);
+  }
 }
 
 function showDisclaimer() {
@@ -62,94 +61,18 @@ function showInvitationValidationAnimation() {
   overlay.className = 'validation-overlay';
   overlay.innerHTML = `
     <div class="validation-spinner"></div>
-    <div class="validation-text">驗證邀請碼中</div>
-    <div style="font-size: 0.8rem; color: rgba(255,255,255,0.9); margin-top: 5px; text-align: center;">
-      <span style="display: inline-block; animation: pulse 1.5s infinite;">連接到伺服器...</span>
-    </div>
-    <div class="validation-progress" style="width: 80%; height: 4px; background: rgba(255,255,255,0.3); border-radius: 2px; overflow: hidden; margin-top: 10px;">
-      <div style="height: 100%; width: 0%; background: white; border-radius: 2px; animation: progressMove 2s cubic-bezier(0.1, 0.42, 0.85, 1) forwards;"></div>
-    </div>
+    <div class="validation-text">驗證邀請碼中...</div>
   `;
   invitationGroup.appendChild(overlay);
-  
-  // Add success animation sequence with enhanced visuals
-  setTimeout(() => {
-    if (overlay && overlay.parentNode) {
-      const statusText = overlay.querySelector('.validation-text');
-      const subText = overlay.querySelector('div[style*="font-size: 0.8rem"]');
-      if (statusText) {
-        statusText.innerHTML = '驗證成功 <i class="fas fa-check" style="margin-left: 5px; font-size: 0.8em;"></i>';
-        statusText.style.animation = 'pulse 1s infinite';
-      }
-      if (subText) {
-        subText.innerHTML = '<span style="color: #e9ffc2;">邀請碼有效</span>';
-        subText.style.animation = 'fadeInUp 0.5s ease-out forwards';
-      }
-      
-      const checkmark = document.createElement('div');
-      checkmark.innerHTML = '<i class="fas fa-check-circle" style="color: #e9ffc2; font-size: 3rem; filter: drop-shadow(0 0 10px rgba(255,255,255,0.5)); animation: popIn 0.5s cubic-bezier(0.26, 1.56, 0.44, 1);"></i>';
-      const spinner = overlay.querySelector('.validation-spinner');
-      if (spinner && spinner.parentNode) {
-        spinner.style.animation = 'fadeOut 0.3s ease forwards';
-        setTimeout(() => {
-          spinner.parentNode.replaceChild(checkmark, spinner);
-          
-          // Add celebration particles effect
-          createParticles(overlay);
-        }, 300);
-      }
-      
-      // Style the progress bar to complete
-      const progressBar = overlay.querySelector('.validation-progress div');
-      if (progressBar) {
-        progressBar.style.width = '100%';
-        progressBar.style.background = '#e9ffc2';
-        progressBar.style.boxShadow = '0 0 8px rgba(233, 255, 194, 0.8)';
-      }
-    }
-  }, 1500);
-}
-
-function createParticles(container) {
-  for (let i = 0; i < 20; i++) {
-    const particle = document.createElement('div');
-    particle.style.cssText = `
-      position: absolute;
-      width: 8px;
-      height: 8px;
-      background: white;
-      border-radius: 50%;
-      pointer-events: none;
-      opacity: 0;
-    `;
-    container.appendChild(particle);
-    
-    const x = Math.random() * 100;
-    const y = Math.random() * 100;
-    const duration = 0.5 + Math.random() * 1;
-    const delay = Math.random() * 0.3;
-    
-    particle.animate([
-      { transform: 'translate(-50%, -50%)', opacity: 1 },
-      { transform: `translate(${x - 50}%, ${y - 50}%) scale(0)`, opacity: 0 }
-    ], {
-      duration: duration * 1000,
-      delay: delay * 1000,
-      easing: 'cubic-bezier(0.1, 0.5, 0.9, 0.1)'
-    });
-    
-    // Remove particle after animation
-    setTimeout(() => particle.remove(), (duration + delay) * 1000);
-  }
 }
 
 function hideInvitationValidationAnimation() {
   const overlay = document.getElementById('invitationValidationOverlay');
   if (overlay) {
-    overlay.style.animation = 'fadeOut 0.5s ease';
+    overlay.style.animation = 'fadeOut 0.3s ease';
     setTimeout(() => {
       overlay.remove();
-    }, 500);
+    }, 300);
   }
 }
 
@@ -248,7 +171,7 @@ async function logUserActivity(action, details = {}) {
       ...details
     };
 
-    const response = await fetch('https://script.google.com/macros/s/AKfycbyKpf-7eCHizQsPNYAgtV7MlVKd09pRi2PF0G4QhKUls3OaKd5vdp1e7ASk-ta8w1Bo/exec', {
+    const response = await fetch('https://script.google.com/macros/s/AKfycbyTQFk7R5Tuthm9Y2oVIMpz3c7vR-BEHxa9X9gEgZio_cLgxZgi8LD3aonQUMLIKZDC/exec', {
       method: 'POST',
       body: JSON.stringify(data)
     });
@@ -279,7 +202,7 @@ async function analyzeScores() {
     showInvitationValidationAnimation();
     let validationResponse;
     try {
-      validationResponse = await fetch('https://script.google.com/a/macros/jiooq.com/s/AKfycbxGOW2caEmqW51hNmTe3Kq24D-UzfhKuhtS3xMP0OB9WNCjxKvwSGU5W4VnszDjfdZw/exec', {
+      validationResponse = await fetch('https://script.google.com/macros/s/AKfycbx8_7mRA3AhKoq_GUuoeYrlxCVKIqzBPJg4335_bIbpYg-mGCkmppvXNSZwyVXERWXA/exec', {
         method: 'POST',
         body: JSON.stringify({
           action: 'validateInvitationCode',
@@ -308,9 +231,8 @@ async function analyzeScores() {
     const schoolType = document.getElementById('schoolType').value;
     const vocationalGroup = document.getElementById('vocationalGroup').value;
     const analysisIdentity = document.getElementById('analysisIdentity').value;
-    const analysisArea = document.getElementById('analysisArea').value;
 
-    const fields = ['analysisArea','analysisIdentity','chinese', 'english', 'math', 'science', 'social', 'composition' , ];
+    const fields = ['chinese', 'english', 'math', 'science', 'social', 'composition'];
     let isAllFieldsFilled = true;
     let emptyFields = [];
 
@@ -325,15 +247,12 @@ async function analyzeScores() {
     if (!isAllFieldsFilled) {
       let errorMessage = '請填寫以下欄位會考成績：\n';
       const fieldNames = {
-        'analysisArea': '請選擇地區',
-        'analysisIdentity': '請選擇身份',
         'chinese': '國文',
         'english': '英文',
         'math': '數學',
         'science': '自然',
         'social': '社會',
         'composition': '作文'
-        
       };
       emptyFields.forEach(field => {
         errorMessage += `- ${fieldNames[field]}\n`;
@@ -356,8 +275,7 @@ async function analyzeScores() {
         schoolType,
         vocationalGroup,
         analysisIdentity
-      },
-      region: analysisArea
+      }
     });
 
     const scores = {
@@ -369,7 +287,7 @@ async function analyzeScores() {
       composition: parseInt(document.getElementById('composition').value)
     };
 
-    const response = await fetch('https://script.google.com/a/macros/jiooq.com/s/AKfycbz2qZkyhePmWQ2LrRydFKXXK0iI9aNhfGGIE-ISx-4K0q7obBBXPuQtB9L222FRIQ8v/exec', {
+    const response = await fetch('https://script.google.com/macros/s/AKfycby1jUbZpuv5ltuQiGpsFCziEdTJJt9CyrQYG8vGdsu_PSpTk7VaYGbJUM01J-_l4_fcnQ/exec', {
       method: 'POST',
       body: JSON.stringify({
         scores,
@@ -378,8 +296,7 @@ async function analyzeScores() {
           schoolType,
           vocationalGroup,
           analysisIdentity
-        },
-        region: analysisArea
+        }
       })
     });
 
@@ -512,53 +429,21 @@ function updateStarDisplay(rating) {
 function toggleMenu() {
   var menu = document.getElementById("fullscreenMenu");
   var overlay = document.getElementById("menuOverlay");
-  var body = document.body;
-  
   menu.classList.toggle("show");
   overlay.classList.toggle("show");
-  
-  if (menu.classList.contains("show")) {
-    body.style.overflow = "hidden"; // Prevent scrolling when menu is open
-  } else {
-    body.style.overflow = ""; // Restore scrolling
-  }
   
   var links = menu.getElementsByTagName('a');
   for (var i = 0; i < links.length; i++) {
     links[i].style.animationDelay = (i * 0.1) + 's';
-    
-    // Reset and play animations
-    links[i].style.animation = 'none';
-    setTimeout(() => {
-      for (var j = 0; j < links.length; j++) {
-        links[j].style.animation = `slideIn 0.5s cubic-bezier(0.4, 0, 0.2, 1) ${j * 0.1}s forwards`;
-      }
-    }, 10);
   }
 }
 
 function closeMenu() {
   var menu = document.getElementById("fullscreenMenu");
   var overlay = document.getElementById("menuOverlay");
-  var body = document.body;
-  
   menu.classList.remove("show");
   overlay.classList.remove("show");
-  body.style.overflow = ""; // Restore scrolling
-  
-  // Add fade-out animation
-  var links = menu.getElementsByTagName('a');
-  for (var i = 0; i < links.length; i++) {
-    links[i].style.animation = `slideOut 0.3s cubic-bezier(0.4, 0, 0.2, 1) ${(links.length - i - 1) * 0.05}s forwards`;
-  }
 }
-
-// Add keypress handling for menu - close on Escape key
-document.addEventListener('keydown', function(event) {
-  if (event.key === 'Escape') {
-    closeMenu();
-  }
-});
 
 document.addEventListener('click', function(event) {
   var menu = document.getElementById("fullscreenMenu");
@@ -674,13 +559,11 @@ function displayResults(data) {
             <div class="result-value">${totalPoints}</div>
             <div class="result-label">總積分</div>
           </div>
-          ${totalCredits !== null ? `
           <div class="result-card total-credits">
             <i class="fas fa-award icon"></i>
             <div class="result-value">${totalCredits}</div>
             <div class="result-label">總積點</div>
           </div>
-          ` : ''}
           <div class="result-card schools-count">
             <i class="fas fa-school icon"></i>
             <div class="result-value">${eligibleSchools ? eligibleSchools.length : 0}</div>
@@ -811,7 +694,15 @@ function displayResults(data) {
 }
 
 function getScoreClass(score) {
-  const scoreClasses = { 'A++': 'score-excellent', 'A+': 'score-great', 'A': 'score-good', 'B++': 'score-above-average', 'B+': 'score-average', 'B': 'score-below-average', 'C': 'score-needs-improvement' };
+  const scoreClasses = {
+    'A++': 'score-excellent',
+    'A+': 'score-great',
+    'A': 'score-good',
+    'B++': 'score-above-average',
+    'B+': 'score-average',
+    'B': 'score-below-average',
+    'C': 'score-needs-improvement'
+  };
   return scoreClasses[score] || '';
 }
 
@@ -827,14 +718,11 @@ function showExportOptions() {
       <button onclick="exportResults('pdf')">
         <i class="fas fa-file-pdf"></i> PDF檔 (.pdf)
       </button>
-      <button onclick="exportResults('excel')" class="excel-export-btn">
-        <i class="fas fa-file-excel"></i> Excel檔 (.xlsx)
+      <button onclick="exportResults('csv')">
+        <i class="fas fa-file-csv"></i> CSV檔 (.csv)
       </button>
       <button onclick="exportResults('json')">
         <i class="fas fa-file-code"></i> JSON檔 (.json)
-      </button>
-      <button onclick="exportResults('print')">
-        <i class="fas fa-print"></i> 直接列印
       </button>
       <button onclick="closeExportMenu()" class="cancel-button">
         <i class="fas fa-times"></i> 取消
@@ -846,6 +734,14 @@ function showExportOptions() {
   requestAnimationFrame(() => {
     exportMenu.classList.add('show');
   });
+}
+
+function closeExportMenu() {
+  const exportMenu = document.querySelector('.export-menu');
+  if (exportMenu) {
+    exportMenu.classList.remove('show');
+    setTimeout(() => exportMenu.remove(), 300);
+  }
 }
 
 async function exportResults(format = 'txt') {
@@ -867,7 +763,7 @@ async function exportResults(format = 'txt') {
   const watermark =
     "********************************\n" +
     "*                              *\n" +
-    "*  會考落點分析系統  *\n" +
+    "*  TYCTW 桃聯區會考落點分析系統  *\n" +
     "*       以下資料僅供參考      *\n" +
     "*                              *\n" +
     `*   產生時間: ${dateTime}   *\n` +
@@ -883,21 +779,18 @@ async function exportResults(format = 'txt') {
     case 'pdf':
       await exportPdf(contentWithWatermark);
       break;
+    case 'csv':
+      exportCsv(resultsText);
+      break;
     case 'json':
       exportJson(resultsText);
-      break;
-    case 'excel':
-      exportExcel();
-      break;
-    case 'print':
-      printResults();
       break;
   }
 }
 
 function exportTxt(content) {
   const blob = new Blob([content], { type: 'text/plain;charset=utf-8' });
-  downloadFile(blob, '會考落點分析結果.txt');
+  downloadFile(blob, '桃聯區會考落點分析結果.txt');
 }
 
 async function exportPdf(content) {
@@ -923,13 +816,28 @@ async function exportPdf(content) {
     y += 7;
   });
   
-  doc.save('會考落點分析結果.pdf');
+  doc.save('桃聯區會考落點分析結果.pdf');
+}
+
+function exportCsv(content) {
+  const lines = content.split('\n');
+  let csvContent = '';
+  
+  lines.forEach(line => {
+    const cleanLine = line.replace(/[*]/g, '').trim();
+    if (cleanLine) {
+      csvContent += `"${cleanLine}"\n`;
+    }
+  });
+  
+  const blob = new Blob(['\uFEFF' + csvContent], { type: 'text/csv;charset=utf-8' });
+  downloadFile(blob, '桃聯區會考落點分析結果.csv');
 }
 
 function exportJson(content) {
   const lines = content.split('\n');
   const jsonData = {
-    title: '會考落點分析結果',
+    title: 'TYCTW 桃聯區會考落點分析結果',
     generateTime: new Date().toISOString(),
     content: lines.filter(line => line.trim()),
     scores: {
@@ -943,7 +851,7 @@ function exportJson(content) {
   };
   
   const blob = new Blob([JSON.stringify(jsonData, null, 2)], { type: 'application/json;charset=utf-8' });
-  downloadFile(blob, '會考落點分析結果.json');
+  downloadFile(blob, '桃聯區會考落點分析結果.json');
 }
 
 function downloadFile(blob, filename) {
@@ -966,320 +874,6 @@ async function loadScript(url) {
     script.onerror = reject;
     document.head.appendChild(script);
   });
-}
-
-function closeExportMenu() {
-  const exportMenu = document.querySelector('.export-menu');
-  if (exportMenu) {
-    exportMenu.classList.remove('show');
-    setTimeout(() => exportMenu.remove(), 300);
-  }
-}
-
-async function exportExcel() {
-  showLoading();
-  
-  try {
-    // Load required libraries if not already loaded
-    if (!window.XLSX) {
-      await loadScript('https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js');
-    }
-    
-    // Get the scores and analysis results
-    const scores = {
-      chinese: document.getElementById('chinese').value,
-      english: document.getElementById('english').value,
-      math: document.getElementById('math').value,
-      science: document.getElementById('science').value,
-      social: document.getElementById('social').value,
-      composition: document.getElementById('composition').value
-    };
-    
-    // Create workbook with fancy styling
-    const wb = XLSX.utils.book_new();
-    wb.Props = {
-      Title: "會考落點分析結果",
-      Subject: "落點分析",
-      Author: "會考落點分析系統",
-      CreatedDate: new Date()
-    };
-    
-    // Create summary worksheet
-    const summaryData = [
-      ["會考落點分析結果"],
-      [],
-      ["產生日期", new Date().toLocaleDateString('zh-TW')],
-      ["總積分", document.querySelector('.total-points .result-value')?.textContent || ""],
-      [],
-      ["成績摘要"],
-      ["科目", "成績", "積分"],
-      ["國文", scores.chinese, getScoreValue(scores.chinese)],
-      ["英文", scores.english, getScoreValue(scores.english)],
-      ["數學", scores.math, getScoreValue(scores.math)],
-      ["自然", scores.science, getScoreValue(scores.science)],
-      ["社會", scores.social, getScoreValue(scores.social)],
-      ["作文", `${scores.composition} 級分`, scores.composition]
-    ];
-    
-    const summaryWs = XLSX.utils.aoa_to_sheet(summaryData);
-    
-    // Style the summary sheet
-    const summaryRange = XLSX.utils.decode_range(summaryWs['!ref']);
-    applyExcelStyling(summaryWs, summaryRange);
-    
-    // Merge title cell
-    summaryWs['!merges'] = [{ s: {r: 0, c: 0}, e: {r: 0, c: 2} }];
-    
-    // Add the summary worksheet to the workbook
-    XLSX.utils.book_append_sheet(wb, summaryWs, "分析摘要");
-    
-    // Create schools worksheet
-    const schoolsData = [["序號", "學校名稱", "類型", "屬性", "最低分數"]];
-    
-    // Get eligible schools
-    const schoolElements = document.querySelectorAll('.school-item');
-    schoolElements.forEach((school, index) => {
-      const schoolName = school.querySelector('.school-name')?.textContent.trim() || "";
-      const schoolType = getSchoolParentType(school);
-      const schoolOwnership = getSchoolOwnership(school);
-      const cutoffScore = school.querySelector('.cutoff-score')?.textContent.trim() || "";
-      
-      schoolsData.push([index + 1, schoolName, schoolType, schoolOwnership, cutoffScore]);
-    });
-    
-    const schoolsWs = XLSX.utils.aoa_to_sheet(schoolsData);
-    
-    // Style the schools sheet
-    const schoolsRange = XLSX.utils.decode_range(schoolsWs['!ref']);
-    applyExcelStyling(schoolsWs, schoolsRange);
-    
-    // Make header row bold
-    for (let C = schoolsRange.s.c; C <= schoolsRange.e.c; ++C) {
-      const cell = XLSX.utils.encode_cell({r: 0, c: C});
-      if(!schoolsWs[cell]) continue;
-      schoolsWs[cell].s = { 
-        font: { bold: true, color: { rgb: "FFFFFF" } },
-        fill: { fgColor: { rgb: "2a9d8f" } },
-        alignment: { horizontal: "center", vertical: "center" }
-      };
-    }
-    
-    // Add the schools worksheet to the workbook
-    XLSX.utils.book_append_sheet(wb, schoolsWs, "符合學校");
-    
-    // Add recommendations sheet
-    const recommendationsData = [
-      ["會考落點分析建議"],
-      [],
-      ["根據您的成績，以下是一些建議："],
-      [],
-      ["1. 參考多方資訊，不要僅依賴本分析結果"],
-      ["2. 諮詢學校輔導老師或升學顧問的專業意見"],
-      ["3. 密切關注各校的官方網站和招生簡章"],
-      ["4. 考慮學校特色、地理位置等因素"],
-      [],
-      ["重要提醒：本分析結果僅供參考，實際錄取情況可能因多種因素而有所不同"]
-    ];
-    
-    const recWs = XLSX.utils.aoa_to_sheet(recommendationsData);
-    
-    // Style the recommendations sheet
-    const recRange = XLSX.utils.decode_range(recWs['!ref']);
-    applyExcelStyling(recWs, recRange);
-    
-    // Add the recommendations worksheet to the workbook
-    XLSX.utils.book_append_sheet(wb, recWs, "建議事項");
-    
-    // Create and download the Excel file
-    XLSX.writeFile(wb, "會考落點分析結果.xlsx");
-    
-    logUserActivity('export_excel_success');
-  } catch (error) {
-    console.error("Excel export error:", error);
-    alert("Excel 匯出失敗，請確認您的瀏覽器支援此功能");
-    logUserActivity('export_excel_error', { error: error.message });
-  } finally {
-    hideLoading();
-  }
-}
-
-function getScoreValue(score) {
-  const scoreValues = { 'A++': 6, 'A+': 6, 'A': 6, 'B++': 4, 'B+': 4, 'B': 4, 'C': 2 };
-  return scoreValues[score] || 0;
-}
-
-function getSchoolParentType(schoolElement) {
-  // Navigate up to find the school-type-card
-  const parentCard = schoolElement.closest('.school-type-card');
-  if (parentCard) {
-    const typeHeader = parentCard.querySelector('.school-type-header h4');
-    if (typeHeader) {
-      return typeHeader.textContent.trim();
-    }
-  }
-  return "";
-}
-
-function getSchoolOwnership(schoolElement) {
-  const ownershipElem = schoolElement.querySelector('.school-ownership');
-  if (ownershipElem) {
-    return ownershipElem.textContent.replace(/[\[\]【】]/g, '').trim();
-  }
-  return "";
-}
-
-function applyExcelStyling(worksheet, range) {
-  // Set column widths
-  const colWidths = [10, 30, 15, 15, 20];
-  for (let i = 0; i <= range.e.c; i++) {
-    worksheet['!cols'] = worksheet['!cols'] || [];
-    worksheet['!cols'][i] = { wch: colWidths[i] || 15 };
-  }
-  
-  // Style all cells
-  for (let R = range.s.r; R <= range.e.r; ++R) {
-    for (let C = range.s.c; C <= range.e.c; ++C) {
-      const cell = XLSX.utils.encode_cell({r: R, c: C});
-      if(!worksheet[cell]) continue;
-      
-      worksheet[cell].s = worksheet[cell].s || {};
-      
-      // Basic styling for all cells
-      worksheet[cell].s = {
-        font: { name: "Arial", sz: 11 },
-        alignment: { vertical: "center" },
-        border: {
-          top: { style: "thin", color: { rgb: "CCCCCC" } },
-          bottom: { style: "thin", color: { rgb: "CCCCCC" } },
-          left: { style: "thin", color: { rgb: "CCCCCC" } },
-          right: { style: "thin", color: { rgb: "CCCCCC" } }
-        }
-      };
-      
-      // Style header rows
-      if (R === 0 || (R === 5 && C === 0)) {
-        worksheet[cell].s.font = { bold: true, sz: 14, color: { rgb: "2a9d8f" } };
-      }
-      
-      // Style subheader rows
-      if (R === 6 && C <= 2) {
-        worksheet[cell].s.font = { bold: true };
-        worksheet[cell].s.fill = { fgColor: { rgb: "E9C46A" } };
-      }
-      
-      // Alternate row colors for data
-      if (R >= 7) {
-        worksheet[cell].s.fill = {
-          fgColor: { rgb: R % 2 ? "F4F1DE" : "FFFFFF" }
-        };
-      }
-    }
-  }
-}
-
-function printResults() {
-  logUserActivity('print_results');
-  
-  const resultContent = document.getElementById('results').innerHTML;
-  const originalTitle = document.title;
-  const printStyles = `
-    <style>
-      @media print {
-        body { 
-          font-family: 'Noto Sans TC', sans-serif;
-          color: #264653;
-          background: white;
-        }
-        .results-container {
-          background: white;
-          box-shadow: none;
-          padding: 10px;
-          margin: 0;
-        }
-        .result-card {
-          border: 1px solid #ddd;
-          page-break-inside: avoid;
-        }
-        .school-type-card {
-          page-break-inside: avoid;
-          border: 1px solid #ddd;
-          margin-bottom: 15px;
-        }
-        .school-item {
-          page-break-inside: avoid;
-        }
-        .no-print {
-          display: none !important;
-        }
-        @page {
-          size: A4;
-          margin: 1.5cm;
-        }
-        footer {
-          position: fixed;
-          bottom: 0;
-          width: 100%;
-          text-align: center;
-          font-size: 0.8rem;
-          color: #777;
-          padding: 10px 0;
-          border-top: 1px solid #ddd;
-        }
-        .watermark {
-          position: fixed;
-          top: 50%;
-          left: 50%;
-          transform: translate(-50%, -50%) rotate(-45deg);
-          font-size: 4rem;
-          color: rgba(0,0,0,0.05);
-          font-weight: bold;
-          z-index: -1;
-          pointer-events: none;
-        }
-      }
-    </style>`;
-  
-  const printWindow = window.open('', '_blank');
-  
-  if (!printWindow) {
-    alert('請允許開啟彈出視窗以啟用列印功能');
-    return;
-  }
-  
-  const now = new Date();
-  const formattedDate = now.toLocaleString('zh-TW');
-  
-  printWindow.document.write(`
-    <!DOCTYPE html>
-    <html>
-    <head>
-      <meta charset="UTF-8">
-      <title>會考落點分析結果</title>
-      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-      <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;700&display=swap" rel="stylesheet">
-      ${printStyles}
-    </head>
-    <body>
-      <div class="watermark">會考落點分析</div>
-      <h1 style="text-align: center; color: #2a9d8f;">會考落點分析結果</h1>
-      <div style="text-align: right; font-size: 0.9rem; color: #666; margin-bottom: 20px;">
-        產生時間: ${formattedDate}
-      </div>
-      ${resultContent}
-      <footer>
-        <p> 會考落點分析系統 | 此分析結果僅供參考</p>
-      </footer>
-      <script>
-        window.onload = function() {
-          window.print();
-          window.onfocus = function() { window.close(); }
-        }
-      </script>
-    </body>
-    </html>
-  `);
-  
-  printWindow.document.close();
 }
 
 initRating();

@@ -1685,7 +1685,7 @@ button:hover {
   border-radius: 15px;
   padding: 2rem;
   margin: 2rem 0;
-  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 8px 30px var(--shadow-color);
   transition: all 0.3s ease;
 }
 
@@ -2143,4 +2143,65 @@ button:disabled {
 .dark-mode .school-ownership {
   background-color: #444;
   color: #ccc;
+}
+
+/* Print-specific styles */
+@media print {
+  .container, .results-container {
+    margin: 0;
+    padding: 10px;
+    width: 100%;
+    max-width: none;
+    box-shadow: none;
+    border: none;
+  }
+  
+  body, .dark-mode {
+    background-color: white !important;
+    color: black !important;
+  }
+  
+  .header, .menu-icon, .dark-mode-toggle, .fullscreen-menu, .instruction-toggle, 
+  .disclaimer-toggle, #analysisForm, .copyright, #exportResults, 
+  #darkModeToggle, #qr-reader, #ratingSection {
+    display: none !important;
+  }
+  
+  .result-card {
+    break-inside: avoid;
+    page-break-inside: avoid;
+    color: black !important;
+    background: white !important;
+    box-shadow: none !important;
+    border: 1px solid #ddd !important;
+  }
+  
+  .results-header h2, .schools-analysis h3, 
+  .analysis-notes h3, .results-container h3 {
+    color: #333 !important;
+  }
+  
+  .school-item {
+    break-inside: avoid;
+    page-break-inside: avoid;
+  }
+  
+  .score-value {
+    color: black !important;
+    background-color: #f0f0f0 !important;
+  }
+  
+  /* Print footer with page numbers */
+  @page {
+    margin: 1cm;
+    @bottom-center {
+      content: "第 " counter(page) " 頁，共 " counter(pages) " 頁";
+    }
+  }
+  
+  /* Printed watermark */
+  .data-update-time::after {
+    content: " - TYCTW桃聯區會考落點分析系統，僅供參考";
+    font-style: italic;
+  }
 }

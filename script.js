@@ -320,6 +320,340 @@ async function analyzeScores() {
 
 document.getElementById('exportResults').onclick = showExportOptions;
 
+function printResults() {
+  logUserActivity('print_results');
+  
+  // Create a print-friendly version
+  const resultsElement = document.getElementById('results');
+  const printWindow = window.open('', '_blank');
+  
+  // Get current date and time
+  const now = new Date();
+  const dateTime = now.toLocaleString('zh-TW', { 
+    year: 'numeric', 
+    month: '2-digit', 
+    day: '2-digit', 
+    hour: '2-digit', 
+    minute: '2-digit', 
+    second: '2-digit',
+    hour12: false 
+  });
+  
+  // Create print content with styling
+  printWindow.document.write(`
+    <!DOCTYPE html>
+    <html>
+    <head>
+      <meta charset="UTF-8">
+      <title>桃聯區會考落點分析結果</title>
+      <style>
+        body {
+          font-family: 'Noto Sans TC', Arial, sans-serif;
+          line-height: 1.6;
+          color: #333;
+          padding: 20px;
+          max-width: 800px;
+          margin: 0 auto;
+          position: relative;
+        }
+        .header {
+          text-align: center;
+          margin-bottom: 30px;
+          padding-bottom: 10px;
+          border-bottom: 2px solid #3498db;
+        }
+        .watermark {
+          text-align: center;
+          border: 2px solid #3498db;
+          padding: 15px;
+          margin-bottom: 30px;
+          background-color: #f8f9fa;
+        }
+        /* Floating watermark */
+        .floating-watermark {
+          position: fixed;
+          top: 50%;
+          left: 50%;
+          transform: translate(-50%, -50%) rotate(-45deg);
+          font-size: 60px;
+          color: rgba(52, 152, 219, 0.1);
+          white-space: nowrap;
+          pointer-events: none;
+          z-index: 1000;
+          font-weight: bold;
+          text-transform: uppercase;
+        }
+        h1, h2, h3 {
+          color: #3498db;
+        }
+        .result-card {
+          border: 1px solid #ddd;
+          padding: 15px;
+          margin-bottom: 15px;
+          border-radius: 5px;
+        }
+        .school-item {
+          margin: 10px 0;
+          padding-left: 20px;
+        }
+        .footer {
+          text-align: center;
+          font-size: 12px;
+          margin-top: 50px;
+          padding-top: 10px;
+          border-top: 1px solid #ddd;
+        }
+        @media print {
+          body {
+            padding: 0;
+          }
+          .no-print {
+            display: none;
+          }
+          .floating-watermark {
+            display: block !important;
+            color: rgba(52, 152, 219, 0.1);
+          }
+        }
+      </style>
+    </head>
+    <body>
+      <div class="floating-watermark">TYCTW 桃聯區會考落點分析系統</div>
+      <div class="header">
+        <h1>桃聯區會考落點分析結果</h1>
+      </div>
+      <div class="watermark">
+        <p><strong>TYCTW 桃聯區會考落點分析系統</strong></p>
+        <p>以下資料僅供參考</p>
+        <p>產生時間: ${dateTime}</p>
+      </div>
+      <div class="content">
+        ${resultsElement.innerHTML}
+      </div>
+      <div class="footer">
+        <p> ${new Date().getFullYear()} TYCTW桃聯區會考落點分析系統. All rights reserved.</p>
+        <p>本分析結果僅供參考，不代表實際錄取結果。</p>
+      </div>
+      <div class="no-print">
+        <button onclick="window.print();return false;" style="padding: 10px 20px; background: #3498db; color: white; border: none; border-radius: 5px; cursor: pointer; margin: 20px 0;">列印此頁</button>
+        <button onclick="window.close();" style="padding: 10px 20px; background: #e74c3c; color: white; border: none; border-radius: 5px; cursor: pointer; margin: 20px 0;">關閉</button>
+      </div>
+    </body>
+    </html>
+  `);
+  
+  printWindow.document.close();
+  
+  setTimeout(() => {
+    printWindow.focus();
+  }, 300);
+}
+
+function showExportOptions() {
+  const exportMenu = document.createElement('div');
+  exportMenu.className = 'export-menu';
+  exportMenu.innerHTML = `
+    <div class="export-menu-content">
+      <h3><i class="fas fa-file-export"></i> 選擇匯出格式</h3>
+      <button onclick="exportResults('txt')">
+        <i class="fas fa-file-alt"></i> 文字檔 (.txt)
+      </button>
+      <button onclick="exportResults('pdf')">
+        <i class="fas fa-file-pdf"></i> PDF檔 (.pdf)
+      </button>
+      <button onclick="exportResults('csv')">
+        <i class="fas fa-file-csv"></i> CSV檔 (.csv)
+      </button>
+      <button onclick="exportResults('json')">
+        <i class="fas fa-file-code"></i> JSON檔 (.json)
+      </button>
+      <button onclick="printResults()">
+        <i class="fas fa-print"></i> 列印結果
+      </button>
+      <button onclick="closeExportMenu()" class="cancel-button">
+        <i class="fas fa-times"></i> 取消
+      </button>
+    </div>
+  `;
+  document.body.appendChild(exportMenu);
+  
+  requestAnimationFrame(() => {
+    exportMenu.classList.add('show');
+  });
+}
+
+function closeExportMenu() {
+  const exportMenu = document.querySelector('.export-menu');
+  if (exportMenu) {
+    exportMenu.classList.remove('show');
+    setTimeout(() => exportMenu.remove(), 300);
+  }
+}
+
+async function exportResults(format = 'txt') {
+  logUserActivity('export_results', { format });
+  const resultsElement = document.getElementById('results');
+  const resultsText = resultsElement.innerText;
+  
+  const now = new Date();
+  const dateTime = now.toLocaleString('zh-TW', {
+    year: 'numeric',
+    month: '2-digit',
+    day: '2-digit',
+    hour: '2-digit',
+    minute: '2-digit',
+    second: '2-digit',
+    hour12: false
+  });
+  
+  const watermark =
+    "********************************\n" +
+    "*                              *\n" +
+    "*  TYCTW 桃聯區會考落點分析系統  *\n" +
+    "*       以下資料僅供參考      *\n" +
+    "*                              *\n" +
+    `*   產生時間: ${dateTime}   *\n` +
+    "*                              *\n" +
+    "********************************\n\n";
+  
+  const contentWithWatermark = watermark + resultsText;
+  
+  switch (format) {
+    case 'txt':
+      exportTxt(contentWithWatermark);
+      break;
+    case 'pdf':
+      await exportPdf(contentWithWatermark);
+      break;
+    case 'csv':
+      exportCsv(resultsText);
+      break;
+    case 'json':
+      exportJson(resultsText);
+      break;
+  }
+}
+
+function exportTxt(content) {
+  const blob = new Blob([content], { type: 'text/plain;charset=utf-8' });
+  downloadFile(blob, '桃聯區會考落點分析結果.txt');
+}
+
+async function exportPdf(content) {
+  if (!window.jsPDF) {
+    await loadScript('https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js');
+  }
+  
+  const { jsPDF } = window.jspdf;
+  const doc = new jsPDF();
+  
+  doc.setFont('helvetica');
+  doc.setFontSize(12);
+  
+  // Add watermark
+  doc.setFont('helvetica', 'bold');
+  doc.setFontSize(30);
+  doc.setTextColor(220, 220, 220);
+  doc.saveGraphicsState();
+  doc.rotate(-45, 105, 150);
+  doc.text('TYCTW', 70, 150);
+  doc.restoreGraphicsState();
+  
+  // Reset text properties for content
+  doc.setFontSize(12);
+  doc.setTextColor(0, 0, 0);
+  doc.setFont('helvetica', 'normal');
+  
+  const splitText = doc.splitTextToSize(content, 180);
+  let y = 20;
+  
+  splitText.forEach(line => {
+    if (y > 280) {
+      doc.addPage();
+      // Add watermark to new page
+      doc.setFont('helvetica', 'bold');
+      doc.setFontSize(30);
+      doc.setTextColor(220, 220, 220);
+      doc.saveGraphicsState();
+      doc.rotate(-45, 105, 150);
+      doc.text('TYCTW', 70, 150);
+      doc.restoreGraphicsState();
+      
+      // Reset for content
+      doc.setFontSize(12);
+      doc.setTextColor(0, 0, 0);
+      doc.setFont('helvetica', 'normal');
+      y = 20;
+    }
+    doc.text(line, 15, y);
+    y += 7;
+  });
+  
+  doc.save('桃聯區會考落點分析結果.pdf');
+}
+
+function exportCsv(content) {
+  const lines = content.split('\n');
+  let csvContent = '';
+  
+  // Add watermark lines at the beginning
+  csvContent += '"TYCTW 桃聯區會考落點分析系統 - 僅供參考"\n';
+  csvContent += `"產生時間: ${new Date().toLocaleString('zh-TW')}"\n\n`;
+  
+  lines.forEach(line => {
+    const cleanLine = line.replace(/[*]/g, '').trim();
+    if (cleanLine) {
+      csvContent += `"${cleanLine}"\n`;
+    }
+  });
+  
+  const blob = new Blob(['\uFEFF' + csvContent], { type: 'text/csv;charset=utf-8' });
+  downloadFile(blob, '桃聯區會考落點分析結果.csv');
+}
+
+function exportJson(content) {
+  const lines = content.split('\n');
+  const jsonData = {
+    title: 'TYCTW 桃聯區會考落點分析結果',
+    watermark: 'TYCTW 桃聯區會考落點分析系統 - 僅供參考',
+    generateTime: new Date().toISOString(),
+    content: lines.filter(line => line.trim()),
+    scores: {
+      chinese: document.getElementById('chinese').value,
+      english: document.getElementById('english').value,
+      math: document.getElementById('math').value,
+      science: document.getElementById('science').value,
+      social: document.getElementById('social').value,
+      composition: document.getElementById('composition').value
+    }
+  };
+  
+  const blob = new Blob([JSON.stringify(jsonData, null, 2)], { type: 'application/json;charset=utf-8' });
+  downloadFile(blob, '桃聯區會考落點分析結果.json');
+}
+
+function downloadFile(blob, filename) {
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.style.display = 'none';
+  a.href = url;
+  a.download = filename;
+  document.body.appendChild(a);
+  a.click();
+  URL.revokeObjectURL(url);
+  a.remove();
+}
+
+async function loadScript(url) {
+  return new Promise((resolve, reject) => {
+    const script = document.createElement('script');
+    script.src = url;
+    script.onload = resolve;
+    script.onerror = reject;
+    document.head.appendChild(script);
+  });
+}
+
 window.onload = function() {
   showDisclaimer();
 };
@@ -704,176 +1038,6 @@ function getScoreClass(score) {
     'C': 'score-needs-improvement'
   };
   return scoreClasses[score] || '';
-}
-
-function showExportOptions() {
-  const exportMenu = document.createElement('div');
-  exportMenu.className = 'export-menu';
-  exportMenu.innerHTML = `
-    <div class="export-menu-content">
-      <h3><i class="fas fa-file-export"></i> 選擇匯出格式</h3>
-      <button onclick="exportResults('txt')">
-        <i class="fas fa-file-alt"></i> 文字檔 (.txt)
-      </button>
-      <button onclick="exportResults('pdf')">
-        <i class="fas fa-file-pdf"></i> PDF檔 (.pdf)
-      </button>
-      <button onclick="exportResults('csv')">
-        <i class="fas fa-file-csv"></i> CSV檔 (.csv)
-      </button>
-      <button onclick="exportResults('json')">
-        <i class="fas fa-file-code"></i> JSON檔 (.json)
-      </button>
-      <button onclick="closeExportMenu()" class="cancel-button">
-        <i class="fas fa-times"></i> 取消
-      </button>
-    </div>
-  `;
-  document.body.appendChild(exportMenu);
-  
-  requestAnimationFrame(() => {
-    exportMenu.classList.add('show');
-  });
-}
-
-function closeExportMenu() {
-  const exportMenu = document.querySelector('.export-menu');
-  if (exportMenu) {
-    exportMenu.classList.remove('show');
-    setTimeout(() => exportMenu.remove(), 300);
-  }
-}
-
-async function exportResults(format = 'txt') {
-  logUserActivity('export_results', { format });
-  const resultsElement = document.getElementById('results');
-  const resultsText = resultsElement.innerText;
-  
-  const now = new Date();
-  const dateTime = now.toLocaleString('zh-TW', {
-    year: 'numeric',
-    month: '2-digit',
-    day: '2-digit',
-    hour: '2-digit',
-    minute: '2-digit',
-    second: '2-digit',
-    hour12: false
-  });
-  
-  const watermark =
-    "********************************\n" +
-    "*                              *\n" +
-    "*  TYCTW 桃聯區會考落點分析系統  *\n" +
-    "*       以下資料僅供參考      *\n" +
-    "*                              *\n" +
-    `*   產生時間: ${dateTime}   *\n` +
-    "*                              *\n" +
-    "********************************\n\n";
-  
-  const contentWithWatermark = watermark + resultsText;
-  
-  switch (format) {
-    case 'txt':
-      exportTxt(contentWithWatermark);
-      break;
-    case 'pdf':
-      await exportPdf(contentWithWatermark);
-      break;
-    case 'csv':
-      exportCsv(resultsText);
-      break;
-    case 'json':
-      exportJson(resultsText);
-      break;
-  }
-}
-
-function exportTxt(content) {
-  const blob = new Blob([content], { type: 'text/plain;charset=utf-8' });
-  downloadFile(blob, '桃聯區會考落點分析結果.txt');
-}
-
-async function exportPdf(content) {
-  if (!window.jsPDF) {
-    await loadScript('https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js');
-  }
-  
-  const { jsPDF } = window.jspdf;
-  const doc = new jsPDF();
-  
-  doc.setFont('helvetica');
-  doc.setFontSize(12);
-  
-  const splitText = doc.splitTextToSize(content, 180);
-  let y = 20;
-  
-  splitText.forEach(line => {
-    if (y > 280) {
-      doc.addPage();
-      y = 20;
-    }
-    doc.text(line, 15, y);
-    y += 7;
-  });
-  
-  doc.save('桃聯區會考落點分析結果.pdf');
-}
-
-function exportCsv(content) {
-  const lines = content.split('\n');
-  let csvContent = '';
-  
-  lines.forEach(line => {
-    const cleanLine = line.replace(/[*]/g, '').trim();
-    if (cleanLine) {
-      csvContent += `"${cleanLine}"\n`;
-    }
-  });
-  
-  const blob = new Blob(['\uFEFF' + csvContent], { type: 'text/csv;charset=utf-8' });
-  downloadFile(blob, '桃聯區會考落點分析結果.csv');
-}
-
-function exportJson(content) {
-  const lines = content.split('\n');
-  const jsonData = {
-    title: 'TYCTW 桃聯區會考落點分析結果',
-    generateTime: new Date().toISOString(),
-    content: lines.filter(line => line.trim()),
-    scores: {
-      chinese: document.getElementById('chinese').value,
-      english: document.getElementById('english').value,
-      math: document.getElementById('math').value,
-      science: document.getElementById('science').value,
-      social: document.getElementById('social').value,
-      composition: document.getElementById('composition').value
-    }
-  };
-  
-  const blob = new Blob([JSON.stringify(jsonData, null, 2)], { type: 'application/json;charset=utf-8' });
-  downloadFile(blob, '桃聯區會考落點分析結果.json');
-}
-
-function downloadFile(blob, filename) {
-  const url = URL.createObjectURL(blob);
-  const a = document.createElement('a');
-  a.style.display = 'none';
-  a.href = url;
-  a.download = filename;
-  document.body.appendChild(a);
-  a.click();
-  URL.revokeObjectURL(url);
-  a.remove();
-}
-
-async function loadScript(url) {
-  return new Promise((resolve, reject) => {
-    const script = document.createElement('script');
-    script.src = url;
-    script.onload = resolve;
-    script.onerror = reject;
-    document.head.appendChild(script);
-  });
 }
 
 initRating();

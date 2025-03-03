@@ -426,6 +426,7 @@ function printResults() {
         <p><strong>TYCTW 桃聯區會考落點分析系統</strong></p>
         <p>以下資料僅供參考</p>
         <p>產生時間: ${dateTime}</p>
+        <p>更多資訊請訪問: <a href="https://rcpett.vercel.app/" target="_blank">https://rcpett.vercel.app/</a></p>
       </div>
       <div class="content">
         ${resultsElement.innerHTML}
@@ -433,6 +434,7 @@ function printResults() {
       <div class="footer">
         <p> ${new Date().getFullYear()} TYCTW桃聯區會考落點分析系統. All rights reserved.</p>
         <p>本分析結果僅供參考，不代表實際錄取結果。</p>
+        <p>更多資訊: <a href="https://rcpett.vercel.app/" target="_blank">https://rcpett.vercel.app/</a></p>
       </div>
       <div class="no-print">
         <button onclick="window.print();return false;" style="padding: 10px 20px; background: #3498db; color: white; border: none; border-radius: 5px; cursor: pointer; margin: 20px 0;">列印此頁</button>
@@ -514,6 +516,8 @@ async function exportResults(format = 'txt') {
     "*                              *\n" +
     `*   產生時間: ${dateTime}   *\n` +
     "*                              *\n" +
+    "* https://rcpett.vercel.app/  *\n" +
+    "*                              *\n" +
     "********************************\n\n";
   
   const contentWithWatermark = watermark + resultsText;
@@ -535,7 +539,8 @@ async function exportResults(format = 'txt') {
 }
 
 function exportTxt(content) {
-  const blob = new Blob([content], { type: 'text/plain;charset=utf-8' });
+  const websiteInfo = "更多資訊請訪問: https://rcpett.vercel.app/\n\n";
+  const blob = new Blob([content + "\n\n" + websiteInfo], { type: 'text/plain;charset=utf-8' });
   downloadFile(blob, '桃聯區會考落點分析結果.txt');
 }
 
@@ -564,7 +569,8 @@ async function exportPdf(content) {
   doc.setTextColor(0, 0, 0);
   doc.setFont('helvetica', 'normal');
   
-  const splitText = doc.splitTextToSize(content, 180);
+  const websiteInfo = "更多資訊請訪問: https://rcpett.vercel.app/";
+  const splitText = doc.splitTextToSize(content + "\n\n" + websiteInfo, 180);
   let y = 20;
   
   splitText.forEach(line => {
@@ -598,7 +604,8 @@ function exportCsv(content) {
   
   // Add watermark lines at the beginning
   csvContent += '"TYCTW 桃聯區會考落點分析系統 - 僅供參考"\n';
-  csvContent += `"產生時間: ${new Date().toLocaleString('zh-TW')}"\n\n`;
+  csvContent += `"產生時間: ${new Date().toLocaleString('zh-TW')}"\n`;
+  csvContent += '"更多資訊請訪問: https://rcpett.vercel.app/"\n\n';
   
   lines.forEach(line => {
     const cleanLine = line.replace(/[*]/g, '').trim();
@@ -617,6 +624,7 @@ function exportJson(content) {
     title: 'TYCTW 桃聯區會考落點分析結果',
     watermark: 'TYCTW 桃聯區會考落點分析系統 - 僅供參考',
     generateTime: new Date().toISOString(),
+    websiteUrl: 'https://rcpett.vercel.app/',
     content: lines.filter(line => line.trim()),
     scores: {
       chinese: document.getElementById('chinese').value,

@@ -76,101 +76,7 @@
       <button class="disclaimer-toggle" onclick="showDisclaimer()">
         <i class="fas fa-exclamation-triangle icon"></i>免責聲明
       </button>
-      <div id="instructions" style="display: none;">
-        <h2>
-          <i class="fas fa-book icon"></i>使用說明
-        </h2>
-        
-        <div class="instruction-item">
-          <h3>
-            <i class="fas fa-key icon"></i>獲取並輸入邀請碼
-          </h3>
-          <div class="highlight">
-            <i class="fas fa-info-circle"></i> 邀請碼每小時更新一次，請確保使用最新的邀請碼。
-          </div>
-          <p>您可以通過以下方式獲取邀請碼：</p>
-          <ul>
-            <li>填寫我們的序位回報表單</li>
-            <li>掃描 QR 碼</li>
-            <li>上傳 QR 碼圖片</li>
-          </ul>
-          <p>將獲得的邀請碼輸入到"邀請碼"欄位中即可開始使用。</p>
-        </div>
-
-        <div class="instruction-item">
-          <h3>
-            <i class="fas fa-filter icon"></i>選擇學校屬性和類型
-          </h3>
-          <p>根據您的需求，選擇以下篩選條件：</p>
-          <ul>
-            <li>學校屬性：全部、公立或私立</li>
-            <li>學校類型：全部、普通科或職業類科</li>
-            <li>職業群別：選擇特定職業群或全部（僅限職業類科）</li>
-          </ul>
-        </div>
-
-        <div class="instruction-item">
-          <h3>
-            <i class="fas fa-pencil-alt icon"></i>輸入會考成績
-          </h3>
-          <div class="highlight">
-            <i class="fas fa-exclamation-circle"></i> 請確保填寫所有科目的成績，否則無法進行分析。
-          </div>
-          <p>依序選擇各科目的會考等級：</p>
-          <ul>
-            <li>國文：A++ 到 C</li>
-            <li>英文：A++ 到 C</li>
-            <li>數學：A++ 到 C</li>
-            <li>自然：A++ 到 C</li>
-            <li>社會：A++ 到 C</li>
-            <li>作文：0 到 6 級分</li>
-          </ul>
-        </div>
-
-        <div class="instruction-item">
-          <h3>
-            <i class="fas fa-chart-line icon"></i>分析落點結果
-          </h3>
-          <p>系統會根據您的輸入進行分析並顯示：</p>
-          <ul>
-            <li>總積分計算結果</li>
-            <li>總積點計算結果</li>
-            <li>符合條件的學校列表</li>
-            <li>各類型學校的數量統計</li>
-          </ul>
-        </div>
-
-        <div class="instruction-item">
-          <h3>
-            <i class="fas fa-file-export icon"></i>匯出分析結果
-          </h3>
-          <p>您可以將分析結果匯出為文字檔案，包含：</p>
-          <ul>
-            <li>完整的分析結果</li>
-            <li>時間戳記</li>
-            <li>可能estival錄取學校清單</li>
-          </ul>
-          <div class="highlight">
-            <i class="fas fa-lightbulb"></i> 建議將結果匯出保存，方便日後參考比較。
-          </div>
-        </div>
-
-        <div class="instruction-item">
-          <h3>
-            <i class="fas fa-redo icon"></i>重新分析
-          </h3>
-          <p>您可以隨時：</p>
-          <ul>
-            <li>修改篩選條件</li>
-            <li>更新 nonatomic 資料</li>
-            <li>重新進行分析</li>
-          </ul>
-          <div class="highlight">
-            <i class="fas fa-sync"></i> 系統會即時更新分析結果，讓您掌握不同選擇的可能性。
-          </div>
-        </div>
-      </div>
-
+      
       <form id="analysisForm">
         <div class="form-group">
           <label for="invitationCode">
@@ -382,7 +288,7 @@
           <i class="fas fa-link icon"></i> 填寫表單獲取邀請碼
         </a>
         <p>
-          <i class="fas fa-info-circle icon"></i> 親愛的使用者，我們誠摯地提醒您：本網站提供的落點分析結果僅供參考，不代表實際錄取結果。實際錄取情況可能會因多種因素而有所不同，包括但不限於：
+          <i class="fas fa-info-circle icon"></i> 親愛的使用者，我們誠摯地提醒您：本網站提供的落點分析結果僅供參考，不代表實際錄取結果。實際錄取 tình況可能會因多種因素而有所不同，包括但不限於：
         </p>
         <ul>
           <li>
@@ -418,6 +324,131 @@
         <button class="confirm-button" onclick="closeDisclaimer()">
           <i class="fas fa-check-circle icon"></i> 我已了解並同意
         </button>
+      </div>
+    </div>
+
+    <!-- Instructions Modal -->
+    <div id="instructionsModal" class="modal">
+      <div class="modal-content">
+        <span class="close" onclick="closeInstructions()">&times;</span>
+        <h2><i class="fas fa-book icon"></i>使用說明</h2>
+        
+        <div class="instruction-item">
+          <h3><i class="fas fa-key icon"></i>獲取並輸入邀請碼</h3>
+          <div class="highlight">
+            <i class="fas fa-info-circle"></i> 邀請碼每小時更新一次，請確保使用最新的邀請碼。
+          </div>
+          <p>您可以通過以下方式獲取邀請碼：</p>
+          <ul>
+            <li>點擊網頁上方的"<strong>填寫表單獲取邀請碼</strong>"按鈕</li>
+            <li>聯絡您的學校老師或輔導人員</li>
+            <li>掃描 QR 碼（如果您收到了含有邀請碼的QR碼）</li>
+            <li>上傳包含邀請碼的 QR 碼圖片</li>
+          </ul>
+          <p>將獲得的邀請碼輸入到"邀請碼"欄位中，系統會自動驗證邀請碼的有效性。</p>
+        </div>
+
+        <div class="instruction-item">
+          <h3><i class="fas fa-filter icon"></i>選擇學校屬性和類型</h3>
+          <p>根據您的需求，選擇以下篩選條件：</p>
+          <ul>
+            <li><strong>學校屬性</strong>：全部、公立或私立</li>
+            <li><strong>學校類型</strong>：全部、普通科或職業類科</li>
+            <li><strong>職業群別</strong>：若選擇職業類科，可再細分選擇特定職業群別</li>
+            <li><strong>分析身份</strong>：學生、老師或家長（用於系統改進統計）</li>
+          </ul>
+          <div class="highlight">
+            <i class="fas fa-lightbulb"></i> 提示：若想查看更多選項，建議先選擇"全部"，再根據結果進行篩選。
+          </div>
+        </div>
+
+        <div class="instruction-item">
+          <h3><i class="fas fa-pencil-alt icon"></i>輸入會考成績</h3>
+          <div class="highlight">
+            <i class="fas fa-exclamation-circle"></i> 請確保填寫所有科目的成績，否則無法進行分析。
+          </div>
+          <p>依序選擇各科目的會考等級：</p>
+          <ul>
+            <li><strong>國文、英文、數學、自然、社會</strong>：從 A++（最高）到 C（最低）</li>
+            <li><strong>作文</strong>：從 0 到 6 級分</li>
+          </ul>
+          <p>成績等級與積分對照：</p>
+          <ul>
+            <li>A++ = 7分</li>
+            <li>A+ = 6分</li>
+            <li>A = 5分</li>
+            <li>B++ = 4分</li>
+            <li>B+ = 3分</li>
+            <li>B = 2分</li>
+            <li>C = 1分</li>
+          </ul>
+        </div>
+
+        <div class="instruction-item">
+          <h3><i class="fas fa-search icon"></i>點擊分析落點</h3>
+          <p>填寫完所有資料後，點擊"<strong>分析落點</strong>"按鈕，系統將：</p>
+          <ul>
+            <li>驗證您的邀請碼</li>
+            <li>計算您的總積分與總積點</li>
+            <li>分析您可能符合條件的學校</li>
+            <li>生成完整的分析報告</li>
+          </ul>
+          <div class="highlight">
+            <i class="fas fa-spinner"></i> 分析過程可能需要幾秒鐘，請耐心等待。
+          </div>
+        </div>
+
+        <div class="instruction-item">
+          <h3><i class="fas fa-chart-line icon"></i>解讀分析結果</h3>
+          <p>系統會根據您的成績顯示：</p>
+          <ul>
+            <li><strong>總積分</strong>：所有科目成績換算後的總分</li>
+            <li><strong>總積點</strong>：包含作文在內的加權總分</li>
+            <li><strong>符合條件學校數</strong>：根據您的成績可能達到的學校數量</li>
+            <li><strong>成績分析</strong>：展示各科等級</li>
+            <li><strong>學校分析</strong>：按學校類型分類顯示符合條件的學校</li>
+          </ul>
+          <p>每所學校會顯示：</p>
+          <ul>
+            <li>學校名稱及公私立屬性</li>
+            <li>去年最低錄取分數（如有資料）</li>
+          </ul>
+        </div>
+
+        <div class="instruction-item">
+          <h3><i class="fas fa-file-export icon"></i>匯出分析結果</h3>
+          <p>您可以將分析結果匯出為多種格式：</p>
+          <ul>
+            <li><strong>文字檔 (.txt)</strong>：簡單文字格式</li>
+            <li><strong>PDF檔 (.pdf)</strong>：適合打印的格式</li>
+            <li><strong>CSV檔 (.csv)</strong>：可匯入試算表的格式</li>
+            <li><strong>JSON檔 (.json)</strong>：程式化格式</li>
+            <li><strong>列印結果</strong>：直接列印分析報告</li>
+          </ul>
+          <div class="highlight">
+            <i class="fas fa-lightbulb"></i> 建議將結果匯出保存，方便與家人老師討論或日後參考比較。
+          </div>
+        </div>
+
+        <div class="instruction-item">
+          <h3><i class="fas fa-star icon"></i>評分功能</h3>
+          <p>使用完系統後，您可以：</p>
+          <ul>
+            <li>在頁面底部的評分區域給予1-5星的評價</li>
+            <li>點擊"提交評分"按鈕提交您的意見</li>
+          </ul>
+          <p>您的評分和反饋將幫助我們不斷改進系統，提供更好的服務。</p>
+        </div>
+
+        <div class="instruction-item">
+          <h3><i class="fas fa-question-circle icon"></i>常見問題</h3>
+          <ul>
+            <li><strong>Q: 邀請碼無效怎麼辦？</strong><br>A: 請確保使用最新邀請碼，或重新填寫表單獲取。</li>
+            <li><strong>Q: 為什麼沒有顯示任何學校？</strong><br>A: 可能是篩選條件過於嚴格，嘗試放寬條件或檢查成績輸入是否正確。</li>
+            <li><strong>Q: 結果與實際錄取有差異嗎？</strong><br>A: 是的，本系統僅提供參考，實際錄取結果受多種因素影響。</li>
+            <li><strong>Q: 如何獲取更多協助？</strong><br>A: 可點擊頂部菜單的"系統異常回報"或諮詢您的學校老師。</li>
+          </ul>
+        </div>
       </div>
     </div>
 

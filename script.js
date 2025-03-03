@@ -30,17 +30,25 @@ function toggleVocationalGroup() {
 }
 
 function toggleInstructions() {
-  var instructions = document.getElementById('instructions');
-  if (instructions.style.display === 'none' || instructions.style.display === '') {
-    instructions.style.display = 'block';
-    instructions.style.animation = 'fadeIn 0.5s ease-out';
-  } else {
-    instructions.style.animation = 'fadeOut 0.5s ease-out';
-    setTimeout(() => {
-      instructions.style.display = 'none';
-    }, 500);
-  }
+  var instructionsModal = document.getElementById('instructionsModal');
+  instructionsModal.style.display = 'block';
+  
+  // Log this action
+  logUserActivity('view_instructions');
 }
+
+function closeInstructions() {
+  var instructionsModal = document.getElementById('instructionsModal');
+  instructionsModal.style.display = 'none';
+}
+
+// Close instructions modal when clicking outside of it
+window.addEventListener('click', function(event) {
+  var instructionsModal = document.getElementById('instructionsModal');
+  if (event.target == instructionsModal) {
+    closeInstructions();
+  }
+});
 
 function showDisclaimer() {
   var modal = document.getElementById('disclaimerModal');

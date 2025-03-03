@@ -1826,10 +1826,227 @@ button:hover {
   }
 }
 
-/* 新增 Disabled 按鈕樣式 */
-button:disabled {
-  opacity: 0.6;
-  cursor: not-allowed;
+/* Enhanced instruction modal styles */
+#instructionsModal .modal-content {
+  background-color: var(--card-background);
+  margin: 5% auto;
+  padding: 40px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  width: 90%;
+  max-width: 800px;
+  border-radius: 20px;
+  box-shadow: 0 15px 35px var(--shadow-color);
+  max-height: 85vh;
+  overflow-y: auto;
+  animation: scaleIn 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94) both;
+}
+
+#instructionsModal h2 {
+  text-align: center;
+  margin-bottom: 30px;
+  color: var(--primary-color);
+  border-bottom: 3px solid var(--accent-color);
+  padding-bottom: 15px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  font-size: 28px;
+}
+
+#instructionsModal .close {
+  position: absolute;
+  right: 20px;
+  top: 20px;
+  color: var(--text-color);
+  font-size: 28px;
+  font-weight: bold;
+  cursor: pointer;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background: rgba(0, 0, 0, 0.05);
+  transition: all 0.3s ease;
+}
+
+#instructionsModal .close:hover {
+  background: rgba(0, 0, 0, 0.1);
+  transform: rotate(90deg);
+  color: var(--accent-color);
+}
+
+.instruction-item {
+  background: rgba(255, 255, 255, 0.8);
+  border-radius: 15px;
+  padding: 1.5rem;
+  margin-bottom: 1.5rem;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+  transition: all 0.3s ease;
+  border-left: 4px solid var(--primary-color);
+  animation: slideInRight 0.5s ease-out forwards;
+  opacity: 0;
+  transform: translateX(20px);
+}
+
+.instruction-item:nth-child(even) {
+  border-left: 4px solid var(--secondary-color);
+}
+
+.instruction-item:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+}
+
+.instruction-item h3 {
+  color: var(--primary-color);
+  font-size: 1.4rem;
+  margin-bottom: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+}
+
+.instruction-item h3 .icon {
+  font-size: 1.6rem;
+  color: var(--secondary-color);
+  background: rgba(46, 204, 113, 0.1);
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+}
+
+.instruction-item .highlight {
+  background: rgba(52, 152, 219, 0.1);
+  padding: 1rem 1.5rem;
+  border-radius: 10px;
+  margin: 1.2rem 0;
+  font-weight: 500;
+  color: var(--primary-color);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  border-left: 3px solid var(--primary-color);
+}
+
+.instruction-item p {
+  color: var(--text-color);
+  line-height: 1.8;
+  margin-bottom: 1.2rem;
+  font-size: 1.05rem;
+}
+
+.instruction-item ul {
+  list-style: none;
+  padding-left: 0.5rem;
+  margin: 1.2rem 0;
+}
+
+.instruction-item li {
+  position: relative;
+  padding-left: 2rem;
+  margin-bottom: 1rem;
+  line-height: 1.6;
+}
+
+.instruction-item li::before {
+  content: "\f00c";
+  font-family: "Font Awesome 5 Free";
+  font-weight: 900;
+  position: absolute;
+  left: 0;
+  color: var(--secondary-color);
+  font-size: 1.1rem;
+}
+
+/* Dark mode adjustments */
+.dark-mode .instruction-item {
+  background: rgba(0, 0, 0, 0.2);
+  border-left-color: var(--accent-color);
+}
+
+.dark-mode .instruction-item:nth-child(even) {
+  border-left-color: var(--secondary-color);
+}
+
+.dark-mode .instruction-item h3 {
+  color: #3498db;
+}
+
+.dark-mode .instruction-item h3 .icon {
+  background: rgba(52, 152, 219, 0.2);
+}
+
+.dark-mode .instruction-item .highlight {
+  background: rgba(52, 152, 219, 0.2);
+  color: #3498db;
+}
+
+.dark-mode .instruction-item li::before {
+  color: var(--accent-color);
+}
+
+@keyframes scaleIn {
+  0% {
+    transform: scale(0.9);
+    opacity: 0;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+.instruction-item:nth-child(1) { animation-delay: 0.1s; }
+.instruction-item:nth-child(2) { animation-delay: 0.2s; }
+.instruction-item:nth-child(3) { animation-delay: 0.3s; }
+.instruction-item:nth-child(4) { animation-delay: 0.4s; }
+.instruction-item:nth-child(5) { animation-delay: 0.5s; }
+.instruction-item:nth-child(6) { animation-delay: 0.6s; }
+
+/* Mobile responsiveness for instructions */
+@media (max-width: 768px) {
+  #instructionsModal .modal-content {
+    width: 95%;
+    margin: 5% auto;
+    padding: 25px;
+  }
+  
+  #instructionsModal h2 {
+    font-size: 22px;
+  }
+
+  .instruction-item {
+    padding: 1.2rem;
+  }
+
+  .instruction-item h3 {
+    font-size: 1.2rem;
+  }
+  
+  .instruction-item h3 .icon {
+    width: 32px;
+    height: 32px;
+    font-size: 1.3rem;
+  }
+
+  .instruction-item p {
+    font-size: 0.95rem;
+  }
+  
+  .instruction-item ul {
+    padding-left: 0;
+  }
+
+  .instruction-item li {
+    padding-left: 1.8rem;
+    margin-bottom: 0.8rem;
+  }
 }
 
 /* Enhanced Results Styles */
@@ -2203,5 +2420,84 @@ button:disabled {
   .data-update-time::after {
     content: " - TYCTW桃聯區會考落點分析系統，僅供參考";
     font-style: italic;
+  }
+}
+
+#instructionsModal {
+  display: none;
+  position: fixed;
+  z-index: 1000;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgba(0,0,0,0.4);
+}
+
+#instructionsModal .modal-content {
+  background-color: var(--card-background);
+  margin: 5% auto;
+  padding: 30px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  width: 90%;
+  max-width: 800px;
+  border-radius: 20px;
+  box-shadow: 0 15px 35px var(--shadow-color);
+  max-height: 85vh;
+  overflow-y: auto;
+  animation: scaleIn 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94) both;
+}
+
+#instructionsModal h2 {
+  text-align: center;
+  margin-bottom: 30px;
+  color: var(--primary-color);
+  border-bottom: 3px solid var(--accent-color);
+  padding-bottom: 15px;
+}
+
+#instructionsModal .close {
+  position: absolute;
+  right: 20px;
+  top: 20px;
+  color: var(--text-color);
+  font-size: 28px;
+  font-weight: bold;
+  cursor: pointer;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background: rgba(0, 0, 0, 0.05);
+  transition: all 0.3s ease;
+}
+
+#instructionsModal .close:hover {
+  background: rgba(0, 0, 0, 0.1);
+  transform: rotate(90deg);
+  color: var(--accent-color);
+}
+
+.dark-mode #instructionsModal .modal-content {
+  background-color: var(--card-background);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.dark-mode #instructionsModal .close {
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.dark-mode #instructionsModal .close:hover {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+@media (max-width: 768px) {
+  #instructionsModal .modal-content {
+    width: 95%;
+    margin: 5% auto;
+    padding: 25px;
   }
 }

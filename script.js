@@ -715,6 +715,72 @@ async function exportResults(format = 'txt') {
   }
 }
 
+async function exportPdf(content) {
+  try {
+    // Check if jsPDF is already loaded
+    if (!window.jspdf) {
+      await loadScript('https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js');
+    }
+    
+    // Create new jsPDF instance
+    const { jsPDF } = window.jspdf;
+    const doc = new jsPDF();
+    
+    // Add header
+    doc.setFont('helvetica', 'bold');
+    doc.setFontSize(22);
+    doc.setTextColor(52, 152, 219);
+    doc.text('桃聯區會考落點分析結果', 105, 20, { align: 'center' });
+    
+    // Reset text properties for content
+    doc.setFontSize(12);
+    doc.setTextColor(0, 0, 0);
+    doc.setFont('helvetica', 'normal');
+    
+    const websiteInfo = "更多資訊請訪問: https://rcpett.vercel.app/";
+    const splitText = doc.splitTextToSize(content, 170);
+    let y = 45;
+    
+    splitText.forEach(line => {
+      if (y > 270) {
+        doc.addPage();
+        // Add watermark to new page
+        doc.setFont('helvetica', 'bold');
+        doc.setFontSize(30);
+        doc.setTextColor(220, 220, 220);
+        doc.saveGraphicsState();
+        doc.rotate(-45, 105, 150);
+        doc.text('TYCTW', 70, 150);
+        doc.restoreGraphicsState();
+        
+        // Reset for content
+        doc.setFontSize(12);
+        doc.setTextColor(0, 0, 0);
+        doc.setFont('helvetica', 'normal');
+        y = 20;
+      }
+      doc.text(line, 20, y);
+      y += 7;
+    });
+    
+    // Add footer with page numbers
+    const pageCount = doc.getNumberOfPages();
+    for (let i = 1; i <= pageCount; i++) {
+      doc.setPage(i);
+      doc.setFontSize(10);
+      doc.setTextColor(100, 100, 100);
+      doc.text('第 ' + i + ' 頁，共 ' + pageCount + ' 頁', 105, 285, { align: 'center' });
+      doc.text(websiteInfo, 105, 290, { align: 'center' });
+      doc.text('© ' + new Date().getFullYear() + ' TYCTW桃聯區會考落點分析系統', 105, 295, { align: 'center' });
+    }
+    
+    doc.save('桃聯區會考落點分析結果.pdf');
+  } catch (error) {
+    console.error('PDF export error:', error);
+    alert('PDF匯出發生錯誤，請確認您的瀏覽器支援此功能或嘗試其他格式。');
+  }
+}
+
 function exportTxt(content) {
   const websiteInfo = "更多資訊請訪問: https://rcpett.vercel.app/\n\n";
   const formattedContent = 
@@ -728,83 +794,6 @@ function exportTxt(content) {
     "==========================================";
   const blob = new Blob([formattedContent], { type: 'text/plain;charset=utf-8' });
   downloadFile(blob, '桃聯區會考落點分析結果.txt');
-}
-
-async function exportPdf(content) {
-  if (!window.jsPDF) {
-    await loadScript('https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js');
-  }
-  
-  const { jsPDF } = window.jspdf;
-  const doc = new jsPDF();
-  
-  // Add header
-  doc.setFont('helvetica', 'bold');
-  doc.setFontSize(22);
-  doc.setTextColor(52, 152, 219);
-  doc.text('桃聯區會考落點分析結果', 105, 20, { align: 'center' });
-  
-  doc.setFontSize(12);
-  doc.setTextColor(0, 0, 0);
-  doc.text('產生時間: ' + new Date().toLocaleString('zh-TW'), 105, 30, { align: 'center' });
-  
-  // Add logo watermark
-  doc.setFont('helvetica', 'bold');
-  doc.setFontSize(30);
-  doc.setTextColor(220, 220, 220);
-  doc.saveGraphicsState();
-  doc.rotate(-45, 105, 150);
-  doc.text('TYCTW', 70, 150);
-  doc.restoreGraphicsState();
-  
-  // Draw header line
-  doc.setDrawColor(52, 152, 219);
-  doc.setLineWidth(0.5);
-  doc.line(20, 35, 190, 35);
-  
-  // Reset text properties for content
-  doc.setFontSize(12);
-  doc.setTextColor(0, 0, 0);
-  doc.setFont('helvetica', 'normal');
-  
-  const websiteInfo = "更多資訊請訪問: https://rcpett.vercel.app/";
-  const splitText = doc.splitTextToSize(content, 170);
-  let y = 45;
-  
-  splitText.forEach(line => {
-    if (y > 270) {
-      doc.addPage();
-      // Add watermark to new page
-      doc.setFont('helvetica', 'bold');
-      doc.setFontSize(30);
-      doc.setTextColor(220, 220, 220);
-      doc.saveGraphicsState();
-      doc.rotate(-45, 105, 150);
-      doc.text('TYCTW', 70, 150);
-      doc.restoreGraphicsState();
-      
-      // Reset for content
-      doc.setFontSize(12);
-      doc.setTextColor(0, 0, 0);
-      doc.setFont('helvetica', 'normal');
-      y = 20;
-    }
-    doc.text(line, 20, y);
-    y += 7;
-  });
-  
-  // Add footer with page numbers
-  const pageCount = doc.getNumberOfPages();
-  for (let i = 1; i <= pageCount; i++) {
-    doc.setPage(i);
-    doc.setFontSize(10);
-    doc.setTextColor(100, 100, 100);
-    doc.text('第 ' + i + ' 頁，共 ' + pageCount + ' 頁', 105, 285, { align: 'center' });
-    doc.text(websiteInfo, 105, 290, { align: 'center' });
-    doc.text('© ' + new Date().getFullYear() + ' TYCTW桃聯區會考落點分析系統', 105, 295, { align: 'center' });
-  }
-  
-  doc.save('桃聯區會考落點分析結果.pdf');
 }
 
 function exportCsv(content) {

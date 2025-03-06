@@ -354,7 +354,9 @@ function printResults() {
     <head>
       <meta charset="UTF-8">
       <title>桃聯區會考落點分析結果</title>
+      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
       <style>
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;700&display=swap');
         body {
           font-family: 'Noto Sans TC', Arial, sans-serif;
           line-height: 1.6;
@@ -369,6 +371,21 @@ function printResults() {
           margin-bottom: 30px;
           padding-bottom: 10px;
           border-bottom: 2px solid #3498db;
+          position: relative;
+        }
+        .header-logo {
+          position: absolute;
+          top: 0;
+          left: 0;
+          width: 60px;
+          height: 60px;
+          background-color: #3498db;
+          color: white;
+          border-radius: 50%;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          font-size: 24px;
         }
         .watermark {
           text-align: center;
@@ -376,6 +393,21 @@ function printResults() {
           padding: 15px;
           margin-bottom: 30px;
           background-color: #f8f9fa;
+          border-radius: 10px;
+          position: relative;
+          overflow: hidden;
+        }
+        .watermark::before {
+          content: '';
+          position: absolute;
+          top: 0;
+          left: 0;
+          right: 0;
+          bottom: 0;
+          background: linear-gradient(135deg, rgba(52, 152, 219, 0.1) 25%, transparent 25%, transparent 50%, rgba(52, 152, 219, 0.1) 50%, rgba(52, 152, 219, 0.1) 75%, transparent 75%);
+          background-size: 20px 20px;
+          opacity: 0.3;
+          z-index: -1;
         }
         /* Floating watermark */
         .floating-watermark {
@@ -394,11 +426,27 @@ function printResults() {
         h1, h2, h3 {
           color: #3498db;
         }
+        h1 {
+          font-size: 28px;
+          margin-bottom: 5px;
+        }
+        h2 {
+          font-size: 22px;
+          margin-top: 30px;
+          border-bottom: 1px solid #eee;
+          padding-bottom: 10px;
+        }
+        h3 {
+          font-size: 18px;
+          margin-top: 25px;
+        }
         .result-card {
           border: 1px solid #ddd;
           padding: 15px;
           margin-bottom: 15px;
           border-radius: 5px;
+          background-color: white;
+          box-shadow: 0 2px 4px rgba(0,0,0,0.05);
         }
         .school-item {
           margin: 10px 0;
@@ -407,16 +455,13 @@ function printResults() {
           background-color: #f8f9fa;
           border-radius: 5px;
           box-shadow: 0 2px 4px rgba(0,0,0,0.05);
-          transition: transform 0.2s;
-        }
-        .school-item:hover {
-          transform: translateX(5px);
+          page-break-inside: avoid;
         }
         .school-name {
           font-weight: bold;
           color: #2c3e50;
           font-size: 16px;
-          margin-bottom: 5px;
+          margin-bottom: 10px;
           display: flex;
           align-items: center;
         }
@@ -435,7 +480,8 @@ function printResults() {
         }
         .school-details {
           display: flex;
-          justify-content: space-between;
+          flex-wrap: wrap;
+          gap: 10px;
           margin-top: 8px;
           color: #7f8c8d;
           font-size: 14px;
@@ -443,6 +489,9 @@ function printResults() {
         .cutoff-score {
           display: flex;
           align-items: center;
+          background-color: #f5f5f5;
+          padding: 3px 8px;
+          border-radius: 3px;
         }
         .cutoff-score i {
           margin-right: 5px;
@@ -454,6 +503,7 @@ function printResults() {
           border: 1px solid #e0e0e0;
           border-radius: 8px;
           background-color: white;
+          page-break-inside: avoid;
         }
         .school-type-header {
           display: flex;
@@ -479,6 +529,40 @@ function printResults() {
           margin-top: 50px;
           padding-top: 10px;
           border-top: 1px solid #ddd;
+          color: #7f8c8d;
+        }
+        .scores-summary {
+          display: grid;
+          grid-template-columns: repeat(3, 1fr);
+          gap: 10px;
+          margin-bottom: 20px;
+        }
+        .score-item {
+          background: #f8f9fa;
+          padding: 10px;
+          border-radius: 5px;
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          border-left: 2px solid #3498db;
+        }
+        .score-value {
+          font-weight: bold;
+          padding: 3px 8px;
+          border-radius: 3px;
+        }
+        .score-excellent { background: #2ecc71; color: white; }
+        .score-great { background: #3498db; color: white; }
+        .score-good { background: #9b59b6; color: white; }
+        .score-above-average { background: #f1c40f; color: black; }
+        .score-average { background: #e67e22; color: white; }
+        .score-below-average { background: #e74c3c; color: white; }
+        .score-needs-improvement { background: #c0392b; color: white; }
+        .page-number {
+          text-align: center;
+          font-size: 12px;
+          color: #95a5a6;
+          margin-top: 20px;
         }
         @media print {
           body {
@@ -491,13 +575,15 @@ function printResults() {
             display: block !important;
             color: rgba(52, 152, 219, 0.1);
           }
-          .school-item {
+          .school-item, .school-type-card {
             break-inside: avoid;
             page-break-inside: avoid;
           }
-          .school-type-card {
-            break-inside: avoid;
-            page-break-inside: avoid;
+          @page {
+            margin: 1.5cm;
+          }
+          .page-number:before {
+            content: "第 " counter(page) " 頁";
           }
         }
       </style>
@@ -505,25 +591,31 @@ function printResults() {
     <body>
       <div class="floating-watermark">TYCTW 桃聯區會考落點分析系統</div>
       <div class="header">
+        <div class="header-logo"><i class="fas fa-chart-line"></i></div>
         <h1>桃聯區會考落點分析結果</h1>
+        <p>產生時間: ${dateTime}</p>
       </div>
       <div class="watermark">
         <p><strong>TYCTW 桃聯區會考落點分析系統</strong></p>
-        <p>以下資料僅供參考</p>
-        <p>產生時間: ${dateTime}</p>
+        <p>以下資料僅供參考，不代表實際錄取結果</p>
         <p>更多資訊請訪問: <a href="https://rcpett.vercel.app/" target="_blank">https://rcpett.vercel.app/</a></p>
       </div>
       <div class="content">
         ${resultsElement.innerHTML}
       </div>
       <div class="footer">
-        <p> ${new Date().getFullYear()} TYCTW桃聯區會考落點分析系統. All rights reserved.</p>
+        <p>© ${new Date().getFullYear()} TYCTW桃聯區會考落點分析系統. All rights reserved.</p>
         <p>本分析結果僅供參考，不代表實際錄取結果。</p>
         <p>更多資訊: <a href="https://rcpett.vercel.app/" target="_blank">https://rcpett.vercel.app/</a></p>
       </div>
+      <div class="page-number"></div>
       <div class="no-print">
-        <button onclick="window.print();return false;" style="padding: 10px 20px; background: #3498db; color: white; border: none; border-radius: 5px; cursor: pointer; margin: 20px 0;">列印此頁</button>
-        <button onclick="window.close();" style="padding: 10px 20px; background: #e74c3c; color: white; border: none; border-radius: 5px; cursor: pointer; margin: 20px 0;">關閉</button>
+        <button onclick="window.print();return false;" style="padding: 10px 20px; background: #3498db; color: white; border: none; border-radius: 5px; cursor: pointer; margin: 20px 0; display: block; width: 100%; font-size: 16px;">
+          <i class="fas fa-print" style="margin-right: 8px;"></i> 列印此頁
+        </button>
+        <button onclick="window.close();" style="padding: 10px 20px; background: #e74c3c; color: white; border: none; border-radius: 5px; cursor: pointer; margin: 20px 0; display: block; width: 100%; font-size: 16px;">
+          <i class="fas fa-times" style="margin-right: 8px;"></i> 關閉
+        </button>
       </div>
     </body>
     </html>
@@ -625,7 +717,16 @@ async function exportResults(format = 'txt') {
 
 function exportTxt(content) {
   const websiteInfo = "更多資訊請訪問: https://rcpett.vercel.app/\n\n";
-  const blob = new Blob([content + "\n\n" + websiteInfo], { type: 'text/plain;charset=utf-8' });
+  const formattedContent = 
+    "==========================================\n" +
+    "        桃聯區會考落點分析結果\n" +
+    "==========================================\n\n" +
+    content + 
+    "\n\n------------------------------------------\n" +
+    websiteInfo +
+    "© " + new Date().getFullYear() + " TYCTW桃聯區會考落點分析系統\n" +
+    "==========================================";
+  const blob = new Blob([formattedContent], { type: 'text/plain;charset=utf-8' });
   downloadFile(blob, '桃聯區會考落點分析結果.txt');
 }
 
@@ -637,10 +738,17 @@ async function exportPdf(content) {
   const { jsPDF } = window.jspdf;
   const doc = new jsPDF();
   
-  doc.setFont('helvetica');
-  doc.setFontSize(12);
+  // Add header
+  doc.setFont('helvetica', 'bold');
+  doc.setFontSize(22);
+  doc.setTextColor(52, 152, 219);
+  doc.text('桃聯區會考落點分析結果', 105, 20, { align: 'center' });
   
-  // Add watermark
+  doc.setFontSize(12);
+  doc.setTextColor(0, 0, 0);
+  doc.text('產生時間: ' + new Date().toLocaleString('zh-TW'), 105, 30, { align: 'center' });
+  
+  // Add logo watermark
   doc.setFont('helvetica', 'bold');
   doc.setFontSize(30);
   doc.setTextColor(220, 220, 220);
@@ -649,17 +757,22 @@ async function exportPdf(content) {
   doc.text('TYCTW', 70, 150);
   doc.restoreGraphicsState();
   
+  // Draw header line
+  doc.setDrawColor(52, 152, 219);
+  doc.setLineWidth(0.5);
+  doc.line(20, 35, 190, 35);
+  
   // Reset text properties for content
   doc.setFontSize(12);
   doc.setTextColor(0, 0, 0);
   doc.setFont('helvetica', 'normal');
   
   const websiteInfo = "更多資訊請訪問: https://rcpett.vercel.app/";
-  const splitText = doc.splitTextToSize(content + "\n\n" + websiteInfo, 180);
-  let y = 20;
+  const splitText = doc.splitTextToSize(content, 170);
+  let y = 45;
   
   splitText.forEach(line => {
-    if (y > 280) {
+    if (y > 270) {
       doc.addPage();
       // Add watermark to new page
       doc.setFont('helvetica', 'bold');
@@ -676,22 +789,47 @@ async function exportPdf(content) {
       doc.setFont('helvetica', 'normal');
       y = 20;
     }
-    doc.text(line, 15, y);
+    doc.text(line, 20, y);
     y += 7;
   });
+  
+  // Add footer with page numbers
+  const pageCount = doc.getNumberOfPages();
+  for (let i = 1; i <= pageCount; i++) {
+    doc.setPage(i);
+    doc.setFontSize(10);
+    doc.setTextColor(100, 100, 100);
+    doc.text('第 ' + i + ' 頁，共 ' + pageCount + ' 頁', 105, 285, { align: 'center' });
+    doc.text(websiteInfo, 105, 290, { align: 'center' });
+    doc.text('© ' + new Date().getFullYear() + ' TYCTW桃聯區會考落點分析系統', 105, 295, { align: 'center' });
+  }
   
   doc.save('桃聯區會考落點分析結果.pdf');
 }
 
 function exportCsv(content) {
-  const lines = content.split('\n');
-  let csvContent = '';
+  const now = new Date();
+  const dateTime = now.toLocaleString('zh-TW');
   
-  // Add watermark lines at the beginning
-  csvContent += '"TYCTW 桃聯區會考落點分析系統 - 僅供參考"\n';
-  csvContent += `"產生時間: ${new Date().toLocaleString('zh-TW')}"\n`;
+  // Add header rows
+  let csvContent = '';
+  csvContent += '"桃聯區會考落點分析結果"\n';
+  csvContent += '"產生時間","' + dateTime + '"\n';
+  csvContent += '"TYCTW桃聯區會考落點分析系統 - 僅供參考"\n';
   csvContent += '"更多資訊請訪問: https://rcpett.vercel.app/"\n\n';
   
+  // Add scores
+  csvContent += '"成績資訊"\n';
+  csvContent += '"國文","' + document.getElementById('chinese').value + '"\n';
+  csvContent += '"英文","' + document.getElementById('english').value + '"\n';
+  csvContent += '"數學","' + document.getElementById('math').value + '"\n';
+  csvContent += '"自然","' + document.getElementById('science').value + '"\n';
+  csvContent += '"社會","' + document.getElementById('social').value + '"\n';
+  csvContent += '"作文","' + document.getElementById('composition').value + '"\n\n';
+  
+  // Add main content
+  csvContent += '"分析結果"\n';
+  const lines = content.split('\n');
   lines.forEach(line => {
     const cleanLine = line.replace(/[*]/g, '').trim();
     if (cleanLine) {
@@ -699,26 +837,47 @@ function exportCsv(content) {
     }
   });
   
+  // Add footer
+  csvContent += '\n"© ' + new Date().getFullYear() + ' TYCTW桃聯區會考落點分析系統"\n';
+  
   const blob = new Blob(['\uFEFF' + csvContent], { type: 'text/csv;charset=utf-8' });
   downloadFile(blob, '桃聯區會考落點分析結果.csv');
 }
 
 function exportJson(content) {
-  const lines = content.split('\n');
+  const scores = {
+    chinese: document.getElementById('chinese').value,
+    english: document.getElementById('english').value,
+    math: document.getElementById('math').value,
+    science: document.getElementById('science').value,
+    social: document.getElementById('social').value,
+    composition: document.getElementById('composition').value
+  };
+  
+  // Get filter values
+  const filters = {
+    schoolOwnership: document.getElementById('schoolOwnership').value,
+    schoolType: document.getElementById('schoolType').value,
+    vocationalGroup: document.getElementById('vocationalGroup').value,
+    analysisIdentity: document.getElementById('analysisIdentity').value
+  };
+  
   const jsonData = {
-    title: 'TYCTW 桃聯區會考落點分析結果',
-    watermark: 'TYCTW 桃聯區會考落點分析系統 - 僅供參考',
-    generateTime: new Date().toISOString(),
-    websiteUrl: 'https://rcpett.vercel.app/',
-    content: lines.filter(line => line.trim()),
-    scores: {
-      chinese: document.getElementById('chinese').value,
-      english: document.getElementById('english').value,
-      math: document.getElementById('math').value,
-      science: document.getElementById('science').value,
-      social: document.getElementById('social').value,
-      composition: document.getElementById('composition').value
-    }
+    metadata: {
+      title: 'TYCTW 桃聯區會考落點分析結果',
+      description: 'TYCTW 桃聯區會考落點分析系統 - 僅供參考',
+      generateTime: new Date().toISOString(),
+      websiteUrl: 'https://rcpett.vercel.app/',
+      version: '1.0.0'
+    },
+    userInput: {
+      scores: scores,
+      filters: filters
+    },
+    results: {
+      content: content.split('\n').filter(line => line.trim())
+    },
+    copyright: `© ${new Date().getFullYear()} TYCTW桃聯區會考落點分析系統`
   };
   
   const blob = new Blob([JSON.stringify(jsonData, null, 2)], { type: 'application/json;charset=utf-8' });

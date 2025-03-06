@@ -355,7 +355,7 @@
             <li>掃描 QR 碼（如果您收到了含有邀請碼的QR碼）</li>
             <li>上傳包含邀請碼的 QR 碼圖片</li>
           </ul>
-          <p>將獲得的邀請碼輸入到"邀請碼"欄位中，系統會自動驗證邀請碼的有效性。</p>
+          <p>將얻的邀請碼輸入到"邀請碼"欄位中，系統會自動驗證邀請碼的有效性。</p>
         </div>
 
         <div class="instruction-item">
@@ -422,21 +422,48 @@
           <ul>
             <li>學校名稱及公私立屬性</li>
             <li>去年最低錄取分數（如有資料）</li>
+            <li>近三年的錄取分數走勢（如有資料）</li>
+            <li>特殊備註資訊（如有）</li>
           </ul>
+          <div class="highlight">
+            <i class="fas fa-info-circle"></i> 學校依照類型分類顯示，方便您進行比較和選擇。
+          </div>
         </div>
 
         <div class="instruction-item">
           <h3><i class="fas fa-file-export icon"></i>匯出分析結果</h3>
           <p>您可以將分析結果匯出為多種格式：</p>
           <ul>
-            <li><strong>文字檔 (.txt)</strong>：簡單文字格式</li>
-            <li><strong>PDF檔 (.pdf)</strong>：適合打印的格式</li>
-            <li><strong>CSV檔 (.csv)</strong>：可匯入試算表的格式</li>
-            <li><strong>JSON檔 (.json)</strong>：程式化格式</li>
-            <li><strong>列印結果</strong>：直接列印分析報告</li>
+            <li><strong>文字檔 (.txt)</strong>：簡單文字格式，包含所有分析數據</li>
+            <li><strong>PDF檔 (.pdf)</strong>：美觀格式化的報告，適合打印與分享</li>
+            <li><strong>CSV檔 (.csv)</strong>：可匯入Excel或Google試算表進行進一步分析</li>
+            <li><strong>JSON檔 (.json)</strong>：程式化格式，適合開發人員使用</li>
+            <li><strong>列印結果</strong>：直接列印分析報告，含有精美頁首頁尾</li>
           </ul>
           <div class="highlight">
             <i class="fas fa-lightbulb"></i> 建議將結果匯出保存，方便與家人老師討論或日後參考比較。
+          </div>
+          <p>匯出的報告會包含：</p>
+          <ul>
+            <li>分析時間與日期</li>
+            <li>您的成績摘要</li>
+            <li>總積分與總積點計算</li>
+            <li>符合條件的所有學校列表</li>
+            <li>系統版本與資料更新時間</li>
+          </ul>
+        </div>
+
+        <div class="instruction-item">
+          <h3><i class="fas fa-mobile-alt icon"></i>行動裝置使用建議</h3>
+          <p>在手機或平板上使用本系統時：</p>
+          <ul>
+            <li>建議將螢幕轉為橫向模式以獲得更好的閱讀體驗</li>
+            <li>使用"掃描QR碼"功能需允許相機權限</li>
+            <li>匯出PDF時，建議先預覽再儲存</li>
+            <li>如遇操作不便，可嘗試使用電腦版瀏覽</li>
+          </ul>
+          <div class="highlight">
+            <i class="fas fa-moon"></i> 提示：夜間使用時可點擊右下角的月亮圖示切換為深色模式，保護眼睛。
           </div>
         </div>
 
@@ -447,30 +474,47 @@
             <li>在頁面底部的評分區域給予1-5星的評價</li>
             <li>點擊"提交評分"按鈕提交您的意見</li>
           </ul>
-          <p>您的評分和反饋將幫助我們不斷改進系統，提供更好的服務。</p>
+          <p>您的評分和反饋將幫助我們不斷改進系統，提供更好的服務。所有評分資料都將匿名收集，僅用於系統改進。</p>
+        </div>
+
+        <div class="instruction-item">
+          <h3><i class="fas fa-shield-alt icon"></i>資料隱私與安全</h3>
+          <p>我們重視您的隱私：</p>
+          <ul>
+            <li>所有成績資料僅在您的裝置上處理，不會儲存到我們的伺服器</li>
+            <li>分析過程中僅傳送必要資訊，不含個人身份識別資料</li>
+            <li>系統不會在您的裝置上儲存cookie或追蹤腳本</li>
+            <li>您的邀請碼使用一次性驗證，不會與您的身份關聯</li>
+          </ul>
+          <div class="highlight">
+            <i class="fas fa-lock"></i> 您的資料安全對我們至關重要，如有任何疑慮，請通過系統異常回報頁面聯繫我們。
+          </div>
         </div>
 
         <div class="instruction-item">
           <h3><i class="fas fa-question-circle icon"></i>常見問題</h3>
           <ul>
-            <li><strong>Q: 邀請碼無效怎麼辦？</strong><br>A: 請確保使用最新邀請碼，或重新填寫表單獲取。</li>
+            <li><strong>Q: 邀請碼無效怎麼辦？</strong><br>A: 請確保使用最新邀請碼，或重新填寫表單獲取。邀請碼通常每小時更新一次。</li>
             <li><strong>Q: 為什麼沒有顯示任何學校？</strong><br>A: 可能是篩選條件過於嚴格，嘗試放寬條件或檢查成績輸入是否正確。</li>
-            <li><strong>Q: 結果與實際錄取有差異嗎？</strong><br>A: 是的，本系統僅提供參考，實際錄取結果受多種因素影響。</li>
+            <li><strong>Q: 結果與實際錄取有差異嗎？</strong><br>A: 是的，本系統僅提供參考，實際錄取結果受多種因素影響，包括當年度考生整體表現等。</li>
             <li><strong>Q: 如何獲取更多協助？</strong><br>A: 可點擊頂部菜單的"系統異常回報"或諮詢您的學校老師。</li>
+            <li><strong>Q: 資料更新頻率是多少？</strong><br>A: 學校資料通常每年更新一次，在會考結束後的入學資料公布時。</li>
+            <li><strong>Q: 可以多次分析不同成績嗎？</strong><br>A: 可以，您可以使用同一個邀請碼嘗試不同的成績組合，了解不同成績對結果的影響。</li>
+            <li><strong>Q: 系統會記住我的成績嗎？</strong><br>A: 不會，每次頁面重新載入都需要重新輸入成績，這是為了保護您的隱私。</li>
           </ul>
         </div>
       </div>
     </div>
 
     <script src="script.js"></script>
-<!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-7CT626DVSZ"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-7CT626DVSZ"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
 
-  gtag('config', 'G-7CT626DVSZ');
-</script>
+      gtag('config', 'G-7CT626DVSZ');
+    </script>
   </body>
 </html>

@@ -1224,7 +1224,6 @@ button:hover {
   align-items: center;
   gap: 10px;
   color: var(--text-color);
-  font-size: 0.9rem;
 }
 
 .loading-step i {
@@ -1469,6 +1468,72 @@ button:hover {
 
   .form-group {
     margin-bottom: 16px;
+  }
+}
+
+/* Identity Selection Styles */
+.identity-selection {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 15px;
+  justify-content: center;
+  margin-bottom: 30px;
+}
+
+.identity-card {
+  background-color: var(--card-background);
+  border: 2px solid transparent;
+  border-radius: 15px;
+  padding: 20px;
+  width: 120px;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 8px var(--shadow-color);
+}
+
+.identity-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 15px var(--shadow-color);
+}
+
+.identity-card.selected {
+  border-color: var(--primary-color);
+  background-color: rgba(52, 152, 219, 0.1);
+}
+
+.identity-card i {
+  font-size: 2.5rem;
+  color: var(--primary-color);
+  margin-bottom: 10px;
+  display: block;
+}
+
+.identity-card p {
+  margin: 0;
+  font-weight: 500;
+}
+
+.dark-mode .identity-card {
+  background-color: var(--card-background);
+}
+
+.dark-mode .identity-card.selected {
+  background-color: rgba(52, 152, 219, 0.2);
+}
+
+@media (max-width: 768px) {
+  .identity-selection {
+    gap: 10px;
+  }
+  
+  .identity-card {
+    padding: 15px;
+    width: 100px;
+  }
+  
+  .identity-card i {
+    font-size: 2rem;
   }
 }
 

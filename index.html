@@ -147,11 +147,21 @@
         <label for="analysisIdentity">
           <i class="fas fa-user icon"></i> 分析身份：
         </label>
-        <select id="analysisIdentity">
-          <option value="student">學生</option>
-          <option value="teacher">老師</option>
-          <option value="parent">家長</option>
-        </select>
+        <input type="hidden" id="analysisIdentity" value="student">
+        <div class="identity-selection">
+          <div class="identity-card selected" data-identity="student">
+            <i class="fas fa-user-graduate"></i>
+            <p>學生</p>
+          </div>
+          <div class="identity-card" data-identity="teacher">
+            <i class="fas fa-chalkboard-teacher"></i>
+            <p>老師</p>
+          </div>
+          <div class="identity-card" data-identity="parent">
+            <i class="fas fa-user-friends"></i>
+            <p>家長</p>
+          </div>
+        </div>
       </div>
 
       <div class="form-group">

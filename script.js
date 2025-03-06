@@ -402,7 +402,76 @@ function printResults() {
         }
         .school-item {
           margin: 10px 0;
-          padding-left: 20px;
+          padding: 15px;
+          border-left: 3px solid #3498db;
+          background-color: #f8f9fa;
+          border-radius: 5px;
+          box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+          transition: transform 0.2s;
+        }
+        .school-item:hover {
+          transform: translateX(5px);
+        }
+        .school-name {
+          font-weight: bold;
+          color: #2c3e50;
+          font-size: 16px;
+          margin-bottom: 5px;
+          display: flex;
+          align-items: center;
+        }
+        .school-name i {
+          margin-right: 8px;
+          color: #3498db;
+        }
+        .school-ownership {
+          display: inline-block;
+          background-color: #eef2f7;
+          color: #7f8c8d;
+          font-size: 12px;
+          padding: 2px 6px;
+          margin-left: 8px;
+          border-radius: 3px;
+        }
+        .school-details {
+          display: flex;
+          justify-content: space-between;
+          margin-top: 8px;
+          color: #7f8c8d;
+          font-size: 14px;
+        }
+        .cutoff-score {
+          display: flex;
+          align-items: center;
+        }
+        .cutoff-score i {
+          margin-right: 5px;
+          color: #e74c3c;
+        }
+        .school-type-card {
+          margin-bottom: 25px;
+          padding: 15px;
+          border: 1px solid #e0e0e0;
+          border-radius: 8px;
+          background-color: white;
+        }
+        .school-type-header {
+          display: flex;
+          align-items: center;
+          margin-bottom: 15px;
+          padding-bottom: 10px;
+          border-bottom: 1px solid #eee;
+        }
+        .school-type-header h4 {
+          margin: 0 10px;
+          color: #2c3e50;
+        }
+        .school-count {
+          background: #3498db;
+          color: white;
+          padding: 3px 8px;
+          border-radius: 20px;
+          font-size: 12px;
         }
         .footer {
           text-align: center;
@@ -421,6 +490,14 @@ function printResults() {
           .floating-watermark {
             display: block !important;
             color: rgba(52, 152, 219, 0.1);
+          }
+          .school-item {
+            break-inside: avoid;
+            page-break-inside: avoid;
+          }
+          .school-type-card {
+            break-inside: avoid;
+            page-break-inside: avoid;
           }
         }
       </style>
@@ -669,6 +746,33 @@ async function loadScript(url) {
     document.head.appendChild(script);
   });
 }
+
+document.addEventListener('DOMContentLoaded', function() {
+  // Initialize identity cards
+  const identityCards = document.querySelectorAll('.identity-card');
+  const identityInput = document.getElementById('analysisIdentity');
+  
+  identityCards.forEach(card => {
+    card.addEventListener('click', function() {
+      // Remove selected class from all cards
+      identityCards.forEach(c => c.classList.remove('selected'));
+      
+      // Add selected class to clicked card
+      this.classList.add('selected');
+      
+      // Update hidden input value
+      identityInput.value = this.getAttribute('data-identity');
+      
+      // Log selection
+      logUserActivity('identity_selection', { 
+        identity: identityInput.value 
+      });
+    });
+  });
+  
+  // Initialize other components
+  initRating();
+});
 
 window.onload = function() {
   showDisclaimer();
@@ -1055,5 +1159,3 @@ function getScoreClass(score) {
   };
   return scoreClasses[score] || '';
 }
-
-initRating();

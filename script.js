@@ -1241,9 +1241,14 @@ function displayResults(data) {
                     <div class="school-name">
                       <i class="fas fa-graduation-cap icon"></i>
                       ${school.name}
-                      ${school.ownership ? `<span class="school-ownership">【${school.ownership}】</span>` : ''}
                     </div>
                     <div class="school-details">
+                      ${school.ownership ? `
+                        <span class="school-ownership">
+                          <i class="fas fa-building icon"></i>
+                          ${school.ownership}
+                        </span>
+                      ` : ''}
                       ${school.lastYearCutoff ? `
                         <span class="cutoff-score">
                           <i class="fas fa-chart-line icon"></i>

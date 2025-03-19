@@ -561,6 +561,48 @@ input.invalid, select.invalid, textarea.invalid {
   content: '✓';
 }
 
+.status-indicator {
+  display: inline-block;
+  background-color: #f39c12;
+  color: white;
+  padding: 5px 10px;
+  border-radius: 20px;
+  font-size: 14px;
+  font-weight: bold;
+  margin: 10px 0;
+}
+
+.status-message {
+  font-size: 14px;
+  color: #555;
+  margin: 5px 0;
+  display: none;
+}
+
+.check-status-button {
+  background-color: #3498db;
+  color: white;
+  border: none;
+  padding: 8px 15px;
+  border-radius: 20px;
+  cursor: pointer;
+  font-size: 14px;
+  margin: 10px 0;
+  transition: all 0.3s ease;
+  width: auto;
+  display: inline-block;
+}
+
+.check-status-button:hover {
+  background-color: #2980b9;
+  transform: translateY(-2px);
+}
+
+.check-status-button:disabled {
+  background-color: #95a5a6;
+  cursor: not-allowed;
+}
+
 @media screen and (max-width: 768px) {
   .menu-icon {
     display: block;
@@ -683,6 +725,11 @@ input.invalid, select.invalid, textarea.invalid {
         <span class="tooltiptext" id="copyTooltip">複製代碼</span>
         <i class="fas fa-copy"></i>
       </button><br>
+      處理狀態：<span id="statusIndicator" class="status-indicator">處理中</span>
+      <div id="statusMessage" class="status-message"></div>
+      <button id="checkStatusBtn" class="check-status-button">
+        <i class="fas fa-sync-alt"></i> 檢查進度
+      </button><br>
       請保存此代碼以便日後查詢回報進度。
     </div>
     <div id="errorMessage" class="error-message">提交失敗，請稍後再試。</div>
@@ -706,6 +753,6 @@ input.invalid, select.invalid, textarea.invalid {
 </footer>
 
 <script src="config.js"></script>
-<script src="scriptfrom.js"></script>
+<script src="script.js"></script>
 </body>
 </html>

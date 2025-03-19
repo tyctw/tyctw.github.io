@@ -133,6 +133,42 @@ async function copyToClipboard(text) {
   }
 }
 
+/**
+ * Shows the success message with report code and hides the form
+ * @param {string} reportCode The generated report code
+ */
+function showSuccessMessage(reportCode) {
+  document.getElementById('reportCode').textContent = reportCode;
+  document.getElementById('successMessage').style.display = 'block';
+  document.getElementById('errorMessage').style.display = 'none';
+  document.getElementById('reportForm').style.display = 'none';
+  
+  // Add status indicator to success message
+  const statusIndicator = document.getElementById('statusIndicator');
+  statusIndicator.textContent = CONFIG.status.pending.label;
+  statusIndicator.style.backgroundColor = CONFIG.status.pending.color;
+  statusIndicator.style.display = 'inline-block';
+  
+  // Update progress steps
+  document.getElementById('step2').classList.add('completed');
+  document.getElementById('step3').classList.add('active');
+}
+
+/**
+ * Checks the status of a report
+ * @param {string} reportCode The report code to check
+ * @returns {Promise<Object>} The report data
+ */
+async function checkReportStatus(reportCode) {
+  try {
+    const response = await fetch(`${CONFIG.apiEndpoint}?reportCode=${reportCode}`);
+    return await response.json();
+  } catch (error) {
+    console.error('Error checking status:', error);
+    return { found: false };
+  }
+}
+
 // When the DOM is loaded, initialize the application
 document.addEventListener('DOMContentLoaded', function() {
   // Generate initial captcha
@@ -159,6 +195,42 @@ document.addEventListener('DOMContentLoaded', function() {
         tooltip.textContent = '複製代碼';
       }, 2000);
     }
+  });
+  
+  // Add event listener for check status button
+  document.getElementById('checkStatusBtn').addEventListener('click', async function() {
+    const reportCode = document.getElementById('reportCode').textContent;
+    const statusIndicator = document.getElementById('statusIndicator');
+    const statusMessage = document.getElementById('statusMessage');
+    
+    this.disabled = true;
+    this.innerHTML = '<i class="fas fa-spinner fa-spin"></i> 檢查中...';
+    
+    const result = await checkReportStatus(reportCode);
+    
+    if (result.found) {
+      // Determine status - for now, use pending as default
+      // In a real application, you would get this from the server response
+      const status = result.status || CONFIG.status.pending.code;
+      const statusConfig = CONFIG.status[status] || CONFIG.status.pending;
+      
+      statusIndicator.textContent = statusConfig.label;
+      statusIndicator.style.backgroundColor = statusConfig.color;
+      
+      // Optional: Show the last update time if available
+      if (result.lastUpdated) {
+        statusMessage.textContent = `最後更新: ${new Date(result.lastUpdated).toLocaleString()}`;
+        statusMessage.style.display = 'block';
+      }
+    } else {
+      statusIndicator.textContent = '找不到報告';
+      statusIndicator.style.backgroundColor = '#e74c3c';
+      statusMessage.textContent = '無法找到此回報代碼的記錄。';
+      statusMessage.style.display = 'block';
+    }
+    
+    this.disabled = false;
+    this.innerHTML = '<i class="fas fa-sync-alt"></i> 檢查進度';
   });
 
   // Form submission handler
@@ -237,17 +309,10 @@ document.addEventListener('DOMContentLoaded', function() {
       .then(response => response.json())
       .then(data => {
         if(data.result === 'success') {
-          document.getElementById('reportCode').textContent = reportCode;
-          document.getElementById('successMessage').style.display = 'block';
-          document.getElementById('errorMessage').style.display = 'none';
+          showSuccessMessage(reportCode);
           document.getElementById('reportForm').reset();
-          document.getElementById('reportForm').style.display = 'none';
           generateCaptcha();
           captchaAttempts = 0;
-          
-          // Update progress steps
-          document.getElementById('step2').classList.add('completed');
-          document.getElementById('step3').classList.add('active');
         } else {
           throw new Error('Submission failed');
         }

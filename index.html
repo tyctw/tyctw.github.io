@@ -1,520 +1,711 @@
 <html lang="zh-TW">
-  <head>
-    <meta charset="UTF-8" />
-    <title>桃聯區會考落點分析</title>
-    <link rel="stylesheet" href="styles.css" />
-    <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
-    />
-    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
-    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
-    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
-    <link rel="manifest" href="/site.webmanifest" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="google-adsense-account" content="ca-pub-3350304014189563" />
-    <meta
-      name="description"
-      content="桃聯區會考落點分析，幫助使用者分析會考成績，提供學校落點參考。"
-    />
-    <meta
-      name="keywords"
-      content="桃聯區, 會考, 落點分析, 教育, 學校,武陵高中,中壢高中,內壢高中,平鎮高中,大園高中,永豐高中,南崁高中,振聲高中,楊梅高中,治平高中,新興高中,關西高中,大溪高中"
-    />
-    <meta name="author" content="桃聯區教育局" />
-    <!-- External JS Libraries -->
-    <script src="https://unpkg.com/html5-qrcode" type="text/javascript"></script>
-    <script src="https://cdn.jsdelivr.net/npm/jsqr@1.3.1/dist/jsQR.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-  </head>
-  <body>
-    <header class="header">
-      <div class="header-container">
-        <div class="header-logo">
-          <i class="fas fa-chart-line"></i>
-          <span>桃聯區會考落點分析</span>
-        </div>
-        <div class="menu-icon" onclick="toggleMenu()">
-          <i class="fas fa-bars"></i>
-        </div>
-      </div>
-    </header>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>系統異常回報</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
 
-    <div class="menu-overlay" id="menuOverlay" onclick="closeMenu()"></div>
-    <div class="fullscreen-menu" id="fullscreenMenu">
-      <div class="close-menu" onclick="closeMenu()">
-        <i class="fas fa-times"></i>
-      </div>
-      <a href="https://sites.google.com/view/tyctw/" target="_blank">
-        <i class="fas fa-school"></i> 回到主網頁
-      </a>
-      <a href="https://tyctw.github.io/sequence/" target="_blank">
-        <i class="fas fa-pencil-alt"></i> 各校序位推估 
-      </a>
-      <a href="https://tyctw.github.io/report_form" target="_blank">
-        <i class="fas fa-exclamation-triangle"></i> 系統異常回報
-      </a>
-      <a href="https://tyctw.github.io/Navigation/">
-        <i class="fas fa-university"></i> 查看更多資訊
-      </a>
+:root {
+  --primary-color: #4a90e2;
+  --secondary-color: #50c878;
+  --text-color: #333;
+  --background-color: #f0f4f8;
+  --card-background: rgba(255, 255, 255, 0.95);
+  --input-background: rgba(255, 255, 255, 0.8);
+  --box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+  --error-color: #ff6347;
+}
+
+body {
+  font-family: 'Poppins', sans-serif;
+  background: linear-gradient(135deg, #4a90e2 0%, #50c878 100%);
+  margin: 0;
+  padding: 0;
+  color: var(--text-color);
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.header {
+  background-color: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  padding: 20px 0;
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.header-content {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 20px;
+}
+
+.logo {
+  color: #ffffff;
+  font-size: 24px;
+  font-weight: 700;
+  text-decoration: none;
+  letter-spacing: 1px;
+  transition: all 0.3s ease;
+}
+
+.logo:hover {
+  text-shadow: 0 0 10px rgba(255,255,255,0.5);
+}
+
+.menu-icon {
+  position: relative;
+  z-index: 1001;
+  cursor: pointer;
+  font-size: 24px;
+  color: #ffffff;
+}
+
+.full-page-menu {
+  position: fixed;
+  top: 0;
+  right: -100%;
+  width: 300px;
+  height: 100%;
+  background-color: rgba(74, 144, 226, 0.95);
+  z-index: 1000;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  backdrop-filter: blur(10px);
+  transition: right 0.3s ease;
+  box-shadow: -5px 0 15px rgba(0, 0, 0, 0.1);
+}
+
+.full-page-menu.active {
+  right: 0;
+}
+
+.close-button {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  font-size: 24px;
+  color: #ffffff;
+  cursor: pointer;
+  background-color: rgba(255, 255, 255, 0.2);
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+.close-button:hover {
+  background-color: rgba(255, 255, 255, 0.3);
+  transform: rotate(90deg);
+}
+
+.nav-menu {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+}
+
+.nav-item {
+  margin: 20px 0;
+  opacity: 0;
+  transform: translateX(20px);
+  transition: opacity 0.5s ease, transform 0.5s ease;
+}
+
+.full-page-menu.active .nav-item {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+.nav-link {
+  color: #ffffff;
+  text-decoration: none;
+  font-size: 24px;
+  font-weight: 600;
+  transition: all 0.3s ease;
+  padding: 10px 20px;
+  border-radius: 30px;
+  position: relative;
+  overflow: hidden;
+}
+
+.nav-link::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background-color: #ffffff;
+  transform: scaleX(0);
+  transition: transform 0.3s ease;
+}
+
+.nav-link:hover {
+  background-color: rgba(255,255,255,0.2);
+  transform: scale(1.1);
+}
+
+.nav-link:hover::after {
+  transform: scaleX(1);
+}
+
+.main-content {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 40px 20px;
+}
+
+.container {
+  max-width: 600px;
+  width: 100%;
+  background-color: var(--card-background);
+  border-radius: 20px;
+  box-shadow: var(--box-shadow);
+  padding: 40px;
+  backdrop-filter: blur(10px);
+  transition: all 0.4s ease;
+}
+
+.container:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 15px 30px rgba(0,0,0,0.2);
+}
+
+h2 {
+  color: var(--primary-color);
+  font-size: 32px;
+  margin-bottom: 30px;
+  text-align: center;
+  position: relative;
+}
+
+h2::after {
+  content: '';
+  display: block;
+  width: 50px;
+  height: 4px;
+  background: linear-gradient(to right, var(--primary-color), var(--secondary-color));
+  margin: 15px auto 0;
+}
+
+.form-group {
+  margin-bottom: 25px;
+  position: relative;
+}
+
+label {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: 500;
+  color: var(--text-color);
+  transition: all 0.3s ease;
+}
+
+input[type="email"],
+input[type="text"],
+select,
+textarea {
+  width: 100%;
+  padding: 12px;
+  border: 2px solid #e0e0e0;
+  border-radius: 8px;
+  font-size: 16px;
+  transition: all 0.3s ease;
+  background-color: var(--input-background);
+}
+
+input[type="email"]:focus,
+input[type="text"]:focus,
+select:focus,
+textarea:focus {
+  border-color: var(--primary-color);
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(74, 144, 226, 0.1);
+}
+
+textarea {
+  resize: vertical;
+  min-height: 120px;
+}
+
+button {
+  background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+  color: white;
+  border: none;
+  padding: 14px 20px;
+  font-size: 18px;
+  border-radius: 30px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: block;
+  width: 100%;
+  margin-top: 30px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  font-weight: 600;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 7px 14px rgba(0,0,0,0.2);
+}
+
+button:active {
+  transform: translateY(0);
+  box-shadow: 0 5px 10px rgba(0,0,0,0.2);
+}
+
+button:disabled {
+  background: #cccccc;
+  cursor: not-allowed;
+}
+
+.success-message, .error-message {
+  padding: 15px;
+  border-radius: 8px;
+  margin-top: 20px;
+  text-align: center;
+  display: none;
+  font-weight: 500;
+  transition: all 0.3s ease;
+}
+
+.success-message {
+  background-color: rgba(80, 200, 120, 0.2);
+  border: 2px solid #50c878;
+  color: #2c7a44;
+}
+
+.error-message {
+  background-color: rgba(255, 99, 71, 0.2);
+  border: 2px solid #ff6347;
+  color: #c0392b;
+}
+
+.copyright {
+  color: rgba(255, 255, 255, 0.8);
+  text-align: center;
+  font-size: 14px;
+  padding: 20px;
+  background-color: rgba(0, 0, 0, 0.1);
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+.error {
+  color: var(--error-color);
+  font-size: 14px;
+  margin-top: 5px;
+  display: none;
+}
+
+input.invalid, select.invalid, textarea.invalid {
+  border-color: var(--error-color);
+}
+
+.captcha-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 10px;
+}
+
+.captcha-image {
+  background-color: #f0f0f0;
+  padding: 10px;
+  border-radius: 8px;
+  font-size: 24px;
+  font-weight: bold;
+  letter-spacing: 5px;
+  user-select: none;
+  flex-grow: 1;
+  text-align: center;
+}
+
+.refresh-captcha {
+  background-color: var(--primary-color);
+  color: white;
+  border: none;
+  padding: 8px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  margin-left: 10px;
+  font-size: 14px;
+  width: auto;
+}
+
+.refresh-captcha:hover {
+  background-color: var(--secondary-color);
+}
+
+.confirm-dialog {
+  display: none;
+  position: fixed;
+  z-index: 1000;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0,0,0,0.5);
+  backdrop-filter: blur(5px);
+}
+
+.confirm-dialog-content {
+  background-color: var(--card-background);
+  margin: 15% auto;
+  padding: 30px;
+  border-radius: 15px;
+  max-width: 400px;
+  text-align: center;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+  animation: fadeInUp 0.3s ease-out;
+}
+
+.confirm-dialog h3 {
+  margin-top: 0;
+  color: var(--primary-color);
+  font-size: 24px;
+}
+
+.confirm-dialog p {
+  margin-bottom: 20px;
+  color: var(--text-color);
+}
+
+.confirm-dialog-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+}
+
+.confirm-dialog button {
+  padding: 10px 20px;
+  width: auto;
+  font-size: 16px;
+  border-radius: 25px;
+  transition: all 0.3s ease;
+}
+
+.confirm-yes {
+  background: var(--primary-color);
+}
+
+.confirm-no {
+  background: var(--error-color);
+}
+
+.confirm-dialog button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.fade-in-up {
+  animation: fadeInUp 0.6s ease-out;
+}
+
+.report-code {
+  font-weight: bold;
+  font-size: 1.2em;
+  color: var(--primary-color);
+  background-color: rgba(74, 144, 226, 0.1);
+  padding: 5px 10px;
+  border-radius: 4px;
+  display: inline-block;
+  margin-top: 5px;
+}
+
+.copy-button {
+  background-color: var(--primary-color);
+  color: white;
+  border: none;
+  padding: 5px 10px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 14px;
+  margin-left: 10px;
+  transition: all 0.2s ease;
+}
+
+.copy-button:hover {
+  background-color: var(--secondary-color);
+}
+
+.tooltip {
+  position: relative;
+  display: inline-block;
+}
+
+.tooltip .tooltiptext {
+  visibility: hidden;
+  width: 80px;
+  background-color: #333;
+  color: #fff;
+  text-align: center;
+  border-radius: 6px;
+  padding: 5px 0;
+  position: absolute;
+  z-index: 1;
+  bottom: 125%;
+  left: 50%;
+  margin-left: -40px;
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+
+.tooltip .tooltiptext::after {
+  content: "";
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  margin-left: -5px;
+  border-width: 5px;
+  border-style: solid;
+  border-color: #333 transparent transparent transparent;
+}
+
+.tooltip:hover .tooltiptext {
+  visibility: visible;
+  opacity: 1;
+}
+
+.progress-steps {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 30px;
+  position: relative;
+}
+
+.progress-steps::before {
+  content: '';
+  position: absolute;
+  top: 15px;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background-color: #e0e0e0;
+  z-index: 0;
+}
+
+.step {
+  position: relative;
+  z-index: 1;
+  text-align: center;
+  flex: 1;
+}
+
+.step-number {
+  width: 30px;
+  height: 30px;
+  background-color: #e0e0e0;
+  color: #333;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0 auto 10px;
+  transition: all 0.3s ease;
+  font-weight: bold;
+}
+
+.step-label {
+  font-size: 12px;
+  color: #777;
+  transition: all 0.3s ease;
+}
+
+.step.active .step-number {
+  background-color: var(--primary-color);
+  color: white;
+}
+
+.step.active .step-label {
+  color: var(--primary-color);
+  font-weight: 600;
+}
+
+.step.completed .step-number {
+  background-color: var(--secondary-color);
+  color: white;
+}
+
+.step.completed .step-number::after {
+  content: '✓';
+}
+
+@media screen and (max-width: 768px) {
+  .menu-icon {
+    display: block;
+  }
+
+  .container {
+    padding: 30px 20px;
+  }
+
+  h2 {
+    font-size: 28px;
+  }
+
+  input[type="email"],
+  input[type="text"],
+  select,
+  textarea,
+  button {
+    font-size: 16px;
+    padding: 12px;
+  }
+  
+  .step-label {
+    font-size: 10px;
+  }
+  
+  .progress-steps {
+    margin-bottom: 20px;
+  }
+}
+</style>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+<header class="header">
+  <div class="header-content">
+    <a href="https://tyctw.github.io/report_form" class="logo">TYCTW</a>
+    <div class="menu-icon" id="menuIcon">
+      <i class="fas fa-bars"></i>
     </div>
+  </div>
+</header>
 
-    <div class="container">
-      <h1>
-        <i class="fas fa-chart-line icon"></i>桃聯區會考落點分析系統
-      </h1>
-      <a
-        href="https://forms.gle/ZKW3W58gcbQW3vdX9"
-        target="_blank"
-        class="invite-link"
-      >
-        <i class="fas fa-envelope-open-text icon"></i>填寫表單獲取邀請碼
-      </a>
-      <button class="instruction-toggle" onclick="toggleInstructions()">
-        <i class="fas fa-info-circle icon"></i>使用說明
-      </button>
-      <button class="disclaimer-toggle" onclick="showDisclaimer()">
-        <i class="fas fa-exclamation-triangle icon"></i>免責聲明
-      </button>
-      
-      <form id="analysisForm">
-        <div class="form-group">
-          <label for="invitationCode">
-            <i class="fas fa-key icon"></i>邀請碼：
-          </label>
-          <input
-            type="text"
-            id="invitationCode"
-            required
-            placeholder="請輸入邀請碼"
-          />
-        </div>
+<div id="fullPageMenu" class="full-page-menu">
+  <div class="close-button" id="closeMenuButton">
+    <i class="fas fa-times"></i>
+  </div>
+  <nav>
+    <ul class="nav-menu" id="navMenu">
+      <li class="nav-item"><a href="https://tyctw.github.io/" class="nav-link">落點分析系統</a></li>
+      <li class="nav-item"><a href="https://tyctw.github.io/log" class="nav-link">TYCTW更新日誌</a></li>
+      <li class="nav-item"><a href="https://tyctw.github.io/search" class="nav-link">異常回報查詢</a></li>
+      <li class="nav-item"><a href="https://tyctw.github.io/Navigation/" class="nav-link">更多會考資訊</a></li>
+    </ul>
+  </nav>
+</div>
 
-        <div class="qr-options">
-          <button type="button" id="scanQRCode">
-            <i class="fas fa-camera icon"></i>掃描 QR 碼
+<main class="main-content">
+  <div class="container fade-in-up">
+    <h2>TYCTW系統異常回報表單</h2>
+    
+    <div class="progress-steps">
+      <div class="step active" id="step1">
+        <div class="step-number">1</div>
+        <div class="step-label">填寫資訊</div>
+      </div>
+      <div class="step" id="step2">
+        <div class="step-number">2</div>
+        <div class="step-label">確認提交</div>
+      </div>
+      <div class="step" id="step3">
+        <div class="step-number">3</div>
+        <div class="step-label">完成回報</div>
+      </div>
+    </div>
+    
+    <form id="reportForm">
+      <div class="form-group">
+        <label for="email">電子郵件：</label>
+        <input type="email" id="email" name="email" required placeholder="請輸入您的電子郵件">
+        <div class="error" id="emailError"></div>
+      </div>
+      <div class="form-group">
+        <label for="category">異常類別：</label>
+        <select id="category" name="category" required>
+          <option value="">請選擇異常類別</option>
+          <option value="邀請碼功能有誤">邀請碼功能有誤</option>
+          <option value="分析結果錯誤">分析結果錯誤</option>
+          <option value="學校分數錯誤">學校分數錯誤</option>
+          <option value="學校科系錯誤">學校科系錯誤</option>
+          <option value="程式錯誤">程式錯誤</option>
+          <option value="功能異常">功能異常</option>
+          <option value="效能問題">效能問題</option>
+          <option value="其他">其他</option>
+        </select>
+        <div class="error" id="categoryError"></div>
+      </div>
+      <div class="form-group">
+        <label for="description">問題描述：</label>
+        <textarea id="description" name="description" required placeholder="請詳細描述您遇到的問題..."></textarea>
+        <div class="error" id="descriptionError"></div>
+      </div>
+      <div class="form-group">
+        <label for="captchaInput">驗證碼：</label>
+        <input type="text" id="captchaInput" name="captcha" required placeholder="請輸入驗證碼">
+        <div class="captcha-container">
+          <div id="captchaImage" class="captcha-image"></div>
+          <button type="button" id="refreshCaptcha" class="refresh-captcha">
+            <i class="fas fa-sync-alt"></i>
           </button>
-          <label for="fileInput" class="file-input-label">
-            <i class="fas fa-image icon"></i>上傳 QR 碼
-          </label>
-          <input type="file" id="fileInput" accept="image/*" />
         </div>
-        <div id="qr-reader" style="display: none;"></div>
-        <div id="qr-result"></div>
-      </form>
-
-      <div class="form-group">
-        <label for="schoolOwnership">
-          <i class="fas fa-building icon"></i>學校屬性：
-        </label>
-        <select id="schoolOwnership">
-          <option value="all">全部</option>
-          <option value="public">公立</option>
-          <option value="private">私立</option>
-        </select>
+        <div class="error" id="captchaError"></div>
       </div>
-      <div class="form-group">
-        <label for="schoolType">
-          <i class="fas fa-graduation-cap icon"></i>學校類型：
-        </label>
-        <select id="schoolType" onchange="toggleVocationalGroup()">
-          <option value="all">全部</option>
-          <option value="普通科">普通科</option>
-          <option value="職業類科">職業類科</option>
-        </select>
-      </div>
-      <div class="form-group" id="vocationalGroupContainer" style="display: none;">
-        <label for="vocationalGroup">
-          <i class="fas fa-tools icon"></i>職業群別：
-        </label>
-        <select id="vocationalGroup">
-          <option value="all">全部</option>
-          <option value="機械群">機械群</option>
-          <option value="動力機械群">動力機械群</option>
-          <option value="電機與電子群">電機與電子群</option>
-          <option value="化工群">化工群</option>
-          <option value="土木與建築群">土木與建築群</option>
-          <option value="商業與管理群">商業與管理群</option>
-          <option value="外語群">外語群</option>
-          <option value="設計群">設計群</option>
-          <option value="農業群">農業群</option>
-          <option value="食品群">食品群</option>
-          <option value="家政群">家政群</option>
-          <option value="餐旅群">餐旅群</option>
-        </select>
-      </div>
-      <div class="form-group">
-        <label for="analysisIdentity">
-          <i class="fas fa-user icon"></i> 分析身份：
-        </label>
-        <input type="hidden" id="analysisIdentity" value="student">
-        <div class="identity-selection">
-          <div class="identity-card selected" data-identity="student">
-            <i class="fas fa-user-graduate"></i>
-            <p>學生</p>
-          </div>
-          <div class="identity-card" data-identity="teacher">
-            <i class="fas fa-chalkboard-teacher"></i>
-            <p>老師</p>
-          </div>
-          <div class="identity-card" data-identity="parent">
-            <i class="fas fa-user-friends"></i>
-            <p>家長</p>
-          </div>
-        </div>
-      </div>
-
-      <div class="form-group">
-        <label for="chinese">
-          <i class="fas fa-book icon"></i>國文：
-        </label>
-        <select id="chinese">
-          <option value="">請選擇您的國文會考分數</option>
-          <option value="A++">A++</option>
-          <option value="A+">A+</option>
-          <option value="A">A</option>
-          <option value="B++">B++</option>
-          <option value="B+">B+</option>
-          <option value="B">B</option>
-          <option value="C">C</option>
-        </select>
-      </div>
-      <div class="form-group">
-        <label for="english">
-          <i class="fas fa-language icon"></i>英文：
-        </label>
-        <select id="english">
-          <option value="">請選擇您的英文會考分數</option>
-          <option value="A++">A++</option>
-          <option value="A+">A+</option>
-          <option value="A">A</option>
-          <option value="B++">B++</option>
-          <option value="B+">B+</option>
-          <option value="B">B</option>
-          <option value="C">C</option>
-        </select>
-      </div>
-      <div class="form-group">
-        <label for="math">
-          <i class="fas fa-calculator icon"></i>數學：
-        </label>
-        <select id="math">
-          <option value="">請選擇您的數學會考分數</option>
-          <option value="A++">A++</option>
-          <option value="A+">A+</option>
-          <option value="A">A</option>
-          <option value="B++">B++</option>
-          <option value="B+">B+</option>
-          <option value="B">B</option>
-          <option value="C">C</option>
-        </select>
-      </div>
-      <div class="form-group">
-        <label for="science">
-          <i class="fas fa-flask icon"></i>自然：
-        </label>
-        <select id="science">
-          <option value="">請選擇您的自然會考分數</option>
-          <option value="A++">A++</option>
-          <option value="A+">A+</option>
-          <option value="A">A</option>
-          <option value="B++">B++</option>
-          <option value="B+">B+</option>
-          <option value="B">B</option>
-          <option value="C">C</option>
-        </select>
-      </div>
-      <div class="form-group">
-        <label for="social">
-          <i class="fas fa-globe icon"></i>社會：
-        </label>
-        <select id="social">
-          <option value="">請選擇您的社會會考分數</option>
-          <option value="A++">A++</option>
-          <option value="A+">A+</option>
-          <option value="A">A</option>
-          <option value="B++">B++</option>
-          <option value="B+">B+</option>
-          <option value="B">B</option>
-          <option value="C">C</option>
-        </select>
-      </div>
-      <div class="form-group">
-        <label for="composition">
-          <i class="fas fa-pen-nib icon"></i>作文：
-        </label>
-        <select id="composition">
-          <option value="">請選擇您的作文會考分數</option>
-          <option value="0">0 級分</option>
-          <option value="1">1 級分</option>
-          <option value="2">2 級分</option>
-          <option value="3">3 級分</option>
-          <option value="4">4 級分</option>
-          <option value="5">5 級分</option>
-          <option value="6">6 級分</option>
-        </select>
-      </div>
-      <button type="button" id="analyzeButton" onclick="analyzeScores()">
-        <i class="fas fa-search icon"></i>分析落點
-      </button>
-      <button id="exportResults" style="display: none;" onclick="exportResults()">
-        <i class="fas fa-file-export icon"></i>匯出結果
-      </button>
-      <div id="results"></div>
-
-      <div id="ratingSection">
-        <h2><i class="fas fa-star icon"></i> 為我們TYCTW評分</h2>
-        <div id="starsContainer">
-          <span class="star" data-value="1">&#9733;</span>
-          <span class="star" data-value="2">&#9733;</span>
-          <span class="star" data-value="3">&#9733;</span>
-          <span class="star" data-value="4">&#9733;</span>
-          <span class="star" data-value="5">&#9733;</span>
-        </div>
-        <button id="submitRating" class="rating-button">
-          <i class="fas fa-paper-plane icon"></i> 提交評分
-        </button>
-        <div id="ratingMessage" style="display: none; margin-top: 10px;"></div>
-      </div>
-
-      <div class="copyright">
-        &copy; <span id="currentYear"></span> TYCTW桃聯區會考落點分析系統. All rights reserved.
-        <p>本網站由TYCTW會考落點分析平台開發維護。未經授權，禁止複製或轉載。</p>
-      </div>
+      <button type="submit" id="submitBtn">提交回報</button>
+    </form>
+    <div id="successMessage" class="success-message">
+      回報已成功提交，感謝您的反饋！<br>
+      您的回報代碼是：<span id="reportCode" class="report-code"></span>
+      <button id="copyBtn" class="copy-button tooltip">
+        <span class="tooltiptext" id="copyTooltip">複製代碼</span>
+        <i class="fas fa-copy"></i>
+      </button><br>
+      請保存此代碼以便日後查詢回報進度。
     </div>
+    <div id="errorMessage" class="error-message">提交失敗，請稍後再試。</div>
+  </div>
+</main>
 
-    <button id="darkModeToggle" class="dark-mode-toggle" aria-label="切換深色模式">
-      <i class="fas fa-moon"></i>
-    </button>
-
-    <!-- 美化版免責聲明 Modal -->
-    <div id="disclaimerModal" class="modal">
-      <div class="modal-content">
-        <button class="close" onclick="closeDisclaimer()">&times;</button>
-        <h2>
-          <i class="fas fa-balance-scale icon"></i> 免責聲明
-        </h2>
-        <a href="https://forms.gle/ZKW3W58gcbQW3vdX9" target="_blank">
-          <i class="fas fa-link icon"></i> 填寫表單獲取邀請碼
-        </a>
-        <p>
-          <i class="fas fa-info-circle icon"></i> 親愛的使用者，我們誠摯地提醒您：本網站提供的落點分析結果僅供參考，不代表實際錄取結果。實際錄取狀況可能會因多種因素而有所不同，包括但不限於：
-        </p>
-        <ul>
-          <li>
-            <i class="fas fa-university icon"></i> 各校的招生政策變化
-          </li>
-          <li>
-            <i class="fas fa-users icon"></i> 當年度考生整體表現
-          </li>
-          <li>
-            <i class="fas fa-star icon"></i> 特殊才能或其他加分項目
-          </li>
-          <li>
-            <i class="fas fa-clipboard-list icon"></i> 各校的實際招生名額調整
-          </li>
-        </ul>
-        <p>
-          <i class="fas fa-exclamation-triangle icon"></i> 為了確保您做出最佳的決定，我們強烈建議您：
-        </p>
-        <ul>
-          <li>
-            <i class="fas fa-search icon"></i> 參考多方資訊，不要僅依賴本網站的分析結果
-          </li>
-          <li>
-            <i class="fas fa-comments icon"></i> 諮詢學校輔導老師或升學顧問的專業意見
-          </li>
-          <li>
-            <i class="fas fa-globe icon"></i> 密切關注各校的官方網站和招生簡章，以獲取最新和最準確的資訊
-          </li>
-        </ul>
-        <p>
-          <i class="fas fa-shield-alt icon"></i> 本網站不對因使用本服務而產生的任何直接或間接損失負責。使用本服務即表示您同意本免責聲明的所有條款。祝您升學順利！
-        </p>
-        <button class="confirm-button" onclick="closeDisclaimer()">
-          <i class="fas fa-check-circle icon"></i> 我已了解並同意
-        </button>
-      </div>
+<div id="confirmDialog" class="confirm-dialog">
+  <div class="confirm-dialog-content">
+    <i class="fas fa-question-circle" style="font-size: 48px; color: var(--primary-color); margin-bottom: 20px;"></i>
+    <h3>確認提交</h3>
+    <p>您確定要提交這份回報嗎？提交後將無法修改。</p>
+    <div class="confirm-dialog-buttons">
+      <button id="confirmYes" class="confirm-yes"><i class="fas fa-check"></i> 確定</button>
+      <button id="confirmNo" class="confirm-no"><i class="fas fa-times"></i> 取消</button>
     </div>
+  </div>
+</div>
 
-    <!-- Instructions Modal -->
-    <div id="instructionsModal" class="modal">
-      <div class="modal-content">
-        <span class="close" onclick="closeInstructions()">&times;</span>
-        <h2><i class="fas fa-book icon"></i>使用說明</h2>
-        
-        <div class="instruction-item">
-          <h3><i class="fas fa-key icon"></i>獲取並輸入邀請碼</h3>
-          <div class="highlight">
-            <i class="fas fa-info-circle"></i> 邀請碼每小時更新一次，請確保使用最新的邀請碼。
-          </div>
-          <p>您可以通過以下方式獲取邀請碼：</p>
-          <ul>
-            <li>點擊網頁上方的"<strong>填寫表單獲取邀請碼</strong>"按鈕</li>
-            <li>聯絡您的學校老師或輔導人員</li>
-            <li>掃描 QR 碼（如果您收到了含有邀請碼的QR碼）</li>
-            <li>上傳包含邀請碼的 QR 碼圖片</li>
-          </ul>
-          <p>將얻的邀請碼輸入到"邀請碼"欄位中，系統會自動驗證邀請碼的有效性。</p>
-        </div>
+<footer class="copyright">
+  2025 TYCTW會考落點分析系統異常回報平台。保留所有權利。
+</footer>
 
-        <div class="instruction-item">
-          <h3><i class="fas fa-filter icon"></i>選擇學校屬性和類型</h3>
-          <p>根據您的需求，選擇以下篩選條件：</p>
-          <ul>
-            <li><strong>學校屬性</strong>：全部、公立或私立</li>
-            <li><strong>學校類型</strong>：全部、普通科或職業類科</li>
-            <li><strong>職業群別</strong>：若選擇職業類科，可再細分選擇特定職業群別</li>
-            <li><strong>分析身份</strong>：學生、老師或家長（用於系統改進統計）</li>
-          </ul>
-          <div class="highlight">
-            <i class="fas fa-lightbulb"></i> 提示：若想查看更多選項，建議先選擇"全部"，再根據結果進行篩選。
-          </div>
-        </div>
-
-        <div class="instruction-item">
-          <h3><i class="fas fa-pencil-alt icon"></i>輸入會考成績</h3>
-          <div class="highlight">
-            <i class="fas fa-exclamation-circle"></i> 請確保填寫所有科目的成績，否則無法進行分析。
-          </div>
-          <p>依序選擇各科目的會考等級：</p>
-          <ul>
-            <li><strong>國文、英文、數學、自然、社會</strong>：從 A++（最高）到 C（最低）</li>
-            <li><strong>作文</strong>：從 0 到 6 級分</li>
-          </ul>
-          <p>成績等級與積分對照：</p>
-          <ul>
-            <li>A++ = 7分</li>
-            <li>A+ = 6分</li>
-            <li>A = 5分</li>
-            <li>B++ = 4分</li>
-            <li>B+ = 3分</li>
-            <li>B = 2分</li>
-            <li>C = 1分</li>
-          </ul>
-        </div>
-
-        <div class="instruction-item">
-          <h3><i class="fas fa-search icon"></i>點擊分析落點</h3>
-          <p>填寫完所有資料後，點擊"<strong>分析落點</strong>"按鈕，系統將：</p>
-          <ul>
-            <li>驗證您的邀請碼</li>
-            <li>計算您的總積分與總積點</li>
-            <li>分析您可能符合條件的學校</li>
-            <li>生成完整的分析報告</li>
-          </ul>
-          <div class="highlight">
-            <i class="fas fa-spinner"></i> 分析過程可能需要幾秒鐘，請耐心等待。
-          </div>
-        </div>
-
-        <div class="instruction-item">
-          <h3><i class="fas fa-chart-line icon"></i>解讀分析結果</h3>
-          <p>系統會根據您的成績顯示：</p>
-          <ul>
-            <li><strong>總積分</strong>：所有科目成績換算後的總分</li>
-            <li><strong>總積點</strong>：包含作文在內的加權總分</li>
-            <li><strong>符合條件學校數</strong>：根據您的成績可能達到的學校數量</li>
-            <li><strong>成績分析</strong>：展示各科等級</li>
-            <li><strong>學校分析</strong>：按學校類型分類顯示符合條件的學校</li>
-          </ul>
-          <p>每所學校會顯示：</p>
-          <ul>
-            <li>學校名稱及公私立屬性</li>
-            <li>去年最低錄取分數（如有資料）</li>
-            <li>近三年的錄取分數走勢（如有資料）</li>
-            <li>特殊備註資訊（如有）</li>
-          </ul>
-          <div class="highlight">
-            <i class="fas fa-info-circle"></i> 學校依照類型分類顯示，方便您進行比較和選擇。
-          </div>
-        </div>
-
-        <div class="instruction-item">
-          <h3><i class="fas fa-file-export icon"></i>匯出分析結果</h3>
-          <p>您可以將分析結果匯出為多種格式：</p>
-          <ul>
-            <li><strong>文字檔 (.txt)</strong>：簡單文字格式，包含所有分析數據</li>
-            <li><strong>PDF檔 (.pdf)</strong>：美觀格式化的報告，適合打印與分享</li>
-            <li><strong>CSV檔 (.csv)</strong>：可匯入Excel或Google試算表進行進一步分析</li>
-            <li><strong>JSON檔 (.json)</strong>：程式化格式，適合開發人員使用</li>
-            <li><strong>列印結果</strong>：直接列印分析報告，含有精美頁首頁尾</li>
-          </ul>
-          <div class="highlight">
-            <i class="fas fa-lightbulb"></i> 建議將結果匯出保存，方便與家人老師討論或日後參考比較。
-          </div>
-          <p>匯出的報告會包含：</p>
-          <ul>
-            <li>分析時間與日期</li>
-            <li>您的成績摘要</li>
-            <li>總積分與總積點計算</li>
-            <li>符合條件的所有學校列表</li>
-            <li>系統版本與資料更新時間</li>
-          </ul>
-        </div>
-
-        <div class="instruction-item">
-          <h3><i class="fas fa-mobile-alt icon"></i>行動裝置使用建議</h3>
-          <p>在手機或平板上使用本系統時：</p>
-          <ul>
-            <li>建議將螢幕轉為橫向模式以獲得更好的閱讀體驗</li>
-            <li>使用"掃描QR碼"功能需允許相機權限</li>
-            <li>匯出PDF時，建議先預覽再儲存</li>
-            <li>如遇操作不便，可嘗試使用電腦版瀏覽</li>
-          </ul>
-          <div class="highlight">
-            <i class="fas fa-moon"></i> 提示：夜間使用時可點擊右下角的月亮圖示切換為深色模式，保護眼睛。
-          </div>
-        </div>
-
-        <div class="instruction-item">
-          <h3><i class="fas fa-star icon"></i>評分功能</h3>
-          <p>使用完系統後，您可以：</p>
-          <ul>
-            <li>在頁面底部的評分區域給予1-5星的評價</li>
-            <li>點擊"提交評分"按鈕提交您的意見</li>
-          </ul>
-          <p>您的評分和反饋將幫助我們不斷改進系統，提供更好的服務。所有評分資料都將匿名收集，僅用於系統改進。</p>
-        </div>
-
-        <div class="instruction-item">
-          <h3><i class="fas fa-shield-alt icon"></i>資料隱私與安全</h3>
-          <p>我們重視您的隱私：</p>
-          <ul>
-            <li>所有成績資料僅在您的裝置上處理，不會儲存到我們的伺服器</li>
-            <li>分析過程中僅傳送必要資訊，不含個人身份識別資料</li>
-            <li>系統不會在您的裝置上儲存cookie或追蹤腳本</li>
-            <li>您的邀請碼使用一次性驗證，不會與您的身份關聯</li>
-          </ul>
-          <div class="highlight">
-            <i class="fas fa-lock"></i> 您的資料安全對我們至關重要，如有任何疑慮，請通過系統異常回報頁面聯繫我們。
-          </div>
-        </div>
-
-        <div class="instruction-item">
-          <h3><i class="fas fa-question-circle icon"></i>常見問題</h3>
-          <ul>
-            <li><strong>Q: 邀請碼無效怎麼辦？</strong><br>A: 請確保使用最新邀請碼，或重新填寫表單獲取。邀請碼通常每小時更新一次。</li>
-            <li><strong>Q: 為什麼沒有顯示任何學校？</strong><br>A: 可能是篩選條件過於嚴格，嘗試放寬條件或檢查成績輸入是否正確。</li>
-            <li><strong>Q: 結果與實際錄取有差異嗎？</strong><br>A: 是的，本系統僅提供參考，實際錄取結果受多種因素影響，包括當年度考生整體表現等。</li>
-            <li><strong>Q: 如何獲取更多協助？</strong><br>A: 可點擊頂部菜單的"系統異常回報"或諮詢您的學校老師。</li>
-            <li><strong>Q: 資料更新頻率是多少？</strong><br>A: 學校資料通常每年更新一次，在會考結束後的入學資料公布時。</li>
-            <li><strong>Q: 可以多次分析不同成績嗎？</strong><br>A: 可以，您可以使用同一個邀請碼嘗試不同的成績組合，了解不同成績對結果的影響。</li>
-            <li><strong>Q: 系統會記住我的成績嗎？</strong><br>A: 不會，每次頁面重新載入都需要重新輸入成績，這是為了保護您的隱私。</li>
-          </ul>
-        </div>
-      </div>
-    </div>
-
-    <script src="script.js"></script>
-    <!-- Google tag (gtag.js) -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-7CT626DVSZ"></script>
-    <script>
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
-
-      gtag('config', 'G-7CT626DVSZ');
-    </script>
-  </body>
+<script src="config.js"></script>
+<script src="script.js"></script>
+</body>
 </html>

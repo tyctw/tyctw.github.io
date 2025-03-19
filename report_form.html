@@ -1,4 +1,5 @@
-<html><head>
+<html lang="zh-TW">
+<head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>系統異常回報</title>
@@ -70,23 +71,21 @@ body {
 .full-page-menu {
   position: fixed;
   top: 0;
-  left: 0;
-  width: 100%;
+  right: -100%;
+  width: 300px;
   height: 100%;
   background-color: rgba(74, 144, 226, 0.95);
   z-index: 1000;
   display: flex;
   justify-content: center;
   align-items: center;
-  opacity: 0;
-  visibility: hidden;
   backdrop-filter: blur(10px);
-  transition: opacity 0.3s ease, visibility 0.3s ease;
+  transition: right 0.3s ease;
+  box-shadow: -5px 0 15px rgba(0, 0, 0, 0.1);
 }
 
 .full-page-menu.active {
-  opacity: 1;
-  visibility: visible;
+  right: 0;
 }
 
 .close-button {
@@ -123,13 +122,13 @@ body {
 .nav-item {
   margin: 20px 0;
   opacity: 0;
-  transform: translateY(20px);
+  transform: translateX(20px);
   transition: opacity 0.5s ease, transform 0.5s ease;
 }
 
 .full-page-menu.active .nav-item {
   opacity: 1;
-  transform: translateY(0);
+  transform: translateX(0);
 }
 
 .nav-link {
@@ -433,6 +432,135 @@ input.invalid, select.invalid, textarea.invalid {
   animation: fadeInUp 0.6s ease-out;
 }
 
+.report-code {
+  font-weight: bold;
+  font-size: 1.2em;
+  color: var(--primary-color);
+  background-color: rgba(74, 144, 226, 0.1);
+  padding: 5px 10px;
+  border-radius: 4px;
+  display: inline-block;
+  margin-top: 5px;
+}
+
+.copy-button {
+  background-color: var(--primary-color);
+  color: white;
+  border: none;
+  padding: 5px 10px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 14px;
+  margin-left: 10px;
+  transition: all 0.2s ease;
+}
+
+.copy-button:hover {
+  background-color: var(--secondary-color);
+}
+
+.tooltip {
+  position: relative;
+  display: inline-block;
+}
+
+.tooltip .tooltiptext {
+  visibility: hidden;
+  width: 80px;
+  background-color: #333;
+  color: #fff;
+  text-align: center;
+  border-radius: 6px;
+  padding: 5px 0;
+  position: absolute;
+  z-index: 1;
+  bottom: 125%;
+  left: 50%;
+  margin-left: -40px;
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+
+.tooltip .tooltiptext::after {
+  content: "";
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  margin-left: -5px;
+  border-width: 5px;
+  border-style: solid;
+  border-color: #333 transparent transparent transparent;
+}
+
+.tooltip:hover .tooltiptext {
+  visibility: visible;
+  opacity: 1;
+}
+
+.progress-steps {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 30px;
+  position: relative;
+}
+
+.progress-steps::before {
+  content: '';
+  position: absolute;
+  top: 15px;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background-color: #e0e0e0;
+  z-index: 0;
+}
+
+.step {
+  position: relative;
+  z-index: 1;
+  text-align: center;
+  flex: 1;
+}
+
+.step-number {
+  width: 30px;
+  height: 30px;
+  background-color: #e0e0e0;
+  color: #333;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0 auto 10px;
+  transition: all 0.3s ease;
+  font-weight: bold;
+}
+
+.step-label {
+  font-size: 12px;
+  color: #777;
+  transition: all 0.3s ease;
+}
+
+.step.active .step-number {
+  background-color: var(--primary-color);
+  color: white;
+}
+
+.step.active .step-label {
+  color: var(--primary-color);
+  font-weight: 600;
+}
+
+.step.completed .step-number {
+  background-color: var(--secondary-color);
+  color: white;
+}
+
+.step.completed .step-number::after {
+  content: '✓';
+}
+
 @media screen and (max-width: 768px) {
   .menu-icon {
     display: block;
@@ -454,8 +582,15 @@ input.invalid, select.invalid, textarea.invalid {
     font-size: 16px;
     padding: 12px;
   }
+  
+  .step-label {
+    font-size: 10px;
+  }
+  
+  .progress-steps {
+    margin-bottom: 20px;
+  }
 }
-
 </style>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </head>
@@ -486,6 +621,22 @@ input.invalid, select.invalid, textarea.invalid {
 <main class="main-content">
   <div class="container fade-in-up">
     <h2>TYCTW系統異常回報表單</h2>
+    
+    <div class="progress-steps">
+      <div class="step active" id="step1">
+        <div class="step-number">1</div>
+        <div class="step-label">填寫資訊</div>
+      </div>
+      <div class="step" id="step2">
+        <div class="step-number">2</div>
+        <div class="step-label">確認提交</div>
+      </div>
+      <div class="step" id="step3">
+        <div class="step-number">3</div>
+        <div class="step-label">完成回報</div>
+      </div>
+    </div>
+    
     <form id="reportForm">
       <div class="form-group">
         <label for="email">電子郵件：</label>
@@ -527,7 +678,11 @@ input.invalid, select.invalid, textarea.invalid {
     </form>
     <div id="successMessage" class="success-message">
       回報已成功提交，感謝您的反饋！<br>
-      您的回報代碼是：<span id="reportCode" class="report-code"></span><br>
+      您的回報代碼是：<span id="reportCode" class="report-code"></span>
+      <button id="copyBtn" class="copy-button tooltip">
+        <span class="tooltiptext" id="copyTooltip">複製代碼</span>
+        <i class="fas fa-copy"></i>
+      </button><br>
       請保存此代碼以便日後查詢回報進度。
     </div>
     <div id="errorMessage" class="error-message">提交失敗，請稍後再試。</div>
@@ -547,286 +702,10 @@ input.invalid, select.invalid, textarea.invalid {
 </div>
 
 <footer class="copyright">
-  © 2025 TYCTW會考落點分析系統異常回報平台。保留所有權利。
+  2025 TYCTW會考落點分析系統異常回報平台。保留所有權利。
 </footer>
 
-<script>
-let captchaText = '';
-let captchaAttempts = 0;
-const MAX_CAPTCHA_ATTEMPTS = 3;
-
-function generateCaptcha() {
-  const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnpqrstuvwxyz23456789';
-  captchaText = '';
-  for (let i = 0; i < 6; i++) {
-    captchaText += chars.charAt(Math.floor(Math.random() * chars.length));
-  }
-  document.getElementById('captchaImage').textContent = captchaText;
-}
-
-function generateReportCode() {
-  const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
-  let result = '';
-  for (let i = 0; i < 8; i++) {
-    result += characters.charAt(Math.floor(Math.random() * characters.length));
-  }
-  return result;
-}
-
-function validateEmail(email) {
-  const re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-  return re.test(String(email).toLowerCase());
-}
-
-function showError(inputElement, errorMessage) {
-  const errorElement = document.getElementById(inputElement.id + 'Error');
-  if (errorElement) {
-    errorElement.textContent = errorMessage;
-    errorElement.style.display = 'block';
-    inputElement.classList.add('invalid');
-  }
-}
-
-function hideError(inputElement) {
-  const errorElement = document.getElementById(inputElement.id + 'Error');
-  if (errorElement) {
-    errorElement.style.display = 'none';
-    inputElement.classList.remove('invalid');
-  }
-}
-
-function showConfirmDialog(callback) {
-  const confirmDialog = document.getElementById('confirmDialog');
-  const confirmYes = document.getElementById('confirmYes');
-  const confirmNo = document.getElementById('confirmNo');
-
-  confirmDialog.style.display = 'flex';
-
-  confirmYes.onclick = function() {
-    confirmDialog.style.display = 'none';
-    callback();
-  };
-
-  confirmNo.onclick = function() {
-    confirmDialog.style.display = 'none';
-  };
-
-  confirmDialog.onclick = function(event) {
-    if (event.target === confirmDialog) {
-      confirmDialog.style.display = 'none';
-    }
-  };
-}
-
-document.addEventListener('DOMContentLoaded', function() {
-  generateCaptcha();
-
-  document.getElementById('refreshCaptcha').addEventListener('click', generateCaptcha);
-
-  document.getElementById('reportForm').addEventListener('submit', function(e) {
-    e.preventDefault();
-
-    let isValid = true;
-
-    const email = document.getElementById('email');
-    const category = document.getElementById('category');
-    const description = document.getElementById('description');
-    const captchaInput = document.getElementById('captchaInput');
-    const submitBtn = document.getElementById('submitBtn');
-
-    // Validate email
-    if (!validateEmail(email.value)) {
-      showError(email, '請輸入有效的電子郵件地址');
-      isValid = false;
-    } else {
-      hideError(email);
-    }
-
-    // Validate category
-    if (category.value === '') {
-      showError(category, '請選擇異常類別');
-      isValid = false;
-    } else {
-      hideError(category);
-    }
-
-    // Validate description
-    if (description.value.trim().length < 10) {
-      showError(description, '問題描述至少需要10個字符');
-      isValid = false;
-    } else {
-      hideError(description);
-    }
-
-    // Validate captcha
-    if (captchaInput.value.toLowerCase() !== captchaText.toLowerCase()) {
-      captchaAttempts++;
-      if (captchaAttempts >= MAX_CAPTCHA_ATTEMPTS) {
-        showError(captchaInput, '驗證碼錯誤次數過多，請稍後再試');
-        submitBtn.disabled = true;
-      } else {
-        showError(captchaInput, `驗證碼不正確，還有 ${MAX_CAPTCHA_ATTEMPTS - captchaAttempts} 次機會`);
-      }
-      isValid = false;
-      generateCaptcha();
-    } else {
-      hideError(captchaInput);
-    }
-
-    if (!isValid) {
-      return;
-    }
-
-    // Show confirmation dialog
-    showConfirmDialog(() => {
-      submitBtn.disabled = true;
-      submitBtn.textContent = '提交中...';
-
-      var reportCode = generateReportCode();
-
-      var data = {
-        email: email.value,
-        category: category.value,
-        description: description.value,
-        reportCode: reportCode
-      };
-
-      fetch('https://script.google.com/macros/s/AKfycbxQcTd_LzijWQokSEEgy9QQB6v70ftcJt00GNDJeWQ2FPGgNnY-pr1Cs--QZyBpI8OJnQ/exec', {
-        method: 'POST',
-        body: JSON.stringify(data)
-      })
-      .then(response => response.json())
-      .then(data => {
-        if(data.result === 'success') {
-          document.getElementById('reportCode').textContent = reportCode;
-          document.getElementById('successMessage').style.display = 'block';
-          document.getElementById('errorMessage').style.display = 'none';
-          document.getElementById('reportForm').reset();
-          generateCaptcha();
-          captchaAttempts = 0;
-        } else {
-          throw new Error('Submission failed');
-        }
-      })
-      .catch((error) => {
-        console.error('Error:', error);
-        document.getElementById('errorMessage').style.display = 'block';
-        document.getElementById('successMessage').style.display = 'none';
-      })
-      .finally(() => {
-        submitBtn.disabled = false;
-        submitBtn.textContent = '提交回報';
-      });
-    });
-  });
-
-  // Add some interactivity
-  const inputs = document.querySelectorAll('input, select, textarea');
-  inputs.forEach(input => {
-    input.addEventListener('focus', function() {
-      this.parentElement.querySelector('label').style.color = '#4a90e2';
-    });
-    input.addEventListener('blur', function() {
-      this.parentElement.querySelector('label').style.color = '#333';
-    });
-    input.addEventListener('input', function() {
-      hideError(this);
-    });
-  });
-
-  // Full-page menu toggle
-  const menuIcon = document.getElementById('menuIcon');
-  const fullPageMenu = document.getElementById('fullPageMenu');
-  const navLinks = document.querySelectorAll('.nav-link');
-  const closeMenuButton = document.getElementById('closeMenuButton');
-  const navItems = document.querySelectorAll('.nav-item');
-
-  function toggleMenu() {
-    fullPageMenu.classList.toggle('active');
-    document.body.style.overflow = fullPageMenu.classList.contains('active') ? 'hidden' : '';
-    
-    if (fullPageMenu.classList.contains('active')) {
-      navItems.forEach((item, index) => {
-        setTimeout(() => {
-          item.style.opacity = '1';
-          item.style.transform = 'translateY(0)';
-        }, index * 100);
-      });
-    } else {
-      navItems.forEach(item => {
-        item.style.opacity = '0';
-        item.style.transform = 'translateY(20px)';
-      });
-    }
-  }
-
-  menuIcon.addEventListener('click', toggleMenu);
-  closeMenuButton.addEventListener('click', toggleMenu);
-
-  navLinks.forEach(link => {
-    link.addEventListener('click', () => {
-      fullPageMenu.classList.remove('active');
-      document.body.style.overflow = '';
-    });
-  });
-
-  // Close menu when window is resized
-  window.addEventListener('resize', () => {
-    if (window.innerWidth > 768 && fullPageMenu.classList.contains('active')) {
-      fullPageMenu.classList.remove('active');
-      document.body.style.overflow = '';
-    }
-  });
-
-  // Add smooth scrolling for internal links
-  document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-    anchor.addEventListener('click', function (e) {
-      e.preventDefault();
-
-      document.querySelector(this.getAttribute('href')).scrollIntoView({
-        behavior: 'smooth'
-      });
-    });
-  });
-
-  // Add custom animations
-  const container = document.querySelector('.container');
-  container.addEventListener('mousemove', (e) => {
-    const { offsetX, offsetY } = e;
-    const { offsetWidth, offsetHeight } = container;
-    const moveX = (offsetX / offsetWidth - 0.5) * 20;
-    const moveY = (offsetY / offsetHeight - 0.5) * 20;
-    container.style.transform = `translateX(${moveX}px) translateY(${moveY}px)`;
-  });
-
-  container.addEventListener('mouseleave', () => {
-    container.style.transform = 'translateX(0) translateY(0)';
-  });
-
-  // 防止複製
-  document.addEventListener('copy', function(e) {
-    e.preventDefault();
-    return false;
-  });
-
-  // 防止截圖 (僅適用於部分瀏覽器)
-  document.addEventListener('keyup', function(e) {
-    if (e.key == 'PrintScreen') {
-      navigator.clipboard.writeText('');
-      alert('截圖功能已被禁用');
-    }
-  });
-
-  // 防止右鍵點擊
-  document.addEventListener('contextmenu', function(e) {
-    e.preventDefault();
-  });
-
-  // 防止拖曳選擇文字
-  document.onselectstart = function() {
-    return false;
-  };
-});
-</script>
+<script src="config.js"></script>
+<script src="scriptfrom.js"></script>
 </body>
 </html>

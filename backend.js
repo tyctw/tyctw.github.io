@@ -7,6 +7,17 @@ function doPost(e) {
   var sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
   var data = JSON.parse(e.postData.contents);
 
+  // Verify Turnstile captcha token
+  var captchaToken = data.captchaToken;
+  var captchaVerified = verifyCaptchaToken(captchaToken);
+  
+  if (!captchaVerified) {
+    return ContentService.createTextOutput(JSON.stringify({ 
+      'result': 'error', 
+      'message': 'CAPTCHA verification failed' 
+    })).setMimeType(ContentService.MimeType.JSON);
+  }
+
   var timestamp = new Date();
   var email = data.email;
   var category = data.category;
@@ -25,6 +36,31 @@ function doPost(e) {
 
   return ContentService.createTextOutput(JSON.stringify({ 'result': 'success' }))
     .setMimeType(ContentService.MimeType.JSON);
+}
+
+/**
+ * Verifies the Turnstile captcha token with Cloudflare
+ * @param {string} token - The captcha token to verify
+ * @returns {boolean} Whether the token is valid
+ */
+function verifyCaptchaToken(token) {
+  if (!token) return false;
+  
+  try {
+    var response = UrlFetchApp.fetch("https://challenges.cloudflare.com/turnstile/v0/siteverify", {
+      method: "post",
+      payload: {
+        secret: "0x4AAAAAABBmAnAWA7c5kmt9o7XzxdpAQvI",
+        response: token
+      }
+    });
+    
+    var result = JSON.parse(response.getContentText());
+    return result.success === true;
+  } catch (error) {
+    console.error("Error verifying Turnstile token:", error);
+    return false;
+  }
 }
 
 /**

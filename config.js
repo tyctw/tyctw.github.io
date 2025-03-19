@@ -5,7 +5,8 @@ const CONFIG = {
   
   // Captcha settings
   captcha: {
-    length: 6,
+    siteKey: '0x4AAAAAABBmAhaW1rWD_-LL',
+    secretKey: '0x4AAAAAABBmAnAWA7c5kmt9o7XzxdpAQvI',
     maxAttempts: 3,
   },
   

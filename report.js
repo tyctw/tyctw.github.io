@@ -1,18 +1,14 @@
 // Global variables
-let captchaText = '';
-let captchaAttempts = 0;
+let captchaToken = '';
 const MAX_CAPTCHA_ATTEMPTS = CONFIG.captcha.maxAttempts;
 
 /**
- * Generates a random captcha text
+ * Callback function when Turnstile captcha is completed successfully
+ * @param {string} token The turnstile token from verification
  */
-function generateCaptcha() {
-  const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnpqrstuvwxyz23456789';
-  captchaText = '';
-  for (let i = 0; i < CONFIG.captcha.length; i++) {
-    captchaText += chars.charAt(Math.floor(Math.random() * chars.length));
-  }
-  document.getElementById('captchaImage').textContent = captchaText;
+function onCaptchaSuccess(token) {
+  captchaToken = token;
+  hideError(document.querySelector('.cf-turnstile'));
 }
 
 /**
@@ -171,12 +167,13 @@ async function checkReportStatus(reportCode) {
 
 // When the DOM is loaded, initialize the application
 document.addEventListener('DOMContentLoaded', function() {
-  // Generate initial captcha
-  generateCaptcha();
-
-  // Add event listener to refresh the captcha
-  document.getElementById('refreshCaptcha').addEventListener('click', generateCaptcha);
-
+  // Add Turnstile script
+  const turnstileScript = document.createElement('script');
+  turnstileScript.src = 'https://challenges.cloudflare.com/turnstile/v0/api.js';
+  turnstileScript.async = true;
+  turnstileScript.defer = true;
+  document.head.appendChild(turnstileScript);
+  
   // Add event listener for copy button
   document.getElementById('copyBtn').addEventListener('click', async function() {
     const reportCode = document.getElementById('reportCode').textContent;
@@ -242,7 +239,6 @@ document.addEventListener('DOMContentLoaded', function() {
     const email = document.getElementById('email');
     const category = document.getElementById('category');
     const description = document.getElementById('description');
-    const captchaInput = document.getElementById('captchaInput');
     const submitBtn = document.getElementById('submitBtn');
 
     // Validate email
@@ -269,19 +265,10 @@ document.addEventListener('DOMContentLoaded', function() {
       hideError(description);
     }
 
-    // Validate captcha
-    if (captchaInput.value.toLowerCase() !== captchaText.toLowerCase()) {
-      captchaAttempts++;
-      if (captchaAttempts >= MAX_CAPTCHA_ATTEMPTS) {
-        showError(captchaInput, '驗證碼錯誤次數過多，請稍後再試');
-        submitBtn.disabled = true;
-      } else {
-        showError(captchaInput, `驗證碼不正確，還有 ${MAX_CAPTCHA_ATTEMPTS - captchaAttempts} 次機會`);
-      }
+    // Validate Turnstile captcha
+    if (!captchaToken) {
+      showError(document.querySelector('.cf-turnstile'), '請完成驗證');
       isValid = false;
-      generateCaptcha();
-    } else {
-      hideError(captchaInput);
     }
 
     if (!isValid) {
@@ -299,7 +286,8 @@ document.addEventListener('DOMContentLoaded', function() {
         email: email.value,
         category: category.value,
         description: description.value,
-        reportCode: reportCode
+        reportCode: reportCode,
+        captchaToken: captchaToken
       };
 
       fetch(CONFIG.apiEndpoint, {
@@ -311,8 +299,7 @@ document.addEventListener('DOMContentLoaded', function() {
         if(data.result === 'success') {
           showSuccessMessage(reportCode);
           document.getElementById('reportForm').reset();
-          generateCaptcha();
-          captchaAttempts = 0;
+          captchaToken = '';
         } else {
           throw new Error('Submission failed');
         }

@@ -610,10 +610,12 @@ input.invalid, select.invalid, textarea.invalid {
 
   .container {
     padding: 30px 20px;
+    margin: 0 10px;
+    width: calc(100% - 20px);
   }
 
   h2 {
-    font-size: 28px;
+    font-size: 24px;
   }
 
   input[type="email"],
@@ -631,6 +633,59 @@ input.invalid, select.invalid, textarea.invalid {
   
   .progress-steps {
     margin-bottom: 20px;
+  }
+  
+  .confirm-dialog-content {
+    margin: 10% auto;
+    width: 90%;
+    padding: 20px;
+  }
+  
+  .form-group {
+    margin-bottom: 15px;
+  }
+  
+  .success-message, .error-message {
+    padding: 10px;
+  }
+  
+  .nav-link {
+    font-size: 20px;
+  }
+  
+  .full-page-menu {
+    width: 100%;
+    right: -100%;
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .container {
+    padding: 20px 15px;
+  }
+  
+  h2 {
+    font-size: 22px;
+  }
+  
+  .step-number {
+    width: 25px;
+    height: 25px;
+    font-size: 12px;
+  }
+  
+  .confirm-dialog-buttons {
+    flex-direction: column;
+    gap: 10px;
+  }
+  
+  .confirm-dialog-buttons button {
+    width: 100%;
+  }
+  
+  .report-code {
+    font-size: 1em;
+    word-break: break-all;
   }
 }
 </style>
@@ -748,6 +803,6 @@ input.invalid, select.invalid, textarea.invalid {
 </footer>
 
 <script src="config.js"></script>
-<script src="report.js"></script>
+<script src="script.js"></script>
 </body>
 </html>

@@ -350,7 +350,7 @@ document.addEventListener('DOMContentLoaded', function() {
         setTimeout(() => {
           item.style.opacity = '1';
           item.style.transform = 'translateX(0)';
-        }, index * 100);
+        }, 50 + index * 50); // Faster animation for mobile
       });
     } else {
       navItems.forEach(item => {
@@ -389,14 +389,17 @@ document.addEventListener('DOMContentLoaded', function() {
     });
   });
 
-  // Add custom animations
+  // Add custom animations - disable on small screens
   const container = document.querySelector('.container');
   container.addEventListener('mousemove', (e) => {
-    const { offsetX, offsetY } = e;
-    const { offsetWidth, offsetHeight } = container;
-    const moveX = (offsetX / offsetWidth - 0.5) * 20;
-    const moveY = (offsetY / offsetHeight - 0.5) * 20;
-    container.style.transform = `translateX(${moveX}px) translateY(${moveY}px)`;
+    // Only apply hover effects on non-touch devices with wider screens
+    if (window.innerWidth > 768 && window.matchMedia('(hover: hover)').matches) {
+      const { offsetX, offsetY } = e;
+      const { offsetWidth, offsetHeight } = container;
+      const moveX = (offsetX / offsetWidth - 0.5) * 10; // Reduced movement
+      const moveY = (offsetY / offsetHeight - 0.5) * 10;
+      container.style.transform = `translateX(${moveX}px) translateY(${moveY}px)`;
+    }
   });
 
   container.addEventListener('mouseleave', () => {

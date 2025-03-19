@@ -130,14 +130,117 @@ async function copyToClipboard(text) {
 }
 
 /**
+ * Uploads an image to Imgur and returns the URL
+ * @param {File} file The image file to upload
+ * @returns {Promise<string>} The URL of the uploaded image
+ */
+async function uploadImageToImgur(file) {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onload = async () => {
+      const base64data = reader.result.split(',')[1];
+      
+      try {
+        const response = await fetch('https://api.imgur.com/3/image', {
+          method: 'POST',
+          headers: {
+            'Authorization': 'Client-ID 4409588f10776f7',
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            image: base64data,
+            type: 'base64'
+          })
+        });
+        
+        const data = await response.json();
+        if (data.success) {
+          resolve(data.data.link);
+        } else {
+          reject(new Error('Failed to upload image'));
+        }
+      } catch (error) {
+        reject(error);
+      }
+    };
+    reader.onerror = (error) => reject(error);
+  });
+}
+
+/**
+ * Validates the file upload
+ * @param {File} file The file to validate
+ * @returns {boolean} Whether the file is valid
+ */
+function validateFileUpload(file) {
+  if (!file) return true; // No file is valid (optional upload)
+  
+  // Check file type
+  if (!CONFIG.fileUpload.acceptedFormats.includes(file.type)) {
+    return false;
+  }
+  
+  // Check file size (convert MB to bytes)
+  const maxSizeBytes = CONFIG.fileUpload.maxSizeMB * 1024 * 1024;
+  if (file.size > maxSizeBytes) {
+    return false;
+  }
+  
+  return true;
+}
+
+/**
+ * Displays a preview of the uploaded image
+ * @param {File} file The image file to preview
+ */
+function displayImagePreview(file) {
+  const previewContainer = document.getElementById('imagePreview');
+  previewContainer.innerHTML = '';
+  
+  if (file) {
+    const reader = new FileReader();
+    reader.onload = function(e) {
+      const img = document.createElement('img');
+      img.src = e.target.result;
+      img.className = 'preview-image';
+      previewContainer.appendChild(img);
+      
+      const removeBtn = document.createElement('button');
+      removeBtn.innerHTML = '<i class="fas fa-times"></i>';
+      removeBtn.className = 'remove-image';
+      removeBtn.onclick = function() {
+        document.getElementById('imageUpload').value = '';
+        previewContainer.innerHTML = '';
+      };
+      previewContainer.appendChild(removeBtn);
+    };
+    reader.readAsDataURL(file);
+    previewContainer.style.display = 'block';
+  } else {
+    previewContainer.style.display = 'none';
+  }
+}
+
+/**
  * Shows the success message with report code and hides the form
  * @param {string} reportCode The generated report code
+ * @param {string} imageUrl The URL of the uploaded image (if any)
  */
-function showSuccessMessage(reportCode) {
+function showSuccessMessage(reportCode, imageUrl) {
   document.getElementById('reportCode').textContent = reportCode;
   document.getElementById('successMessage').style.display = 'block';
   document.getElementById('errorMessage').style.display = 'none';
   document.getElementById('reportForm').style.display = 'none';
+  
+  // Display image in success message if provided
+  const successImage = document.getElementById('successImage');
+  if (imageUrl) {
+    successImage.innerHTML = `<img src="${imageUrl}" alt="上傳的截圖" class="success-image">`;
+    successImage.style.display = 'block';
+  } else {
+    successImage.style.display = 'none';
+  }
   
   // Add status indicator to success message
   const statusIndicator = document.getElementById('statusIndicator');
@@ -230,8 +333,22 @@ document.addEventListener('DOMContentLoaded', function() {
     this.innerHTML = '<i class="fas fa-sync-alt"></i> 檢查進度';
   });
 
+  // Add event listener for image upload
+  document.getElementById('imageUpload').addEventListener('change', function(e) {
+    const file = e.target.files[0];
+    if (file) {
+      if (!validateFileUpload(file)) {
+        showError(this, `檔案格式或大小不符。請上傳 ${CONFIG.fileUpload.maxSizeMB}MB 以下的圖片檔案。`);
+        this.value = '';
+        return;
+      }
+      hideError(this);
+      displayImagePreview(file);
+    }
+  });
+
   // Form submission handler
-  document.getElementById('reportForm').addEventListener('submit', function(e) {
+  document.getElementById('reportForm').addEventListener('submit', async function(e) {
     e.preventDefault();
 
     let isValid = true;
@@ -239,6 +356,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const email = document.getElementById('email');
     const category = document.getElementById('category');
     const description = document.getElementById('description');
+    const imageUpload = document.getElementById('imageUpload');
     const submitBtn = document.getElementById('submitBtn');
 
     // Validate email
@@ -271,23 +389,41 @@ document.addEventListener('DOMContentLoaded', function() {
       isValid = false;
     }
 
+    // Validate file upload
+    if (imageUpload.files.length > 0 && !validateFileUpload(imageUpload.files[0])) {
+      showError(imageUpload, `檔案格式或大小不符。請上傳 ${CONFIG.fileUpload.maxSizeMB}MB 以下的圖片檔案。`);
+      isValid = false;
+    }
+
     if (!isValid) {
       return;
     }
 
     // Show confirmation dialog
-    showConfirmDialog(() => {
+    showConfirmDialog(async () => {
       submitBtn.disabled = true;
-      submitBtn.textContent = '提交中...';
+      submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> 提交中...';
 
       var reportCode = generateReportCode();
+      let imageUrl = '';
+      
+      // Upload image if provided
+      if (imageUpload.files.length > 0) {
+        try {
+          imageUrl = await uploadImageToImgur(imageUpload.files[0]);
+        } catch (error) {
+          console.error('Error uploading image:', error);
+          // Continue without image if upload fails
+        }
+      }
 
       var data = {
         email: email.value,
         category: category.value,
         description: description.value,
         reportCode: reportCode,
-        captchaToken: captchaToken
+        captchaToken: captchaToken,
+        imageUrl: imageUrl
       };
 
       fetch(CONFIG.apiEndpoint, {
@@ -297,9 +433,11 @@ document.addEventListener('DOMContentLoaded', function() {
       .then(response => response.json())
       .then(data => {
         if(data.result === 'success') {
-          showSuccessMessage(reportCode);
+          showSuccessMessage(reportCode, imageUrl);
           document.getElementById('reportForm').reset();
           captchaToken = '';
+          document.getElementById('imagePreview').innerHTML = '';
+          document.getElementById('imagePreview').style.display = 'none';
         } else {
           throw new Error('Submission failed');
         }
@@ -314,7 +452,7 @@ document.addEventListener('DOMContentLoaded', function() {
       })
       .finally(() => {
         submitBtn.disabled = false;
-        submitBtn.textContent = '提交回報';
+        submitBtn.innerHTML = '提交回報';
       });
     });
   });

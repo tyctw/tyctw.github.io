@@ -24,16 +24,15 @@ function doPost(e) {
   var description = data.description;
   var reportCode = data.reportCode;
   var status = "pending"; // Initial status
-  var imageUrl = data.imageUrl || ""; // Add support for image URL
 
   // Add data to Google Spreadsheet
-  sheet.appendRow([timestamp, email, category, description, reportCode, status, "", imageUrl]);
+  sheet.appendRow([timestamp, email, category, description, reportCode, status]);
 
   // Send notification to Discord admin
-  sendNotificationToDiscord(timestamp, email, category, description, reportCode, imageUrl);
+  sendNotificationToDiscord(timestamp, email, category, description, reportCode);
 
   // Send email confirmation to the reporter
-  sendEmailToReporter(email, timestamp, category, description, reportCode, imageUrl);
+  sendEmailToReporter(email, timestamp, category, description, reportCode);
 
   return ContentService.createTextOutput(JSON.stringify({ 'result': 'success' }))
     .setMimeType(ContentService.MimeType.JSON);
@@ -62,141 +61,6 @@ function verifyCaptchaToken(token) {
     console.error("Error verifying Turnstile token:", error);
     return false;
   }
-}
-
-/**
- * Sends a notification to Discord when a new report is submitted
- * @param {Date} timestamp - Time of submission
- * @param {string} email - Reporter's email
- * @param {string} category - Report category
- * @param {string} description - Report description
- * @param {string} reportCode - Unique report code
- * @param {string} imageUrl - URL of the uploaded image (if any)
- */
-function sendNotificationToDiscord(timestamp, email, category, description, reportCode, imageUrl) {
-  var webhookUrl = "https://discord.com/api/webhooks/1348990875992199208/13SXUCjiDHtPjz1I0TLn_CniwsFy2JUWcjQZAgaVo3xiSMklEbTEpCmOBRQHkLZzd9pU"; // Replace with your Discord Webhook URL
-  
-  var formattedTime = timestamp.toLocaleString();
-  
-  var embed = {
-    "title": "📌 新的回報通知",
-    "description": 
-      "**回報代碼:** `" + reportCode + "`\n\n" + 
-      "🔹 **時間:** `" + formattedTime + "`\n" +
-      "📧 **回報者 Email:** `" + email + "`\n" +
-      "📂 **分類:** `" + category + "`\n\n" +
-      "📝 **描述:**\n```" + description + "```",
-    "color": 16753920, // Orange
-    "timestamp": new Date().toISOString(),
-    "thumbnail": {
-      "url": "https://cdn-icons-png.flaticon.com/512/2098/2098563.png" // You can change to an appropriate icon
-    },
-    "footer": {
-      "text": "請盡快處理此回報 ⚠️",
-      "icon_url": "https://cdn-icons-png.flaticon.com/512/190/190411.png" // Discord warning icon
-    }
-  };
-
-  // Add image to embed if provided
-  if (imageUrl) {
-    embed.image = {
-      "url": imageUrl
-    };
-  }
-
-  var message = {
-    "content": "@here 🚨 **新的回報通知** 🚨",
-    "embeds": [embed]
-  };
-
-  var options = {
-    "method": "post",
-    "payload": JSON.stringify(message),
-    "contentType": "application/json"
-  };
-
-  // Send request to Discord Webhook
-  UrlFetchApp.fetch(webhookUrl, options);
-}
-
-/**
- * Sends a confirmation email to the reporter
- * @param {string} email - Reporter's email
- * @param {Date} timestamp - Time of submission
- * @param {string} category - Report category
- * @param {string} description - Report description
- * @param {string} reportCode - Unique report code
- * @param {string} imageUrl - URL of the uploaded image (if any)
- */
-function sendEmailToReporter(email, timestamp, category, description, reportCode, imageUrl) {
-  var subject = "感謝您的回報 - 回報代碼: " + reportCode;
-  
-  var imageHtml = '';
-  if (imageUrl) {
-    imageHtml = `
-      <tr style="background-color: #f8f9fa;">
-        <td style="padding: 15px; font-size: 14px; font-weight: bold; color: #555; border: 1px solid #ddd;">附加圖片</td>
-        <td style="padding: 15px; font-size: 14px; color: #333; border: 1px solid #ddd; text-align: center;">
-          <img src="${imageUrl}" alt="上傳的截圖" style="max-width: 100%; max-height: 300px; border-radius: 5px;">
-        </td>
-      </tr>
-    `;
-  }
-  
-  var body = `
-    <html>
-      <body style="font-family: 'Arial', sans-serif; color: #333; line-height: 1.6; background-color: #f4f8fb; padding: 20px;">
-        <div style="max-width: 600px; margin: auto; padding: 30px; background-color: #ffffff; border-radius: 10px; box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);">
-          <!-- Header Section -->
-          <div style="text-align: center; padding-bottom: 20px;">
-            <h2 style="color: #007bff; font-size: 24px; margin: 0;">感謝您的回報</h2>
-            <p style="font-size: 16px; color: #555;">您的回報代碼：<strong style="color: #d9534f;">${reportCode}</strong></p>
-            <hr style="border-top: 2px solid #007bff; width: 50%; margin: 20px auto;">
-          </div>
-
-          <!-- Info Table Section -->
-          <table style="width: 100%; border-collapse: collapse; border-spacing: 0; margin-top: 20px;">
-            <tr style="background-color: #f8f9fa;">
-              <td style="padding: 15px; font-size: 14px; font-weight: bold; color: #555; border: 1px solid #ddd;">時間</td>
-              <td style="padding: 15px; font-size: 14px; color: #333; border: 1px solid #ddd;">${timestamp.toLocaleString()}</td>
-            </tr>
-            <tr style="background-color: #f8f9fa;">
-              <td style="padding: 15px; font-size: 14px; font-weight: bold; color: #555; border: 1px solid #ddd;">分類</td>
-              <td style="padding: 15px; font-size: 14px; color: #333; border: 1px solid #ddd;">${category}</td>
-            </tr>
-            <tr style="background-color: #f8f9fa;">
-              <td style="padding: 15px; font-size: 14px; font-weight: bold; color: #555; border: 1px solid #ddd;">描述</td>
-              <td style="padding: 15px; font-size: 14px; color: #333; border: 1px solid #ddd;">${description}</td>
-            </tr>
-            <tr style="background-color: #f8f9fa;">
-              <td style="padding: 15px; font-size: 14px; font-weight: bold; color: #555; border: 1px solid #ddd;">回報代碼</td>
-              <td style="padding: 15px; font-size: 16px; font-weight: bold; color: #d9534f; border: 1px solid #ddd; text-align: center;">${reportCode}</td>
-            </tr>
-            <tr style="background-color: #f8f9fa;">
-              <td style="padding: 15px; font-size: 14px; font-weight: bold; color: #555; border: 1px solid #ddd;">狀態</td>
-              <td style="padding: 15px; font-size: 14px; color: #f39c12; font-weight: bold; border: 1px solid #ddd;">處理中</td>
-            </tr>
-            ${imageHtml}
-          </table>
-
-          <!-- Check Status Section -->
-          <div style="text-align: center; margin-top: 25px; padding: 15px; background-color: #f0f8ff; border-radius: 8px;">
-            <p style="margin: 0; font-size: 15px;">您可以隨時查詢回報進度：</p>
-            <a href="https://tyctw.github.io/search?code=${reportCode}" style="display: inline-block; margin-top: 10px; padding: 10px 20px; background-color: #007bff; color: white; text-decoration: none; border-radius: 5px; font-weight: bold;">查詢進度</a>
-          </div>
-
-          <!-- Footer Section -->
-          <p style="margin-top: 20px; font-size: 14px; color: #555;">我們將儘快處理您的回報。如有任何問題，隨時聯繫我們。</p>
-          <p style="text-align: center; font-size: 12px; color: #888;"> 請妥善保存您的回報代碼，以便日後查詢進度。</p>
-
-          <hr style="border-top: 2px solid #007bff; width: 50%; margin: 30px auto;">
-          <p style="text-align: center; font-size: 14px; color: #333;">此致，<br><strong>TYCTW會考落點分析</strong></p>
-        </div>
-      </body>
-    </html>
-  `;
-
-  GmailApp.sendEmail(email, subject, "", { htmlBody: body });
 }
 
 /**
@@ -236,6 +100,117 @@ function doGet(e) {
       "This web app is functioning correctly, but it's designed to handle POST requests for form submissions."
     );
   }
+}
+
+/**
+ * Sends a notification to Discord when a new report is submitted
+ * @param {Date} timestamp - Time of submission
+ * @param {string} email - Reporter's email
+ * @param {string} category - Report category
+ * @param {string} description - Report description
+ * @param {string} reportCode - Unique report code
+ */
+function sendNotificationToDiscord(timestamp, email, category, description, reportCode) {
+  var webhookUrl = "https://discord.com/api/webhooks/1348990875992199208/13SXUCjiDHtPjz1I0TLn_CniwsFy2JUWcjQZAgaVo3xiSMklEbTEpCmOBRQHkLZzd9pU"; // Replace with your Discord Webhook URL
+  
+  var formattedTime = timestamp.toLocaleString();
+  
+  var message = {
+    "content": "@here 🚨 **新的回報通知** 🚨",
+    "embeds": [{
+      "title": "📌 新的回報通知",
+      "description": 
+        "**回報代碼:** `" + reportCode + "`\n\n" + 
+        "🔹 **時間:** `" + formattedTime + "`\n" +
+        "📧 **回報者 Email:** `" + email + "`\n" +
+        "📂 **分類:** `" + category + "`\n\n" +
+        "📝 **描述:**\n```" + description + "```",
+      "color": 16753920, // Orange
+      "timestamp": new Date().toISOString(),
+      "thumbnail": {
+        "url": "https://cdn-icons-png.flaticon.com/512/2098/2098563.png" // You can change to an appropriate icon
+      },
+      "footer": {
+        "text": "請盡快處理此回報 ⚠️",
+        "icon_url": "https://cdn-icons-png.flaticon.com/512/190/190411.png" // Discord warning icon
+      }
+    }]
+  };
+
+  var options = {
+    "method": "post",
+    "payload": JSON.stringify(message),
+    "contentType": "application/json"
+  };
+
+  // Send request to Discord Webhook
+  UrlFetchApp.fetch(webhookUrl, options);
+}
+
+/**
+ * Sends a confirmation email to the reporter
+ * @param {string} email - Reporter's email
+ * @param {Date} timestamp - Time of submission
+ * @param {string} category - Report category
+ * @param {string} description - Report description
+ * @param {string} reportCode - Unique report code
+ */
+function sendEmailToReporter(email, timestamp, category, description, reportCode) {
+  var subject = "感謝您的回報 - 回報代碼: " + reportCode;
+  
+  var body = `
+    <html>
+      <body style="font-family: 'Arial', sans-serif; color: #333; line-height: 1.6; background-color: #f4f8fb; padding: 20px;">
+        <div style="max-width: 600px; margin: auto; padding: 30px; background-color: #ffffff; border-radius: 10px; box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);">
+          <!-- Header Section -->
+          <div style="text-align: center; padding-bottom: 20px;">
+            <h2 style="color: #007bff; font-size: 24px; margin: 0;">感謝您的回報</h2>
+            <p style="font-size: 16px; color: #555;">您的回報代碼：<strong style="color: #d9534f;">${reportCode}</strong></p>
+            <hr style="border-top: 2px solid #007bff; width: 50%; margin: 20px auto;">
+          </div>
+
+          <!-- Info Table Section -->
+          <table style="width: 100%; border-collapse: collapse; border-spacing: 0; margin-top: 20px;">
+            <tr style="background-color: #f8f9fa;">
+              <td style="padding: 15px; font-size: 14px; font-weight: bold; color: #555; border: 1px solid #ddd;">時間</td>
+              <td style="padding: 15px; font-size: 14px; color: #333; border: 1px solid #ddd;">${timestamp.toLocaleString()}</td>
+            </tr>
+            <tr style="background-color: #f8f9fa;">
+              <td style="padding: 15px; font-size: 14px; font-weight: bold; color: #555; border: 1px solid #ddd;">分類</td>
+              <td style="padding: 15px; font-size: 14px; color: #333; border: 1px solid #ddd;">${category}</td>
+            </tr>
+            <tr style="background-color: #f8f9fa;">
+              <td style="padding: 15px; font-size: 14px; font-weight: bold; color: #555; border: 1px solid #ddd;">描述</td>
+              <td style="padding: 15px; font-size: 14px; color: #333; border: 1px solid #ddd;">${description}</td>
+            </tr>
+            <tr style="background-color: #f8f9fa;">
+              <td style="padding: 15px; font-size: 14px; font-weight: bold; color: #555; border: 1px solid #ddd;">回報代碼</td>
+              <td style="padding: 15px; font-size: 16px; font-weight: bold; color: #d9534f; border: 1px solid #ddd; text-align: center;">${reportCode}</td>
+            </tr>
+            <tr style="background-color: #f8f9fa;">
+              <td style="padding: 15px; font-size: 14px; font-weight: bold; color: #555; border: 1px solid #ddd;">狀態</td>
+              <td style="padding: 15px; font-size: 14px; color: #f39c12; font-weight: bold; border: 1px solid #ddd;">處理中</td>
+            </tr>
+          </table>
+
+          <!-- Check Status Section -->
+          <div style="text-align: center; margin-top: 25px; padding: 15px; background-color: #f0f8ff; border-radius: 8px;">
+            <p style="margin: 0; font-size: 15px;">您可以隨時查詢回報進度：</p>
+            <a href="https://tyctw.github.io/search?code=${reportCode}" style="display: inline-block; margin-top: 10px; padding: 10px 20px; background-color: #007bff; color: white; text-decoration: none; border-radius: 5px; font-weight: bold;">查詢進度</a>
+          </div>
+
+          <!-- Footer Section -->
+          <p style="margin-top: 20px; font-size: 14px; color: #555;">我們將儘快處理您的回報。如有任何問題，隨時聯繫我們。</p>
+          <p style="text-align: center; font-size: 12px; color: #888;"> 請妥善保存您的回報代碼，以便日後查詢進度。</p>
+
+          <hr style="border-top: 2px solid #007bff; width: 50%; margin: 30px auto;">
+          <p style="text-align: center; font-size: 14px; color: #333;">此致，<br><strong>TYCTW會考落點分析</strong></p>
+        </div>
+      </body>
+    </html>
+  `;
+
+  GmailApp.sendEmail(email, subject, "", { htmlBody: body });
 }
 
 /**

@@ -22,12 +22,6 @@ const CONFIG = {
     characters: 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'
   },
   
-  // File upload settings
-  fileUpload: {
-    maxSizeMB: 5,
-    acceptedFormats: ['image/jpeg', 'image/png', 'image/gif', 'image/webp']
-  },
-  
   // Status definitions
   status: {
     pending: {

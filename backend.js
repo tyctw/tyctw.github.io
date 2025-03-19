@@ -7,6 +7,17 @@ function doPost(e) {
   var sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
   var data = JSON.parse(e.postData.contents);
 
+  // Verify Turnstile token
+  var turnstileToken = data.turnstileToken;
+  var turnstileVerified = verifyTurnstileToken(turnstileToken);
+  
+  if (!turnstileVerified) {
+    return ContentService.createTextOutput(JSON.stringify({ 
+      'result': 'error', 
+      'message': 'Invalid Turnstile verification' 
+    })).setMimeType(ContentService.MimeType.JSON);
+  }
+
   var timestamp = new Date();
   var email = data.email;
   var category = data.category;
@@ -175,6 +186,27 @@ function sendEmailToReporter(email, timestamp, category, description, reportCode
   `;
 
   GmailApp.sendEmail(email, subject, "", { htmlBody: body });
+}
+
+/**
+ * Verifies a Turnstile token with Cloudflare's API
+ * @param {string} token - The Turnstile token to verify
+ * @returns {boolean} Whether the token is valid
+ */
+function verifyTurnstileToken(token) {
+  if (!token) return false;
+  
+  var secretKey = '0x4AAAAAABBmAnAWA7c5kmt9o7XzxdpAQvI';
+  var response = UrlFetchApp.fetch('https://challenges.cloudflare.com/turnstile/v0/siteverify', {
+    method: 'post',
+    payload: {
+      secret: secretKey,
+      response: token
+    }
+  });
+  
+  var result = JSON.parse(response.getContentText());
+  return result.success === true;
 }
 
 /**

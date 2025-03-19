@@ -3,10 +3,10 @@ const CONFIG = {
   // API endpoint for form submission
   apiEndpoint: 'https://script.google.com/macros/s/AKfycbxQcTd_LzijWQokSEEgy9QQB6v70ftcJt00GNDJeWQ2FPGgNnY-pr1Cs--QZyBpI8OJnQ/exec',
   
-  // Captcha settings
-  captcha: {
-    length: 6,
-    maxAttempts: 3,
+  // Turnstile settings
+  turnstile: {
+    siteKey: '0x4AAAAAABBmAhaW1rWD_-LL',
+    secretKey: '0x4AAAAAABBmAnAWA7c5kmt9o7XzxdpAQvI'
   },
   
   // Form validation settings

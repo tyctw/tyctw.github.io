@@ -2,6 +2,7 @@
 let captchaText = '';
 let captchaAttempts = 0;
 const MAX_CAPTCHA_ATTEMPTS = CONFIG.captcha.maxAttempts;
+let turnstileVerified = false;
 
 /**
  * Generates a random captcha text
@@ -169,6 +170,16 @@ async function checkReportStatus(reportCode) {
   }
 }
 
+/**
+ * Callback when Turnstile verification is successful
+ * @param {string} token The Turnstile token
+ */
+function onTurnstileSuccess(token) {
+  turnstileVerified = true;
+  document.getElementById('cf-turnstile-response').value = token;
+  hideError(document.getElementById('cf-turnstile-response'));
+}
+
 // When the DOM is loaded, initialize the application
 document.addEventListener('DOMContentLoaded', function() {
   // Generate initial captcha
@@ -242,7 +253,6 @@ document.addEventListener('DOMContentLoaded', function() {
     const email = document.getElementById('email');
     const category = document.getElementById('category');
     const description = document.getElementById('description');
-    const captchaInput = document.getElementById('captchaInput');
     const submitBtn = document.getElementById('submitBtn');
 
     // Validate email
@@ -269,19 +279,10 @@ document.addEventListener('DOMContentLoaded', function() {
       hideError(description);
     }
 
-    // Validate captcha
-    if (captchaInput.value.toLowerCase() !== captchaText.toLowerCase()) {
-      captchaAttempts++;
-      if (captchaAttempts >= MAX_CAPTCHA_ATTEMPTS) {
-        showError(captchaInput, '驗證碼錯誤次數過多，請稍後再試');
-        submitBtn.disabled = true;
-      } else {
-        showError(captchaInput, `驗證碼不正確，還有 ${MAX_CAPTCHA_ATTEMPTS - captchaAttempts} 次機會`);
-      }
+    // Validate Turnstile
+    if (!turnstileVerified) {
+      showError(document.getElementById('cf-turnstile-response'), '請完成人機驗證');
       isValid = false;
-      generateCaptcha();
-    } else {
-      hideError(captchaInput);
     }
 
     if (!isValid) {

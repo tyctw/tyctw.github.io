@@ -604,7 +604,7 @@ function printResults() {
         ${resultsElement.innerHTML}
       </div>
       <div class="footer">
-        <p>© ${new Date().getFullYear()} TYCTW桃聯區會考落點分析系統. All rights reserved.</p>
+        <p> 2023 TYCTW桃聯區會考落點分析系統. All rights reserved.</p>
         <p>本分析結果僅供參考，不代表實際錄取結果。</p>
         <p>更多資訊: <a href="https://rcpett.vercel.app/" target="_blank">https://rcpett.vercel.app/</a></p>
       </div>
@@ -771,7 +771,7 @@ async function exportPdf(content) {
       doc.setTextColor(100, 100, 100);
       doc.text('第 ' + i + ' 頁，共 ' + pageCount + ' 頁', 105, 285, { align: 'center' });
       doc.text(websiteInfo, 105, 290, { align: 'center' });
-      doc.text('© ' + new Date().getFullYear() + ' TYCTW桃聯區會考落點分析系統', 105, 295, { align: 'center' });
+      doc.text(' 2023 TYCTW桃聯區會考落點分析系統', 105, 295, { align: 'center' });
     }
     
     doc.save('桃聯區會考落點分析結果.pdf');
@@ -790,7 +790,7 @@ function exportTxt(content) {
     content + 
     "\n\n------------------------------------------\n" +
     websiteInfo +
-    "© " + new Date().getFullYear() + " TYCTW桃聯區會考落點分析系統\n" +
+    " 2023 TYCTW桃聯區會考落點分析系統\n" +
     "==========================================";
   const blob = new Blob([formattedContent], { type: 'text/plain;charset=utf-8' });
   downloadFile(blob, '桃聯區會考落點分析結果.txt');
@@ -827,7 +827,7 @@ function exportCsv(content) {
   });
   
   // Add footer
-  csvContent += '\n"© ' + new Date().getFullYear() + ' TYCTW桃聯區會考落點分析系統"\n';
+  csvContent += '\n" 2023 TYCTW桃聯區會考落點分析系統"\n';
   
   const blob = new Blob(['\uFEFF' + csvContent], { type: 'text/csv;charset=utf-8' });
   downloadFile(blob, '桃聯區會考落點分析結果.csv');
@@ -866,7 +866,7 @@ function exportJson(content) {
     results: {
       content: content.split('\n').filter(line => line.trim())
     },
-    copyright: `© ${new Date().getFullYear()} TYCTW桃聯區會考落點分析系統`
+    copyright: ` 2023 TYCTW桃聯區會考落點分析系統`
   };
   
   const blob = new Blob([JSON.stringify(jsonData, null, 2)], { type: 'application/json;charset=utf-8' });
@@ -1237,22 +1237,28 @@ function displayResults(data) {
               </div>
               <div class="school-list">
                 ${schools.map(school => `
-                  <div class="school-item">
+                  <div class="school-item" data-id="${school.id || Math.random().toString(36).substring(2, 15)}">
                     <div class="school-name">
                       <i class="fas fa-graduation-cap icon"></i>
                       ${school.name}
-                    </div>
-                    <div class="school-details">
                       ${school.ownership ? `
                         <span class="school-ownership">
                           <i class="fas fa-building icon"></i>
                           ${school.ownership}
                         </span>
                       ` : ''}
+                    </div>
+                    <div class="school-details">
                       ${school.lastYearCutoff ? `
                         <span class="cutoff-score">
                           <i class="fas fa-chart-line icon"></i>
                           去年最低錄取: ${school.lastYearCutoff}
+                        </span>
+                      ` : ''}
+                      ${school.historicalTrend ? `
+                        <span class="trend-info">
+                          <i class="fas fa-history icon"></i>
+                          近三年: ${school.historicalTrend}
                         </span>
                       ` : ''}
                     </div>
@@ -1270,6 +1276,7 @@ function displayResults(data) {
           <li><i class="fas fa-lightbulb icon"></i>建議同時考慮學校特色、地理位置等因素</li>
           <li><i class="fas fa-book icon"></i>請詳閱各校招生簡章了解詳細資訊</li>
           <li><i class="fas fa-comments icon"></i>建議諮詢師長意見做為參考</li>
+          <li><i class="fas fa-chart-line icon"></i>依據歷年錄取分數評估錄取機率</li>
         </ul>
       </div>`;
   } else {

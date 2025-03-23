@@ -726,11 +726,26 @@ async function exportPdf(content) {
     const { jsPDF } = window.jspdf;
     const doc = new jsPDF();
     
-    // Add header
+    // Add fancy header with logo
+    doc.setFillColor(52, 152, 219);
+    doc.rect(0, 0, 210, 30, 'F');
+    
+    // Add title
     doc.setFont('helvetica', 'bold');
-    doc.setFontSize(22);
-    doc.setTextColor(52, 152, 219);
-    doc.text('桃聯區會考落點分析結果', 105, 20, { align: 'center' });
+    doc.setFontSize(24);
+    doc.setTextColor(255, 255, 255);
+    doc.text('桃聯區會考落點分析結果', 105, 15, { align: 'center' });
+    
+    // Add decoration line
+    doc.setDrawColor(231, 76, 60);
+    doc.setLineWidth(1);
+    doc.line(20, 35, 190, 35);
+    
+    // Add metadata
+    doc.setFont('helvetica', 'italic');
+    doc.setFontSize(10);
+    doc.setTextColor(100, 100, 100);
+    doc.text(`產生日期: ${new Date().toLocaleString('zh-TW')}`, 20, 42);
     
     // Reset text properties for content
     doc.setFontSize(12);
@@ -739,15 +754,48 @@ async function exportPdf(content) {
     
     const websiteInfo = "更多資訊請訪問: https://rcpett.vercel.app/";
     const splitText = doc.splitTextToSize(content, 170);
-    let y = 45;
+    let y = 50;
+    
+    // Add watermark to first page
+    doc.setFont('helvetica', 'bold');
+    doc.setFontSize(60);
+    doc.setTextColor(230, 230, 230);
+    doc.saveGraphicsState();
+    doc.rotate(-45, 105, 150);
+    doc.text('TYCTW', 70, 150);
+    doc.restoreGraphicsState();
+    
+    // Reset for content
+    doc.setFontSize(12);
+    doc.setTextColor(0, 0, 0);
+    doc.setFont('helvetica', 'normal');
+    
+    // Add scores summary box
+    doc.setFillColor(240, 240, 240);
+    doc.roundedRect(20, y, 170, 50, 3, 3, 'F');
+    doc.setFont('helvetica', 'bold');
+    doc.setTextColor(52, 152, 219);
+    doc.text('成績摘要', 105, y + 10, { align: 'center' });
+    doc.setFont('helvetica', 'normal');
+    doc.setTextColor(0, 0, 0);
+    
+    y += 65;
     
     splitText.forEach(line => {
       if (y > 270) {
         doc.addPage();
+        // Add header to new page
+        doc.setFillColor(52, 152, 219);
+        doc.rect(0, 0, 210, 15, 'F');
+        doc.setFont('helvetica', 'bold');
+        doc.setFontSize(12);
+        doc.setTextColor(255, 255, 255);
+        doc.text('桃聯區會考落點分析結果', 105, 10, { align: 'center' });
+        
         // Add watermark to new page
         doc.setFont('helvetica', 'bold');
-        doc.setFontSize(30);
-        doc.setTextColor(220, 220, 220);
+        doc.setFontSize(60);
+        doc.setTextColor(230, 230, 230);
         doc.saveGraphicsState();
         doc.rotate(-45, 105, 150);
         doc.text('TYCTW', 70, 150);
@@ -757,16 +805,18 @@ async function exportPdf(content) {
         doc.setFontSize(12);
         doc.setTextColor(0, 0, 0);
         doc.setFont('helvetica', 'normal');
-        y = 20;
+        y = 30;
       }
       doc.text(line, 20, y);
       y += 7;
     });
     
-    // Add footer with page numbers
+    // Add fancy footer with page numbers
     const pageCount = doc.getNumberOfPages();
     for (let i = 1; i <= pageCount; i++) {
       doc.setPage(i);
+      doc.setFillColor(240, 240, 240);
+      doc.rect(0, 280, 210, 17, 'F');
       doc.setFontSize(10);
       doc.setTextColor(100, 100, 100);
       doc.text('第 ' + i + ' 頁，共 ' + pageCount + ' 頁', 105, 285, { align: 'center' });
@@ -782,16 +832,33 @@ async function exportPdf(content) {
 }
 
 function exportTxt(content) {
+  const now = new Date();
+  const dateTime = now.toLocaleString('zh-TW');
+  
   const websiteInfo = "更多資訊請訪問: https://rcpett.vercel.app/\n\n";
   const formattedContent = 
-    "==========================================\n" +
-    "        桃聯區會考落點分析結果\n" +
-    "==========================================\n\n" +
+    "====================================================================\n" +
+    "                  桃聯區會考落點分析結果                            \n" +
+    "====================================================================\n\n" +
+    "產生日期: " + dateTime + "\n\n" +
+    "--------------------------------------------------------------------\n" +
+    "                           成績摘要                                 \n" +
+    "--------------------------------------------------------------------\n" +
+    "國文: " + document.getElementById('chinese').value + "\n" +
+    "英文: " + document.getElementById('english').value + "\n" +
+    "數學: " + document.getElementById('math').value + "\n" +
+    "自然: " + document.getElementById('science').value + "\n" +
+    "社會: " + document.getElementById('social').value + "\n" +
+    "作文: " + document.getElementById('composition').value + "\n\n" +
+    "--------------------------------------------------------------------\n" +
+    "                           分析結果                                 \n" +
+    "--------------------------------------------------------------------\n" +
     content + 
-    "\n\n------------------------------------------\n" +
+    "\n\n====================================================================\n" +
     websiteInfo +
     " 2023 TYCTW桃聯區會考落點分析系統\n" +
-    "==========================================";
+    "此文件僅供參考，不代表實際錄取結果\n" +
+    "====================================================================";
   const blob = new Blob([formattedContent], { type: 'text/plain;charset=utf-8' });
   downloadFile(blob, '桃聯區會考落點分析結果.txt');
 }
@@ -800,34 +867,43 @@ function exportCsv(content) {
   const now = new Date();
   const dateTime = now.toLocaleString('zh-TW');
   
-  // Add header rows
+  // Add header rows with nice formatting
   let csvContent = '';
+  csvContent += '"==================================================="\n';
   csvContent += '"桃聯區會考落點分析結果"\n';
+  csvContent += '"==================================================="\n';
   csvContent += '"產生時間","' + dateTime + '"\n';
   csvContent += '"TYCTW桃聯區會考落點分析系統 - 僅供參考"\n';
   csvContent += '"更多資訊請訪問: https://rcpett.vercel.app/"\n\n';
   
-  // Add scores
-  csvContent += '"成績資訊"\n';
-  csvContent += '"國文","' + document.getElementById('chinese').value + '"\n';
-  csvContent += '"英文","' + document.getElementById('english').value + '"\n';
-  csvContent += '"數學","' + document.getElementById('math').value + '"\n';
-  csvContent += '"自然","' + document.getElementById('science').value + '"\n';
-  csvContent += '"社會","' + document.getElementById('social').value + '"\n';
-  csvContent += '"作文","' + document.getElementById('composition').value + '"\n\n';
+  // Add scores with better organization
+  csvContent += '"==================================================="\n';
+  csvContent += '"成績資訊","分數","等級說明"\n';
+  csvContent += '"==================================================="\n';
+  csvContent += '"國文","' + document.getElementById('chinese').value + '","A++/A+/A為優良,B++/B+/B為中等,C為需加強"\n';
+  csvContent += '"英文","' + document.getElementById('english').value + '","A++/A+/A為優良,B++/B+/B為中等,C為需加強"\n';
+  csvContent += '"數學","' + document.getElementById('math').value + '","A++/A+/A為優良,B++/B+/B為中等,C為需加強"\n';
+  csvContent += '"自然","' + document.getElementById('science').value + '","A++/A+/A為優良,B++/B+/B為中等,C為需加強"\n';
+  csvContent += '"社會","' + document.getElementById('social').value + '","A++/A+/A為優良,B++/B+/B為中等,C為需加強"\n';
+  csvContent += '"作文","' + document.getElementById('composition').value + '","滿分為6級分"\n\n';
   
-  // Add main content
-  csvContent += '"分析結果"\n';
+  // Add main content with better organization
+  csvContent += '"==================================================="\n';
+  csvContent += '"分析結果","學校類型","備註"\n';
+  csvContent += '"==================================================="\n';
   const lines = content.split('\n');
   lines.forEach(line => {
     const cleanLine = line.replace(/[*]/g, '').trim();
     if (cleanLine) {
-      csvContent += `"${cleanLine}"\n`;
+      csvContent += `"${cleanLine}","",""\n`;
     }
   });
   
-  // Add footer
-  csvContent += '\n" 2023 TYCTW桃聯區會考落點分析系統"\n';
+  // Add footer with metadata
+  csvContent += '\n"==================================================="\n';
+  csvContent += '"' + new Date().toISOString() + '","' + navigator.userAgent + '"\n';
+  csvContent += '"TYCTW桃聯區會考落點分析系統 版權所有"\n';
+  csvContent += '"==================================================="\n';
   
   const blob = new Blob(['\uFEFF' + csvContent], { type: 'text/csv;charset=utf-8' });
   downloadFile(blob, '桃聯區會考落點分析結果.csv');
@@ -851,24 +927,52 @@ function exportJson(content) {
     analysisIdentity: document.getElementById('analysisIdentity').value
   };
   
+  // Create a more structured and detailed JSON with schema version
   const jsonData = {
+    schema_version: "1.1.0",
     metadata: {
       title: 'TYCTW 桃聯區會考落點分析結果',
       description: 'TYCTW 桃聯區會考落點分析系統 - 僅供參考',
       generateTime: new Date().toISOString(),
+      timestamp: Date.now(),
       websiteUrl: 'https://rcpett.vercel.app/',
-      version: '1.0.0'
+      exportVersion: '1.1.0',
+      disclaimer: '此分析結果僅供參考，不代表實際錄取結果'
     },
     userInput: {
       scores: scores,
-      filters: filters
+      filters: filters,
+      scoreExplanation: {
+        grades: {
+          "A++": "優良(頂標)",
+          "A+": "優良(前標)",
+          "A": "優良",
+          "B++": "中等(均標)",
+          "B+": "中等",
+          "B": "中等",
+          "C": "需加強(底標)"
+        },
+        composition: "作文分為0-6級分",
+        calculationMethod: "總積分根據各科等第轉換後加總計算"
+      }
     },
     results: {
-      content: content.split('\n').filter(line => line.trim())
+      content: content.split('\n').filter(line => line.trim()),
+      generatedAt: new Date().toLocaleString('zh-TW'),
+      deviceInfo: {
+        platform: navigator.platform,
+        userAgent: navigator.userAgent,
+        language: navigator.language
+      }
     },
-    copyright: ` 2023 TYCTW桃聯區會考落點分析系統`
+    copyright: {
+      year: new Date().getFullYear(),
+      owner: "TYCTW桃聯區會考落點分析系統",
+      rights: "版權所有，不得未經授權轉載或使用"
+    }
   };
   
+  // Pretty print the JSON with 2-space indentation
   const blob = new Blob([JSON.stringify(jsonData, null, 2)], { type: 'application/json;charset=utf-8' });
   downloadFile(blob, '桃聯區會考落點分析結果.json');
 }

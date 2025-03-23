@@ -994,11 +994,9 @@ button:hover:before {
   color: white;
   border: none;
   padding: 15px 30px;
-  border-radius: 50px;
-  cursor: pointer;
-  transition: all 0.4s ease;
-  font-weight: bold;
-  font-size: 18px;
+  text-align: center;
+  display: inline-block;
+  font-size: 16px;
   margin-top: 30px;
   display: flex;
   align-items: center;
@@ -1855,13 +1853,13 @@ button:hover:before {
 .instruction-item ul {
   list-style: none;
   padding-left: 1.5rem;
-  margin-bottom: 1rem;
 }
 
 .instruction-item li {
+  margin-bottom: 0.8rem;
   position: relative;
   padding-left: 1.5rem;
-  margin-bottom: 0.8rem;
+  font-size: 1rem;
   line-height: 1.5;
 }
 
@@ -2003,7 +2001,7 @@ button:hover:before {
 }
 
 .instruction-item {
-  background: rgba(255, 255, 255, 0.8);
+  background: rgba(255, 255, 255, 0.05);
   border-radius: 15px;
   padding: 1.5rem;
   margin-bottom: 1.5rem;
@@ -2020,8 +2018,8 @@ button:hover:before {
 }
 
 .instruction-item:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+  transform: translateX(5px);
+  background: rgba(255, 255, 255, 0.08);
 }
 
 .instruction-item h3 {
@@ -2067,7 +2065,7 @@ button:hover:before {
 
 .instruction-item ul {
   list-style: none;
-  padding-left: 0.5rem;
+  padding-left: 0;
   margin: 1.2rem 0;
 }
 
@@ -2138,38 +2136,46 @@ button:hover:before {
   #instructionsModal .modal-content {
     width: 95%;
     margin: 5% auto;
-    padding: 25px;
+    padding: 20px;
   }
   
   #instructionsModal h2 {
-    font-size: 22px;
+    font-size: 20px;
+    margin-bottom: 20px;
   }
 
   .instruction-item {
-    padding: 1.2rem;
+    padding: 1rem;
   }
 
   .instruction-item h3 {
-    font-size: 1.2rem;
+    font-size: 1.1rem;
   }
   
   .instruction-item h3 .icon {
-    width: 32px;
-    height: 32px;
-    font-size: 1.3rem;
+    width: 28px;
+    height: 28px;
+    font-size: 1.1rem;
   }
 
-  .instruction-item p {
-    font-size: 0.95rem;
+  .instruction-item p, .instruction-item li {
+    font-size: 0.9rem;
+    line-height: 1.4;
   }
   
+  .instruction-item .highlight {
+    padding: 0.8rem;
+    font-size: 0.9rem;
+    margin: 0.8rem 0;
+  }
+
   .instruction-item ul {
     padding-left: 0;
   }
 
   .instruction-item li {
-    padding-left: 1.8rem;
-    margin-bottom: 0.8rem;
+    padding-left: 1.5rem;
+    margin-bottom: 0.6rem;
   }
 }
 
@@ -2181,11 +2187,26 @@ button:hover:before {
   margin-top: 2rem;
   box-shadow: 0 10px 30px var(--shadow-color);
   animation: slideInUp 0.5s ease-out;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  overflow: hidden;
 }
 
 .results-header {
   text-align: center;
   margin-bottom: 2rem;
+  position: relative;
+}
+
+.results-header::after {
+  content: '';
+  position: absolute;
+  bottom: -10px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100px;
+  height: 3px;
+  background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
+  border-radius: 3px;
 }
 
 .results-summary {
@@ -2193,39 +2214,71 @@ button:hover:before {
   justify-content: space-around;
   flex-wrap: wrap;
   gap: 1.5rem;
-  margin: 2rem 0;
+  margin: 2.5rem 0;
 }
 
 .result-card {
-  background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
   color: white;
   padding: 1.5rem;
   border-radius: 15px;
   text-align: center;
   flex: 1;
   min-width: 200px;
-  box-shadow: 0 5px 15px var(--shadow-color);
-  transition: transform 0.3s ease;
+  box-shadow: 0 8px 20px var(--shadow-color);
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  animation: fadeInUp 0.5s ease-out;
+  animation-fill-mode: backwards;
+  overflow: hidden;
+  position: relative;
+}
+
+.result-card:nth-child(1) { animation-delay: 0.1s; }
+.result-card:nth-child(2) { animation-delay: 0.2s; }
+.result-card:nth-child(3) { animation-delay: 0.3s; }
+
+.result-card::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: radial-gradient(circle, rgba(255,255,255,0.3) 0%, rgba(255,255,255,0) 70%);
+  opacity: 0;
+  transition: opacity 0.3s ease;
 }
 
 .result-card:hover {
-  transform: translateY(-5px);
+  transform: translateY(-10px) scale(1.03);
+}
+
+.result-card:hover::before {
+  opacity: 1;
 }
 
 .result-card .icon {
   font-size: 2rem;
   margin-bottom: 1rem;
+  display: inline-block;
+  animation: bounce 2s ease infinite;
+}
+
+@keyframes bounce {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
 }
 
 .result-value {
-  font-size: 2.5rem;
+  font-size: 2.8rem;
   font-weight: bold;
   margin: 0.5rem 0;
+  text-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
 }
 
 .result-label {
   font-size: 1.1rem;
   opacity: 0.9;
+  font-weight: 500;
 }
 
 .scores-summary {
@@ -2233,6 +2286,7 @@ button:hover:before {
   grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
   gap: 1rem;
   margin: 1.5rem 0;
+  animation: fadeIn 0.5s ease-out;
 }
 
 .score-item {
@@ -2242,12 +2296,22 @@ button:hover:before {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  transition: all 0.3s ease;
+  border-left: 3px solid var(--primary-color);
+}
+
+.score-item:hover {
+  transform: translateX(5px);
+  background: rgba(255, 255, 255, 0.15);
 }
 
 .score-value {
   font-weight: bold;
   padding: 0.5rem 1rem;
   border-radius: 5px;
+  display: inline-block;
+  min-width: 60px;
+  text-align: center;
 }
 
 .score-excellent { background: #2ecc71; color: white; }
@@ -2260,6 +2324,9 @@ button:hover:before {
 
 .schools-analysis {
   margin: 2rem 0;
+  animation: fadeIn 0.5s ease-out;
+  animation-delay: 0.2s;
+  animation-fill-mode: backwards;
 }
 
 .school-type-summary {
@@ -2274,6 +2341,23 @@ button:hover:before {
   border-radius: 15px;
   padding: 1.5rem;
   box-shadow: 0 5px 15px var(--shadow-color);
+  transition: all 0.3s ease;
+  border-top: 4px solid var(--primary-color);
+  animation: fadeInUp 0.5s ease-out;
+  animation-fill-mode: backwards;
+}
+
+.school-type-card:nth-child(2n) {
+  border-top-color: var(--secondary-color);
+}
+
+.school-type-card:nth-child(3n) {
+  border-top-color: var(--accent-color);
+}
+
+.school-type-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 25px var(--shadow-color);
 }
 
 .school-type-header {
@@ -2285,48 +2369,95 @@ button:hover:before {
   border-bottom: 2px solid var(--primary-color);
 }
 
+.school-type-header h4 {
+  font-size: 1.2rem;
+  color: var(--primary-color);
+  margin: 0;
+  flex: 1;
+}
+
 .school-count {
   background: var(--primary-color);
   color: white;
   padding: 0.3rem 0.8rem;
   border-radius: 20px;
   font-size: 0.9rem;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 5px;
 }
 
 .school-list {
   display: flex;
   flex-direction: column;
   gap: 1rem;
+  max-height: 500px;
+  overflow-y: auto;
+  padding-right: 5px;
+}
+
+.school-list::-webkit-scrollbar {
+  width: 8px;
+}
+
+.school-list::-webkit-scrollbar-track {
+  background: rgba(0, 0, 0, 0.05);
+  border-radius: 4px;
+}
+
+.school-list::-webkit-scrollbar-thumb {
+  background: var(--primary-color);
+  border-radius: 4px;
 }
 
 .school-item {
   background: rgba(255, 255, 255, 0.05);
-  padding: 1rem;
+  padding: 1.5rem;
   border-radius: 10px;
   transition: all 0.3s ease;
-  border-left: 2px solid var(--primary-color);
+  border-left: 3px solid var(--primary-color);
+  animation: fadeInRight 0.5s ease-out;
+  animation-fill-mode: backwards;
+  position: relative;
+  overflow: hidden;
+  min-height: 160px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.school-item::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 3px;
+  height: 100%;
+  background: linear-gradient(to bottom, var(--primary-color), var(--secondary-color));
+  opacity: 0.8;
 }
 
 .school-item:hover {
   transform: translateX(5px);
+  background: rgba(255, 255, 255, 0.08);
 }
 
 .school-name {
   font-weight: bold;
-  margin-bottom: 0.5rem;
+  margin-bottom: 0.8rem;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--primary-color);
 }
 
 .school-details {
   display: flex;
+  flex-wrap: wrap;
   justify-content: space-between;
   font-size: 0.9rem;
   color: var(--text-color);
-}
-
-.high-chance,
-.medium-chance,
-.low-chance {
-  border-left: 2px solid var(--primary-color);
 }
 
 .analysis-notes {
@@ -2334,6 +2465,16 @@ button:hover:before {
   padding: 1.5rem;
   border-radius: 15px;
   margin: 2rem 0;
+  animation: fadeIn 0.5s ease-out;
+  animation-delay: 0.4s;
+  animation-fill-mode: backwards;
+}
+
+.analysis-notes h3 {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 1rem;
 }
 
 .analysis-notes ul {
@@ -2346,27 +2487,49 @@ button:hover:before {
   display: flex;
   align-items: center;
   gap: 1rem;
+  padding: 0.8rem;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 10px;
+  transition: all 0.3s ease;
+}
+
+.analysis-notes li:hover {
+  transform: translateY(-3px);
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.analysis-notes li i {
+  color: var(--secondary-color);
 }
 
 .no-results {
   text-align: center;
   padding: 3rem;
+  animation: fadeIn 0.5s ease-out;
 }
 
 .no-results .icon {
   font-size: 4rem;
   color: var(--primary-color);
   margin-bottom: 1.5rem;
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.1); }
+  100% { transform: scale(1); }
 }
 
 .suggestions {
   list-style: none;
   padding: 0;
   margin: 1.5rem 0;
+  text-align: left;
 }
 
 .suggestions li {
-  margin: 0.5rem 0;
+  margin: 0.8rem 0;
   color: var(--text-color);
 }
 
@@ -2476,12 +2639,14 @@ button:hover:before {
   background-color: #f0f0f0;
   color: #555;
   font-size: 0.9rem;
-  padding: 2px 6px;
-  margin-right: 8px;
-  border-radius: 3px;
+  padding: 4px 10px;
+  margin-top: 5px;
+  margin-bottom: 10px;
+  border-radius: 5px;
   display: flex;
   align-items: center;
   gap: 5px;
+  width: fit-content;
 }
 
 .dark-mode .school-ownership {
@@ -2590,4 +2755,196 @@ button:hover:before {
   visibility: visible;
   transform: translateY(0);
   opacity: 1;
+}
+
+/* 重新設計的使用說明樣式 */
+.instruction-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 20px;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+  padding-bottom: 10px;
+}
+
+.tab-button {
+  background: rgba(52, 152, 219, 0.1);
+  color: var(--text-color);
+  border: none;
+  padding: 10px 15px;
+  border-radius: 20px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  flex: 1 1 auto;
+  justify-content: center;
+  min-width: 0;
+}
+
+.tab-button i {
+  font-size: 14px;
+}
+
+.tab-button.active {
+  background: var(--primary-color);
+  color: white;
+  font-weight: 500;
+}
+
+.tab-content {
+  display: none;
+  animation: fadeIn 0.4s ease;
+}
+
+.tab-content.active {
+  display: block;
+}
+
+.instruction-card {
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 12px;
+  overflow: hidden;
+  margin-bottom: 16px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+  border: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.instruction-card-header {
+  background: rgba(52, 152, 219, 0.1);
+  padding: 15px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.instruction-card-header i {
+  color: var(--primary-color);
+  font-size: 18px;
+}
+
+.instruction-card-header h3 {
+  margin: 0;
+  color: var(--text-color);
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.instruction-card-body {
+  padding: 15px;
+}
+
+.instruction-card-body p {
+  margin-top: 0;
+  margin-bottom: 10px;
+  line-height: 1.5;
+  font-size: 14px;
+}
+
+.instruction-card-body ul {
+  margin: 0;
+  padding-left: 20px;
+}
+
+.instruction-card-body li {
+  margin-bottom: 8px;
+  font-size: 14px;
+  line-height: 1.4;
+}
+
+.tip-box {
+  background: rgba(46, 204, 113, 0.1);
+  border-radius: 8px;
+  padding: 10px;
+  margin-top: 10px;
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+}
+
+.tip-box i {
+  color: #2ecc71;
+  font-size: 16px;
+  margin-top: 2px;
+}
+
+.tip-box p {
+  margin: 0;
+  font-size: 13px;
+  color: var(--text-color);
+}
+
+.faq-item {
+  border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+  padding-bottom: 10px;
+  margin-bottom: 10px;
+}
+
+.faq-item:last-child {
+  border-bottom: none;
+  margin-bottom: 0;
+  padding-bottom: 0;
+}
+
+.faq-question {
+  font-weight: 600;
+  margin-bottom: 5px;
+  font-size: 14px;
+  color: var(--primary-color);
+}
+
+.faq-answer {
+  font-size: 13px;
+  color: var(--text-color);
+  line-height: 1.4;
+}
+
+/* Dark mode adjustments */
+.dark-mode .instruction-card {
+  background: rgba(255, 255, 255, 0.03);
+  border-color: rgba(255, 255, 255, 0.05);
+}
+
+.dark-mode .instruction-card-header {
+  background: rgba(52, 152, 219, 0.2);
+}
+
+.dark-mode .tab-button {
+  background: rgba(52, 152, 219, 0.2);
+}
+
+.dark-mode .tip-box {
+  background: rgba(46, 204, 113, 0.1);
+}
+
+/* Mobile responsiveness for instruction modal */
+@media (max-width: 768px) {
+  .instruction-tabs {
+    gap: 5px;
+  }
+  
+  .tab-button {
+    padding: 8px 10px;
+    font-size: 12px;
+    min-width: 0;
+  }
+  
+  .tab-button i {
+    font-size: 12px;
+  }
+  
+  .instruction-card-header h3 {
+    font-size: 15px;
+  }
+  
+  .instruction-card-body p,
+  .instruction-card-body li {
+    font-size: 13px;
+  }
+  
+  .tip-box p {
+    font-size: 12px;
+  }
 }

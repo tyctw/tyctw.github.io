@@ -33,6 +33,12 @@ function toggleInstructions() {
   var instructionsModal = document.getElementById('instructionsModal');
   instructionsModal.style.display = 'block';
   
+  // Scroll to top of modal content
+  const modalContent = instructionsModal.querySelector('.modal-content');
+  if (modalContent) {
+    modalContent.scrollTop = 0;
+  }
+  
   // Log this action
   logUserActivity('view_instructions');
 }
@@ -675,15 +681,7 @@ async function exportResults(format = 'txt') {
   const resultsText = resultsElement.innerText;
   
   const now = new Date();
-  const dateTime = now.toLocaleString('zh-TW', {
-    year: 'numeric',
-    month: '2-digit',
-    day: '2-digit',
-    hour: '2-digit',
-    minute: '2-digit',
-    second: '2-digit',
-    hour12: false
-  });
+  const dateTime = now.toLocaleString('zh-TW');
   
   const watermark =
     "********************************\n" +

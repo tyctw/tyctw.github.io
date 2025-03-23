@@ -675,15 +675,7 @@ async function exportResults(format = 'txt') {
   const resultsText = resultsElement.innerText;
   
   const now = new Date();
-  const dateTime = now.toLocaleString('zh-TW', {
-    year: 'numeric',
-    month: '2-digit',
-    day: '2-digit',
-    hour: '2-digit',
-    minute: '2-digit',
-    second: '2-digit',
-    hour12: false
-  });
+  const dateTime = now.toLocaleString('zh-TW');
   
   const watermark =
     "********************************\n" +
@@ -726,11 +718,26 @@ async function exportPdf(content) {
     const { jsPDF } = window.jspdf;
     const doc = new jsPDF();
     
-    // Add header
+    // Add fancy header with logo
+    doc.setFillColor(52, 152, 219);
+    doc.rect(0, 0, 210, 30, 'F');
+    
+    // Add title
     doc.setFont('helvetica', 'bold');
-    doc.setFontSize(22);
-    doc.setTextColor(52, 152, 219);
-    doc.text('桃聯區會考落點分析結果', 105, 20, { align: 'center' });
+    doc.setFontSize(24);
+    doc.setTextColor(255, 255, 255);
+    doc.text('桃聯區會考落點分析結果', 105, 15, { align: 'center' });
+    
+    // Add decoration line
+    doc.setDrawColor(231, 76, 60);
+    doc.setLineWidth(1);
+    doc.line(20, 35, 190, 35);
+    
+    // Add metadata
+    doc.setFont('helvetica', 'italic');
+    doc.setFontSize(10);
+    doc.setTextColor(100, 100, 100);
+    doc.text(`產生日期: ${new Date().toLocaleString('zh-TW')}`, 20, 42);
     
     // Reset text properties for content
     doc.setFontSize(12);
@@ -739,15 +746,48 @@ async function exportPdf(content) {
     
     const websiteInfo = "更多資訊請訪問: https://rcpett.vercel.app/";
     const splitText = doc.splitTextToSize(content, 170);
-    let y = 45;
+    let y = 50;
+    
+    // Add watermark to first page
+    doc.setFont('helvetica', 'bold');
+    doc.setFontSize(60);
+    doc.setTextColor(230, 230, 230);
+    doc.saveGraphicsState();
+    doc.rotate(-45, 105, 150);
+    doc.text('TYCTW', 70, 150);
+    doc.restoreGraphicsState();
+    
+    // Reset for content
+    doc.setFontSize(12);
+    doc.setTextColor(0, 0, 0);
+    doc.setFont('helvetica', 'normal');
+    
+    // Add scores summary box
+    doc.setFillColor(240, 240, 240);
+    doc.roundedRect(20, y, 170, 50, 3, 3, 'F');
+    doc.setFont('helvetica', 'bold');
+    doc.setTextColor(52, 152, 219);
+    doc.text('成績摘要', 105, y + 10, { align: 'center' });
+    doc.setFont('helvetica', 'normal');
+    doc.setTextColor(0, 0, 0);
+    
+    y += 65;
     
     splitText.forEach(line => {
       if (y > 270) {
         doc.addPage();
+        // Add header to new page
+        doc.setFillColor(52, 152, 219);
+        doc.rect(0, 0, 210, 15, 'F');
+        doc.setFont('helvetica', 'bold');
+        doc.setFontSize(12);
+        doc.setTextColor(255, 255, 255);
+        doc.text('桃聯區會考落點分析結果', 105, 10, { align: 'center' });
+        
         // Add watermark to new page
         doc.setFont('helvetica', 'bold');
-        doc.setFontSize(30);
-        doc.setTextColor(220, 220, 220);
+        doc.setFontSize(60);
+        doc.setTextColor(230, 230, 230);
         doc.saveGraphicsState();
         doc.rotate(-45, 105, 150);
         doc.text('TYCTW', 70, 150);
@@ -757,16 +797,18 @@ async function exportPdf(content) {
         doc.setFontSize(12);
         doc.setTextColor(0, 0, 0);
         doc.setFont('helvetica', 'normal');
-        y = 20;
+        y = 30;
       }
       doc.text(line, 20, y);
       y += 7;
     });
     
-    // Add footer with page numbers
+    // Add fancy footer with page numbers
     const pageCount = doc.getNumberOfPages();
     for (let i = 1; i <= pageCount; i++) {
       doc.setPage(i);
+      doc.setFillColor(240, 240, 240);
+      doc.rect(0, 280, 210, 17, 'F');
       doc.setFontSize(10);
       doc.setTextColor(100, 100, 100);
       doc.text('第 ' + i + ' 頁，共 ' + pageCount + ' 頁', 105, 285, { align: 'center' });
@@ -782,16 +824,33 @@ async function exportPdf(content) {
 }
 
 function exportTxt(content) {
+  const now = new Date();
+  const dateTime = now.toLocaleString('zh-TW');
+  
   const websiteInfo = "更多資訊請訪問: https://rcpett.vercel.app/\n\n";
   const formattedContent = 
-    "==========================================\n" +
-    "        桃聯區會考落點分析結果\n" +
-    "==========================================\n\n" +
+    "====================================================================\n" +
+    "                  桃聯區會考落點分析結果                            \n" +
+    "====================================================================\n\n" +
+    "產生日期: " + dateTime + "\n\n" +
+    "--------------------------------------------------------------------\n" +
+    "                           成績摘要                                 \n" +
+    "--------------------------------------------------------------------\n" +
+    "國文: " + document.getElementById('chinese').value + "\n" +
+    "英文: " + document.getElementById('english').value + "\n" +
+    "數學: " + document.getElementById('math').value + "\n" +
+    "自然: " + document.getElementById('science').value + "\n" +
+    "社會: " + document.getElementById('social').value + "\n" +
+    "作文: " + document.getElementById('composition').value + "\n\n" +
+    "--------------------------------------------------------------------\n" +
+    "                           分析結果                                 \n" +
+    "--------------------------------------------------------------------\n" +
     content + 
-    "\n\n------------------------------------------\n" +
+    "\n\n====================================================================\n" +
     websiteInfo +
     " 2023 TYCTW桃聯區會考落點分析系統\n" +
-    "==========================================";
+    "此文件僅供參考，不代表實際錄取結果\n" +
+    "====================================================================";
   const blob = new Blob([formattedContent], { type: 'text/plain;charset=utf-8' });
   downloadFile(blob, '桃聯區會考落點分析結果.txt');
 }
@@ -800,34 +859,43 @@ function exportCsv(content) {
   const now = new Date();
   const dateTime = now.toLocaleString('zh-TW');
   
-  // Add header rows
+  // Add header rows with nice formatting
   let csvContent = '';
+  csvContent += '"==================================================="\n';
   csvContent += '"桃聯區會考落點分析結果"\n';
+  csvContent += '"==================================================="\n';
   csvContent += '"產生時間","' + dateTime + '"\n';
   csvContent += '"TYCTW桃聯區會考落點分析系統 - 僅供參考"\n';
   csvContent += '"更多資訊請訪問: https://rcpett.vercel.app/"\n\n';
   
-  // Add scores
-  csvContent += '"成績資訊"\n';
-  csvContent += '"國文","' + document.getElementById('chinese').value + '"\n';
-  csvContent += '"英文","' + document.getElementById('english').value + '"\n';
-  csvContent += '"數學","' + document.getElementById('math').value + '"\n';
-  csvContent += '"自然","' + document.getElementById('science').value + '"\n';
-  csvContent += '"社會","' + document.getElementById('social').value + '"\n';
-  csvContent += '"作文","' + document.getElementById('composition').value + '"\n\n';
+  // Add scores with better organization
+  csvContent += '"==================================================="\n';
+  csvContent += '"成績資訊","分數","等級說明"\n';
+  csvContent += '"==================================================="\n';
+  csvContent += '"國文","' + document.getElementById('chinese').value + '","A++/A+/A為優良,B++/B+/B為中等,C為需加強"\n';
+  csvContent += '"英文","' + document.getElementById('english').value + '","A++/A+/A為優良,B++/B+/B為中等,C為需加強"\n';
+  csvContent += '"數學","' + document.getElementById('math').value + '","A++/A+/A為優良,B++/B+/B為中等,C為需加強"\n';
+  csvContent += '"自然","' + document.getElementById('science').value + '","A++/A+/A為優良,B++/B+/B為中等,C為需加強"\n';
+  csvContent += '"社會","' + document.getElementById('social').value + '","A++/A+/A為優良,B++/B+/B為中等,C為需加強"\n';
+  csvContent += '"作文","' + document.getElementById('composition').value + '","滿分為6級分"\n\n';
   
-  // Add main content
-  csvContent += '"分析結果"\n';
+  // Add main content with better organization
+  csvContent += '"==================================================="\n';
+  csvContent += '"分析結果","學校類型","備註"\n';
+  csvContent += '"==================================================="\n';
   const lines = content.split('\n');
   lines.forEach(line => {
     const cleanLine = line.replace(/[*]/g, '').trim();
     if (cleanLine) {
-      csvContent += `"${cleanLine}"\n`;
+      csvContent += `"${cleanLine}","",""\n`;
     }
   });
   
-  // Add footer
-  csvContent += '\n" 2023 TYCTW桃聯區會考落點分析系統"\n';
+  // Add footer with metadata
+  csvContent += '\n"==================================================="\n';
+  csvContent += '"' + new Date().toISOString() + '","' + navigator.userAgent + '"\n';
+  csvContent += '"TYCTW桃聯區會考落點分析系統 版權所有"\n';
+  csvContent += '"==================================================="\n';
   
   const blob = new Blob(['\uFEFF' + csvContent], { type: 'text/csv;charset=utf-8' });
   downloadFile(blob, '桃聯區會考落點分析結果.csv');
@@ -851,24 +919,52 @@ function exportJson(content) {
     analysisIdentity: document.getElementById('analysisIdentity').value
   };
   
+  // Create a more structured and detailed JSON with schema version
   const jsonData = {
+    schema_version: "1.1.0",
     metadata: {
       title: 'TYCTW 桃聯區會考落點分析結果',
       description: 'TYCTW 桃聯區會考落點分析系統 - 僅供參考',
       generateTime: new Date().toISOString(),
+      timestamp: Date.now(),
       websiteUrl: 'https://rcpett.vercel.app/',
-      version: '1.0.0'
+      exportVersion: '1.1.0',
+      disclaimer: '此分析結果僅供參考，不代表實際錄取結果'
     },
     userInput: {
       scores: scores,
-      filters: filters
+      filters: filters,
+      scoreExplanation: {
+        grades: {
+          "A++": "優良(頂標)",
+          "A+": "優良(前標)",
+          "A": "優良",
+          "B++": "中等(均標)",
+          "B+": "中等",
+          "B": "中等",
+          "C": "需加強(底標)"
+        },
+        composition: "作文分為0-6級分",
+        calculationMethod: "總積分根據各科等第轉換後加總計算"
+      }
     },
     results: {
-      content: content.split('\n').filter(line => line.trim())
+      content: content.split('\n').filter(line => line.trim()),
+      generatedAt: new Date().toLocaleString('zh-TW'),
+      deviceInfo: {
+        platform: navigator.platform,
+        userAgent: navigator.userAgent,
+        language: navigator.language
+      }
     },
-    copyright: ` 2023 TYCTW桃聯區會考落點分析系統`
+    copyright: {
+      year: new Date().getFullYear(),
+      owner: "TYCTW桃聯區會考落點分析系統",
+      rights: "版權所有，不得未經授權轉載或使用"
+    }
   };
   
+  // Pretty print the JSON with 2-space indentation
   const blob = new Blob([JSON.stringify(jsonData, null, 2)], { type: 'application/json;charset=utf-8' });
   downloadFile(blob, '桃聯區會考落點分析結果.json');
 }
@@ -915,6 +1011,27 @@ document.addEventListener('DOMContentLoaded', function() {
       logUserActivity('identity_selection', { 
         identity: identityInput.value 
       });
+    });
+  });
+  
+  // Initialize tabs for instructions modal
+  const tabButtons = document.querySelectorAll('.tab-button');
+  const tabContents = document.querySelectorAll('.tab-content');
+  
+  tabButtons.forEach(button => {
+    button.addEventListener('click', () => {
+      const tabId = button.getAttribute('data-tab');
+      
+      // Remove active class from all buttons and tabs
+      tabButtons.forEach(btn => btn.classList.remove('active'));
+      tabContents.forEach(content => content.classList.remove('active'));
+      
+      // Add active class to current button and tab
+      button.classList.add('active');
+      document.getElementById(`${tabId}-tab`).classList.add('active');
+      
+      // Log tab selection
+      logUserActivity('instruction_tab_click', { tab: tabId });
     });
   });
   
@@ -1156,17 +1273,17 @@ function displayResults(data) {
       <div class="results-header">
         <h2><i class="fas fa-clipboard-check icon"></i>分析結果總覽</h2>
         <div class="results-summary">
-          <div class="result-card total-points">
+          <div class="result-card total-points" style="background: linear-gradient(135deg, #3498db, #2980b9);">
             <i class="fas fa-star icon"></i>
             <div class="result-value">${totalPoints}</div>
             <div class="result-label">總積分</div>
           </div>
-          <div class="result-card total-credits">
+          <div class="result-card total-credits" style="background: linear-gradient(135deg, #2ecc71, #27ae60);">
             <i class="fas fa-award icon"></i>
             <div class="result-value">${totalCredits}</div>
             <div class="result-label">總積點</div>
           </div>
-          <div class="result-card schools-count">
+          <div class="result-card schools-count" style="background: linear-gradient(135deg, #9b59b6, #8e44ad);">
             <i class="fas fa-school icon"></i>
             <div class="result-value">${eligibleSchools ? eligibleSchools.length : 0}</div>
             <div class="result-label">符合條件學校數</div>
@@ -1178,37 +1295,37 @@ function displayResults(data) {
         <h3><i class="fas fa-chart-bar icon"></i>成績分析</h3>
         <div class="scores-summary">
           <div class="score-item">
-            <span class="score-label">國文：</span>
+            <span class="score-label"><i class="fas fa-book icon"></i> 國文：</span>
             <span class="score-value ${getScoreClass(document.getElementById('chinese').value)}">
               ${document.getElementById('chinese').value}
             </span>
           </div>
           <div class="score-item">
-            <span class="score-label">英文：</span>
+            <span class="score-label"><i class="fas fa-language icon"></i> 英文：</span>
             <span class="score-value ${getScoreClass(document.getElementById('english').value)}">
               ${document.getElementById('english').value}
             </span>
           </div>
           <div class="score-item">
-            <span class="score-label">數學：</span>
+            <span class="score-label"><i class="fas fa-calculator icon"></i> 數學：</span>
             <span class="score-value ${getScoreClass(document.getElementById('math').value)}">
               ${document.getElementById('math').value}
             </span>
           </div>
           <div class="score-item">
-            <span class="score-label">自然：</span>
+            <span class="score-label"><i class="fas fa-flask icon"></i> 自然：</span>
             <span class="score-value ${getScoreClass(document.getElementById('science').value)}">
               ${document.getElementById('science').value}
             </span>
           </div>
           <div class="score-item">
-            <span class="score-label">社會：</span>
+            <span class="score-label"><i class="fas fa-globe icon"></i> 社會：</span>
             <span class="score-value ${getScoreClass(document.getElementById('social').value)}">
               ${document.getElementById('social').value}
             </span>
           </div>
           <div class="score-item">
-            <span class="score-label">作文：</span>
+            <span class="score-label"><i class="fas fa-pen-nib icon"></i> 作文：</span>
             <span class="score-value composition-score">
               ${document.getElementById('composition').value} 級分
             </span>
@@ -1216,6 +1333,7 @@ function displayResults(data) {
         </div>`;
   
   if (eligibleSchools && eligibleSchools.length > 0) {
+    // Group schools by type
     let groupedSchools = {};
     eligibleSchools.forEach(school => {
       if (!groupedSchools[school.type]) {
@@ -1223,47 +1341,72 @@ function displayResults(data) {
       }
       groupedSchools[school.type].push(school);
     });
-  
+    
+    // Add a summary of total schools by type
     results += `
+      <div class="schools-summary" style="margin: 2rem 0; padding: 1rem; background: rgba(52, 152, 219, 0.05); border-radius: 10px;">
+        <h4 style="margin-bottom: 1rem;"><i class="fas fa-chart-pie icon"></i> 符合條件學校類型統計</h4>
+        <div style="display: flex; flex-wrap: wrap; gap: 1rem; justify-content: center;">
+          ${Object.entries(groupedSchools).map(([type, schools]) => `
+            <div style="background: linear-gradient(135deg, #2c3e50, #3498db); color: white; padding: 0.8rem 1.5rem; border-radius: 50px; display: flex; align-items: center; gap: 8px;">
+              <i class="fas fa-${type === '普通科' ? 'graduation-cap' : 'tools'} icon"></i>
+              ${type}: <strong>${schools.length}</strong> 所
+            </div>
+          `).join('')}
+        </div>
+      </div>
+      
       <div class="schools-analysis">
         <h3><i class="fas fa-university icon"></i>學校分析</h3>
         <div class="school-type-summary">
           ${Object.entries(groupedSchools).map(([type, schools]) => `
             <div class="school-type-card">
               <div class="school-type-header">
-                <i class="fas fa-building icon"></i>
+                <i class="fas fa-${type === '普通科' ? 'graduation-cap' : 'tools'} icon"></i>
                 <h4>${type}</h4>
                 <span class="school-count">${schools.length}所</span>
               </div>
               <div class="school-list">
-                ${schools.map(school => `
+                ${schools.map(school => {
+                  // Calculate admission chance color
+                  let chanceColor = '#e74c3c'; // default red
+                  if (school.admissionChance >= 80) chanceColor = '#2ecc71'; // green
+                  else if (school.admissionChance >= 60) chanceColor = '#f1c40f'; // yellow
+                  
+                  return `
                   <div class="school-item" data-id="${school.id || Math.random().toString(36).substring(2, 15)}">
                     <div class="school-name">
                       <i class="fas fa-graduation-cap icon"></i>
                       ${school.name}
-                      ${school.ownership ? `
-                        <span class="school-ownership">
-                          <i class="fas fa-building icon"></i>
-                          ${school.ownership}
-                        </span>
-                      ` : ''}
                     </div>
-                    <div class="school-details">
+                    ${school.ownership ? `
+                      <div class="school-ownership">
+                        <i class="fas fa-building icon"></i>
+                        ${school.ownership}
+                      </div>
+                    ` : ''}
+                    <div class="school-details" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 12px; margin-top: 15px;">
                       ${school.lastYearCutoff ? `
-                        <span class="cutoff-score">
-                          <i class="fas fa-chart-line icon"></i>
-                          去年最低錄取: ${school.lastYearCutoff}
-                        </span>
+                        <div style="display: flex; align-items: center; gap: 5px;">
+                          <i class="fas fa-chart-line icon" style="color: #e74c3c;"></i>
+                          <span>去年最低: <strong>${school.lastYearCutoff}</strong></span>
+                        </div>
                       ` : ''}
                       ${school.historicalTrend ? `
-                        <span class="trend-info">
-                          <i class="fas fa-history icon"></i>
-                          近三年: ${school.historicalTrend}
-                        </span>
+                        <div style="display: flex; align-items: center; gap: 5px;">
+                          <i class="fas fa-history icon" style="color: #9b59b6;"></i>
+                          <span>近三年: <strong>${school.historicalTrend}</strong></span>
+                        </div>
                       ` : ''}
                     </div>
+                    ${school.notes ? `
+                      <div class="school-notes" style="margin-top: 15px; padding: 10px; background: rgba(52, 152, 219, 0.1); border-radius: 5px; font-size: 0.95rem;">
+                        <i class="fas fa-info-circle icon" style="color: #3498db;"></i>
+                        ${school.notes}
+                      </div>
+                    ` : ''}
                   </div>
-                `).join('')}
+                `}).join('')}
               </div>
             </div>
           `).join('')}
@@ -1272,23 +1415,54 @@ function displayResults(data) {
       
       <div class="analysis-notes">
         <h3><i class="fas fa-info-circle icon"></i>分析說明</h3>
-        <ul>
-          <li><i class="fas fa-lightbulb icon"></i>建議同時考慮學校特色、地理位置等因素</li>
-          <li><i class="fas fa-book icon"></i>請詳閱各校招生簡章了解詳細資訊</li>
-          <li><i class="fas fa-comments icon"></i>建議諮詢師長意見做為參考</li>
-          <li><i class="fas fa-chart-line icon"></i>依據歷年錄取分數評估錄取機率</li>
-        </ul>
+        <div style="display: flex; flex-wrap: wrap; gap: 1rem; margin-top: 1rem;">
+          <div style="background: rgba(46, 204, 113, 0.1); padding: 1.5rem; border-radius: 10px; text-align: left; box-shadow: 0 5px 15px rgba(0,0,0,0.05); width: 100%;">
+            <h4 style="margin-bottom: 1rem; color: #2ecc71; display: flex; align-items: center; gap: 10px;">
+              <i class="fas fa-lightbulb" style="color: #f1c40f;"></i> 您可以嘗試：
+            </h4>
+            <ul style="list-style: none; padding: 0;">
+              <li style="margin: 10px 0; padding-left: 25px; position: relative;">
+                <i class="fas fa-check-circle" style="color: #2ecc71; position: absolute; left: 0;"></i>
+                調整篩選條件，選擇「全部」查看更多選項
+              </li>
+              <li style="margin: 10px 0; padding-left: 25px; position: relative;">
+                <i class="fas fa-check-circle" style="color: #2ecc71; position: absolute; left: 0;"></i>
+                考慮更多類型的學校，包括公私立或不同科別
+              </li>
+              <li style="margin: 10px 0; padding-left: 25px; position: relative;">
+                <i class="fas fa-check-circle" style="color: #2ecc71; position: absolute; left: 0;"></i>
+                諮詢老師獲取更多建議和升學輔導
+              </li>
+            </ul>
+          </div>
+        </div>
       </div>`;
   } else {
     results += `
-      <div class="no-results">
-        <i class="fas fa-search icon"></i>
-        <p>根據您的成績，暫時沒有符合條件的學校。</p>
-        <ul class="suggestions">
-          <li>嘗試調整篩選條件</li>
-          <li>考慮更多類型的學校</li>
-          <li>諮詢老師獲取更多建議</li>
-        </ul>
+      <div class="no-results" style="text-align: center; padding: 3rem; background: rgba(231, 76, 60, 0.05); border-radius: 15px; margin: 2rem 0;">
+        <i class="fas fa-search icon" style="font-size: 4rem; color: #e74c3c; margin-bottom: 1.5rem; display: block;"></i>
+        <h3 style="color: #e74c3c; margin-bottom: 1rem;">根據您的成績，暫時沒有符合條件的學校。</h3>
+        <div style="max-width: 100%; margin: 0 auto;">
+          <div class="suggestions" style="background: white; padding: 1.5rem; border-radius: 10px; text-align: left; box-shadow: 0 5px 15px rgba(0,0,0,0.05);">
+            <h4 style="margin-bottom: 1rem; color: #3498db; display: flex; align-items: center; gap: 10px;">
+              <i class="fas fa-lightbulb" style="color: #f1c40f;"></i> 您可以嘗試：
+            </h4>
+            <ul style="list-style: none; padding: 0;">
+              <li style="margin: 10px 0; padding-left: 25px; position: relative;">
+                <i class="fas fa-check-circle" style="color: #2ecc71; position: absolute; left: 0;"></i>
+                調整篩選條件，選擇「全部」查看更多選項
+              </li>
+              <li style="margin: 10px 0; padding-left: 25px; position: relative;">
+                <i class="fas fa-check-circle" style="color: #2ecc71; position: absolute; left: 0;"></i>
+                考慮更多類型的學校，包括公私立或不同科別
+              </li>
+              <li style="margin: 10px 0; padding-left: 25px; position: relative;">
+                <i class="fas fa-check-circle" style="color: #2ecc71; position: absolute; left: 0;"></i>
+                諮詢老師獲取更多建議和升學輔導
+              </li>
+            </ul>
+          </div>
+        </div>
       </div>`;
   }
   
@@ -1304,7 +1478,30 @@ function displayResults(data) {
     resultsElement.style.display = 'block';
     resultsElement.style.animation = 'fadeIn 0.5s ease-out';
     document.getElementById('exportResults').style.display = 'inline-block';
+    
+    // Add a toast notification for successful analysis
+    showToast('分析完成！您可以查看結果或匯出報告。');
   }, 100);
+}
+
+// Add toast notification function
+function showToast(message) {
+  // Create toast if it doesn't exist
+  let toast = document.getElementById('toast-notification');
+  if (!toast) {
+    toast = document.createElement('div');
+    toast.id = 'toast-notification';
+    document.body.appendChild(toast);
+  }
+  
+  // Update message and show
+  toast.innerText = message;
+  toast.className = 'show';
+  
+  // Hide after 3 seconds
+  setTimeout(() => { 
+    toast.className = toast.className.replace('show', ''); 
+  }, 3000);
 }
 
 function getScoreClass(score) {

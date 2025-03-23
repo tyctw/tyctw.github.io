@@ -1261,13 +1261,13 @@ function displayResults(data) {
                     <div class="school-name">
                       <i class="fas fa-graduation-cap icon"></i>
                       ${school.name}
-                      ${school.ownership ? `
-                        <span class="school-ownership">
-                          <i class="fas fa-building icon"></i>
-                          ${school.ownership}
-                        </span>
-                      ` : ''}
                     </div>
+                    ${school.ownership ? `
+                      <div class="school-ownership">
+                        <i class="fas fa-building icon"></i>
+                        ${school.ownership}
+                      </div>
+                    ` : ''}
                     <div class="school-details" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 12px; margin-top: 15px;">
                       ${school.lastYearCutoff ? `
                         <div style="display: flex; align-items: center; gap: 5px;">

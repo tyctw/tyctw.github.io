@@ -2413,7 +2413,7 @@ button:hover:before {
   animation-fill-mode: backwards;
   position: relative;
   overflow: hidden;
-  min-height: 120px;
+  min-height: 160px;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -2631,12 +2631,14 @@ button:hover:before {
   background-color: #f0f0f0;
   color: #555;
   font-size: 0.9rem;
-  padding: 2px 6px;
-  margin-right: 8px;
-  border-radius: 3px;
+  padding: 4px 10px;
+  margin-top: 5px;
+  margin-bottom: 10px;
+  border-radius: 5px;
   display: flex;
   align-items: center;
   gap: 5px;
+  width: fit-content;
 }
 
 .dark-mode .school-ownership {

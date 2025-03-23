@@ -604,7 +604,7 @@ function printResults() {
         ${resultsElement.innerHTML}
       </div>
       <div class="footer">
-        <p> 2023 TYCTW桃聯區會考落點分析系統. All rights reserved.</p>
+        <p> 2025 TYCTW桃聯區會考落點分析系統. All rights reserved.</p>
         <p>本分析結果僅供參考，不代表實際錄取結果。</p>
         <p>更多資訊: <a href="https://rcpett.vercel.app/" target="_blank">https://rcpett.vercel.app/</a></p>
       </div>
@@ -813,7 +813,7 @@ async function exportPdf(content) {
       doc.setTextColor(100, 100, 100);
       doc.text('第 ' + i + ' 頁，共 ' + pageCount + ' 頁', 105, 285, { align: 'center' });
       doc.text(websiteInfo, 105, 290, { align: 'center' });
-      doc.text(' 2023 TYCTW桃聯區會考落點分析系統', 105, 295, { align: 'center' });
+      doc.text(' 2025 TYCTW桃聯區會考落點分析系統', 105, 295, { align: 'center' });
     }
     
     doc.save('桃聯區會考落點分析結果.pdf');
@@ -848,7 +848,7 @@ function exportTxt(content) {
     content + 
     "\n\n====================================================================\n" +
     websiteInfo +
-    " 2023 TYCTW桃聯區會考落點分析系統\n" +
+    " 2025 TYCTW桃聯區會考落點分析系統\n" +
     "此文件僅供參考，不代表實際錄取結果\n" +
     "====================================================================";
   const blob = new Blob([formattedContent], { type: 'text/plain;charset=utf-8' });

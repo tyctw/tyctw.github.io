@@ -2136,38 +2136,46 @@ button:hover:before {
   #instructionsModal .modal-content {
     width: 95%;
     margin: 5% auto;
-    padding: 25px;
+    padding: 20px;
   }
   
   #instructionsModal h2 {
-    font-size: 22px;
+    font-size: 20px;
+    margin-bottom: 20px;
   }
 
   .instruction-item {
-    padding: 1.2rem;
+    padding: 1rem;
   }
 
   .instruction-item h3 {
-    font-size: 1.2rem;
+    font-size: 1.1rem;
   }
   
   .instruction-item h3 .icon {
-    width: 32px;
-    height: 32px;
-    font-size: 1.3rem;
+    width: 28px;
+    height: 28px;
+    font-size: 1.1rem;
   }
 
-  .instruction-item p {
-    font-size: 0.95rem;
+  .instruction-item p, .instruction-item li {
+    font-size: 0.9rem;
+    line-height: 1.4;
   }
   
+  .instruction-item .highlight {
+    padding: 0.8rem;
+    font-size: 0.9rem;
+    margin: 0.8rem 0;
+  }
+
   .instruction-item ul {
     padding-left: 0;
   }
 
   .instruction-item li {
-    padding-left: 1.8rem;
-    margin-bottom: 0.8rem;
+    padding-left: 1.5rem;
+    margin-bottom: 0.6rem;
   }
 }
 

@@ -26,6 +26,44 @@
     <script src="https://unpkg.com/html5-qrcode" type="text/javascript"></script>
     <script src="https://cdn.jsdelivr.net/npm/jsqr@1.3.1/dist/jsQR.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <style>
+      @media (max-width: 768px) {
+        #instructionsModal .modal-content {
+          width: 95%;
+          margin: 5% auto;
+          padding: 20px;
+          max-height: 80vh;
+          overflow-y: auto;
+        }
+        
+        #instructionsModal h2 {
+          font-size: 20px;
+        }
+
+        .instruction-item {
+          padding: 1rem;
+        }
+
+        .instruction-item h3 {
+          font-size: 1.1rem;
+        }
+        
+        .instruction-item h3 .icon {
+          width: 28px;
+          height: 28px;
+          font-size: 1.1rem;
+        }
+
+        .instruction-item p, .instruction-item li {
+          font-size: 0.9rem;
+        }
+        
+        .instruction-item .highlight {
+          padding: 0.8rem;
+          font-size: 0.9rem;
+        }
+      }
+    </style>
   </head>
   <body>
     <header class="header">

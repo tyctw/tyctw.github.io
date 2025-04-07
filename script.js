@@ -1155,6 +1155,9 @@ function toggleMenu() {
   for (var i = 0; i < links.length; i++) {
     links[i].style.animationDelay = (i * 0.1) + 's';
   }
+  
+  // Update year in menu footer
+  document.getElementById('menuYear').textContent = new Date().getFullYear();
 }
 
 function closeMenu() {

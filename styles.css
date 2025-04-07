@@ -260,18 +260,17 @@ button:hover:before {
 .fullscreen-menu {
   position: fixed;
   top: 0;
-  right: -100%; /* Start off-screen to the right */
-  width: 300px; /* Fixed width */
+  right: -100%;
+  width: 320px;
   height: 100%;
-  background-color: var(--menu-background);
+  background: linear-gradient(135deg, #3498db, #1a4c7a);
   display: flex;
   flex-direction: column;
-  justify-content: center;
-  align-items: stretch;
   z-index: 2000;
-  transition: right 0.3s ease;
-  box-shadow: -2px 0 10px rgba(0, 0, 0, 0.2);
-  padding: 60px 20px 20px 20px;
+  transition: right 0.4s cubic-bezier(0.77, 0, 0.175, 1);
+  box-shadow: -5px 0 25px rgba(0, 0, 0, 0.25);
+  padding: 100px 0 30px;
+  overflow-y: auto;
 }
 
 .fullscreen-menu.show {
@@ -281,49 +280,42 @@ button:hover:before {
 .fullscreen-menu a {
   color: white;
   text-decoration: none;
-  font-size: 1.2em;
-  margin: 10px 0;
-  padding: 15px 20px;
-  border-radius: 10px;
+  font-size: 1.15rem;
+  margin: 8px 20px;
+  padding: 16px 24px;
+  border-radius: 12px;
   transition: all 0.3s ease;
   background: rgba(255, 255, 255, 0.1);
-  text-align: left;
+  backdrop-filter: blur(5px);
   opacity: 0;
-  transform: translateX(20px);
+  transform: translateX(30px);
+  display: flex;
+  align-items: center;
+  border-left: 4px solid transparent;
 }
 
 .fullscreen-menu.show a {
   opacity: 1;
   transform: translateX(0);
+  transition: all 0.5s cubic-bezier(0.25, 1, 0.5, 1);
 }
 
 .fullscreen-menu a:hover {
   background: rgba(255, 255, 255, 0.2);
-  transform: translateX(5px);
-  color: var(--accent-color);
+  transform: translateX(10px);
+  border-left: 4px solid #fff;
 }
 
-.close-menu {
-  position: absolute;
-  top: 20px;
-  right: 20px;
-  color: white;
-  font-size: 24px;
-  cursor: pointer;
-  background: rgba(255, 255, 255, 0.1);
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: all 0.3s ease;
+.fullscreen-menu a i {
+  margin-right: 15px;
+  font-size: 1.3rem;
+  min-width: 24px;
+  text-align: center;
+  transition: transform 0.3s ease;
 }
 
-.close-menu:hover {
-  background: rgba(255, 255, 255, 0.2);
-  transform: rotate(90deg);
-  color: var(--accent-color);
+.fullscreen-menu a:hover i {
+  transform: scale(1.2);
 }
 
 .menu-overlay {
@@ -332,17 +324,110 @@ button:hover:before {
   left: 0;
   width: 100%;
   height: 100%;
-  background: rgba(0, 0, 0, 0.5);
+  background: rgba(0, 0, 0, 0.6);
   opacity: 0;
   visibility: hidden;
-  transition: all 0.3s ease;
+  transition: all 0.4s ease;
   z-index: 1999;
-  backdrop-filter: blur(3px);
+  backdrop-filter: blur(5px);
 }
 
 .menu-overlay.show {
   opacity: 1;
   visibility: visible;
+}
+
+.close-menu {
+  position: absolute;
+  top: 30px;
+  right: 30px;
+  color: white;
+  font-size: 24px;
+  cursor: pointer;
+  background: rgba(255, 255, 255, 0.15);
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  z-index: 10;
+}
+
+.close-menu:hover {
+  background: rgba(255, 255, 255, 0.3);
+  transform: rotate(90deg);
+}
+
+.menu-header {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  padding: 30px 25px;
+  display: flex;
+  align-items: center;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.menu-header .logo {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  font-size: 1.3rem;
+  font-weight: bold;
+  color: white;
+}
+
+.menu-header .logo i {
+  font-size: 1.8rem;
+}
+
+.menu-section {
+  margin: 20px 0;
+}
+
+.menu-section-title {
+  padding: 0 25px;
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: rgba(255, 255, 255, 0.6);
+  margin-bottom: 15px;
+}
+
+.menu-footer {
+  margin-top: auto;
+  padding: 20px 25px;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  text-align: center;
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 0.9rem;
+}
+
+@media (max-width: 768px) {
+  .fullscreen-menu {
+    width: 85%;
+    padding-top: 80px;
+  }
+  
+  .close-menu {
+    top: 20px;
+    right: 20px;
+    width: 40px;
+    height: 40px;
+  }
+  
+  .menu-header {
+    padding: 20px;
+  }
+  
+  .fullscreen-menu a {
+    padding: 14px 20px;
+    margin: 6px 15px;
+    font-size: 1rem;
+  }
 }
 
 .qr-options {
@@ -1900,7 +1985,6 @@ button:hover:before {
   color: var(--accent-color);
 }
 
-/* Instruction section animations */
 @keyframes slideInRight {
   from {
     opacity: 0;
@@ -2070,9 +2154,9 @@ button:hover:before {
 }
 
 .instruction-item li {
+  margin-bottom: 0.8rem;
   position: relative;
   padding-left: 2rem;
-  margin-bottom: 1rem;
   line-height: 1.6;
 }
 

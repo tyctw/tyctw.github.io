@@ -80,21 +80,39 @@
 
     <div class="menu-overlay" id="menuOverlay" onclick="closeMenu()"></div>
     <div class="fullscreen-menu" id="fullscreenMenu">
+      <div class="menu-header">
+        <div class="logo">
+          <i class="fas fa-chart-line"></i>
+          <span>桃聯區會考分析</span>
+        </div>
+      </div>
       <div class="close-menu" onclick="closeMenu()">
         <i class="fas fa-times"></i>
       </div>
-      <a href="https://sites.google.com/view/tyctw/" target="_blank">
-        <i class="fas fa-school"></i> 回到主網頁
-      </a>
-      <a href="https://tyctw.github.io/sequence/" target="_blank">
-        <i class="fas fa-pencil-alt"></i> 各校序位推估 
-      </a>
-      <a href="https://tyctw.github.io/report_form" target="_blank">
-        <i class="fas fa-exclamation-triangle"></i> 系統異常回報
-      </a>
-      <a href="https://tyctw.github.io/Navigation/">
-        <i class="fas fa-university"></i> 查看更多資訊
-      </a>
+      
+      <div class="menu-section">
+        <div class="menu-section-title">主要選項</div>
+        <a href="https://sites.google.com/view/tyctw/" target="_blank">
+          <i class="fas fa-school"></i> 回到主網頁
+        </a>
+        <a href="https://tyctw.github.io/sequence/" target="_blank">
+          <i class="fas fa-pencil-alt"></i> 各校序位推估 
+        </a>
+      </div>
+      
+      <div class="menu-section">
+        <div class="menu-section-title">其他資源</div>
+        <a href="https://tyctw.github.io/report_form" target="_blank">
+          <i class="fas fa-exclamation-triangle"></i> 系統異常回報
+        </a>
+        <a href="https://tyctw.github.io/Navigation/">
+          <i class="fas fa-university"></i> 查看更多資訊
+        </a>
+      </div>
+      
+      <div class="menu-footer">
+        &copy; <span id="menuYear"></span> TYCTW
+      </div>
     </div>
 
     <div class="container">

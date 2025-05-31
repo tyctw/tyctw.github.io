@@ -1,4 +1,4 @@
-// Vocational groups data definition
+// Define vocational groups data (currently not used directly in UI)
 const vocationalGroups = {
   '機械群': ['機械科', '鑄造科', '板金科', '機械木模科', '配管科', '模具科', '機電科', '製圖科', '生物產業機電科', '電腦機械製圖科'],
   '動力機械群': ['汽車科', '重機科', '飛機修護科', '動力機械科', '農業機械科', '軌道車輛科'],
@@ -14,8 +14,6 @@ const vocationalGroups = {
   '餐旅群': ['觀光事業科', '餐飲管理科']
 };
 
-// Utility functions and event handlers
-
 function toggleVocationalGroup() {
   const schoolType = document.getElementById('schoolType').value;
   const vocationalGroupContainer = document.getElementById('vocationalGroupContainer');
@@ -30,34 +28,79 @@ function toggleVocationalGroup() {
 }
 
 function toggleInstructions() {
-  var instructionsModal = document.getElementById('instructionsModal');
-  instructionsModal.style.display = 'block';
-  
-  // Log this action
-  logUserActivity('view_instructions');
-}
-
-function closeInstructions() {
-  var instructionsModal = document.getElementById('instructionsModal');
-  instructionsModal.style.display = 'none';
-}
-
-// Close instructions modal when clicking outside of it
-window.addEventListener('click', function(event) {
-  var instructionsModal = document.getElementById('instructionsModal');
-  if (event.target == instructionsModal) {
-    closeInstructions();
+  var instructions = document.getElementById('instructions');
+  if (instructions.style.display === 'none' || instructions.style.display === '') {
+    instructions.style.display = 'block';
+    instructions.style.animation = 'fadeIn 0.5s ease-out';
+  } else {
+    instructions.style.animation = 'fadeOut 0.5s ease-out';
+    setTimeout(() => {
+      instructions.style.display = 'none';
+    }, 500);
   }
-});
+}
+
+let isDragging = false;
+let startY;
+let startTop;
 
 function showDisclaimer() {
   var modal = document.getElementById('disclaimerModal');
+  var modalContent = modal.querySelector('.modal-content');
   modal.style.display = 'block';
+
+  // Fade in and slide up animation
+  requestAnimationFrame(() => {
+    modal.style.opacity = '0';
+    modalContent.style.transform = 'translateY(50px)';
+    requestAnimationFrame(() => {
+      modal.style.transition = 'opacity 0.5s ease';
+      modal.style.opacity = '1';
+      modalContent.style.transition = 'transform 0.5s cubic-bezier(0.19, 1, 0.22, 1)';
+      modalContent.style.transform = 'translateY(0)';
+    });
+  });
+
+  // Lock body scroll when modal is open
+  document.body.style.overflow = 'hidden';
+  
+  // Add class for mobile detection
+  if (window.innerWidth <= 768) {
+    modalContent.classList.add('mobile-view');
+  } else {
+    modalContent.classList.remove('mobile-view');
+  }
 }
 
 function closeDisclaimer() {
   var modal = document.getElementById('disclaimerModal');
-  modal.style.display = 'none';
+  var modalContent = modal.querySelector('.modal-content');
+  
+  // Fade out and slide down animation
+  modalContent.style.transform = 'translateY(50px)';
+  modal.style.opacity = '0';
+  
+  setTimeout(() => {
+    modal.style.display = 'none';
+    modalContent.style.transform = 'translateY(0)';
+    // Restore body scroll when modal is closed
+    document.body.style.overflow = '';
+  }, 500);
+  
+  // Log user activity
+  logUserActivity('disclaimer_closed');
+}
+
+function startDragging(e) {
+  return false;
+}
+
+function drag(e) {
+  return false;
+}
+
+function stopDragging() {
+  return false;
 }
 
 function showInvitationValidationAnimation() {
@@ -77,68 +120,70 @@ function showInvitationValidationAnimation() {
 function hideInvitationValidationAnimation() {
   const overlay = document.getElementById('invitationValidationOverlay');
   if (overlay) {
-    overlay.style.animation = 'fadeOut 0.3s ease';
-    setTimeout(() => {
-      overlay.remove();
-    }, 300);
+    overlay.remove();
   }
 }
 
 function showLoading() {
   const loadingOverlay = document.createElement('div');
   loadingOverlay.className = 'loading-overlay';
-  
   loadingOverlay.innerHTML = `
-    <div class="loading-spinner-container">
-      <div class="loading-spinner"></div>
-      <div class="loading-text">分析中，請稍候...</div>
-      <div class="loading-progress"></div>
-      <div class="loading-steps">
-        <div class="loading-step" data-step="1">
-          <i class="fas fa-check-circle"></i>
-          <span>驗證邀請碼</span>
-        </div>
-        <div class="loading-step" data-step="2">
-          <i class="fas fa-check-circle"></i>
-          <span>計算總積分</span>
-        </div>
-        <div class="loading-step" data-step="3">
-          <i class="fas fa-check-circle"></i>
-          <span>分析落點區間</span>
-        </div>
-        <div class="loading-step" data-step="4">
-          <i class="fas fa-check-circle"></i>
-          <span>生成分析報告</span>
-        </div>
+    <div class="loading-spinner">
+      <div class="spinner"></div>
+      <div class="loading-text">分析成績中</div>
+      <div class="progress-container">
+        <div class="progress-bar"></div>
+      </div>
+      <div class="loading-status">計算積分與積點...</div>
+      <div class="loading-icons">
+        <i class="fas fa-chart-line loading-icon"></i>
+        <i class="fas fa-school loading-icon"></i>
+        <i class="fas fa-graduation-cap loading-icon"></i>
       </div>
     </div>
   `;
-
   document.body.appendChild(loadingOverlay);
-  
+
   requestAnimationFrame(() => {
     loadingOverlay.style.display = 'flex';
-    simulateLoadingSteps();
+    loadingOverlay.style.opacity = '0';
+    requestAnimationFrame(() => {
+      loadingOverlay.style.transition = 'opacity 0.3s ease';
+      loadingOverlay.style.opacity = '1';
+    });
   });
-}
-
-function simulateLoadingSteps() {
-  const steps = document.querySelectorAll('.loading-step');
-  const stepDelay = 500; // Time between each step
-
-  steps.forEach((step, index) => {
-    setTimeout(() => {
-      step.classList.add('active');
-    }, stepDelay * (index + 1));
-  });
+  
+  // Cycle through different loading messages
+  let loadingMessages = [
+    "計算積分與積點...",
+    "搜尋符合的學校中...",
+    "篩選適合的科系...",
+    "比對錄取門檻...",
+    "整理分析結果中..."
+  ];
+  
+  let messageIndex = 0;
+  const messageInterval = setInterval(() => {
+    messageIndex = (messageIndex + 1) % loadingMessages.length;
+    const loadingStatus = loadingOverlay.querySelector('.loading-status');
+    if (loadingStatus) {
+      loadingStatus.textContent = loadingMessages[messageIndex];
+    }
+  }, 1500);
+  
+  // Store the interval ID on the overlay element so we can clear it later
+  loadingOverlay.messageInterval = messageInterval;
 }
 
 function hideLoading() {
   const loadingOverlay = document.querySelector('.loading-overlay');
   if (loadingOverlay) {
-    loadingOverlay.style.opacity = '0';
-    loadingOverlay.style.transition = 'opacity 0.3s ease';
+    // Clear the message cycling interval
+    if (loadingOverlay.messageInterval) {
+      clearInterval(loadingOverlay.messageInterval);
+    }
     
+    loadingOverlay.style.opacity = '0';
     setTimeout(() => {
       loadingOverlay.remove();
     }, 300);
@@ -151,17 +196,6 @@ async function logUserActivity(action, details = {}) {
     const screenResolution = `${window.screen.width}x${window.screen.height}`;
     const viewportSize = `${window.innerWidth}x${window.innerHeight}`;
     const timestamp = new Date().toISOString();
-    const language = navigator.language;
-    const platform = navigator.platform;
-    const timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
-    const colorDepth = window.screen.colorDepth;
-    const hardwareConcurrency = navigator.hardwareConcurrency || null;
-    const connection = navigator.connection ? {
-      effectiveType: navigator.connection.effectiveType,
-      downlink: navigator.connection.downlink,
-      rtt: navigator.connection.rtt,
-      saveData: navigator.connection.saveData
-    } : {};
 
     const data = {
       timestamp,
@@ -170,16 +204,10 @@ async function logUserActivity(action, details = {}) {
       screenResolution,
       viewportSize,
       darkMode: document.body.classList.contains('dark-mode'),
-      language,
-      platform,
-      timeZone,
-      colorDepth,
-      hardwareConcurrency,
-      connection,
       ...details
     };
 
-    const response = await fetch('https://script.google.com/macros/s/AKfycbyTQFk7R5Tuthm9Y2oVIMpz3c7vR-BEHxa9X9gEgZio_cLgxZgi8LD3aonQUMLIKZDC/exec', {
+    const response = await fetch('https://script.google.com/macros/s/AKfycbxNP7aQiG4Hr0qq_npgTF5AkuCCXtRjsMQAb5n0SGncv7mGP--PbFs4LKlt6Qwr23Pz0w/exec', {
       method: 'POST',
       body: JSON.stringify(data)
     });
@@ -194,23 +222,28 @@ async function logUserActivity(action, details = {}) {
 
 async function analyzeScores() {
   const analyzeButton = document.getElementById('analyzeButton');
+  let originalButtonText = '';
   if (analyzeButton) {
+    originalButtonText = analyzeButton.innerHTML;
     analyzeButton.disabled = true;
-    analyzeButton.innerHTML = '<i class="fas fa-spinner fa-spin"></i> 分析中...';
+    analyzeButton.innerHTML = '<i class="fas fa-spinner fa-spin"></i> 驗證中...';
   }
 
   try {
     const invitationCode = document.getElementById('invitationCode').value;
-    if (!invitationCode.trim()) {
+    if (invitationCode.trim() === "") {
       alert("請填寫邀請碼");
+      if (analyzeButton) {
+        analyzeButton.disabled = false;
+        analyzeButton.innerHTML = originalButtonText;
+      }
       return;
     }
-    
-    // Validate invitation code with animation
+
     showInvitationValidationAnimation();
     let validationResponse;
     try {
-      validationResponse = await fetch('https://script.google.com/macros/s/AKfycbx8_7mRA3AhKoq_GUuoeYrlxCVKIqzBPJg4335_bIbpYg-mGCkmppvXNSZwyVXERWXA/exec', {
+      validationResponse = await fetch('https://script.google.com/macros/s/AKfycbwsqIqoZ6_ncUZtpmF80ohHGX-FEqE1JnMz1Y6SQ3GQhtK9SH-HTz_d_w0uloFV-Iyd/exec', {
         method: 'POST',
         body: JSON.stringify({
           action: 'validateInvitationCode',
@@ -232,13 +265,11 @@ async function analyzeScores() {
       alert('邀請碼錯誤或已過期，請確認最新的邀請碼。');
       return;
     }
-    
-    showLoading();
 
+    const userIdentity = document.getElementById('userIdentity').value;
     const schoolOwnership = document.getElementById('schoolOwnership').value;
     const schoolType = document.getElementById('schoolType').value;
     const vocationalGroup = document.getElementById('vocationalGroup').value;
-    const analysisIdentity = document.getElementById('analysisIdentity').value;
 
     const fields = ['chinese', 'english', 'math', 'science', 'social', 'composition'];
     let isAllFieldsFilled = true;
@@ -269,7 +300,10 @@ async function analyzeScores() {
       return;
     }
 
+    showLoading();
+
     await logUserActivity('analyze_scores', {
+      userIdentity,
       scores: {
         chinese: document.getElementById('chinese').value,
         english: document.getElementById('english').value,
@@ -281,8 +315,7 @@ async function analyzeScores() {
       filters: {
         schoolOwnership,
         schoolType,
-        vocationalGroup,
-        analysisIdentity
+        vocationalGroup
       }
     });
 
@@ -295,15 +328,14 @@ async function analyzeScores() {
       composition: parseInt(document.getElementById('composition').value)
     };
 
-    const response = await fetch('https://script.google.com/macros/s/AKfycby1jUbZpuv5ltuQiGpsFCziEdTJJt9CyrQYG8vGdsu_PSpTk7VaYGbJUM01J-_l4_fcnQ/exec', {
+    const response = await fetch('https://script.google.com/macros/s/AKfycbycc6i2_NBLxPa_hPN6EPIbHCS0smnCG9tGUWby4_tLoZdHb3IsqQGNx26LY7OI1yyBKw/exec', {
       method: 'POST',
       body: JSON.stringify({
         scores,
         filters: {
           schoolOwnership,
           schoolType,
-          vocationalGroup,
-          analysisIdentity
+          vocationalGroup
         }
       })
     });
@@ -320,727 +352,723 @@ async function analyzeScores() {
   } finally {
     if (analyzeButton) {
       analyzeButton.disabled = false;
-      analyzeButton.innerHTML = '<i class="fas fa-search icon"></i>分析落點';
+      analyzeButton.innerHTML = originalButtonText;
     }
-    setTimeout(hideLoading, 2000);
+    hideLoading();
   }
 }
 
-document.getElementById('exportResults').onclick = showExportOptions;
-
-function printResults() {
-  logUserActivity('print_results');
+function displayResults(data) {
+  const { totalPoints, totalCredits, eligibleSchools } = data;
+  let resultsHTML = `<div class="results-card">`;
+  resultsHTML += `<h2><i class="fas fa-clipboard-check icon"></i> 分析結果</h2>`;
+  resultsHTML += `<div class="results-summary">
+                    <div class="result-item"><i class="fas fa-star icon"></i> 總積分：${totalPoints}</div>
+                    <div class="result-item"><i class="fas fa-award icon"></i> 總積點：${totalCredits}</div>
+                  </div>`;
+  resultsHTML += `<h3><i class="fas fa-list-ul icon"></i> 可能錄取的學校</h3>`;
+  if (eligibleSchools && eligibleSchools.length > 0) {
+    resultsHTML += `<p class="result-item"><i class="fas fa-building icon"></i> 共有 ${eligibleSchools.length} 所學校可能錄取</p>`;
+    let groupedSchools = {};
+    eligibleSchools.forEach(school => {
+      if (!groupedSchools[school.type]) {
+        groupedSchools[school.type] = [];
+      }
+      groupedSchools[school.type].push(school);
+    });
+    Object.entries(groupedSchools).forEach(([type, schools]) => {
+      resultsHTML += `<h3>${type} <span class="school-count">(${schools.length}所)</span></h3><ul>`;
+      schools.forEach(school => {
+        const ownershipLabel = school.ownership === 'public' ? '公立' : '私立';
+        resultsHTML += `<li><i class="fas fa-check-circle icon"></i> <span class="school-ownership-badge ${school.ownership}">${ownershipLabel}</span> ${school.name}</li>`;
+      });
+      resultsHTML += `</ul>`;
+    });
+  } else {
+    resultsHTML += `<div class="no-schools-message"><i class="fas fa-exclamation-triangle icon"></i> 根據您的成績，暫時沒有符合條件的學校。</div>`;
+  }
+  let details = `<div class="result-details">
+                    <h3><i class="fas fa-info-circle icon"></i> 分析詳細資料</h3>
+                    <ul>
+                      <li>分析者身份：${document.getElementById('userIdentity').options[document.getElementById('userIdentity').selectedIndex].text}</li>
+                      <li>國文：${document.getElementById('chinese').value}</li>
+                      <li>英文：${document.getElementById('english').value}</li>
+                      <li>數學：${document.getElementById('math').value}</li>
+                      <li>自然：${document.getElementById('science').value}</li>
+                      <li>社會：${document.getElementById('social').value}</li>
+                      <li>作文：${document.getElementById('composition').value} 級分</li>
+                      <li>學校屬性：${document.getElementById('schoolOwnership').value === 'all' ? '全部' : (document.getElementById('schoolOwnership').value === 'public' ? '公立' : '私立')}</li>
+                      <li>學校類型：${document.getElementById('schoolType').value}</li>
+                      ${document.getElementById('schoolType').value === '職業類科' ? `<li>職業群別：${document.getElementById('vocationalGroup').value}</li>` : ''}
+                      <li>分析時間：${new Date().toLocaleString('zh-TW')}</li>
+                    </ul>
+                  </div>`;
+  resultsHTML += details;
   
-  // Create a print-friendly version
+  // Add analysis explanation at the bottom
+  let analysisExplanation = `<div class="analysis-explanation">
+                              <h3><i class="fas fa-lightbulb icon"></i> 分析說明</h3>
+                              <div class="explanation-content">
+                                <p><i class="fas fa-check-circle icon"></i> <strong>總積分計算方式：</strong>依據111學年度五科會考成績及作文級分所加總的積分，每一科最高7分(A++)，最低1分(C)。</p>
+                                <p><i class="fas fa-check-circle icon"></i> <strong>總積點計算方式：</strong>依據各校參採科目及其比重。</p>
+                                <p><i class="fas fa-check-circle icon"></i> <strong>錄取可能性判定：</strong>系統根據前一年度各校最低錄取分數進行估算，結果僅供參考。</p>
+                                <p><i class="fas fa-exclamation-triangle icon"></i> <strong>重要提醒：</strong>實際錄取結果可能因當年度考生整體表現、招生名額調整及各校招生政策變動而有所不同。</p>
+                                <p><i class="fas fa-hand-point-right icon"></i> <strong>建議參考：</strong>除本分析外，也請參考各校歷年錄取標準、個人志願及興趣、學校特色課程等因素做出選擇。</p>
+                              </div>
+                            </div>`;
+  resultsHTML += analysisExplanation;
+  resultsHTML += `</div>`;
   const resultsElement = document.getElementById('results');
-  const printWindow = window.open('', '_blank');
-  
-  // Get current date and time
-  const now = new Date();
-  const dateTime = now.toLocaleString('zh-TW', { 
-    year: 'numeric', 
-    month: '2-digit', 
-    day: '2-digit', 
-    hour: '2-digit', 
-    minute: '2-digit', 
-    second: '2-digit',
-    hour12: false 
-  });
-  
-  // Create print content with styling
-  printWindow.document.write(`
-    <!DOCTYPE html>
-    <html>
-    <head>
-      <meta charset="UTF-8">
-      <title>桃聯區會考落點分析結果</title>
-      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-      <style>
-        @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;700&display=swap');
-        body {
-          font-family: 'Noto Sans TC', Arial, sans-serif;
-          line-height: 1.6;
-          color: #333;
-          padding: 20px;
-          max-width: 800px;
-          margin: 0 auto;
-          position: relative;
-        }
-        .header {
-          text-align: center;
-          margin-bottom: 30px;
-          padding-bottom: 10px;
-          border-bottom: 2px solid #3498db;
-          position: relative;
-        }
-        .header-logo {
-          position: absolute;
-          top: 0;
-          left: 0;
-          width: 60px;
-          height: 60px;
-          background-color: #3498db;
-          color: white;
-          border-radius: 50%;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          font-size: 24px;
-        }
-        .watermark {
-          text-align: center;
-          border: 2px solid #3498db;
-          padding: 15px;
-          margin-bottom: 30px;
-          background-color: #f8f9fa;
-          border-radius: 10px;
-          position: relative;
-          overflow: hidden;
-        }
-        .watermark::before {
-          content: '';
-          position: absolute;
-          top: 0;
-          left: 0;
-          right: 0;
-          bottom: 0;
-          background: linear-gradient(135deg, rgba(52, 152, 219, 0.1) 25%, transparent 25%, transparent 50%, rgba(52, 152, 219, 0.1) 50%, rgba(52, 152, 219, 0.1) 75%, transparent 75%);
-          background-size: 20px 20px;
-          opacity: 0.3;
-          z-index: -1;
-        }
-        /* Floating watermark */
-        .floating-watermark {
-          position: fixed;
-          top: 50%;
-          left: 50%;
-          transform: translate(-50%, -50%) rotate(-45deg);
-          font-size: 60px;
-          color: rgba(52, 152, 219, 0.1);
-          white-space: nowrap;
-          pointer-events: none;
-          z-index: 1000;
-          font-weight: bold;
-          text-transform: uppercase;
-        }
-        h1, h2, h3 {
-          color: #3498db;
-        }
-        h1 {
-          font-size: 28px;
-          margin-bottom: 5px;
-        }
-        h2 {
-          font-size: 22px;
-          margin-top: 30px;
-          border-bottom: 1px solid #eee;
-          padding-bottom: 10px;
-        }
-        h3 {
-          font-size: 18px;
-          margin-top: 25px;
-        }
-        .result-card {
-          border: 1px solid #ddd;
-          padding: 15px;
-          margin-bottom: 15px;
-          border-radius: 5px;
-          background-color: white;
-          box-shadow: 0 2px 4px rgba(0,0,0,0.05);
-        }
-        .school-item {
-          margin: 10px 0;
-          padding: 15px;
-          border-left: 3px solid #3498db;
-          background-color: #f8f9fa;
-          border-radius: 5px;
-          box-shadow: 0 2px 4px rgba(0,0,0,0.05);
-          page-break-inside: avoid;
-        }
-        .school-name {
-          font-weight: bold;
-          color: #2c3e50;
-          font-size: 16px;
-          margin-bottom: 10px;
-          display: flex;
-          align-items: center;
-        }
-        .school-name i {
-          margin-right: 8px;
-          color: #3498db;
-        }
-        .school-ownership {
-          display: inline-block;
-          background-color: #eef2f7;
-          color: #7f8c8d;
-          font-size: 12px;
-          padding: 2px 6px;
-          margin-left: 8px;
-          border-radius: 3px;
-        }
-        .school-details {
-          display: flex;
-          flex-wrap: wrap;
-          gap: 10px;
-          margin-top: 8px;
-          color: #7f8c8d;
-          font-size: 14px;
-        }
-        .cutoff-score {
-          display: flex;
-          align-items: center;
-          background-color: #f5f5f5;
-          padding: 3px 8px;
-          border-radius: 3px;
-        }
-        .cutoff-score i {
-          margin-right: 5px;
-          color: #e74c3c;
-        }
-        .school-type-card {
-          margin-bottom: 25px;
-          padding: 15px;
-          border: 1px solid #e0e0e0;
-          border-radius: 8px;
-          background-color: white;
-          page-break-inside: avoid;
-        }
-        .school-type-header {
-          display: flex;
-          align-items: center;
-          margin-bottom: 15px;
-          padding-bottom: 10px;
-          border-bottom: 1px solid #eee;
-        }
-        .school-type-header h4 {
-          margin: 0 10px;
-          color: #2c3e50;
-        }
-        .school-count {
-          background: #3498db;
-          color: white;
-          padding: 3px 8px;
-          border-radius: 20px;
-          font-size: 12px;
-        }
-        .footer {
-          text-align: center;
-          font-size: 12px;
-          margin-top: 50px;
-          padding-top: 10px;
-          border-top: 1px solid #ddd;
-          color: #7f8c8d;
-        }
-        .scores-summary {
-          display: grid;
-          grid-template-columns: repeat(3, 1fr);
-          gap: 10px;
-          margin-bottom: 20px;
-        }
-        .score-item {
-          background: #f8f9fa;
-          padding: 10px;
-          border-radius: 5px;
-          display: flex;
-          justify-content: space-between;
-          align-items: center;
-          border-left: 2px solid #3498db;
-        }
-        .score-value {
-          font-weight: bold;
-          padding: 3px 8px;
-          border-radius: 3px;
-        }
-        .score-excellent { background: #2ecc71; color: white; }
-        .score-great { background: #3498db; color: white; }
-        .score-good { background: #9b59b6; color: white; }
-        .score-above-average { background: #f1c40f; color: black; }
-        .score-average { background: #e67e22; color: white; }
-        .score-below-average { background: #e74c3c; color: white; }
-        .score-needs-improvement { background: #c0392b; color: white; }
-        .page-number {
-          text-align: center;
-          font-size: 12px;
-          color: #95a5a6;
-          margin-top: 20px;
-        }
-        @media print {
-          body {
-            padding: 0;
-          }
-          .no-print {
-            display: none;
-          }
-          .floating-watermark {
-            display: block !important;
-            color: rgba(52, 152, 219, 0.1);
-          }
-          .school-item, .school-type-card {
-            break-inside: avoid;
-            page-break-inside: avoid;
-          }
-          @page {
-            margin: 1.5cm;
-          }
-          .page-number:before {
-            content: "第 " counter(page) " 頁";
-          }
-        }
-      </style>
-    </head>
-    <body>
-      <div class="floating-watermark">TYCTW 桃聯區會考落點分析系統</div>
-      <div class="header">
-        <div class="header-logo"><i class="fas fa-chart-line"></i></div>
-        <h1>桃聯區會考落點分析結果</h1>
-        <p>產生時間: ${dateTime}</p>
-      </div>
-      <div class="watermark">
-        <p><strong>TYCTW 桃聯區會考落點分析系統</strong></p>
-        <p>以下資料僅供參考，不代表實際錄取結果</p>
-        <p>更多資訊請訪問: <a href="https://rcpett.vercel.app/" target="_blank">https://rcpett.vercel.app/</a></p>
-      </div>
-      <div class="content">
-        ${resultsElement.innerHTML}
-      </div>
-      <div class="footer">
-        <p> 2025 TYCTW桃聯區會考落點分析系統. All rights reserved.</p>
-        <p>本分析結果僅供參考，不代表實際錄取結果。</p>
-        <p>更多資訊: <a href="https://rcpett.vercel.app/" target="_blank">https://rcpett.vercel.app/</a></p>
-      </div>
-      <div class="page-number"></div>
-      <div class="no-print">
-        <button onclick="window.print();return false;" style="padding: 10px 20px; background: #3498db; color: white; border: none; border-radius: 5px; cursor: pointer; margin: 20px 0; display: block; width: 100%; font-size: 16px;">
-          <i class="fas fa-print" style="margin-right: 8px;"></i> 列印此頁
-        </button>
-        <button onclick="window.close();" style="padding: 10px 20px; background: #e74c3c; color: white; border: none; border-radius: 5px; cursor: pointer; margin: 20px 0; display: block; width: 100%; font-size: 16px;">
-          <i class="fas fa-times" style="margin-right: 8px;"></i> 關閉
-        </button>
-      </div>
-    </body>
-    </html>
-  `);
-  
-  printWindow.document.close();
-  
+  resultsElement.innerHTML = resultsHTML;
+  resultsElement.style.display = 'none';
   setTimeout(() => {
-    printWindow.focus();
-  }, 300);
+    resultsElement.style.display = 'block';
+    resultsElement.style.animation = 'fadeIn 0.5s ease-out';
+    document.getElementById('exportResults').style.display = 'inline-block';
+    
+    // Add smooth reveal animation for results elements
+    const resultItems = document.querySelectorAll('.results-card > *');
+    resultItems.forEach((item, index) => {
+      item.style.opacity = '0';
+      item.style.transform = 'translateY(20px)';
+      setTimeout(() => {
+        item.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+        item.style.opacity = '1';
+        item.style.transform = 'translateY(0)';
+      }, 100 + (index * 100));
+    });
+  }, 100);
 }
 
-function showExportOptions() {
-  const exportMenu = document.createElement('div');
-  exportMenu.className = 'export-menu';
-  exportMenu.innerHTML = `
-    <div class="export-menu-content">
-      <h3><i class="fas fa-file-export"></i> 選擇匯出格式</h3>
-      <button onclick="exportResults('txt')">
-        <i class="fas fa-file-alt"></i> 文字檔 (.txt)
-      </button>
-      <button onclick="exportResults('pdf')">
-        <i class="fas fa-file-pdf"></i> PDF檔 (.pdf)
-      </button>
-      <button onclick="exportResults('csv')">
-        <i class="fas fa-file-csv"></i> CSV檔 (.csv)
-      </button>
-      <button onclick="exportResults('json')">
-        <i class="fas fa-file-code"></i> JSON檔 (.json)
-      </button>
-      <button onclick="printResults()">
-        <i class="fas fa-print"></i> 列印結果
-      </button>
-      <button onclick="closeExportMenu()" class="cancel-button">
-        <i class="fas fa-times"></i> 取消
-      </button>
-    </div>
-  `;
-  document.body.appendChild(exportMenu);
-  
-  requestAnimationFrame(() => {
-    exportMenu.classList.add('show');
-  });
-}
-
-function closeExportMenu() {
-  const exportMenu = document.querySelector('.export-menu');
-  if (exportMenu) {
-    exportMenu.classList.remove('show');
-    setTimeout(() => exportMenu.remove(), 300);
-  }
-}
-
-async function exportResults(format = 'txt') {
-  logUserActivity('export_results', { format });
+function exportResults() {
+  logUserActivity('export_results');
   const resultsElement = document.getElementById('results');
   const resultsText = resultsElement.innerText;
-  
+
   const now = new Date();
-  const dateTime = now.toLocaleString('zh-TW');
-  
+  const dateTime = now.toLocaleString('zh-TW', {
+    year: 'numeric',
+    month: '2-digit',
+    day: '2-digit',
+    hour: '2-digit',
+    minute: '2-digit',
+    second: '2-digit',
+    hour12: false
+  });
+
   const watermark =
     "********************************\n" +
     "*                              *\n" +
-    "*  TYCTW 桃聯區會考落點分析系統  *\n" +
+    "*  KHTW 高雄區會考落點分析系統  *\n" +
     "*       以下資料僅供參考      *\n" +
     "*                              *\n" +
     `*   產生時間: ${dateTime}   *\n` +
     "*                              *\n" +
-    "* https://rcpett.vercel.app/  *\n" +
-    "*                              *\n" +
     "********************************\n\n";
-  
+
   const contentWithWatermark = watermark + resultsText;
-  
-  switch (format) {
-    case 'txt':
-      exportTxt(contentWithWatermark);
-      break;
-    case 'pdf':
-      await exportPdf(contentWithWatermark);
-      break;
-    case 'csv':
-      exportCsv(resultsText);
-      break;
-    case 'json':
-      exportJson(resultsText);
-      break;
-  }
+
+  // Show export format selection dialog
+  showExportFormatDialog(contentWithWatermark);
 }
 
-async function exportPdf(content) {
-  try {
-    // Check if jsPDF is already loaded
-    if (!window.jspdf) {
-      await loadScript('https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js');
-    }
-    
-    // Create new jsPDF instance
-    const { jsPDF } = window.jspdf;
-    const doc = new jsPDF();
-    
-    // Add fancy header with logo
-    doc.setFillColor(52, 152, 219);
-    doc.rect(0, 0, 210, 30, 'F');
-    
-    // Add title
-    doc.setFont('helvetica', 'bold');
-    doc.setFontSize(24);
-    doc.setTextColor(255, 255, 255);
-    doc.text('桃聯區會考落點分析結果', 105, 15, { align: 'center' });
-    
-    // Add decoration line
-    doc.setDrawColor(231, 76, 60);
-    doc.setLineWidth(1);
-    doc.line(20, 35, 190, 35);
-    
-    // Add metadata
-    doc.setFont('helvetica', 'italic');
-    doc.setFontSize(10);
-    doc.setTextColor(100, 100, 100);
-    doc.text(`產生日期: ${new Date().toLocaleString('zh-TW')}`, 20, 42);
-    
-    // Reset text properties for content
-    doc.setFontSize(12);
-    doc.setTextColor(0, 0, 0);
-    doc.setFont('helvetica', 'normal');
-    
-    const websiteInfo = "更多資訊請訪問: https://rcpett.vercel.app/";
-    const splitText = doc.splitTextToSize(content, 170);
-    let y = 50;
-    
-    // Add watermark to first page
-    doc.setFont('helvetica', 'bold');
-    doc.setFontSize(60);
-    doc.setTextColor(230, 230, 230);
-    doc.saveGraphicsState();
-    doc.rotate(-45, 105, 150);
-    doc.text('TYCTW', 70, 150);
-    doc.restoreGraphicsState();
-    
-    // Reset for content
-    doc.setFontSize(12);
-    doc.setTextColor(0, 0, 0);
-    doc.setFont('helvetica', 'normal');
-    
-    // Add scores summary box
-    doc.setFillColor(240, 240, 240);
-    doc.roundedRect(20, y, 170, 50, 3, 3, 'F');
-    doc.setFont('helvetica', 'bold');
-    doc.setTextColor(52, 152, 219);
-    doc.text('成績摘要', 105, y + 10, { align: 'center' });
-    doc.setFont('helvetica', 'normal');
-    doc.setTextColor(0, 0, 0);
-    
-    y += 65;
-    
-    splitText.forEach(line => {
-      if (y > 270) {
-        doc.addPage();
-        // Add header to new page
-        doc.setFillColor(52, 152, 219);
-        doc.rect(0, 0, 210, 15, 'F');
-        doc.setFont('helvetica', 'bold');
-        doc.setFontSize(12);
-        doc.setTextColor(255, 255, 255);
-        doc.text('桃聯區會考落點分析結果', 105, 10, { align: 'center' });
-        
-        // Add watermark to new page
-        doc.setFont('helvetica', 'bold');
-        doc.setFontSize(60);
-        doc.setTextColor(230, 230, 230);
-        doc.saveGraphicsState();
-        doc.rotate(-45, 105, 150);
-        doc.text('TYCTW', 70, 150);
-        doc.restoreGraphicsState();
-        
-        // Reset for content
-        doc.setFontSize(12);
-        doc.setTextColor(0, 0, 0);
-        doc.setFont('helvetica', 'normal');
-        y = 30;
-      }
-      doc.text(line, 20, y);
-      y += 7;
-    });
-    
-    // Add fancy footer with page numbers
-    const pageCount = doc.getNumberOfPages();
-    for (let i = 1; i <= pageCount; i++) {
-      doc.setPage(i);
-      doc.setFillColor(240, 240, 240);
-      doc.rect(0, 280, 210, 17, 'F');
-      doc.setFontSize(10);
-      doc.setTextColor(100, 100, 100);
-      doc.text('第 ' + i + ' 頁，共 ' + pageCount + ' 頁', 105, 285, { align: 'center' });
-      doc.text(websiteInfo, 105, 290, { align: 'center' });
-      doc.text(' 2025 TYCTW桃聯區會考落點分析系統', 105, 295, { align: 'center' });
-    }
-    
-    doc.save('桃聯區會考落點分析結果.pdf');
-  } catch (error) {
-    console.error('PDF export error:', error);
-    alert('PDF匯出發生錯誤，請確認您的瀏覽器支援此功能或嘗試其他格式。');
-  }
-}
-
-function exportTxt(content) {
-  const now = new Date();
-  const dateTime = now.toLocaleString('zh-TW');
+function showExportFormatDialog(content) {
+  const modal = document.createElement('div');
+  modal.className = 'modal';
+  modal.id = 'exportFormatModal';
+  modal.style.display = 'block';
+  modal.style.opacity = '0';
   
-  const websiteInfo = "更多資訊請訪問: https://rcpett.vercel.app/\n\n";
-  const formattedContent = 
-    "====================================================================\n" +
-    "                  桃聯區會考落點分析結果                            \n" +
-    "====================================================================\n\n" +
-    "產生日期: " + dateTime + "\n\n" +
-    "--------------------------------------------------------------------\n" +
-    "                           成績摘要                                 \n" +
-    "--------------------------------------------------------------------\n" +
-    "國文: " + document.getElementById('chinese').value + "\n" +
-    "英文: " + document.getElementById('english').value + "\n" +
-    "數學: " + document.getElementById('math').value + "\n" +
-    "自然: " + document.getElementById('science').value + "\n" +
-    "社會: " + document.getElementById('social').value + "\n" +
-    "作文: " + document.getElementById('composition').value + "\n\n" +
-    "--------------------------------------------------------------------\n" +
-    "                           分析結果                                 \n" +
-    "--------------------------------------------------------------------\n" +
-    content + 
-    "\n\n====================================================================\n" +
-    websiteInfo +
-    " 2025 TYCTW桃聯區會考落點分析系統\n" +
-    "此文件僅供參考，不代表實際錄取結果\n" +
-    "====================================================================";
-  const blob = new Blob([formattedContent], { type: 'text/plain;charset=utf-8' });
-  downloadFile(blob, '桃聯區會考落點分析結果.txt');
-}
-
-function exportCsv(content) {
-  const now = new Date();
-  const dateTime = now.toLocaleString('zh-TW');
+  modal.innerHTML = `
+    <div class="modal-content export-format-modal">
+      <div class="export-header">
+        <h2><i class="fas fa-file-export icon"></i> 選擇匯出格式</h2>
+        <span class="close" onclick="closeExportFormatDialog()">&times;</span>
+      </div>
+      <div class="export-format-options">
+        <button onclick="exportAsFormat('txt', '${encodeURIComponent(content)}')" class="export-option">
+          <div class="export-option-icon"><i class="fas fa-file-alt"></i></div>
+          <div class="export-option-content">
+            <div class="export-option-title">純文字檔 (.txt)</div>
+            <span class="export-option-description">基本文字格式，適合所有設備開啟</span>
+          </div>
+        </button>
+        <button onclick="exportAsFormat('csv', '${encodeURIComponent(content)}')" class="export-option">
+          <div class="export-option-icon"><i class="fas fa-file-csv"></i></div>
+          <div class="export-option-content">
+            <div class="export-option-title">CSV 檔案 (.csv)</div>
+            <span class="export-option-description">可用Excel或試算表軟體開啟，便於數據處理</span>
+          </div>
+        </button>
+        <button onclick="printResults()" class="export-option">
+          <div class="export-option-icon"><i class="fas fa-print"></i></div>
+          <div class="export-option-content">
+            <div class="export-option-title">列印結果</div>
+            <span class="export-option-description">直接列印或儲存為PDF文件</span>
+          </div>
+        </button>
+      </div>
+    </div>
+  `;
   
-  // Add header rows with nice formatting
-  let csvContent = '';
-  csvContent += '"==================================================="\n';
-  csvContent += '"桃聯區會考落點分析結果"\n';
-  csvContent += '"==================================================="\n';
-  csvContent += '"產生時間","' + dateTime + '"\n';
-  csvContent += '"TYCTW桃聯區會考落點分析系統 - 僅供參考"\n';
-  csvContent += '"更多資訊請訪問: https://rcpett.vercel.app/"\n\n';
+  document.body.appendChild(modal);
   
-  // Add scores with better organization
-  csvContent += '"==================================================="\n';
-  csvContent += '"成績資訊","分數","等級說明"\n';
-  csvContent += '"==================================================="\n';
-  csvContent += '"國文","' + document.getElementById('chinese').value + '","A++/A+/A為優良,B++/B+/B為中等,C為需加強"\n';
-  csvContent += '"英文","' + document.getElementById('english').value + '","A++/A+/A為優良,B++/B+/B為中等,C為需加強"\n';
-  csvContent += '"數學","' + document.getElementById('math').value + '","A++/A+/A為優良,B++/B+/B為中等,C為需加強"\n';
-  csvContent += '"自然","' + document.getElementById('science').value + '","A++/A+/A為優良,B++/B+/B為中等,C為需加強"\n';
-  csvContent += '"社會","' + document.getElementById('social').value + '","A++/A+/A為優良,B++/B+/B為中等,C為需加強"\n';
-  csvContent += '"作文","' + document.getElementById('composition').value + '","滿分為6級分"\n\n';
-  
-  // Add main content with better organization
-  csvContent += '"==================================================="\n';
-  csvContent += '"分析結果","學校類型","備註"\n';
-  csvContent += '"==================================================="\n';
-  const lines = content.split('\n');
-  lines.forEach(line => {
-    const cleanLine = line.replace(/[*]/g, '').trim();
-    if (cleanLine) {
-      csvContent += `"${cleanLine}","",""\n`;
-    }
-  });
-  
-  // Add footer with metadata
-  csvContent += '\n"==================================================="\n';
-  csvContent += '"' + new Date().toISOString() + '","' + navigator.userAgent + '"\n';
-  csvContent += '"TYCTW桃聯區會考落點分析系統 版權所有"\n';
-  csvContent += '"==================================================="\n';
-  
-  const blob = new Blob(['\uFEFF' + csvContent], { type: 'text/csv;charset=utf-8' });
-  downloadFile(blob, '桃聯區會考落點分析結果.csv');
-}
-
-function exportJson(content) {
-  const scores = {
-    chinese: document.getElementById('chinese').value,
-    english: document.getElementById('english').value,
-    math: document.getElementById('math').value,
-    science: document.getElementById('science').value,
-    social: document.getElementById('social').value,
-    composition: document.getElementById('composition').value
-  };
-  
-  // Get filter values
-  const filters = {
-    schoolOwnership: document.getElementById('schoolOwnership').value,
-    schoolType: document.getElementById('schoolType').value,
-    vocationalGroup: document.getElementById('vocationalGroup').value,
-    analysisIdentity: document.getElementById('analysisIdentity').value
-  };
-  
-  // Create a more structured and detailed JSON with schema version
-  const jsonData = {
-    schema_version: "1.1.0",
-    metadata: {
-      title: 'TYCTW 桃聯區會考落點分析結果',
-      description: 'TYCTW 桃聯區會考落點分析系統 - 僅供參考',
-      generateTime: new Date().toISOString(),
-      timestamp: Date.now(),
-      websiteUrl: 'https://rcpett.vercel.app/',
-      exportVersion: '1.1.0',
-      disclaimer: '此分析結果僅供參考，不代表實際錄取結果'
-    },
-    userInput: {
-      scores: scores,
-      filters: filters,
-      scoreExplanation: {
-        grades: {
-          "A++": "優良(頂標)",
-          "A+": "優良(前標)",
-          "A": "優良",
-          "B++": "中等(均標)",
-          "B+": "中等",
-          "B": "中等",
-          "C": "需加強(底標)"
-        },
-        composition: "作文分為0-6級分",
-        calculationMethod: "總積分根據各科等第轉換後加總計算"
-      }
-    },
-    results: {
-      content: content.split('\n').filter(line => line.trim()),
-      generatedAt: new Date().toLocaleString('zh-TW'),
-      deviceInfo: {
-        platform: navigator.platform,
-        userAgent: navigator.userAgent,
-        language: navigator.language
-      }
-    },
-    copyright: {
-      year: new Date().getFullYear(),
-      owner: "TYCTW桃聯區會考落點分析系統",
-      rights: "版權所有，不得未經授權轉載或使用"
-    }
-  };
-  
-  // Pretty print the JSON with 2-space indentation
-  const blob = new Blob([JSON.stringify(jsonData, null, 2)], { type: 'application/json;charset=utf-8' });
-  downloadFile(blob, '桃聯區會考落點分析結果.json');
-}
-
-function downloadFile(blob, filename) {
-  const url = URL.createObjectURL(blob);
-  const a = document.createElement('a');
-  a.style.display = 'none';
-  a.href = url;
-  a.download = filename;
-  document.body.appendChild(a);
-  a.click();
-  URL.revokeObjectURL(url);
-  a.remove();
-}
-
-async function loadScript(url) {
-  return new Promise((resolve, reject) => {
-    const script = document.createElement('script');
-    script.src = url;
-    script.onload = resolve;
-    script.onerror = reject;
-    document.head.appendChild(script);
-  });
-}
-
-document.addEventListener('DOMContentLoaded', function() {
-  // Initialize identity cards
-  const identityCards = document.querySelectorAll('.identity-card');
-  const identityInput = document.getElementById('analysisIdentity');
-  
-  identityCards.forEach(card => {
-    card.addEventListener('click', function() {
-      // Remove selected class from all cards
-      identityCards.forEach(c => c.classList.remove('selected'));
+  // Animate modal appearance
+  setTimeout(() => {
+    modal.style.transition = 'opacity 0.3s ease';
+    modal.style.opacity = '1';
+    const modalContent = modal.querySelector('.modal-content');
+    modalContent.style.transform = 'translateY(20px)';
+    modalContent.style.opacity = '0';
+    setTimeout(() => {
+      modalContent.style.transition = 'transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), opacity 0.4s ease';
+      modalContent.style.transform = 'translateY(0)';
+      modalContent.style.opacity = '1';
       
-      // Add selected class to clicked card
-      this.classList.add('selected');
-      
-      // Update hidden input value
-      identityInput.value = this.getAttribute('data-identity');
-      
-      // Log selection
-      logUserActivity('identity_selection', { 
-        identity: identityInput.value 
+      // Add entrance animation to buttons
+      const buttons = modalContent.querySelectorAll('button');
+      buttons.forEach((button, index) => {
+        button.style.opacity = '0';
+        button.style.transform = 'translateX(-20px)';
+        setTimeout(() => {
+          button.style.transition = 'opacity 0.3s ease, transform 0.3s ease';
+          button.style.opacity = '1';
+          button.style.transform = 'translateX(0)';
+        }, 100 + (index * 70));
       });
-    });
+    }, 50);
+  }, 10);
+}
+
+function closeExportFormatDialog() {
+  const modal = document.getElementById('exportFormatModal');
+  if (modal) {
+    const modalContent = modal.querySelector('.modal-content');
+    modalContent.style.transform = 'translateY(20px)';
+    modalContent.style.opacity = '0';
+    modal.style.opacity = '0';
+    
+    setTimeout(() => {
+      modal.remove();
+    }, 300);
+  }
+}
+
+function exportAsFormat(format, contentEncoded) {
+  const content = decodeURIComponent(contentEncoded);
+  let blob, fileName;
+  
+  // Show micro animation for "processing"
+  const button = event.currentTarget;
+  const originalText = button.innerHTML;
+  button.innerHTML = `<i class="fas fa-spinner fa-spin"></i> 處理中...`;
+  
+  setTimeout(() => {
+    switch (format) {
+      case 'txt':
+        // Enhanced TXT format with better formatting
+        const enhancedTxtContent = formatTxtContent(content);
+        blob = new Blob([enhancedTxtContent], { type: 'text/plain;charset=utf-8' });
+        fileName = '高雄區會考落點分析結果.txt';
+        break;
+      case 'csv':
+        const csvContent = convertToCSV(content);
+        blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8' });
+        fileName = '高雄區會考落點分析結果.csv';
+        break;
+      default:
+        blob = new Blob([content], { type: 'text/plain;charset=utf-8' });
+        fileName = '高雄區會考落點分析結果.txt';
+    }
+    
+    // Create download link
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.style.display = 'none';
+    a.href = url;
+    a.download = fileName;
+    document.body.appendChild(a);
+    a.click();
+    URL.revokeObjectURL(url);
+    
+    // Reset button
+    button.innerHTML = originalText;
+    
+    // Show success message
+    const successMessage = document.createElement('div');
+    successMessage.className = 'export-success-message';
+    successMessage.innerHTML = `<i class="fas fa-check-circle"></i> 已成功匯出為${format.toUpperCase()}格式`;
+    successMessage.style.position = 'fixed';
+    successMessage.style.bottom = '20px';
+    successMessage.style.left = '50%';
+    successMessage.style.transform = 'translateX(-50%)';
+    successMessage.style.backgroundColor = '#4CAF50';
+    successMessage.style.color = 'white';
+    successMessage.style.padding = '10px 20px';
+    successMessage.style.borderRadius = '5px';
+    successMessage.style.zIndex = '9999';
+    successMessage.style.boxShadow = '0 2px 10px rgba(0,0,0,0.2)';
+    document.body.appendChild(successMessage);
+    
+    // Remove message after a delay
+    setTimeout(() => {
+      successMessage.style.opacity = '0';
+      successMessage.style.transition = 'opacity 0.5s ease';
+      setTimeout(() => successMessage.remove(), 500);
+    }, 3000);
+    
+    logUserActivity('file_exported', { format });
+    closeExportFormatDialog();
+  }, 800); // Simulate processing time
+}
+
+function convertToCSV(content) {
+  // Basic conversion to CSV format
+  const lines = content.split('\n');
+  let csvContent = '\ufeff'; // Add BOM (Byte Order Mark) for UTF-8 encoding
+  
+  // Add formatted header row
+  csvContent += '"高雄區會考落點分析結果","' + new Date().toLocaleString('zh-TW') + '"\n';
+  csvContent += '"類別","內容"\n';
+  
+  let currentSection = '';
+  let inSchoolsList = false;
+  let schoolType = '';
+  
+  lines.forEach(line => {
+    line = line.trim();
+    if (!line) return;
+    
+    // Format special sections
+    if (line.includes('分析結果')) {
+      currentSection = '基本資訊';
+    } else if (line.includes('總積分')) {
+      csvContent += '"總績效","' + line.trim() + '"\n';
+    } else if (line.includes('總積點')) {
+      csvContent += '"總績效","' + line.trim() + '"\n';
+    } else if (line.includes('可能錄取的學校')) {
+      inSchoolsList = true;
+      csvContent += '"\n錄取學校列表","以下為可能錄取的學校"\n';
+    } else if (line.match(/^\w+\s*\(\d+所\)$/)) {
+      schoolType = line.split('(')[0].trim();
+      csvContent += '"學校類型","' + schoolType + '"\n';
+    } else if (inSchoolsList && line.includes('icon')) {
+      const schoolName = line.replace(/.*icon\)/, '').trim();
+      csvContent += '"' + schoolType + '","' + schoolName + '"\n';
+    } else if (line.includes('分析詳細資料')) {
+      currentSection = '詳細資料';
+      csvContent += '"\n詳細資料","以下為分析詳細資料"\n';
+    } else if (currentSection === '詳細資料' && line.includes(':')) {
+      const parts = line.split(':');
+      if (parts.length >= 2) {
+        csvContent += '"' + parts[0].trim() + '","' + parts[1].trim() + '"\n';
+      } else {
+        csvContent += '"詳細資料","' + line.trim() + '"\n';
+      }
+    } else if (line.includes('分析說明')) {
+      currentSection = '分析說明';
+      csvContent += '"\n分析說明","以下為分析相關說明"\n';
+    } else if (currentSection === '分析說明') {
+      csvContent += '"說明","' + line.trim() + '"\n';
+    } else {
+      // Other content
+      csvContent += '"' + currentSection + '","' + line.trim() + '"\n';
+    }
   });
   
-  // Initialize tabs for instructions modal
-  const tabButtons = document.querySelectorAll('.tab-button');
-  const tabContents = document.querySelectorAll('.tab-content');
+  return csvContent;
+}
+
+function printResults() {
+  logUserActivity('print_results');
+  closeExportFormatDialog();
   
-  tabButtons.forEach(button => {
-    button.addEventListener('click', () => {
-      const tabId = button.getAttribute('data-tab');
-      
-      // Remove active class from all buttons and tabs
-      tabButtons.forEach(btn => btn.classList.remove('active'));
-      tabContents.forEach(content => content.classList.remove('active'));
-      
-      // Add active class to current button and tab
-      button.classList.add('active');
-      document.getElementById(`${tabId}-tab`).classList.add('active');
-      
-      // Log tab selection
-      logUserActivity('instruction_tab_click', { tab: tabId });
-    });
-  });
+  // Create a new window for printing
+  const printWindow = window.open('', '_blank');
   
-  // Initialize other components
-  initRating();
-});
+  // Get data from the results section
+  const resultsElement = document.getElementById('results');
+  const resultsContent = resultsElement.innerHTML;
+  
+  // Get current date and time
+  const now = new Date();
+  const dateTime = now.toLocaleString('zh-TW');
+  
+  // Create print content with proper styling
+  const printContent = `
+    <!DOCTYPE html>
+    <html lang="zh-TW">
+    <head>
+      <meta charset="UTF-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <title>高雄區會考落點分析結果</title>
+      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+      <style>
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;700&display=swap');
+        
+        body {
+          font-family: 'Noto Sans TC', sans-serif;
+          margin: 0;
+          padding: 20px;
+          color: #333;
+          background: #fff;
+        }
+        
+        .print-container {
+          max-width: 800px;
+          margin: 0 auto;
+          background: #fff;
+          padding: 20px;
+          border: 1px solid #e0e0e0;
+          border-radius: 10px;
+          box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+        }
+        
+        .print-header {
+          text-align: center;
+          margin-bottom: 30px;
+          padding-bottom: 20px;
+          border-bottom: 2px solid #4361ee;
+          position: relative;
+        }
+        
+        .print-header::after {
+          content: '';
+          position: absolute;
+          bottom: -2px;
+          left: 0;
+          width: 100%;
+          height: 2px;
+          background: linear-gradient(to right, #4361ee, transparent);
+        }
+        
+        .print-header h1 {
+          color: #4361ee;
+          margin: 0 0 10px 0;
+          font-size: 28px;
+        }
+        
+        .print-timestamp {
+          color: #666;
+          font-style: italic;
+        }
+        
+        .print-logo {
+          text-align: center;
+          margin-bottom: 20px;
+          font-size: 2.5em;
+          color: #4361ee;
+        }
+        
+        .print-summary {
+          display: flex;
+          justify-content: space-around;
+          margin: 20px 0;
+          background: #f0f7ff;
+          padding: 15px;
+          border-radius: 8px;
+          border-left: 4px solid #4361ee;
+        }
+        
+        .print-summary-item {
+          font-size: 1.2em;
+          font-weight: bold;
+          text-align: center;
+          padding: 10px;
+          background: white;
+          border-radius: 6px;
+          box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+          min-width: 150px;
+        }
+        
+        .print-watermark {
+          text-align: center;
+          font-size: 0.9em;
+          color: #999;
+          margin: 30px 0;
+          padding: 10px;
+          border: 1px dashed #ccc;
+          background: #f9f9f9;
+          border-radius: 8px;
+        }
+        
+        .print-footer {
+          text-align: center;
+          margin-top: 30px;
+          padding-top: 20px;
+          border-top: 1px solid #eee;
+          font-size: 0.9em;
+          color: #666;
+        }
+        
+        h2, h3 {
+          color: #4361ee;
+          margin-top: 25px;
+          margin-bottom: 15px;
+          position: relative;
+          padding-left: 15px;
+          border-left: 4px solid #4361ee;
+        }
+        
+        ul {
+          list-style-type: none;
+          padding-left: 10px;
+          display: grid;
+          grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+          gap: 10px;
+        }
+        
+        li {
+          margin-bottom: 10px;
+          padding: 8px 12px;
+          background: #f9f9f9;
+          border-radius: 4px;
+          position: relative;
+          padding-left: 30px;
+          border-left: 2px solid #4361ee;
+          transition: all 0.3s ease;
+        }
+        
+        li::before {
+          content: "✓";
+          position: absolute;
+          left: 10px;
+          color: #4361ee;
+        }
+        
+        .icon {
+          margin-right: 8px;
+          color: #4361ee;
+        }
+        
+        .print-school-type {
+          background: #e9ecef;
+          padding: 8px 15px;
+          border-radius: 5px;
+          margin-top: 20px;
+          font-weight: bold;
+          color: #4361ee;
+          border-left: 4px solid #7209b7;
+        }
+        
+        .print-badge {
+          display: inline-block;
+          background: #4361ee;
+          color: white;
+          border-radius: 50px;
+          padding: 2px 10px;
+          font-size: 0.8em;
+          margin-left: 10px;
+        }
+        
+        .print-details {
+          background: #f8f9fa;
+          border: 1px solid #e9ecef;
+          border-radius: 8px;
+          padding: 15px;
+          margin-top: 25px;
+          box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+        
+        .print-details h3 {
+          border-left: none;
+          padding-left: 0;
+          color: #4361ee;
+          margin-top: 0;
+          border-bottom: 2px solid #4361ee;
+          padding-bottom: 8px;
+        }
+        
+        .print-details ul {
+          columns: 2;
+          column-gap: 20px;
+          display: block;
+        }
+        
+        .print-details li {
+          break-inside: avoid;
+          background: white;
+          padding: 5px 10px;
+          margin-bottom: 5px;
+          border-radius: 4px;
+          box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+          border-left: 2px solid #7209b7;
+        }
+        
+        .print-details li:last-child {
+          border-bottom: none;
+        }
+        
+        .print-explanation {
+          margin-top: 30px;
+          background: #f0f7ff;
+          border-radius: 8px;
+          padding: 15px;
+          border-left: 5px solid #4361ee;
+          box-shadow: 0 3px 10px rgba(0,0,0,0.05);
+        }
+        
+        .print-explanation h3 {
+          border-left: none;
+          padding-left: 0;
+          text-align: center;
+          color: #4361ee;
+        }
+        
+        .print-explanation-content {
+          display: grid;
+          grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+          gap: 15px;
+        }
+        
+        .print-explanation-content p {
+          background: white;
+          padding: 12px 15px;
+          border-radius: 6px;
+          margin: 5px 0;
+          box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+          border-left: 3px solid #7209b7;
+        }
+        
+        .print-qr {
+          text-align: center;
+          margin: 30px 0;
+        }
+        
+        .print-qr img {
+          width: 100px;
+          height: 100px;
+        }
+        
+        .print-divider {
+          height: 3px;
+          background: linear-gradient(to right, #4361ee, transparent);
+          margin: 30px 0;
+          border-radius: 3px;
+        }
+        
+        .no-schools-message {
+          background: #fff8e1;
+          border-left: 3px solid #ffc107;
+          padding: 15px;
+          border-radius: 6px;
+          margin: 20px 0;
+        }
+        
+        @media print {
+          body {
+            padding: 0;
+            background: white;
+          }
+          
+          .print-container {
+            padding: 0;
+            max-width: 100%;
+            border: none;
+            box-shadow: none;
+          }
+          
+          .print-qr {
+            break-inside: avoid;
+          }
+          
+          .print-details, .print-explanation {
+            break-inside: avoid;
+          }
+          
+          .print-summary {
+            page-break-inside: avoid;
+          }
+          
+          h2, h3 {
+            page-break-after: avoid;
+          }
+        }
+        
+        .print-school-ownership {
+          display: inline-block;
+          padding: 2px 8px;
+          border-radius: 50px;
+          font-size: 0.8em;
+          font-weight: 600;
+          margin-right: 6px;
+          color: white;
+        }
+        
+        .print-school-ownership.public {
+          background: linear-gradient(to right, #4CAF50, #8BC34A);
+        }
+        
+        .print-school-ownership.private {
+          background: linear-gradient(to right, #FF9800, #FFC107);
+        }
+      </style>
+    </head>
+    <body>
+      <div class="print-container">
+        <div class="print-logo">
+          <i class="fas fa-chart-line"></i>
+        </div>
+        
+        <div class="print-header">
+          <h1><i class="fas fa-chart-line"></i> 高雄區會考落點分析結果</h1>
+          <div class="print-timestamp">產生時間: ${dateTime}</div>
+        </div>
+        
+        <div class="print-content">
+          ${resultsContent.replace(/results-card/g, 'print-content')
+                         .replace(/results-summary/g, 'print-summary')
+                         .replace(/result-item/g, 'print-summary-item')
+                         .replace(/result-details/g, 'print-details')
+                         .replace(/analysis-explanation/g, 'print-explanation')
+                         .replace(/explanation-content/g, 'print-explanation-content')
+                         .replace(/school-type/g, 'print-school-type')
+                         .replace(/school-count/g, 'print-badge')}
+        </div>
+        
+        <div class="print-divider"></div>
+        
+        <div class="print-watermark">
+          本分析結果僅供參考，實際錄取情況可能因多種因素而有所不同，請參考各校官方公告。<br>
+          <strong>KHTW 高雄區會考落點分析系統</strong> | 文件編號: KH${Math.random().toString(36).substring(2, 8).toUpperCase()}
+        </div>
+        
+        <div class="print-footer">
+          <p><strong>KHTW 高雄區會考落點分析系統</strong> | ${new Date().getFullYear()} 版權所有</p>
+          <p>更多資訊請訪問 <a href="https://sites.google.com/view/khtw/" target="_blank">KHTW官方網站</a></p>
+        </div>
+      </div>
+      
+      <script>
+        // Automatically print when loaded
+        window.onload = function() {
+          setTimeout(function() {
+            window.print();
+          }, 500);
+        }
+      </script>
+      
+      <script>
+        // Replace school ownership badges for print version
+        document.querySelectorAll('.school-ownership-badge').forEach(badge => {
+          badge.classList.remove('school-ownership-badge');
+          badge.classList.add('print-school-ownership');
+        });
+      </script>
+    </body>
+    </html>
+  `;
+  
+  // Write to the new window and print
+  printWindow.document.open();
+  printWindow.document.write(printContent);
+  printWindow.document.close();
+}
 
 window.onload = function() {
   showDisclaimer();
+  initMobileOptimizations();
+  initIdentitySelection();
 };
 
 document.oncontextmenu = function () {
@@ -1049,131 +1077,14 @@ document.oncontextmenu = function () {
 
 document.body.onkeydown = function(e) {
   var keyCode = e.keyCode || e.which || e.charCode;
-  if (
-    keyCode === 123 ||
-    (e.ctrlKey && e.shiftKey && (keyCode === 73 || keyCode === 74 || keyCode === 67)) ||
-    (e.ctrlKey && keyCode === 85)
-  ) {
+  var ctrlKey = e.ctrlKey || e.metaKey;
+  if (ctrlKey && (keyCode == 83 || keyCode == 85 || keyCode == 73)) {
     e.preventDefault();
+    return false;
+  } else if (keyCode && keyCode == 123) {
     return false;
   }
 };
-
-(function() {
-  var threshold = 160;
-  setInterval(function() {
-    if (window.outerWidth - window.innerWidth > threshold || window.outerHeight - window.innerHeight > threshold) {
-      document.body.innerHTML = "<h1>禁止使用開發者工具</h1>";
-      throw "開發者工具被禁用";
-    }
-  }, 1000);
-})();
-
-let userRating = 0;
-
-function initRating() {
-  const stars = document.querySelectorAll("#starsContainer .star");
-  
-  stars.forEach((star, index) => {
-    star.addEventListener("click", function() {
-      userRating = Number(this.getAttribute("data-value"));
-      updateStarDisplay(userRating);
-      
-      stars.forEach((s, i) => {
-        if (i <= index) {
-          s.style.animationDelay = `${i * 0.1}s`;
-          s.classList.add('active');
-        }
-      });
-    });
-    
-    star.addEventListener("mouseover", function() {
-      const rating = Number(this.getAttribute("data-value"));
-      stars.forEach((s, i) => {
-        if (i < rating) {
-          s.style.transform = `scale(${1 + (rating - i) * 0.1})`;
-        } else {
-          s.style.transform = 'scale(1)';
-        }
-      });
-    });
-    
-    star.addEventListener("mouseout", function() {
-      stars.forEach(s => {
-        s.style.transform = s.classList.contains('active') ? 'scale(1.2)' : 'scale(1)';
-      });
-    });
-  });
-
-  const submitRatingButton = document.getElementById("submitRating");
-  submitRatingButton.addEventListener("click", async function() {
-    if (userRating === 0) {
-      alert("請選擇評分星數！");
-      return;
-    }
-    
-    this.disabled = true;
-    this.innerHTML = '<i class="fas fa-spinner fa-spin"></i> 提交中...';
-    
-    try {
-      await logUserActivity("user_rating", { rating: userRating });
-      
-      const ratingMsg = document.getElementById("ratingMessage");
-      ratingMsg.textContent = "感謝您的評分！您的意見對我們很重要。";
-      ratingMsg.classList.add('show');
-      ratingMsg.style.display = "block";
-      
-      this.innerHTML = '<i class="fas fa-check-circle"></i> 評分成功';
-      this.style.background = 'linear-gradient(135deg, #2ecc71, #27ae60)';
-    } catch (error) {
-      console.error('Rating submission error:', error);
-      this.disabled = false;
-      this.innerHTML = '<i class="fas fa-paper-plane"></i> 重新提交';
-      alert('評分提交失敗，請稍後再試！');
-    }
-  });
-}
-
-function updateStarDisplay(rating) {
-  const stars = document.querySelectorAll("#starsContainer .star");
-  stars.forEach((star, index) => {
-    if (index < rating) {
-      star.classList.add("active");
-    } else {
-      star.classList.remove("active");
-    }
-  });
-}
-
-function toggleMenu() {
-  var menu = document.getElementById("fullscreenMenu");
-  var overlay = document.getElementById("menuOverlay");
-  menu.classList.toggle("show");
-  overlay.classList.toggle("show");
-  
-  var links = menu.getElementsByTagName('a');
-  for (var i = 0; i < links.length; i++) {
-    links[i].style.animationDelay = (i * 0.1) + 's';
-  }
-  
-  // Update year in menu footer
-  document.getElementById('menuYear').textContent = new Date().getFullYear();
-}
-
-function closeMenu() {
-  var menu = document.getElementById("fullscreenMenu");
-  var overlay = document.getElementById("menuOverlay");
-  menu.classList.remove("show");
-  overlay.classList.remove("show");
-}
-
-document.addEventListener('click', function(event) {
-  var menu = document.getElementById("fullscreenMenu");
-  var menuIcon = document.querySelector(".menu-icon");
-  if (menu.classList.contains('show') && !menu.contains(event.target) && !menuIcon.contains(event.target)) {
-    closeMenu();
-  }
-});
 
 const html5QrCode = new Html5Qrcode("qr-reader");
 const qrConfig = { fps: 10, qrbox: { width: 250, height: 250 } };
@@ -1231,14 +1142,34 @@ document.getElementById('fileInput').addEventListener('change', event => {
   }
 });
 
+function toggleMenu() {
+  var menu = document.getElementById("fullscreenMenu");
+  menu.classList.toggle("show");
+  document.body.style.overflow = menu.classList.contains("show") ? "hidden" : "auto";
+
+  var links = menu.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    links[i].style.animationDelay = (i * 0.1) + 's';
+  }
+}
+
 function toggleDarkMode() {
   document.body.classList.toggle('dark-mode');
   const isDarkMode = document.body.classList.contains('dark-mode');
   localStorage.setItem('darkMode', isDarkMode);
-  
+  updateDarkModeIcon(isDarkMode);
+
+  document.documentElement.style.transition = 'background-color 0.5s ease, color 0.5s ease';
+  setTimeout(() => {
+    document.documentElement.style.transition = '';
+  }, 500);
+
+  logUserActivity('toggle_dark_mode', { enabled: isDarkMode });
+}
+
+function updateDarkModeIcon(isDarkMode) {
   const icon = document.querySelector('#darkModeToggle i');
-  icon.classList.add('transitioning');
-  
+  icon.style.transform = 'scale(0)';
   setTimeout(() => {
     if (isDarkMode) {
       icon.classList.remove('fa-moon');
@@ -1247,275 +1178,202 @@ function toggleDarkMode() {
       icon.classList.remove('fa-sun');
       icon.classList.add('fa-moon');
     }
-    
-    setTimeout(() => {
-      icon.classList.remove('transitioning');
-    }, 600);
-  }, 300);
-
-  logUserActivity('toggle_dark_mode', { enabled: isDarkMode });
+    icon.style.transform = 'scale(1)';
+  }, 150);
 }
 
 const savedDarkMode = localStorage.getItem('darkMode') === 'true';
 if (savedDarkMode) {
   document.body.classList.add('dark-mode');
-  const icon = document.querySelector('#darkModeToggle i');
-  icon.classList.remove('fa-moon');
-  icon.classList.add('fa-sun');
 }
+updateDarkModeIcon(savedDarkMode);
 
 document.getElementById('darkModeToggle').addEventListener('click', toggleDarkMode);
 
 document.getElementById('currentYear').textContent = new Date().getFullYear();
 
-function displayResults(data) {
-  const { totalPoints, totalCredits, eligibleSchools } = data;
+let userRating = 0;
 
-  let results = `
-    <div class="results-container">
-      <div class="results-header">
-        <h2><i class="fas fa-clipboard-check icon"></i>分析結果總覽</h2>
-        <div class="results-summary">
-          <div class="result-card total-points" style="background: linear-gradient(135deg, #3498db, #2980b9);">
-            <i class="fas fa-star icon"></i>
-            <div class="result-value">${totalPoints}</div>
-            <div class="result-label">總積分</div>
-          </div>
-          <div class="result-card total-credits" style="background: linear-gradient(135deg, #2ecc71, #27ae60);">
-            <i class="fas fa-award icon"></i>
-            <div class="result-value">${totalCredits}</div>
-            <div class="result-label">總積點</div>
-          </div>
-          <div class="result-card schools-count" style="background: linear-gradient(135deg, #9b59b6, #8e44ad);">
-            <i class="fas fa-school icon"></i>
-            <div class="result-value">${eligibleSchools ? eligibleSchools.length : 0}</div>
-            <div class="result-label">符合條件學校數</div>
-          </div>
-        </div>
-      </div>
-
-      <div class="results-details">
-        <h3><i class="fas fa-chart-bar icon"></i>成績分析</h3>
-        <div class="scores-summary">
-          <div class="score-item">
-            <span class="score-label"><i class="fas fa-book icon"></i> 國文：</span>
-            <span class="score-value ${getScoreClass(document.getElementById('chinese').value)}">
-              ${document.getElementById('chinese').value}
-            </span>
-          </div>
-          <div class="score-item">
-            <span class="score-label"><i class="fas fa-language icon"></i> 英文：</span>
-            <span class="score-value ${getScoreClass(document.getElementById('english').value)}">
-              ${document.getElementById('english').value}
-            </span>
-          </div>
-          <div class="score-item">
-            <span class="score-label"><i class="fas fa-calculator icon"></i> 數學：</span>
-            <span class="score-value ${getScoreClass(document.getElementById('math').value)}">
-              ${document.getElementById('math').value}
-            </span>
-          </div>
-          <div class="score-item">
-            <span class="score-label"><i class="fas fa-flask icon"></i> 自然：</span>
-            <span class="score-value ${getScoreClass(document.getElementById('science').value)}">
-              ${document.getElementById('science').value}
-            </span>
-          </div>
-          <div class="score-item">
-            <span class="score-label"><i class="fas fa-globe icon"></i> 社會：</span>
-            <span class="score-value ${getScoreClass(document.getElementById('social').value)}">
-              ${document.getElementById('social').value}
-            </span>
-          </div>
-          <div class="score-item">
-            <span class="score-label"><i class="fas fa-pen-nib icon"></i> 作文：</span>
-            <span class="score-value composition-score">
-              ${document.getElementById('composition').value} 級分
-            </span>
-          </div>
-        </div>`;
+document.addEventListener("DOMContentLoaded", function() {
+  // Initialize rating stars with animation
+  const stars = document.querySelectorAll("#starsContainer .star");
   
-  if (eligibleSchools && eligibleSchools.length > 0) {
-    // Group schools by type
-    let groupedSchools = {};
-    eligibleSchools.forEach(school => {
-      if (!groupedSchools[school.type]) {
-        groupedSchools[school.type] = [];
-      }
-      groupedSchools[school.type].push(school);
+  // Animate stars appearance on load
+  stars.forEach((star, index) => {
+    star.style.opacity = "0";
+    star.style.transform = "translateY(20px)";
+    setTimeout(() => {
+      star.style.transition = "opacity 0.5s ease, transform 0.5s ease";
+      star.style.opacity = "1";
+      star.style.transform = "translateY(0)";
+    }, 100 + (index * 150));
+  });
+  
+  stars.forEach(star => {
+    star.addEventListener("click", function() {
+      userRating = Number(this.getAttribute("data-value"));
+      updateStarDisplay(userRating);
+      
+      // Add click animation
+      this.style.transform = "scale(0.8)";
+      setTimeout(() => {
+        this.style.transform = "scale(1.3)";
+      }, 150);
     });
     
-    // Add a summary of total schools by type
-    results += `
-      <div class="schools-summary" style="margin: 2rem 0; padding: 1rem; background: rgba(52, 152, 219, 0.05); border-radius: 10px;">
-        <h4 style="margin-bottom: 1rem;"><i class="fas fa-chart-pie icon"></i> 符合條件學校類型統計</h4>
-        <div style="display: flex; flex-wrap: wrap; gap: 1rem; justify-content: center;">
-          ${Object.entries(groupedSchools).map(([type, schools]) => `
-            <div style="background: linear-gradient(135deg, #2c3e50, #3498db); color: white; padding: 0.8rem 1.5rem; border-radius: 50px; display: flex; align-items: center; gap: 8px;">
-              <i class="fas fa-${type === '普通科' ? 'graduation-cap' : 'tools'} icon"></i>
-              ${type}: <strong>${schools.length}</strong> 所
-            </div>
-          `).join('')}
-        </div>
-      </div>
-      
-      <div class="schools-analysis">
-        <h3><i class="fas fa-university icon"></i>學校分析</h3>
-        <div class="school-type-summary">
-          ${Object.entries(groupedSchools).map(([type, schools]) => `
-            <div class="school-type-card">
-              <div class="school-type-header">
-                <i class="fas fa-${type === '普通科' ? 'graduation-cap' : 'tools'} icon"></i>
-                <h4>${type}</h4>
-                <span class="school-count">${schools.length}所</span>
-              </div>
-              <div class="school-list">
-                ${schools.map(school => {
-                  // Calculate admission chance color
-                  let chanceColor = '#e74c3c'; // default red
-                  if (school.admissionChance >= 80) chanceColor = '#2ecc71'; // green
-                  else if (school.admissionChance >= 60) chanceColor = '#f1c40f'; // yellow
-                  
-                  return `
-                  <div class="school-item" data-id="${school.id || Math.random().toString(36).substring(2, 15)}">
-                    <div class="school-name">
-                      <i class="fas fa-graduation-cap icon"></i>
-                      ${school.name}
-                    </div>
-                    ${school.ownership ? `
-                      <div class="school-ownership">
-                        <i class="fas fa-building icon"></i>
-                        ${school.ownership}
-                      </div>
-                    ` : ''}
-                    <div class="school-details" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 12px; margin-top: 15px;">
-                      ${school.lastYearCutoff ? `
-                        <div style="display: flex; align-items: center; gap: 5px;">
-                          <i class="fas fa-chart-line icon" style="color: #e74c3c;"></i>
-                          <span>去年最低: <strong>${school.lastYearCutoff}</strong></span>
-                        </div>
-                      ` : ''}
-                      ${school.historicalTrend ? `
-                        <div style="display: flex; align-items: center; gap: 5px;">
-                          <i class="fas fa-history icon" style="color: #9b59b6;"></i>
-                          <span>近三年: <strong>${school.historicalTrend}</strong></span>
-                        </div>
-                      ` : ''}
-                    </div>
-                    ${school.notes ? `
-                      <div class="school-notes" style="margin-top: 15px; padding: 10px; background: rgba(52, 152, 219, 0.1); border-radius: 5px; font-size: 0.95rem;">
-                        <i class="fas fa-info-circle icon" style="color: #3498db;"></i>
-                        ${school.notes}
-                      </div>
-                    ` : ''}
-                  </div>
-                `}).join('')}
-              </div>
-            </div>
-          `).join('')}
-        </div>
-      </div>
-      
-      <div class="analysis-notes">
-        <h3><i class="fas fa-info-circle icon"></i>分析說明</h3>
-        <div style="display: flex; flex-wrap: wrap; gap: 1rem; margin-top: 1rem;">
-          <div style="background: rgba(46, 204, 113, 0.1); padding: 1.5rem; border-radius: 10px; text-align: left; box-shadow: 0 5px 15px rgba(0,0,0,0.05); width: 100%;">
-            <h4 style="margin-bottom: 1rem; color: #2ecc71; display: flex; align-items: center; gap: 10px;">
-              <i class="fas fa-lightbulb" style="color: #f1c40f;"></i> 您可以嘗試：
-            </h4>
-            <ul style="list-style: none; padding: 0;">
-              <li style="margin: 10px 0; padding-left: 25px; position: relative;">
-                <i class="fas fa-check-circle" style="color: #2ecc71; position: absolute; left: 0;"></i>
-                調整篩選條件，選擇「全部」查看更多選項
-              </li>
-              <li style="margin: 10px 0; padding-left: 25px; position: relative;">
-                <i class="fas fa-check-circle" style="color: #2ecc71; position: absolute; left: 0;"></i>
-                考慮更多類型的學校，包括公私立或不同科別
-              </li>
-              <li style="margin: 10px 0; padding-left: 25px; position: relative;">
-                <i class="fas fa-check-circle" style="color: #2ecc71; position: absolute; left: 0;"></i>
-                諮詢老師獲取更多建議和升學輔導
-              </li>
-            </ul>
-          </div>
-        </div>
-      </div>`;
-  } else {
-    results += `
-      <div class="no-results" style="text-align: center; padding: 3rem; background: rgba(231, 76, 60, 0.05); border-radius: 15px; margin: 2rem 0;">
-        <i class="fas fa-search icon" style="font-size: 4rem; color: #e74c3c; margin-bottom: 1.5rem; display: block;"></i>
-        <h3 style="color: #e74c3c; margin-bottom: 1rem;">根據您的成績，暫時沒有符合條件的學校。</h3>
-        <div style="max-width: 100%; margin: 0 auto;">
-          <div class="suggestions" style="background: white; padding: 1.5rem; border-radius: 10px; text-align: left; box-shadow: 0 5px 15px rgba(0,0,0,0.05);">
-            <h4 style="margin-bottom: 1rem; color: #3498db; display: flex; align-items: center; gap: 10px;">
-              <i class="fas fa-lightbulb" style="color: #f1c40f;"></i> 您可以嘗試：
-            </h4>
-            <ul style="list-style: none; padding: 0;">
-              <li style="margin: 10px 0; padding-left: 25px; position: relative;">
-                <i class="fas fa-check-circle" style="color: #2ecc71; position: absolute; left: 0;"></i>
-                調整篩選條件，選擇「全部」查看更多選項
-              </li>
-              <li style="margin: 10px 0; padding-left: 25px; position: relative;">
-                <i class="fas fa-check-circle" style="color: #2ecc71; position: absolute; left: 0;"></i>
-                考慮更多類型的學校，包括公私立或不同科別
-              </li>
-              <li style="margin: 10px 0; padding-left: 25px; position: relative;">
-                <i class="fas fa-check-circle" style="color: #2ecc71; position: absolute; left: 0;"></i>
-                諮詢老師獲取更多建議和升學輔導
-              </li>
-            </ul>
-          </div>
-        </div>
-      </div>`;
-  }
-  
-  results += '<div class="data-update-time">資料更新時間：' + new Date().toLocaleString('zh-TW') + '</div>';
-  
-  results += '</div></div>';
-  
-  const resultsElement = document.getElementById('results');
-  resultsElement.innerHTML = results;
-  resultsElement.style.display = 'none';
-  
-  setTimeout(() => {
-    resultsElement.style.display = 'block';
-    resultsElement.style.animation = 'fadeIn 0.5s ease-out';
-    document.getElementById('exportResults').style.display = 'inline-block';
+    star.addEventListener("mouseover", function() {
+      const rating = Number(this.getAttribute("data-value"));
+      updateStarDisplay(rating);
+    });
     
-    // Add a toast notification for successful analysis
-    showToast('分析完成！您可以查看結果或匯出報告。');
-  }, 100);
+    star.addEventListener("mouseout", function() {
+      updateStarDisplay(userRating);
+    });
+  });
+
+  const submitRatingButton = document.getElementById("submitRating");
+  submitRatingButton.addEventListener("click", function() {
+    if (userRating === 0) {
+      alert("請選擇評分星數！");
+      return;
+    }
+    
+    // Button submit animation
+    this.innerHTML = '<i class="fas fa-spinner fa-spin icon"></i> 提交中...';
+    this.disabled = true;
+    
+    setTimeout(() => {
+      logUserActivity("user_rating", { rating: userRating });
+      const ratingMsg = document.getElementById("ratingMessage");
+      ratingMsg.innerHTML = '<i class="fas fa-check-circle icon"></i> 感謝您的評分！您的回饋對我們非常重要。';
+      ratingMsg.style.display = "block";
+      
+      this.innerHTML = '<i class="fas fa-check icon"></i> 已提交';
+      
+      // Success animation for stars
+      stars.forEach(star => {
+        if (star.classList.contains("active")) {
+          star.style.animation = "starPulse 1s infinite alternate";
+        }
+      });
+    }, 1000);
+  });
+});
+
+function updateStarDisplay(rating) {
+  const stars = document.querySelectorAll("#starsContainer .star");
+  stars.forEach(star => {
+    const starValue = Number(star.getAttribute("data-value"));
+    if (starValue <= rating) {
+      star.classList.add("active");
+    } else {
+      star.classList.remove("active");
+    }
+  });
 }
 
-// Add toast notification function
-function showToast(message) {
-  // Create toast if it doesn't exist
-  let toast = document.getElementById('toast-notification');
-  if (!toast) {
-    toast = document.createElement('div');
-    toast.id = 'toast-notification';
-    document.body.appendChild(toast);
+// Enhance mobile interface initialization
+function initMobileOptimizations() {
+  // Detect if the device is mobile and adjust for better interaction
+  const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+  
+  if (isMobile) {
+    // Improve QR reader experience on mobile
+    qrConfig.qrbox = { width: 200, height: 200 };
+    
+    // Add touch-friendly scaling for all interactive elements
+    const interactiveElements = document.querySelectorAll('button, select, input, .identity-option, .file-input-label, .invite-link, .fullscreen-menu a');
+    interactiveElements.forEach(element => {
+      element.addEventListener('touchstart', function() {
+        this.style.transform = 'scale(0.98)';
+      });
+      element.addEventListener('touchend', function() {
+        this.style.transform = '';
+      });
+    });
+    
+    // Fix iOS 100vh issue
+    document.documentElement.style.setProperty('--real-height', `${window.innerHeight}px`);
+    window.addEventListener('resize', () => {
+      document.documentElement.style.setProperty('--real-height', `${window.innerHeight}px`);
+    });
+    
+    // Add viewport height adjustment for better iOS display
+    function adjustHeight() {
+      const vh = window.innerHeight * 0.01;
+      document.documentElement.style.setProperty('--vh', `${vh}px`);
+    }
+    
+    adjustHeight();
+    window.addEventListener('resize', adjustHeight);
+    
+    // Adjust padding on container for smaller screens
+    if (window.innerWidth <= 375) {
+      const container = document.querySelector('.container');
+      if (container) {
+        container.style.padding = '1rem 0.6rem';
+      }
+    }
+    
+    // Simplify UI for very small screens
+    if (window.innerWidth <= 320) {
+      const header = document.querySelector('.header-logo span');
+      if (header) {
+        header.textContent = '會考落點分析';
+      }
+    }
   }
-  
-  // Update message and show
-  toast.innerText = message;
-  toast.className = 'show';
-  
-  // Hide after 3 seconds
-  setTimeout(() => { 
-    toast.className = toast.className.replace('show', ''); 
-  }, 3000);
 }
 
-function getScoreClass(score) {
-  const scoreClasses = {
-    'A++': 'score-excellent',
-    'A+': 'score-great',
-    'A': 'score-good',
-    'B++': 'score-above-average',
-    'B+': 'score-average',
-    'B': 'score-below-average',
-    'C': 'score-needs-improvement'
-  };
-  return scoreClasses[score] || '';
+function initIdentitySelection() {
+  const identitySection = document.getElementById('identitySection');
+  const originalSelect = document.getElementById('userIdentity');
+  
+  // Create icons container
+  const iconsContainer = document.createElement('div');
+  iconsContainer.className = 'identity-icons-container';
+  
+  // Define identity options with icons
+  const identityOptions = [
+    { value: 'student', label: '學生', icon: 'fa-user-graduate' },
+    { value: 'parent', label: '家長', icon: 'fa-user-friends' },
+    { value: 'teacher', label: '教師', icon: 'fa-chalkboard-teacher' },
+  ];
+  
+  // Create identity option elements
+  identityOptions.forEach(option => {
+    const optionElement = document.createElement('div');
+    optionElement.className = 'identity-option';
+    optionElement.dataset.value = option.value;
+    if (originalSelect.value === option.value) {
+      optionElement.classList.add('selected');
+    }
+    
+    optionElement.innerHTML = `
+      <i class="fas ${option.icon}"></i>
+      <span>${option.label}</span>
+    `;
+    
+    optionElement.addEventListener('click', function() {
+      // Remove selected class from all options
+      document.querySelectorAll('.identity-option').forEach(el => {
+        el.classList.remove('selected');
+      });
+      
+      // Add selected class to clicked option
+      this.classList.add('selected');
+      
+      // Update hidden select value
+      originalSelect.value = this.dataset.value;
+      
+      // Log user activity
+      logUserActivity('identity_selected', { identity: this.dataset.value });
+    });
+    
+    iconsContainer.appendChild(optionElement);
+  });
+  
+  // Hide original select and show icon selection
+  originalSelect.style.display = 'none';
+  originalSelect.parentNode.insertBefore(iconsContainer, originalSelect);
 }

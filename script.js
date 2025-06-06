@@ -210,7 +210,7 @@ async function analyzeScores() {
     showInvitationValidationAnimation();
     let validationResponse;
     try {
-      validationResponse = await fetch('https://script.google.com/macros/s/AKfycbx8_7mRA3AhKoq_GUuoeYrlxCVKIqzBPJg4335_bIbpYg-mGCkmppvXNSZwyVXERWXA/exec', {
+      validationResponse = await fetch('https://script.google.com/macros/s/AKfycbxiHHlZm2J3svBkMhWvkH3MRjOGD8ePrw0pS0ngWf3TFH-zZmamOHcTwpfqbr6Nyw4Z/exec', {
         method: 'POST',
         body: JSON.stringify({
           action: 'validateInvitationCode',

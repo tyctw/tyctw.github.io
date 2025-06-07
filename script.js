@@ -680,7 +680,7 @@ async function exportResults(format = 'txt') {
   const watermark =
     "********************************\n" +
     "*                              *\n" +
-    "*  TYCTW 桃聯區會考落點分析系統  *\n" +
+    "*  TYCTW 桃連區會考落點分析系統  *\n" +
     "*       以下資料僅供參考      *\n" +
     "*                              *\n" +
     `*   產生時間: ${dateTime}   *\n` +
@@ -726,7 +726,7 @@ async function exportPdf(content) {
     doc.setFont('helvetica', 'bold');
     doc.setFontSize(24);
     doc.setTextColor(255, 255, 255);
-    doc.text('桃聯區會考落點分析結果', 105, 15, { align: 'center' });
+    doc.text('桃連區會考落點分析結果', 105, 15, { align: 'center' });
     
     // Add decoration line
     doc.setDrawColor(231, 76, 60);
@@ -782,7 +782,7 @@ async function exportPdf(content) {
         doc.setFont('helvetica', 'bold');
         doc.setFontSize(12);
         doc.setTextColor(255, 255, 255);
-        doc.text('桃聯區會考落點分析結果', 105, 10, { align: 'center' });
+        doc.text('桃連區會考落點分析結果', 105, 10, { align: 'center' });
         
         // Add watermark to new page
         doc.setFont('helvetica', 'bold');
@@ -813,10 +813,10 @@ async function exportPdf(content) {
       doc.setTextColor(100, 100, 100);
       doc.text('第 ' + i + ' 頁，共 ' + pageCount + ' 頁', 105, 285, { align: 'center' });
       doc.text(websiteInfo, 105, 290, { align: 'center' });
-      doc.text(' 2025 TYCTW桃聯區會考落點分析系統', 105, 295, { align: 'center' });
+      doc.text(' 2025 TYCTW桃連區會考落點分析系統', 105, 295, { align: 'center' });
     }
     
-    doc.save('桃聯區會考落點分析結果.pdf');
+    doc.save('桃連區會考落點分析結果.pdf');
   } catch (error) {
     console.error('PDF export error:', error);
     alert('PDF匯出發生錯誤，請確認您的瀏覽器支援此功能或嘗試其他格式。');
@@ -830,7 +830,7 @@ function exportTxt(content) {
   const websiteInfo = "更多資訊請訪問: https://rcpett.vercel.app/\n\n";
   const formattedContent = 
     "====================================================================\n" +
-    "                  桃聯區會考落點分析結果                            \n" +
+    "                  桃連區會考落點分析結果                            \n" +
     "====================================================================\n\n" +
     "產生日期: " + dateTime + "\n\n" +
     "--------------------------------------------------------------------\n" +
@@ -848,11 +848,11 @@ function exportTxt(content) {
     content + 
     "\n\n====================================================================\n" +
     websiteInfo +
-    " 2025 TYCTW桃聯區會考落點分析系統\n" +
+    " 2025 TYCTW桃連區會考落點分析系統\n" +
     "此文件僅供參考，不代表實際錄取結果\n" +
     "====================================================================";
   const blob = new Blob([formattedContent], { type: 'text/plain;charset=utf-8' });
-  downloadFile(blob, '桃聯區會考落點分析結果.txt');
+  downloadFile(blob, '桃連區會考落點分析結果.txt');
 }
 
 function exportCsv(content) {
@@ -862,10 +862,10 @@ function exportCsv(content) {
   // Add header rows with nice formatting
   let csvContent = '';
   csvContent += '"==================================================="\n';
-  csvContent += '"桃聯區會考落點分析結果"\n';
+  csvContent += '"桃連區會考落點分析結果"\n';
   csvContent += '"==================================================="\n';
   csvContent += '"產生時間","' + dateTime + '"\n';
-  csvContent += '"TYCTW桃聯區會考落點分析系統 - 僅供參考"\n';
+  csvContent += '"TYCTW桃連區會考落點分析系統 - 僅供參考"\n';
   csvContent += '"更多資訊請訪問: https://rcpett.vercel.app/"\n\n';
   
   // Add scores with better organization
@@ -894,11 +894,11 @@ function exportCsv(content) {
   // Add footer with metadata
   csvContent += '\n"==================================================="\n';
   csvContent += '"' + new Date().toISOString() + '","' + navigator.userAgent + '"\n';
-  csvContent += '"TYCTW桃聯區會考落點分析系統 版權所有"\n';
+  csvContent += '"TYCTW桃連區會考落點分析系統 版權所有"\n';
   csvContent += '"==================================================="\n';
   
   const blob = new Blob(['\uFEFF' + csvContent], { type: 'text/csv;charset=utf-8' });
-  downloadFile(blob, '桃聯區會考落點分析結果.csv');
+  downloadFile(blob, '桃連區會考落點分析結果.csv');
 }
 
 function exportJson(content) {
@@ -923,8 +923,8 @@ function exportJson(content) {
   const jsonData = {
     schema_version: "1.1.0",
     metadata: {
-      title: 'TYCTW 桃聯區會考落點分析結果',
-      description: 'TYCTW 桃聯區會考落點分析系統 - 僅供參考',
+      title: 'TYCTW 桃連區會考落點分析結果',
+      description: 'TYCTW 桃連區會考落點分析系統 - 僅供參考',
       generateTime: new Date().toISOString(),
       timestamp: Date.now(),
       websiteUrl: 'https://rcpett.vercel.app/',
@@ -959,14 +959,14 @@ function exportJson(content) {
     },
     copyright: {
       year: new Date().getFullYear(),
-      owner: "TYCTW桃聯區會考落點分析系統",
+      owner: "TYCTW桃連區會考落點分析系統",
       rights: "版權所有，不得未經授權轉載或使用"
     }
   };
   
   // Pretty print the JSON with 2-space indentation
   const blob = new Blob([JSON.stringify(jsonData, null, 2)], { type: 'application/json;charset=utf-8' });
-  downloadFile(blob, '桃聯區會考落點分析結果.json');
+  downloadFile(blob, '桃連區會考落點分析結果.json');
 }
 
 function downloadFile(blob, filename) {

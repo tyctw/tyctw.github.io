@@ -118,21 +118,19 @@
       <h1>
         <i class="fas fa-chart-line icon"></i>桃連區會考落點分析系統
       </h1>
-      <a
-        href="https://forms.gle/ZKW3W58gcbQW3vdX9"
-        target="_blank"
-        class="invite-link"
-      >
-        <i class="fas fa-envelope-open-text icon"></i>填寫表單獲取邀請碼
-      </a>
+      
       <div class="action-buttons">
-        <button class="instruction-toggle" onclick="toggleInstructions()">
-          <i class="fas fa-info-circle icon"></i>使用說明
+        <button class="instruction-toggle" onclick="toggleInstructions()" data-tooltip="查看詳細使用教學">
+          <i class="fas fa-book-open icon"></i>使用說明
         </button>
-        <button class="disclaimer-toggle" onclick="showDisclaimer()">
-          <i class="fas fa-exclamation-triangle icon"></i>免責聲明
+        <button class="disclaimer-toggle" onclick="showDisclaimer()" data-tooltip="閱讀重要聲明">
+          <i class="fas fa-shield-alt icon"></i>免責聲明
         </button>
       </div>
+
+      <a href="https://forms.gle/ZKW3W58gcbQW3vdX9" target="_blank" class="invite-link">
+        <i class="fas fa-envelope-open-text icon"></i>填寫表單獲取邀請碼
+      </a>
       
       <form id="analysisForm">
         <div class="form-group">

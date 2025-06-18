@@ -84,33 +84,78 @@
           <i class="fas fa-chart-line"></i>
           <span>桃連區會考分析</span>
         </div>
+        <div class="close-menu" onclick="closeMenu()">
+          <i class="fas fa-times"></i>
+        </div>
       </div>
-      <div class="close-menu" onclick="closeMenu()">
-        <i class="fas fa-times"></i>
-      </div>
-      
-      <div class="menu-section">
-        <div class="menu-section-title">主要選項</div>
-        <a href="https://sites.google.com/view/tyctw/" target="_blank">
-          <i class="fas fa-school"></i> 回到主網頁
-        </a>
-        <a href="https://tyctw.github.io/sequence/" target="_blank">
-          <i class="fas fa-pencil-alt"></i> 各校序位推估 
-        </a>
-      </div>
-      
-      <div class="menu-section">
-        <div class="menu-section-title">其他資源</div>
-        <a href="https://tyctw.github.io/report_form" target="_blank">
-          <i class="fas fa-exclamation-triangle"></i> 系統異常回報
-        </a>
-        <a href="https://tyctw.github.io/Navigation/">
-          <i class="fas fa-university"></i> 查看更多資訊
-        </a>
-      </div>
-      
-      <div class="menu-footer">
-        &copy; <span id="menuYear"></span> TYCTW
+
+      <div class="menu-content">
+        <div class="menu-section">
+          <h3 class="menu-section-title">
+            <i class="fas fa-star"></i>
+            主要功能
+          </h3>
+          <div class="menu-items">
+            <a href="https://sites.google.com/view/tyctw/" class="menu-item" target="_blank">
+              <i class="fas fa-school"></i>
+              <div class="menu-item-content">
+                <span class="menu-item-title">回到主網頁</span>
+                <span class="menu-item-description">返回 TYCTW 主要網站</span>
+              </div>
+              <i class="fas fa-chevron-right menu-item-arrow"></i>
+            </a>
+            <a href="https://tyctw.github.io/sequence/" class="menu-item" target="_blank">
+              <i class="fas fa-pencil-alt"></i>
+              <div class="menu-item-content">
+                <span class="menu-item-title">各校序位推估</span>
+                <span class="menu-item-description">查看學校排名與分數預測</span>
+              </div>
+              <i class="fas fa-chevron-right menu-item-arrow"></i>
+            </a>
+          </div>
+        </div>
+
+        <div class="menu-section">
+          <h3 class="menu-section-title">
+            <i class="fas fa-tools"></i>
+            實用工具
+          </h3>
+          <div class="menu-items">
+            <a href="https://tyctw.github.io/report_form" class="menu-item" target="_blank">
+              <i class="fas fa-exclamation-triangle"></i>
+              <div class="menu-item-content">
+                <span class="menu-item-title">系統異常回報</span>
+                <span class="menu-item-description">遇到問題？請告訴我們</span>
+              </div>
+              <i class="fas fa-chevron-right menu-item-arrow"></i>
+            </a>
+            <a href="https://tyctw.github.io/Navigation/" class="menu-item">
+              <i class="fas fa-university"></i>
+              <div class="menu-item-content">
+                <span class="menu-item-title">更多資訊</span>
+                <span class="menu-item-description">瀏覽完整的教育資源</span>
+              </div>
+              <i class="fas fa-chevron-right menu-item-arrow"></i>
+            </a>
+          </div>
+        </div>
+
+        <div class="menu-footer">
+          <div class="menu-footer-content">
+            <p class="copyright">&copy; <span id="menuYear"></span> TYCTW</p>
+            <div class="social-links">
+              <a href="#" class="social-link">
+                <i class="fab fa-facebook"></i>
+              </a>
+              <a href="#" class="social-link">
+                <i class="fab fa-instagram"></i>
+              </a>
+              <a href="#" class="social-link">
+                <i class="fab fa-youtube"></i>
+              </a>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
 

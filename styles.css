@@ -1913,24 +1913,62 @@ button:hover:before {
 /* Identity Selection Styles */
 .identity-selection {
   display: flex;
-  flex-wrap: wrap;
-  gap: 15px;
   justify-content: center;
-  margin-bottom: 30px;
+  gap: 1rem;
+  margin: 1rem 0;
+  flex-wrap: nowrap;
+  width: 100%;
 }
 
 .identity-card {
-  background: linear-gradient(135deg, var(--card-background), rgba(255, 255, 255, 0.1));
-  border: 2px solid transparent;
-  border-radius: 20px;
-  padding: 25px 15px;
-  width: 130px;
-  text-align: center;
+  flex: 1;
+  min-width: 100px;
+  max-width: 150px;
+  padding: 1rem;
+  border-radius: 12px;
+  background: var(--card-background);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
   cursor: pointer;
-  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-  box-shadow: 0 8px 15px var(--shadow-color);
-  position: relative;
-  overflow: hidden;
+  transition: all 0.3s ease;
+  border: 2px solid transparent;
+  text-align: center;
+}
+
+@media (max-width: 768px) {
+  .identity-selection {
+    flex-wrap: nowrap;
+    gap: 0.5rem;
+  }
+  
+  .identity-card {
+    min-width: 80px;
+    padding: 0.8rem;
+  }
+  
+  .identity-card i {
+    font-size: 1.2rem;
+  }
+  
+  .identity-card p {
+    font-size: 0.9rem;
+    margin-top: 0.5rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .identity-card {
+    min-width: 70px;
+    padding: 0.6rem;
+  }
+  
+  .identity-card i {
+    font-size: 1rem;
+  }
+  
+  .identity-card p {
+    font-size: 0.8rem;
+    margin-top: 0.4rem;
+  }
 }
 
 .identity-card:hover {
@@ -1969,21 +2007,6 @@ button:hover:before {
 
 .dark-mode .identity-card.selected {
   background: linear-gradient(135deg, rgba(52, 152, 219, 0.2), rgba(52, 152, 219, 0.3));
-}
-
-@media (max-width: 768px) {
-  .identity-selection {
-    gap: 10px;
-  }
-  
-  .identity-card {
-    padding: 15px;
-    width: 100px;
-  }
-  
-  .identity-card i {
-    font-size: 2rem;
-  }
 }
 
 /* Rating Section Styles - Enhanced */

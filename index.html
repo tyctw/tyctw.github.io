@@ -1,233 +1,212 @@
+<!DOCTYPE html>
 <html lang="zh-TW">
-  <head>
-    <meta charset="UTF-8" />
-    <title>桃連區會考落點分析</title>
-    <link rel="stylesheet" href="styles.css" />
-    <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
-    />
-    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
-    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
-    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
-    <link rel="manifest" href="/site.webmanifest" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta
-      name="description"
-      content="桃連區會考落點分析，幫助使用者分析會考成績，提供學校落點參考。"
-    />
-    <meta
-      name="keywords"
-      content="桃連區, 會考, 落點分析, 教育, 學校,武陵高中,中壢高中,內壢高中,平鎮高中,大園高中,永豐高中,南崁高中,振聲高中,楊梅高中,治平高中,新興高中,關西高中,大溪高中"
-    />
-    <meta name="author" content="桃園市教育局" />
-    <meta name="google-adsense-account" content="ca-pub-6966991656561179">
-    <!-- External JS Libraries -->
-    <script src="https://unpkg.com/html5-qrcode" type="text/javascript"></script>
-    <script src="https://cdn.jsdelivr.net/npm/jsqr@1.3.1/dist/jsQR.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-    <style>
-      @media (max-width: 768px) {
-        #instructionsModal .modal-content {
-          width: 95%;
-          margin: 5% auto;
-          padding: 20px;
-          max-height: 80vh;
-          overflow-y: auto;
-        }
-        
-        #instructionsModal h2 {
-          font-size: 20px;
-        }
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>桃連區會考落點分析</title>
+  
+  <meta name="description" content="桃連區會考落點分析，幫助使用者分析會考成績，提供學校落點參考。" />
+  <meta name="keywords" content="桃連區, 會考, 落點分析, 教育, 學校,武陵高中,中壢高中,內壢高中,平鎮高中,大園高中,永豐高中,南崁高中,振聲高中,楊梅高中,治平高中,新興高中,關西高中,大溪高中" />
+  <meta name="author" content="桃園市教育局" />
+  <meta name="google-adsense-account" content="ca-pub-6966991656561179">
 
-        .instruction-item {
-          padding: 1rem;
-        }
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+  <link class="favicon" rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+  <link class="favicon" rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
+  <link rel="manifest" href="/site.webmanifest" />
 
-        .instruction-item h3 {
-          font-size: 1.1rem;
-        }
-        
-        .instruction-item h3 .icon {
-          width: 28px;
-          height: 28px;
-          font-size: 1.1rem;
-        }
+  <link rel="stylesheet" href="styles.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+  
+  <script src="https://unpkg.com/html5-qrcode" type="text/javascript"></script>
+  <script src="https://cdn.jsdelivr.net/npm/jsqr@1.3.1/dist/jsQR.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 
-        .instruction-item p, .instruction-item li {
-          font-size: 0.9rem;
-        }
-        
-        .instruction-item .highlight {
-          padding: 0.8rem;
-          font-size: 0.9rem;
-        }
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-H9X7EC127P"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-H9X7EC127P');
+  </script>
+
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6966991656561179" crossorigin="anonymous"></script>
+
+  <style>
+    @media (max-width: 768px) {
+      #instructionsModal .modal-content {
+        width: 95%;
+        margin: 5% auto;
+        padding: 20px;
+        max-height: 80vh;
+        overflow-y: auto;
       }
-    </style>
-  </head>
-  <body>
-    <header class="header">
-      <div class="header-container">
-        <div class="header-logo">
-          <i class="fas fa-chart-line"></i>
-          <span>桃連區會考落點分析</span>
-        </div>
-        <div class="menu-icon" onclick="toggleMenu()">
-          <i class="fas fa-bars"></i>
-        </div>
+      #instructionsModal h2 {
+        font-size: 20px;
+      }
+      .instruction-item {
+        padding: 1rem;
+      }
+      .instruction-item h3 {
+        font-size: 1.1rem;
+      }
+      .instruction-item h3 .icon {
+        width: 28px;
+        height: 28px;
+        font-size: 1.1rem;
+      }
+      .instruction-item p, .instruction-item li {
+        font-size: 0.9rem;
+      }
+      .instruction-item .highlight {
+        padding: 0.8rem;
+        font-size: 0.9rem;
+      }
+    }
+    /* 確保廣告區塊置中與美觀 */
+    .ad-container {
+      width: 100%;
+      margin: 25px 0;
+      display: flex;
+      justify-content: center;
+      overflow: hidden;
+    }
+  </style>
+</head>
+<body>
+
+  <header class="header">
+    <div class="header-container">
+      <div class="header-logo">
+        <i class="fas fa-chart-line"></i>
+        <span>桃連區會考落點分析</span>
       </div>
-    </header>
-
-    <div class="menu-overlay" id="menuOverlay" onclick="closeMenu()"></div>
-    <div class="fullscreen-menu" id="fullscreenMenu">
-      <div class="menu-header">
-        <div class="logo">
-          <i class="fas fa-chart-line"></i>
-          <span>桃連區會考分析</span>
-        </div>
-        <div class="close-menu" onclick="closeMenu()">
-          <i class="fas fa-times"></i>
-        </div>
+      <div class="menu-icon" onclick="toggleMenu()">
+        <i class="fas fa-bars"></i>
       </div>
+    </div>
+  </header>
 
-      <div class="menu-content">
-        <div class="menu-section">
-          <h3 class="menu-section-title">
-            <i class="fas fa-star"></i>
-            主要功能
-          </h3>
-          <div class="menu-items">
-            <a href="https://sites.google.com/view/tyctw/" class="menu-item" target="_blank">
-              <i class="fas fa-school"></i>
-              <div class="menu-item-content">
-                <span class="menu-item-title">回到主網頁</span>
-                <span class="menu-item-description">返回 TYCTW 主要網站</span>
-              </div>
-              <i class="fas fa-chevron-right menu-item-arrow"></i>
-            </a>
-            <a href="https://tyctw.github.io/sequence/" class="menu-item" target="_blank">
-              <i class="fas fa-pencil-alt"></i>
-              <div class="menu-item-content">
-                <span class="menu-item-title">各校序位推估</span>
-                <span class="menu-item-description">查看學校排名與分數預測</span>
-              </div>
-              <i class="fas fa-chevron-right menu-item-arrow"></i>
-            </a>
-          </div>
-        </div>
+  <div class="menu-overlay" id="menuOverlay" onclick="closeMenu()"></div>
+  <div class="fullscreen-menu" id="fullscreenMenu">
+    <div class="menu-header">
+      <div class="logo">
+        <i class="fas fa-chart-line"></i>
+        <span>桃連區會考分析</span>
+      </div>
+      <div class="close-menu" onclick="closeMenu()">
+        <i class="fas fa-times"></i>
+      </div>
+    </div>
 
-        <div class="menu-section">
-          <h3 class="menu-section-title">
-            <i class="fas fa-tools"></i>
-            實用工具
-          </h3>
-          <div class="menu-items">
-            <a href="https://tyctw.github.io/report_form" class="menu-item" target="_blank">
-              <i class="fas fa-exclamation-triangle"></i>
-              <div class="menu-item-content">
-                <span class="menu-item-title">系統異常回報</span>
-                <span class="menu-item-description">遇到問題？請告訴我們</span>
-              </div>
-              <i class="fas fa-chevron-right menu-item-arrow"></i>
-            </a>
-            <a href="https://tyctw.github.io/spare/" class="menu-item">
-              <i class="fas fa-university"></i>
-              <div class="menu-item-content">
-                <span class="menu-item-title">全國會考落點分析</span>
-                <span class="menu-item-description">想要其他區域落點分析嗎</span>
-              </div>
-              <i class="fas fa-chevron-right menu-item-arrow"></i>
-            </a>
-          </div>
-        </div>
-
-        <div class="menu-footer">
-          <div class="menu-footer-content">
-            <p class="copyright">&copy; <span id="menuYear"></span> TYCTW</p>
-            <div class="social-links">
-              <a href="https://www.threads.com/@114.rcpet" class="social-link">
-                <i class="fab fa-facebook"></i>
-              </a>
-              <a href="https://www.threads.com/@114.rcpet" class="social-link">
-                <i class="fab fa-instagram"></i>
-              </a>
-              <a href="https://www.threads.com/@114.rcpet" class="social-link">
-                <i class="fab fa-youtube"></i>
-              </a>
+    <div class="menu-content">
+      <div class="menu-section">
+        <h3 class="menu-section-title"><i class="fas fa-star"></i> 主要功能</h3>
+        <div class="menu-items">
+          <a href="https://sites.google.com/view/tyctw/" class="menu-item" target="_blank">
+            <i class="fas fa-school"></i>
+            <div class="menu-item-content">
+              <span class="menu-item-title">回到主網頁</span>
+              <span class="menu-item-description">返回 TYCTW 主要網站</span>
             </div>
+            <i class="fas fa-chevron-right menu-item-arrow"></i>
+          </a>
+          <a href="https://tyctw.github.io/sequence/" class="menu-item" target="_blank">
+            <i class="fas fa-pencil-alt"></i>
+            <div class="menu-item-content">
+              <span class="menu-item-title">各校序位推估</span>
+              <span class="menu-item-description">查看學校排名與分數預測</span>
+            </div>
+            <i class="fas fa-chevron-right menu-item-arrow"></i>
+          </a>
+        </div>
+      </div>
+
+      <div class="menu-section">
+        <h3 class="menu-section-title"><i class="fas fa-tools"></i> 實用工具</h3>
+        <div class="menu-items">
+          <a href="https://tyctw.github.io/report_form" class="menu-item" target="_blank">
+            <i class="fas fa-exclamation-triangle"></i>
+            <div class="menu-item-content">
+              <span class="menu-item-title">系統異常回報</span>
+              <span class="menu-item-description">遇到問題？請告訴我們</span>
+            </div>
+            <i class="fas fa-chevron-right menu-item-arrow"></i>
+          </a>
+          <a href="https://tyctw.github.io/spare/" class="menu-item">
+            <i class="fas fa-university"></i>
+            <div class="menu-item-content">
+              <span class="menu-item-title">全國會考落點分析</span>
+              <span class="menu-item-description">想要其他區域落點分析嗎</span>
+            </div>
+            <i class="fas fa-chevron-right menu-item-arrow"></i>
+          </a>
+        </div>
+      </div>
+
+      <div class="menu-footer">
+        <div class="menu-footer-content">
+          <p class="copyright">&copy; <span id="menuYear"></span> TYCTW</p>
+          <div class="social-links">
+            <a href="https://www.threads.com/@114.rcpet" class="social-link" aria-label="Facebook"><i class="fab fa-facebook"></i></a>
+            <a href="https://www.threads.com/@114.rcpet" class="social-link" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+            <a href="https://www.threads.com/@114.rcpet" class="social-link" aria-label="Youtube"><i class="fab fa-youtube"></i></a>
           </div>
         </div>
       </div>
     </div>
+  </div>
 
-    <div class="container">
-      <h1>
-        <i class="fas fa-chart-line icon"></i>桃連區會考落點分析系統
-      </h1>
-      
-      <div class="action-buttons">
-        <button class="instruction-toggle" onclick="toggleInstructions()" data-tooltip="查看詳細使用教學">
-          <i class="fas fa-book-open icon"></i>使用說明
-        </button>
-        <button class="disclaimer-toggle" onclick="showDisclaimer()" data-tooltip="閱讀重要聲明">
-          <i class="fas fa-shield-alt icon"></i>免責聲明
-        </button>
+  <div class="container">
+    <h1><i class="fas fa-chart-line icon"></i>桃連區會考落點分析系統</h1>
+    
+    <div class="action-buttons">
+      <button class="instruction-toggle" onclick="toggleInstructions()" data-tooltip="查看詳細使用教學">
+        <i class="fas fa-book-open icon"></i>使用說明
+      </button>
+      <button class="disclaimer-toggle" onclick="showDisclaimer()" data-tooltip="閱讀重要聲明">
+        <i class="fas fa-shield-alt icon"></i>免責聲明
+      </button>
+    </div>
+
+    <a href="https://docs.google.com/forms/d/e/1FAIpQLSfnBMyKDwHWNX7k5yFCfVcf1QeElgx1HNet_Y4yFM_NVUp7QQ/viewform" target="_blank" class="invite-link">
+      <i class="fas fa-envelope-open-text icon"></i>填寫表單獲取邀請碼
+    </a>
+    
+    <form id="analysisForm" onsubmit="event.preventDefault();">
+      <div class="form-group">
+        <label for="invitationCode"><i class="fas fa-key icon"></i>邀請碼：</label>
+        <input type="text" id="invitationCode" required placeholder="請輸入邀請碼" />
       </div>
 
-      <a href="https://docs.google.com/forms/d/e/1FAIpQLSfnBMyKDwHWNX7k5yFCfVcf1QeElgx1HNet_Y4yFM_NVUp7QQ/viewform" target="_blank" class="invite-link">
-        <i class="fas fa-envelope-open-text icon"></i>填寫表單獲取邀請碼
-      </a>
-      
-      <form id="analysisForm">
-        <div class="form-group">
-          <label for="invitationCode">
-            <i class="fas fa-key icon"></i>邀請碼：
-          </label>
-          <input
-            type="text"
-            id="invitationCode"
-            required
-            placeholder="請輸入邀請碼"
-          />
-        </div>
-
-        <div class="qr-options">
-          <button type="button" id="scanQRCode">
-            <i class="fas fa-camera icon"></i>掃描 QR 碼
-          </button>
-          <label for="fileInput" class="file-input-label">
-            <i class="fas fa-image icon"></i>上傳 QR 碼
-          </label>
-          <input type="file" id="fileInput" accept="image/*" />
-        </div>
-        <div id="qr-reader" style="display: none;"></div>
-        <div id="qr-result"></div>
-      </form>
+      <div class="qr-options">
+        <button type="button" id="scanQRCode"><i class="fas fa-camera icon"></i>掃描 QR 碼</button>
+        <label for="fileInput" class="file-input-label"><i class="fas fa-image icon"></i>上傳 QR 碼</label>
+        <input type="file" id="fileInput" accept="image/*" />
+      </div>
+      <div id="qr-reader" style="display: none;"></div>
+      <div id="qr-result"></div>
 
       <div class="form-group">
-        <label for="schoolOwnership">
-          <i class="fas fa-building icon"></i>學校屬性：
-        </label>
+        <label for="schoolOwnership"><i class="fas fa-building icon"></i>學校屬性：</label>
         <select id="schoolOwnership">
           <option value="all">全部</option>
           <option value="public">公立</option>
           <option value="private">私立</option>
         </select>
       </div>
+
       <div class="form-group">
-        <label for="schoolType">
-          <i class="fas fa-graduation-cap icon"></i>學校類型：
-        </label>
+        <label for="schoolType"><i class="fas fa-graduation-cap icon"></i>學校類型：</label>
         <select id="schoolType" onchange="toggleVocationalGroup()">
           <option value="all">全部</option>
           <option value="普通科">普通科</option>
           <option value="職業類科">職業類科</option>
         </select>
       </div>
+
       <div class="form-group" id="vocationalGroupContainer" style="display: none;">
-        <label for="vocationalGroup">
-          <i class="fas fa-tools icon"></i>職業群別：
-        </label>
+        <label for="vocationalGroup"><i class="fas fa-tools icon"></i>職業群別：</label>
         <select id="vocationalGroup">
           <option value="all">全部</option>
           <option value="機械群">機械群</option>
@@ -244,343 +223,253 @@
           <option value="餐旅群">餐旅群</option>
         </select>
       </div>
+
       <div class="form-group">
-        <label for="analysisIdentity">
-          <i class="fas fa-user icon"></i> 分析身份：
-        </label>
+        <label><i class="fas fa-user icon"></i> 分析身份：</label>
         <input type="hidden" id="analysisIdentity" value="student">
         <div class="identity-selection">
-          <div class="identity-card selected" data-identity="student">
+          <div class="identity-card selected" data-identity="student" onclick="selectIdentity('student')">
             <i class="fas fa-user-graduate"></i>
             <p>學生</p>
           </div>
-          <div class="identity-card" data-identity="teacher">
+          <div class="identity-card" data-identity="teacher" onclick="selectIdentity('teacher')">
             <i class="fas fa-chalkboard-teacher"></i>
             <p>老師</p>
           </div>
-          <div class="identity-card" data-identity="parent">
+          <div class="identity-card" data-identity="parent" onclick="selectIdentity('parent')">
             <i class="fas fa-user-friends"></i>
             <p>家長</p>
           </div>
         </div>
       </div>
 
+      <div class="form-group"><label for="chinese"><i class="fas fa-book icon"></i>國文：</label><select id="chinese"><option value="">請選擇您的國文會考分數</option><option value="A++">A++</option><option value="A+">A+</option><option value="A">A</option><option value="B++">B++</option><option value="B+">B+</option><option value="B">B</option><option value="C">C</option></select></div>
+      <div class="form-group"><label for="english"><i class="fas fa-language icon"></i>英文：</label><select id="english"><option value="">請選擇您的英文會考分數</option><option value="A++">A++</option><option value="A+">A+</option><option value="A">A</option><option value="B++">B++</option><option value="B+">B+</option><option value="B">B</option><option value="C">C</option></select></div>
+      <div class="form-group"><label for="math"><i class="fas fa-calculator icon"></i>數學：</label><select id="math"><option value="">請選擇您的數學會考分數</option><option value="A++">A++</option><option value="A+">A+</option><option value="A">A</option><option value="B++">B++</option><option value="B+">B+</option><option value="B">B</option><option value="C">C</option></select></div>
+      <div class="form-group"><label for="science"><i class="fas fa-flask icon"></i>自然：</label><select id="science"><option value="">請選擇您的自然會考分數</option><option value="A++">A++</option><option value="A+">A+</option><option value="A">A</option><option value="B++">B++</option><option value="B+">B+</option><option value="B">B</option><option value="C">C</option></select></div>
+      <div class="form-group"><label for="social"><i class="fas fa-globe icon"></i>社會：</label><select id="social"><option value="">請選擇您的社會會考分數</option><option value="A++">A++</option><option value="A+">A+</option><option value="A">A</option><option value="B++">B++</option><option value="B+">B+</option><option value="B">B</option><option value="C">C</option></select></div>
       <div class="form-group">
-        <label for="chinese">
-          <i class="fas fa-book icon"></i>國文：
-        </label>
-        <select id="chinese">
-          <option value="">請選擇您的國文會考分數</option>
-          <option value="A++">A++</option>
-          <option value="A+">A+</option>
-          <option value="A">A</option>
-          <option value="B++">B++</option>
-          <option value="B+">B+</option>
-          <option value="B">B</option>
-          <option value="C">C</option>
-        </select>
-      </div>
-      <div class="form-group">
-        <label for="english">
-          <i class="fas fa-language icon"></i>英文：
-        </label>
-        <select id="english">
-          <option value="">請選擇您的英文會考分數</option>
-          <option value="A++">A++</option>
-          <option value="A+">A+</option>
-          <option value="A">A</option>
-          <option value="B++">B++</option>
-          <option value="B+">B+</option>
-          <option value="B">B</option>
-          <option value="C">C</option>
-        </select>
-      </div>
-      <div class="form-group">
-        <label for="math">
-          <i class="fas fa-calculator icon"></i>數學：
-        </label>
-        <select id="math">
-          <option value="">請選擇您的數學會考分數</option>
-          <option value="A++">A++</option>
-          <option value="A+">A+</option>
-          <option value="A">A</option>
-          <option value="B++">B++</option>
-          <option value="B+">B+</option>
-          <option value="B">B</option>
-          <option value="C">C</option>
-        </select>
-      </div>
-      <div class="form-group">
-        <label for="science">
-          <i class="fas fa-flask icon"></i>自然：
-        </label>
-        <select id="science">
-          <option value="">請選擇您的自然會考分數</option>
-          <option value="A++">A++</option>
-          <option value="A+">A+</option>
-          <option value="A">A</option>
-          <option value="B++">B++</option>
-          <option value="B+">B+</option>
-          <option value="B">B</option>
-          <option value="C">C</option>
-        </select>
-      </div>
-      <div class="form-group">
-        <label for="social">
-          <i class="fas fa-globe icon"></i>社會：
-        </label>
-        <select id="social">
-          <option value="">請選擇您的社會會考分數</option>
-          <option value="A++">A++</option>
-          <option value="A+">A+</option>
-          <option value="A">A</option>
-          <option value="B++">B++</option>
-          <option value="B+">B+</option>
-          <option value="B">B</option>
-          <option value="C">C</option>
-        </select>
-      </div>
-      <div class="form-group">
-        <label for="composition">
-          <i class="fas fa-pen-nib icon"></i>作文：
-        </label>
+        <label for="composition"><i class="fas fa-pen-nib icon"></i>作文：</label>
         <select id="composition">
           <option value="">請選擇您的作文會考分數</option>
-          <option value="0">0 級分</option>
-          <option value="1">1 級分</option>
-          <option value="2">2 級分</option>
-          <option value="3">3 級分</option>
-          <option value="4">4 級分</option>
-          <option value="5">5 級分</option>
-          <option value="6">6 級分</option>
+          <option value="0">0 級分</option><option value="1">1 級分</option><option value="2">2 級分</option>
+          <option value="3">3 級分</option><option value="4">4 級分</option><option value="5">5 級分</option><option value="6">6 級分</option>
         </select>
       </div>
+
       <button type="button" id="analyzeButton" onclick="analyzeScores()">
         <i class="fas fa-search icon"></i>分析落點
       </button>
-      <button id="exportResults" style="display: none;" onclick="exportResults()">
+      <button type="button" id="exportResults" style="display: none;" onclick="exportResults()">
         <i class="fas fa-file-export icon"></i>匯出結果
       </button>
-      <div id="results"></div>
+    </form>
 
-      <div id="ratingSection">
-        <h2><i class="fas fa-star icon"></i> 為我們TYCTW評分</h2>
-        <div id="starsContainer">
-          <span class="star" data-value="1">&#9733;</span>
-          <span class="star" data-value="2">&#9733;</span>
-          <span class="star" data-value="3">&#9733;</span>
-          <span class="star" data-value="4">&#9733;</span>
-          <span class="star" data-value="5">&#9733;</span>
-        </div>
-        <button id="submitRating" class="rating-button">
-          <i class="fas fa-paper-plane icon"></i> 提交評分
-        </button>
-        <div id="ratingMessage" style="display: none; margin-top: 10px;"></div>
-      </div>
+    <div id="results"></div>
 
-      <div class="copyright">
-        &copy; <span id="currentYear"></span> TYCTW桃連區會考落點分析系統. All rights reserved.
-        <p>本網站由TYCTW會考落點分析平台開發維護。未經授權，禁止複製或轉載。</p>
-      </div>
+    <div class="ad-container">
+      <ins class="adsbygoogle"
+           style="display:block"
+           data-ad-client="ca-pub-6966991656561179"
+           data-ad-slot="3166266148"
+           data-ad-format="auto"
+           data-full-width-responsive="true"></ins>
+      <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
     </div>
 
-    <button id="darkModeToggle" class="dark-mode-toggle" aria-label="切換深色模式">
-      <i class="fas fa-moon"></i>
-    </button>
-
-    <!-- 美化版免責聲明 Modal -->
-    <div id="disclaimerModal" class="modal">
-      <div class="modal-content">
-        <button class="close" onclick="closeDisclaimer()">&times;</button>
-        <h2>
-          <i class="fas fa-balance-scale icon"></i> 免責聲明
-        </h2>
-        <a href="https://docs.google.com/forms/d/e/1FAIpQLSfnBMyKDwHWNX7k5yFCfVcf1QeElgx1HNet_Y4yFM_NVUp7QQ/viewform" target="_blank">
-          <i class="fas fa-link icon"></i> 填寫表單獲取邀請碼
-        </a>
-        <p>
-          <i class="fas fa-info-circle icon"></i> 親愛的使用者，我們誠摯地提醒您：本網站提供的落點分析結果僅供參考，不代表實際錄取結果。實際錄取狀況可能會因多種因素而有所不同，包括但不限於：
-        </p>
-        <ul>
-          <li>
-            <i class="fas fa-university icon"></i> 各校的招生政策變化
-          </li>
-          <li>
-            <i class="fas fa-users icon"></i> 當年度考生整體表現
-          </li>
-          <li>
-            <i class="fas fa-star icon"></i> 特殊才能或其他加分項目
-          </li>
-          <li>
-            <i class="fas fa-clipboard-list icon"></i> 各校的實際招生名額調整
-          </li>
-        </ul>
-        <p>
-          <i class="fas fa-exclamation-triangle icon"></i> 為了確保您做出最佳的決定，我們強烈建議您：
-        </p>
-        <ul>
-          <li>
-            <i class="fas fa-search icon"></i> 參考多方資訊，不要僅依賴本網站的分析結果
-          </li>
-          <li>
-            <i class="fas fa-comments icon"></i> 諮詢學校輔導老師或升學顧問的專業意見
-          </li>
-          <li>
-            <i class="fas fa-globe icon"></i> 密切關注各校的官方網站和招生簡章，以獲取最新和最準確的資訊
-          </li>
-        </ul>
-        <p>
-          <i class="fas fa-shield-alt icon"></i> 本網站不對因使用本服務而產生的任何直接或間接損失負責。使用本服務即表示您同意本免責聲明的所有條款。祝您升學順利！
-        </p>
-        <button class="confirm-button" onclick="closeDisclaimer()">
-          <i class="fas fa-check-circle icon"></i> 我已了解並同意
-        </button>
+    <div id="ratingSection">
+      <h2><i class="fas fa-star icon"></i> 為我們TYCTW評分</h2>
+      <div id="starsContainer">
+        <span class="star" data-value="1">&#9733;</span>
+        <span class="star" data-value="2">&#9733;</span>
+        <span class="star" data-value="3">&#9733;</span>
+        <span class="star" data-value="4">&#9733;</span>
+        <span class="star" data-value="5">&#9733;</span>
       </div>
+      <button id="submitRating" class="rating-button">
+        <i class="fas fa-paper-plane icon"></i> 提交評分
+      </button>
+      <div id="ratingMessage" style="display: none; margin-top: 10px;"></div>
     </div>
 
-    <!-- Instructions Modal -->
-    <div id="instructionsModal" class="modal">
-      <div class="modal-content">
-        <span class="close" onclick="closeInstructions()">&times;</span>
-        <h2><i class="fas fa-book icon"></i>使用說明</h2>
-        
-        <div class="instruction-tabs">
-          <button class="tab-button active" data-tab="basic"><i class="fas fa-star"></i> 基本操作</button>
-          <button class="tab-button" data-tab="scores"><i class="fas fa-calculator"></i> 成績填寫</button>
-          <button class="tab-button" data-tab="analyze"><i class="fas fa-chart-bar"></i> 分析結果</button>
-          <button class="tab-button" data-tab="export"><i class="fas fa-file-export"></i> 匯出功能</button>
-          <button class="tab-button" data-tab="faq"><i class="fas fa-question-circle"></i> 常見問題</button>
-        </div>
-        
-        <div class="tab-content active" id="basic-tab">
-          <div class="instruction-card">
-            <div class="instruction-card-header">
-              <i class="fas fa-key"></i>
-              <h3>獲取邀請碼</h3>
-            </div>
-            <div class="instruction-card-body">
-              <p>您可以通過以下方式獲取邀請碼：</p>
-              <ul>
-                <li>點擊"填寫表單獲取邀請碼"按鈕</li>
-                <li>聯絡您的學校老師或輔導人員</li>
-                <li>掃描 QR 碼或上傳 QR 碼圖片</li>
-              </ul>
-            </div>
-          </div>
-          
-          <div class="instruction-card">
-            <div class="instruction-card-header">
-              <i class="fas fa-filter"></i>
-              <h3>選擇篩選條件</h3>
-            </div>
-            <div class="instruction-card-body">
-              <p>選擇您需要的篩選條件：</p>
-              <ul>
-                <li>學校屬性：全部、公立或私立</li>
-                <li>學校類型：全部、普通科或職業類科</li>
-                <li>若選擇職業類科，可再選擇職業群別</li>
-              </ul>
-            </div>
-          </div>
-        </div>
-        
-        <div class="tab-content" id="scores-tab">
-          <div class="instruction-card">
-            <div class="instruction-card-header">
-              <i class="fas fa-pencil-alt"></i>
-              <h3>輸入會考成績</h3>
-            </div>
-            <div class="instruction-card-body">
-              <p>必須填寫所有科目的成績才能進行分析：</p>
-              <ul>
-                <li>國文、英文、數學、自然、社會：A++ 到 C</li>
-                <li>作文：0 到 6 級分</li>
-              </ul>
-              <div class="tip-box">
-                <i class="fas fa-lightbulb"></i>
-                <p>成績等級換算：A++=7分, A+=6分, A=5分, B++=4分, B+=3分, B=2分, C=1分</p>
-              </div>
-            </div>
+    <div class="copyright">
+      &copy; <span id="currentYear"></span> TYCTW桃連區會考落點分析系統. All rights reserved.
+      <p>本網站由TYCTW會考落點分析平台開發維護。未經授權，禁止複製或轉載。</p>
+    </div>
+  </div>
+
+  <button id="darkModeToggle" class="dark-mode-toggle" aria-label="切換深色模式">
+    <i class="fas fa-moon"></i>
+  </button>
+
+  <div id="disclaimerModal" class="modal">
+    <div class="modal-content">
+      <button class="close" onclick="closeDisclaimer()">&times;</button>
+      <h2><i class="fas fa-balance-scale icon"></i> 免責聲明</h2>
+      <a href="https://docs.google.com/forms/d/e/1FAIpQLSfnBMyKDwHWNX7k5yFCfVcf1QeElgx1HNet_Y4yFM_NVUp7QQ/viewform" target="_blank">
+        <i class="fas fa-link icon"></i> 填寫表單獲取邀請碼
+      </a>
+      <p><i class="fas fa-info-circle icon"></i> 親愛的使用者，我們誠摯地提醒您：本網站提供的落點分析結果僅供參考，不代表實際錄取結果。實際錄取狀況可能會因多種因素而有所不同，包括但不限於：</p>
+      <ul>
+        <li><i class="fas fa-university icon"></i> 各校的招生政策變化</li>
+        <li><i class="fas fa-users icon"></i> 當年度考生整體表現</li>
+        <li><i class="fas fa-star icon"></i> 特殊才能或其他加分項目</li>
+        <li><i class="fas fa-clipboard-list icon"></i> 各校的實際招生名額調整</li>
+      </ul>
+      <p><i class="fas fa-exclamation-triangle icon"></i> 為了確保您做出最佳的決定，我們強烈建議您：</p>
+      <ul>
+        <li><i class="fas fa-search icon"></i> 參考多方資訊，不要僅依賴本網站的分析結果</li>
+        <li><i class="fas fa-comments icon"></i> 諮詢學校輔導老師或升學顧問的專業意見</li>
+        <li><i class="fas fa-globe icon"></i> 密切關注各校的官方網站和招生簡章，以獲取最新和最準確的資訊</li>
+      </ul>
+      <p><i class="fas fa-shield-alt icon"></i> 本網站不對因使用本服務而產生的任何直接或間接損失負責。使用本服務即表示您同意本免責聲明的所有條款。祝您升學順利！</p>
+      <button class="confirm-button" onclick="closeDisclaimer()">
+        <i class="fas fa-check-circle icon"></i> 我已了解並同意
+      </button>
+    </div>
+  </div>
+
+  <div id="instructionsModal" class="modal">
+    <div class="modal-content">
+      <span class="close" onclick="closeInstructions()">&times;</span>
+      <h2><i class="fas fa-book icon"></i>使用說明</h2>
+      
+      <div class="instruction-tabs">
+        <button class="tab-button active" data-tab="basic" onclick="switchTab('basic')"><i class="fas fa-star"></i> 基本操作</button>
+        <button class="tab-button" data-tab="scores" onclick="switchTab('scores')"><i class="fas fa-calculator"></i> 成績填寫</button>
+        <button class="tab-button" data-tab="analyze" onclick="switchTab('analyze')"><i class="fas fa-chart-bar"></i> 分析結果</button>
+        <button class="tab-button" data-tab="export" onclick="switchTab('export')"><i class="fas fa-file-export"></i> 匯出功能</button>
+        <button class="tab-button" data-tab="faq" onclick="switchTab('faq')"><i class="fas fa-question-circle"></i> 常見問題</button>
+      </div>
+      
+      <div class="tab-content active" id="basic-tab">
+        <div class="instruction-card">
+          <div class="instruction-card-header"><i class="fas fa-key"></i><h3>獲取邀請碼</h3></div>
+          <div class="instruction-card-body">
+            <p>您可以通過以下方式獲取邀請碼：</p>
+            <ul>
+              <li>點擊"填寫表單獲取邀請碼"按鈕</li>
+              <li>聯絡您的學校老師或輔導人員</li>
+              <li>掃描 QR 碼或上傳 QR 碼圖片</li>
+            </ul>
           </div>
         </div>
-        
-        <div class="tab-content" id="analyze-tab">
-          <div class="instruction-card">
-            <div class="instruction-card-header">
-              <i class="fas fa-chart-line"></i>
-              <h3>分析結果解讀</h3>
-            </div>
-            <div class="instruction-card-body">
-              <p>系統會顯示：</p>
-              <ul>
-                <li>總積分與總積點</li>
-                <li>符合條件的學校列表</li>
-                <li>學校按類型分類顯示</li>
-                <li>每所學校的詳細資訊</li>
-              </ul>
-              <div class="tip-box">
-                <i class="fas fa-info-circle"></i>
-                <p>結果僅供參考，實際錄取結果可能因多種因素而異</p>
-              </div>
-            </div>
+        <div class="instruction-card">
+          <div class="instruction-card-header"><i class="fas fa-filter"></i><h3>選擇篩選條件</h3></div>
+          <div class="instruction-card-body">
+            <p>選擇您需要的篩選條件：</p>
+            <ul>
+              <li>學校屬性：全部、公立或私立</li>
+              <li>學校類型：全部、普通科或職業類科</li>
+              <li>若選擇職業類科，可再選擇職業群別</li>
+            </ul>
           </div>
         </div>
-        
-        <div class="tab-content" id="export-tab">
-          <div class="instruction-card">
-            <div class="instruction-card-header">
-              <i class="fas fa-file-export"></i>
-              <h3>匯出分析結果</h3>
-            </div>
-            <div class="instruction-card-body">
-              <p>您可以將結果匯出為多種格式：</p>
-              <ul>
-                <li>TXT：簡單文字格式</li>
-                <li>PDF：美觀格式化的報告</li>
-                <li>CSV：可匯入Excel或試算表</li>
-                <li>JSON：程式化格式</li>
-                <li>直接列印分析報告</li>
-              </ul>
-            </div>
+      </div>
+      
+      <div class="tab-content" id="scores-tab" style="display:none;">
+        <div class="instruction-card">
+          <div class="instruction-card-header"><i class="fas fa-pencil-alt"></i><h3>輸入會考成績</h3></div>
+          <div class="instruction-card-body">
+            <p>必須填寫所有科目的成績才能進行分析：</p>
+            <ul>
+              <li>國文、英文、數學、自然、社會：A++ 到 C</li>
+              <li>作文：0 到 6 級分</li>
+            </ul>
+            <div class="tip-box"><i class="fas fa-lightbulb"></i><p>成績等級換算：A++=7分, A+=6分, A=5分, B++=4分, B+=3分, B=2分, C=1分</p></div>
           </div>
         </div>
-        
-        <div class="tab-content" id="faq-tab">
-          <div class="instruction-card">
-            <div class="instruction-card-header">
-              <i class="fas fa-question-circle"></i>
-              <h3>常見問題</h3>
-            </div>
-            <div class="instruction-card-body">
-              <div class="faq-item">
-                <div class="faq-question">邀請碼無效怎麼辦？</div>
-                <div class="faq-answer">請確保使用最新邀請碼，或重新填寫表單獲取。邀請碼通常每小時更新一次。</div>
-              </div>
-              <div class="faq-item">
-                <div class="faq-question">為什麼沒有顯示任何學校？</div>
-                <div class="faq-answer">可能是篩選條件過於嚴格，嘗試放寬條件或檢查成績輸入是否正確。</div>
-              </div>
-              <div class="faq-item">
-                <div class="faq-question">結果與實際錄取有差異嗎？</div>
-                <div class="faq-answer">是的，本系統僅提供參考，實際錄取結果受多種因素影響。</div>
-              </div>
+      </div>
+      
+      <div class="tab-content" id="analyze-tab" style="display:none;">
+        <div class="instruction-card">
+          <div class="instruction-card-header"><i class="fas fa-chart-line"></i><h3>分析結果解讀</h3></div>
+          <div class="instruction-card-body">
+            <p>系統會顯示：總積分與總積點、符合條件的學校列表與詳細校系資訊。</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="tab-content" id="export-tab" style="display:none;">
+        <div class="instruction-card">
+          <div class="instruction-card-header"><i class="fas fa-file-export"></i><h3>匯出分析結果</h3></div>
+          <div class="instruction-card-body">
+            <p>支援匯出成 TXT、PDF、CSV、JSON 格式或直接列印報告。</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="tab-content" id="faq-tab" style="display:none;">
+        <div class="instruction-card">
+          <div class="instruction-card-header"><i class="fas fa-question-circle"></i><h3>常見問題</h3></div>
+          <div class="instruction-card-body">
+            <div class="faq-item">
+              <div class="faq-question">邀請碼無效怎麼辦？</div>
+              <div class="faq-answer">請確保使用最新邀請碼，通常每小時更新一次。</div>
             </div>
           </div>
         </div>
       </div>
+
     </div>
+  </div>
 
-    <script src="script.js"></script>
-<!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-H9X7EC127P"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
+  <script src="script.js"></script>
+  <script>
+    // 自動更新年份
+    const currentYear = new Date().getFullYear();
+    const rOCYear = currentYear - 1911;
+    document.getElementById('currentYear').textContent = currentYear;
+    document.getElementById('menuYear').textContent = currentYear;
 
-  gtag('config', 'G-H9X7EC127P');
-</script>
-<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6966991656561179"
-     crossorigin="anonymous"></script>
-  </body>
+    // 側邊選單控制
+    function toggleMenu() {
+      document.getElementById('fullscreenMenu').classList.toggle('active');
+      document.getElementById('menuOverlay').classList.toggle('active');
+    }
+    function closeMenu() {
+      document.getElementById('fullscreenMenu').classList.remove('active');
+      document.getElementById('menuOverlay').classList.remove('active');
+    }
+
+    // 顯示、關閉 Modal
+    function showDisclaimer() { document.getElementById('disclaimerModal').style.display = 'block'; }
+    function closeDisclaimer() { document.getElementById('disclaimerModal').style.display = 'none'; }
+    function toggleInstructions() { document.getElementById('instructionsModal').style.display = 'block'; }
+    function closeInstructions() { document.getElementById('instructionsModal').style.display = 'none'; }
+
+    // 連動選單：切換普通科/職業類科
+    function toggleVocationalGroup() {
+      const type = document.getElementById('schoolType').value;
+      const container = document.getElementById('vocationalGroupContainer');
+      container.style.display = (type === '職業類科') ? 'block' : 'none';
+    }
+
+    // 身分選擇卡片特效
+    function selectIdentity(identity) {
+      document.querySelectorAll('.identity-card').forEach(card => card.classList.remove('selected'));
+      document.querySelector(`[data-identity="${identity}"]`).classList.add('selected');
+      document.getElementById('analysisIdentity').value = identity;
+    }
+
+    // 說明彈窗的頁籤切換
+    function switchTab(tabName) {
+      document.querySelectorAll('.tab-button').forEach(btn => btn.classList.remove('active'));
+      document.querySelectorAll('.tab-content').forEach(content => content.style.display = 'none');
+      
+      event.currentTarget.classList.add('active');
+      document.getElementById(`${tabName}-tab`).style.display = 'block';
+    }
+
+    // 預留落點分析點擊骨架（避免未載入 script.js 時點擊出錯）
+    function analyzeScores() {
+      if (typeof window.realAnalyzeScores === "function") {
+        window.realAnalyzeScores();
+      } else {
+        alert("分析引擎載入中，請稍候...");
+      }
+    }
+    function exportResults() { alert("分析結果匯出中..."); }
+  </script>
+</body>
 </html>

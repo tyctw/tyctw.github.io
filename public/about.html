@@ -1,0 +1,97 @@
+<!doctype html>
+<html lang="zh-Hant-TW">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>關於我們 | TW升學落點分析</title>
+  <meta name="description" content="了解 TW升學落點分析的服務理念：免費提供升學資料整理、降低各區計分方式造成的人工計算錯誤，並補足中後段學校與高中職錄取資訊。" />
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&display=swap');
+    :root { --ink:#0f172a; --muted:#475569; --line:#0f172a; --bg:#f8fafc; --paper:#fff; --indigo:#4f46e5; --amber:#fbbf24; }
+    * { box-sizing: border-box; }
+    body { margin: 0; font-family: "Noto Sans TC", system-ui, sans-serif; color: var(--ink); background: var(--bg); line-height: 1.8; }
+    a { color: inherit; }
+    .wrap { width: min(1040px, calc(100% - 32px)); margin: 0 auto; }
+    .nav { position: sticky; top: 0; z-index: 5; background: rgba(248,250,252,.9); backdrop-filter: blur(12px); border-bottom: 2px solid rgba(15,23,42,.08); }
+    .nav-inner { min-height: 76px; display: flex; align-items: center; justify-content: space-between; gap: 16px; }
+    .brand { display: flex; align-items: center; gap: 12px; text-decoration: none; font-weight: 900; }
+    .logo { width: 44px; height: 44px; display: grid; place-items: center; color: white; background: var(--indigo); border: 3px solid var(--line); border-radius: 14px; box-shadow: 4px 4px 0 var(--line); }
+    .links { display: flex; gap: 10px; flex-wrap: wrap; justify-content: flex-end; }
+    .links a { padding: 8px 12px; border: 2px solid var(--line); border-radius: 12px; background: var(--paper); text-decoration: none; font-weight: 900; box-shadow: 2px 2px 0 var(--line); }
+    .hero { padding: 64px 0 36px; }
+    .eyebrow { display: inline-block; padding: 6px 12px; margin-bottom: 18px; background: #dcfce7; border: 2px solid var(--line); border-radius: 12px; font-weight: 900; }
+    h1 { max-width: 880px; margin: 0; font-size: clamp(2rem, 6vw, 4.5rem); line-height: 1.08; letter-spacing: 0; font-weight: 900; }
+    .lead { max-width: 820px; margin: 22px 0 0; color: var(--muted); font-size: 1.15rem; font-weight: 700; }
+    .panel { margin: 28px 0; padding: clamp(22px, 4vw, 36px); background: var(--paper); border: 4px solid var(--line); border-radius: 24px; box-shadow: 8px 8px 0 var(--line); }
+    .panel.accent { background: #fffbeb; }
+    h2 { margin: 0 0 14px; font-size: clamp(1.45rem, 3vw, 2rem); line-height: 1.25; font-weight: 900; letter-spacing: 0; }
+    p { margin: 0 0 14px; }
+    ul { margin: 0; padding-left: 1.2rem; }
+    li { margin: 8px 0; }
+    strong { font-weight: 900; }
+    .grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; margin: 28px 0; }
+    .card { padding: 22px; background: var(--paper); border: 3px solid var(--line); border-radius: 18px; box-shadow: 5px 5px 0 var(--line); }
+    .card b { display: block; margin-bottom: 8px; font-size: 1.1rem; font-weight: 900; }
+    footer { margin-top: 56px; padding: 28px 0 44px; color: var(--muted); font-weight: 700; }
+    @media (max-width: 760px) {
+      .nav-inner { align-items: flex-start; flex-direction: column; padding: 14px 0; }
+      .links { justify-content: flex-start; }
+      .grid { grid-template-columns: 1fr; }
+      .panel { border-radius: 18px; box-shadow: 5px 5px 0 var(--line); }
+    }
+  </style>
+</head>
+<body>
+  <nav class="nav">
+    <div class="wrap nav-inner">
+      <a class="brand" href="/"><span class="logo">TW</span><span>TW升學落點分析</span></a>
+      <div class="links">
+        <a href="/about.html">關於我們</a>
+        <a href="/privacy.html">隱私政策</a>
+        <a href="/terms.html">服務條款</a>
+      </div>
+    </div>
+  </nav>
+
+  <main class="wrap">
+    <section class="hero">
+      <span class="eyebrow">關於我們</span>
+      <h1>讓升學資訊更容易取得，也讓每一位學生都能更安心地做選擇。</h1>
+      <p class="lead">TW升學落點分析希望以免費、易用、清楚的方式，協助學生與家長整理會考成績、各區計分規則、學校錄取資訊與志願評估方向。</p>
+    </section>
+
+    <section class="panel accent">
+      <h2>我們的理念</h2>
+      <p>我們相信升學資訊不應該只服務少數人，也不應該因為資料分散、規則複雜或查詢門檻高，而讓學生與家長在重要選擇前感到無助。</p>
+      <p>因此，本服務的核心目標是 <strong>免費提供大家可使用的升學輔助工具</strong>。不論是前段、中段、後段學校，或是高中、高職、五專等不同升學路徑，都應該有被整理、被看見、被比較的機會。</p>
+    </section>
+
+    <div class="grid">
+      <article class="card"><b>降低計算錯誤</b>各就學區的比序、積分、加權與換算方式不完全相同，人工試算容易漏看規則或輸入錯誤。我們希望透過工具化整理，減少重複計算與判斷失誤。</article>
+      <article class="card"><b>補足資訊落差</b>網路上常見資料多集中在前幾志願與明星學校，中後段學校、高中職與不同群科的錄取資訊相對不足。我們希望讓更多學校資料被納入參考。</article>
+      <article class="card"><b>維持免費使用</b>升學規劃是許多家庭共同面對的問題。我們希望盡可能把基礎查詢與分析功能免費開放，降低取得資訊的成本。</article>
+    </div>
+
+    <section class="panel">
+      <h2>我們正在解決的問題</h2>
+      <ul>
+        <li>各區計分方式不同，學生與家長自行換算時可能發生錯誤。</li>
+        <li>落點資訊常被簡化成少數熱門學校，難以看見更多適合自己的選項。</li>
+        <li>高中職、群科、歷年錄取狀況與中後段學校資料分散，查找成本高。</li>
+        <li>升學決策常伴隨壓力，我們希望把資料整理成更容易理解的參考。</li>
+      </ul>
+    </section>
+
+    <section class="panel">
+      <h2>我們如何看待落點分析</h2>
+      <p>落點分析不是保證錄取，也不能取代正式簡章、招生單位公告、學校輔導老師或專業升學諮詢。它是一種輔助工具，幫助使用者快速整理可能方向、發現更多選項，並在填寫志願前更有依據地討論。</p>
+      <p>我們會持續優化資料整理、計算邏輯與使用體驗，也歡迎使用者回報錯誤、提供補充資料或提出改善建議。</p>
+    </section>
+  </main>
+
+  <footer class="wrap">
+    <p>聯絡信箱：<a href="mailto:tyctw.analyze@gmail.com">tyctw.analyze@gmail.com</a></p>
+    <p>Copyright © 2026 TW升學落點分析. All rights reserved.</p>
+  </footer>
+</body>
+</html>

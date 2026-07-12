@@ -36,6 +36,9 @@ jobs:
       - name: Install dependencies
         run: pnpm install --frozen-lockfile --ignore-scripts
 
+      - name: Restore Vite entry
+        run: cp index.source.html index.html
+
       - name: Build
         run: pnpm exec vite build
 

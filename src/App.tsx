@@ -1,8 +1,12 @@
 import { useEffect, useState } from 'react';
 import type { ReactNode } from 'react';
+import { ChoiceGuide } from './ChoiceGuide';
+import './menu.css';
+import './guide-teaser.css';
 import {
-  ArrowUpRight, CalendarDays, ChevronDown, Clock3, Compass, GraduationCap,
-  HelpCircle, MapPin, Menu, Trophy, X
+  ArrowUpRight, BarChart3, CalendarCheck, CalendarDays, ChevronDown, CircleQuestionMark,
+  Clock3, Compass, FileText, GraduationCap, HelpCircle, ListOrdered, MapPin, Menu,
+  Search, School, Trophy, X
 } from 'lucide-react';
 
 const officialRulesUrl = 'https://tyctw.github.io/official/';
@@ -66,6 +70,14 @@ export default function App() {
   const [route, setRoute] = useState(window.location.hash);
   useEffect(() => { const onHash = () => setRoute(window.location.hash); window.addEventListener('hashchange', onHash); return () => window.removeEventListener('hashchange', onHash); }, []);
   useEffect(() => { window.scrollTo({ top: 0, left: 0, behavior: 'auto' }); }, [route]);
+  useEffect(() => {
+    if (!menuOpen) return;
+    const onKeyDown = (event: KeyboardEvent) => { if (event.key === 'Escape') setMenuOpen(false); };
+    const previousOverflow = document.body.style.overflow;
+    document.body.style.overflow = 'hidden';
+    window.addEventListener('keydown', onKeyDown);
+    return () => { document.body.style.overflow = previousOverflow; window.removeEventListener('keydown', onKeyDown); };
+  }, [menuOpen]);
   if (route === '#/privacy-policy') return <Legal title="隱私權政策">
     <p>本隱私權政策說明「會考落點分析」網站（下稱「本網站」）如何處理瀏覽與聯絡過程中可能涉及的資料。當您使用本網站，即表示您已閱讀並理解本政策。</p>
     <h2>一、適用範圍</h2><p>本政策適用於本網站的首頁、資訊頁面與由本網站直接提供的功能。當您點選前往就學區委員會、學校、政府機關或其他外部網站的連結後，該外部網站的資料處理方式應依其各自的隱私權政策辦理，不在本政策的適用範圍內。</p>
@@ -97,25 +109,36 @@ export default function App() {
     <h2>維持公開、免費與負責任</h2><p>基礎升學資訊應該容易取得。因此本網站不要求帳號，並盡可能提供免費的資訊整理與使用導引。同時，我們會清楚標示服務的參考性質，提醒使用者以各區招生簡章與官方公告作為正式依據。</p>
     <h2>持續更新，也歡迎指正</h2><p>升學制度與時程會隨年度調整。我們會持續檢視與更新內容；若您發現資訊有誤、連結失效，或有改善建議，歡迎來信 <a href="mailto:tyctw.analyze@gmail.com">tyctw.analyze@gmail.com</a>。</p><p>最後更新：2026 年 8 月 3 日</p>
   </Legal>;
+  if (route === '#/choice-guide') return <Legal title="志願選填完整指南"><ChoiceGuide /></Legal>;
   if (route === '#/faq') return <Legal title="常見問題"><p>這裡整理使用本網站與規劃免試入學時最常見的問題。每一項招生資格、比序積分與作業時程，仍請以各就學區免試入學委員會與學校當年度正式公告為準。</p><div className="standalone-faq">{faqs.map(([question, answer], index) => <details key={question} open={index === 0}><summary><span>{question}</span><ChevronDown size={18}/></summary><p>{answer}</p></details>)}</div><p>若仍有疑問，請聯絡 <a href="mailto:tyctw.analyze@gmail.com">tyctw.analyze@gmail.com</a>。</p></Legal>;
-  if (route === '#/115-guide') return <Legal title="115 學年度・全國 15 區指南"><p>本頁整理全國 15 個就學區的免試入學查詢入口。招生資格、名額、比序積分、會考換算與志願選填期限，均應以各區 115 學年度招生簡章為準。</p><div className="guide-grid">{regions.map(([name, desc, code]) => <a key={name} href={`#/115-guide/${code.toLowerCase()}`}><b>{code}</b><strong>{name}</strong><span>{desc}</span><em>閱讀本區指南 <ArrowUpRight size={14}/></em></a>)}</div><h2>使用前請確認</h2><p>各區比序項目與積分方式不同，不可跨區套用。教育部國教署已公告各區招生簡章、重要日程及委員會網站；提交報名、選填志願或判斷資格前，請再次核對最新官方公告。</p></Legal>;
-  const guideCode = route.replace('#/115-guide/', '').toUpperCase();
-  const guideRegion = regions.find((region) => region[2] === guideCode);
-  if (guideRegion) { const [name, desc, code, , officialUrl] = guideRegion; return <Legal title={`115 學年度・${name}`}><p><b>{code}</b>　適用範圍：{desc}。本頁提供本區免試入學的查詢與核對方向；正式招生資格、名額、比序積分與作業期限，請以 115 學年度本區招生簡章為準。</p><h2>申請與志願選填前</h2><p>請依序確認：一、是否符合本區或變更就學區資格；二、比序項目與積分採計是否已由國中確認；三、招生名額與志願選填時程是否為最新版本；四、同分比序與特殊身分規定是否適用於自己。</p><h2>115 學年度正式資料</h2><p>本區的免試入學簡章、比序項目積分對照表、重要日程與個人序位查詢，均由本區免試入學委員會公告。請優先下載該委員會最新發布的簡章與附表，確認計分方式後再選填志願。</p><p><a href={officialUrl} target="_blank" rel="noreferrer">前往 {name} 免試入學委員會 <ArrowUpRight size={14}/></a></p><p><a href="https://shs.k12ea.gov.tw/site/adapt-k12ea" target="_blank" rel="noreferrer">教育部適性入學官方入口 <ArrowUpRight size={14}/></a></p><p><a href="#/115-guide">← 返回全國 15 區總覽</a></p></Legal>; }
 
   const go = (id: string) => { setMenuOpen(false); document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' }); };
   const openPage = (page: string) => { setMenuOpen(false); window.location.hash = `/${page}`; };
   return <div className="site-shell">
     <header className="nav">
       <a href="#" className="brand"><span className="brand-mark"><GraduationCap size={19}/></span>會考落點分析</a>
-      <nav className="desktop-nav"><button onClick={() => go('regions')}>選擇考區</button><button onClick={() => go('schedule')}>重要日程</button><button onClick={() => openPage('faq')}>常見問題</button></nav>
+      <nav className="desktop-nav"><button onClick={() => go('regions')}>選擇考區</button><button onClick={() => go('schedule')}>重要日程</button><button onClick={() => openPage('choice-guide')}>志願選填指南</button><button onClick={() => openPage('faq')}>常見問題</button></nav>
       <a className="rules-link" href={officialRulesUrl} target="_blank" rel="noreferrer">比序規則 <ArrowUpRight size={15}/></a>
-      <button className="mobile-menu" aria-label="開啟選單" onClick={() => setMenuOpen(!menuOpen)}>{menuOpen ? <X/> : <Menu/>}</button>
-      {menuOpen && <><button className="menu-overlay" aria-label="關閉選單" onClick={() => setMenuOpen(false)}></button><aside className="mobile-drawer" aria-label="網站選單"><div className="drawer-header"><span>選單</span><button aria-label="關閉選單" onClick={() => setMenuOpen(false)}><X size={20}/></button></div><button onClick={() => go('regions')}>選擇考區 <ArrowUpRight size={16}/></button><button onClick={() => go('schedule')}>重要日程 <ArrowUpRight size={16}/></button><button onClick={() => openPage('faq')}>常見問題 <ArrowUpRight size={16}/></button><a href={officialRulesUrl} target="_blank" rel="noreferrer">超額比序規則 <ArrowUpRight size={16}/></a><div className="drawer-footer">為下一步，找到方向。</div></aside></>}
+      <button className="mobile-menu" aria-label={menuOpen ? '關閉選單' : '開啟選單'} aria-expanded={menuOpen} aria-controls="site-menu" onClick={() => setMenuOpen(!menuOpen)}>{menuOpen ? <X size={19}/> : <Menu size={19}/>}<span className="menu-label">選單</span></button>
+      {menuOpen && <>
+        <button className="menu-overlay" aria-label="關閉選單" onClick={() => setMenuOpen(false)} />
+        <aside id="site-menu" className="mobile-drawer" aria-label="網站選單">
+          <div className="drawer-brand"><span className="drawer-brand-mark"><GraduationCap size={19}/></span><span><b>會考落點分析</b><small>YOUR NEXT CHAPTER</small></span><button className="drawer-close" aria-label="關閉選單" onClick={() => setMenuOpen(false)}><X size={19}/></button></div>
+          <nav className="drawer-links">
+            <button onClick={() => go('regions')}><span className="drawer-item-number">01</span><span className="drawer-link-icon"><MapPin size={18} strokeWidth={2.2}/></span><span>選擇就學區<small>查看各區落點分析</small></span><ArrowUpRight size={16}/></button>
+            <button onClick={() => go('schedule')}><span className="drawer-item-number">02</span><span className="drawer-link-icon"><CalendarCheck size={18} strokeWidth={2.2}/></span><span>重要日程<small>掌握招生關鍵時間</small></span><ArrowUpRight size={16}/></button>
+            <button onClick={() => openPage('choice-guide')}><span className="drawer-item-number">03</span><span className="drawer-link-icon"><FileText size={18} strokeWidth={2.2}/></span><span>志願選填指南<small>完整流程與檢核重點</small></span><ArrowUpRight size={16}/></button>
+            <button onClick={() => openPage('faq')}><span className="drawer-item-number">04</span><span className="drawer-link-icon"><CircleQuestionMark size={18} strokeWidth={2.2}/></span><span>常見問題<small>快速了解使用方式</small></span><ArrowUpRight size={16}/></button>
+          </nav>
+          <section className="drawer-tools" aria-label="實用工具"><p>實用工具</p><div><a href="https://tyctw.github.io/volunteer/" target="_blank" rel="noreferrer"><ListOrdered size={17}/><span>序位查詢</span></a><a href="https://tyctw.github.io/front/" target="_blank" rel="noreferrer"><Search size={17}/><span>查榜入口</span></a><a href="https://tyctw.github.io/spare/vocational-encyclopedia/" target="_blank" rel="noreferrer"><School size={17}/><span>群科探索</span></a><a href="https://tyctw.github.io/shared/" target="_blank" rel="noreferrer"><BarChart3 size={17}/><span>錄取分享</span></a></div></section>
+          <a className="drawer-rules-link" href={officialRulesUrl} target="_blank" rel="noreferrer"><span>官方資料庫</span><strong>查看超額比序規則</strong><ArrowUpRight size={16}/></a>
+          <div className="drawer-footer"><span></span>為下一步，找到方向。</div>
+        </aside>
+      </>}
     </header>
     <main>
       <section className="hero">
-        <div className="hero-copy"><div className="notice"><span></span>116 學年度升學資訊已整理</div><p className="eyebrow">YOUR NEXT CHAPTER</p><h1>為下一步，<br/><em>找到方向。</em></h1><p className="hero-lead">從會考成績到志願選填，用清楚的資訊與專屬試算，陪你穩穩走過每一個重要決定。</p><div className="hero-actions"><button className="primary" onClick={() => go('regions')}>開始選擇考區 <ArrowUpRight size={18}/></button><button className="text-action" onClick={() => go('schedule')}>查看重要日程 <span>↓</span></button></div><a className="guide-highlight" href="#/115-guide"><span className="guide-highlight-icon"><MapPin size={21}/></span><span className="guide-highlight-copy"><small>STUDENT ADMISSION GUIDE · 115</small><b>115 學年度全國 15 區指南</b><span>整合就學區入口、重要時程與升學參考資訊</span></span><span className="guide-highlight-action">查看指南 <ArrowUpRight size={16}/></span><span className="guide-highlight-disclaimer">正式招生規定請以各區公告為準</span></a></div>
+        <div className="hero-copy"><div className="notice"><span></span>116 學年度升學資訊已整理</div><p className="eyebrow">YOUR NEXT CHAPTER</p><h1>為下一步，<br/><em>找到方向。</em></h1><p className="hero-lead">從會考成績到志願選填，用清楚的資訊與專屬試算，陪你穩穩走過每一個重要決定。</p><div className="hero-actions"><button className="primary" onClick={() => go('regions')}>開始選擇考區 <ArrowUpRight size={18}/></button><button className="text-action" onClick={() => go('schedule')}>查看重要日程 <span>↓</span></button></div><a className="choice-guide-entry" href="#/choice-guide"><span className="choice-guide-entry-icon"><FileText size={19}/></span><span className="choice-guide-entry-copy"><small>ADMISSION GUIDE</small><strong>志願選填完整指南</strong><em>整理排序原則、送出檢核與重要提醒。</em></span><span className="choice-guide-entry-action">閱讀指南 <ArrowUpRight size={16}/></span></a></div>
         <div className="hero-visual" aria-label="升學規劃進度卡片"><div className="sun"></div><div className="orbit orbit-one"></div><div className="orbit orbit-two"></div><div className="progress-card"><div className="card-top"><span className="mini-logo"><GraduationCap size={18}/></span><span>升學規劃地圖</span><i>2026</i></div><div className="progress-title">你的下一站，<br/>正在成形。</div><div className="progress-line"><span></span><span></span><span className="current"></span><span></span></div><div className="progress-labels"><b>會考</b><b>成績</b><b>志願</b><b>放榜</b></div><div className="card-note"><Compass size={17}/><span>從選擇就學區開始</span><ArrowUpRight size={16}/></div></div><div className="float-pill pill-a"><Trophy size={17}/><span>做好準備</span></div><div className="float-pill pill-b"><CalendarDays size={17}/><span>重要時程</span></div></div>
       </section>
       <section className="quick-stats" aria-label="服務資訊"><div className="stats-intro"><span>AT A GLANCE</span><p>升學資訊<br/>一目了然</p></div><div className="stat-card"><i>01</i><strong>7</strong><span>已開放<br/>就學區</span><b>區</b></div><div className="stat-card"><i>02</i><strong>116</strong><span>最新學年度<br/>資訊</span><b>學年度</b></div><div className="stat-card"><i>03</i><strong>0</strong><span>註冊與使用<br/>門檻</span><b>步驟</b></div><div className="stat-card"><i>04</i><strong>100%</strong><span>免費提供<br/>參考</span><b>FREE</b></div></section>
@@ -124,6 +147,6 @@ export default function App() {
       <section id="schedule" className="schedule section"><div className="schedule-head"><div><p className="eyebrow">KEY DATES</p><h2>留住每個<br/>關鍵時間點。</h2></div><div className="today"><Clock3 size={19}/><span>目前進度</span><strong>志願選填期間</strong></div></div><div className="schedule-list">{schedule.map(([date, title, desc, status]) => <article key={title} className={status}><div className="date">{date}</div><div><span className="status-dot"></span><h3>{title}</h3><p>{desc}</p></div><span className="schedule-state">{status === 'done' ? '已完成' : status === 'active' ? '進行中' : '即將到來'}</span></article>)}</div><p className="schedule-note">實際時程請以各區免試入學委員會最新公告為準。</p></section>
       <section id="faq" className="faq section"><div className="faq-copy"><p className="eyebrow">HELP CENTER</p><h2>有問題，<br/>我們先回答。</h2><p>整理考生與家長最常問的問題，讓你在開始前更安心。</p><span className="help-icon"><HelpCircle size={26}/></span></div><div className="faq-list">{faqs.map((item, i) => <FAQ key={item[0]} item={item} index={i}/>)}</div></section>
     </main>
-    <footer className="site-footer"><div className="footer-glow"></div><div className="footer-main"><div className="footer-intro"><a href="#" className="brand"><span className="brand-mark"><GraduationCap size={19}/></span>會考落點分析</a><h2>清楚看見選擇，<br/><em>安心走向下一步。</em></h2><p>把升學資訊整理得更清楚，陪你在重要的選擇前，找到屬於自己的方向。</p><a className="footer-email" href="mailto:tyctw.analyze@gmail.com">tyctw.analyze@gmail.com <ArrowUpRight size={15}/></a></div><div className="footer-nav"><div><span>EXPLORE</span><a href="#regions">選擇就學區</a><a href="#schedule">重要日程</a><a href="#/faq">常見問題</a></div><div><span>INFORMATION</span><a href="#/about">我們的理念</a><a href={officialRulesUrl} target="_blank" rel="noreferrer">超額比序規則</a><a href="#/privacy-policy">隱私權政策</a><a href="#/terms-of-use">使用條款</a></div></div></div><div className="footer-bottom"><span>© {new Date().getFullYear()} 會考落點分析系統</span><span>MADE FOR YOUR NEXT CHAPTER</span></div></footer>
+    <footer className="site-footer"><div className="footer-glow"></div><div className="footer-main"><div className="footer-intro"><a href="#" className="brand"><span className="brand-mark"><GraduationCap size={19}/></span>會考落點分析</a><h2>清楚看見選擇，<br/><em>安心走向下一步。</em></h2><p>把升學資訊整理得更清楚，陪你在重要的選擇前，找到屬於自己的方向。</p><a className="footer-email" href="mailto:tyctw.analyze@gmail.com">tyctw.analyze@gmail.com <ArrowUpRight size={15}/></a></div><div className="footer-nav"><div><span>EXPLORE</span><a href="https://tyctw.github.io/volunteer/" target="_blank" rel="noreferrer">序位查詢</a><a href="https://tyctw.github.io/front/" target="_blank" rel="noreferrer">查榜入口</a><a href="https://tyctw.github.io/spare/vocational-encyclopedia/" target="_blank" rel="noreferrer">群科探索</a><a href="https://tyctw.github.io/shared/" target="_blank" rel="noreferrer">錄取分享</a></div><div><span>INFORMATION</span><a href="#/about">我們的理念</a><a href={officialRulesUrl} target="_blank" rel="noreferrer">超額比序規則</a><a href="#/privacy-policy">隱私權政策</a><a href="#/terms-of-use">使用條款</a></div></div></div><div className="footer-bottom"><span>© {new Date().getFullYear()} 會考落點分析系統</span><span>MADE FOR YOUR NEXT CHAPTER</span></div></footer>
   </div>;
 }

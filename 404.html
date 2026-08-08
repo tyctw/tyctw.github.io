@@ -11,39 +11,39 @@
     <title>找不到頁面｜116 學年度國中教育會考</title>
     <style>
       @import url('https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Noto+Sans+TC:wght@500;600;700;800;900&display=swap');
-      :root { color-scheme: dark; font-family: "Noto Sans TC", "Microsoft JhengHei", sans-serif; }
+      :root { color-scheme: light; font-family: "Noto Sans TC", "Microsoft JhengHei", sans-serif; }
       * { box-sizing: border-box; }
-      body { min-width: 320px; min-height: 100vh; margin: 0; color: #f7f9ff; background: #0c1d42; }
-      .page { position: relative; min-height: 100vh; display: grid; grid-template-rows: auto 1fr auto; overflow: hidden; background: radial-gradient(circle at 77% 18%, #274d9c 0, transparent 25%), radial-gradient(circle at 21% 82%, #18326b 0, transparent 29%), linear-gradient(122deg, #0a1735 0%, #102751 55%, #0d1e43 100%); }
-      .grid { position: absolute; inset: 0; opacity: .22; pointer-events: none; background-image: linear-gradient(rgba(178,203,255,.13) 1px, transparent 1px), linear-gradient(90deg, rgba(178,203,255,.13) 1px, transparent 1px); background-size: 52px 52px; mask-image: linear-gradient(to bottom, transparent, #000 15%, #000 82%, transparent); }
-      .orb { position: absolute; border: 1px solid rgba(173,202,255,.31); border-radius: 50%; pointer-events: none; }
-      .orb.one { width: 720px; height: 720px; top: -460px; right: -225px; box-shadow: 0 0 0 72px rgba(100,145,237,.045), 0 0 0 144px rgba(100,145,237,.025); }
+      body { min-width: 320px; min-height: 100vh; margin: 0; color: #172848; background: #f7f9fe; }
+      .page { position: relative; min-height: 100vh; display: grid; grid-template-rows: auto 1fr auto; overflow: hidden; background: radial-gradient(circle at 77% 18%, #dce9ff 0, transparent 25%), radial-gradient(circle at 21% 82%, #e8f2ff 0, transparent 29%), linear-gradient(122deg, #f9fbff 0%, #f3f7ff 55%, #eef4ff 100%); }
+      .grid { position: absolute; inset: 0; opacity: .7; pointer-events: none; background-image: linear-gradient(rgba(82,124,192,.11) 1px, transparent 1px), linear-gradient(90deg, rgba(82,124,192,.11) 1px, transparent 1px); background-size: 52px 52px; mask-image: linear-gradient(to bottom, transparent, #000 15%, #000 82%, transparent); }
+      .orb { position: absolute; border: 1px solid rgba(83,127,205,.25); border-radius: 50%; pointer-events: none; }
+      .orb.one { width: 720px; height: 720px; top: -460px; right: -225px; box-shadow: 0 0 0 72px rgba(100,145,237,.09), 0 0 0 144px rgba(100,145,237,.05); }
       .orb.two { width: 500px; height: 500px; bottom: -330px; left: -195px; }
       header, main, footer { position: relative; z-index: 1; }
-      header { height: 84px; display: flex; align-items: center; justify-content: space-between; padding: 0 clamp(24px, 6vw, 92px); border-bottom: 1px solid rgba(205,220,255,.13); }
-      .brand { display: inline-flex; align-items: center; gap: 11px; color: #fff; font-size: 15px; font-weight: 800; letter-spacing: -.03em; text-decoration: none; }
-      .brand-mark { width: 37px; height: 37px; display: grid; place-items: center; border: 1px solid rgba(255,255,255,.25); border-radius: 12px; background: linear-gradient(145deg, #517de2, #2d55b8); box-shadow: 0 10px 22px rgba(0,0,0,.2); font-size: 18px; }
-      .tag { color: #a9c3f8; font: 500 10px "DM Mono", monospace; letter-spacing: .12em; }
+      header { height: 84px; display: flex; align-items: center; justify-content: space-between; padding: 0 clamp(24px, 6vw, 92px); border-bottom: 1px solid rgba(110,139,188,.19); background: rgba(255,255,255,.58); }
+      .brand { display: inline-flex; align-items: center; gap: 11px; color: #172848; font-size: 15px; font-weight: 800; letter-spacing: -.03em; text-decoration: none; }
+      .brand-mark { width: 37px; height: 37px; display: grid; place-items: center; border: 1px solid rgba(255,255,255,.7); border-radius: 12px; color: #fff; background: linear-gradient(145deg, #517de2, #2d55b8); box-shadow: 0 10px 22px rgba(45,85,184,.2); font-size: 18px; }
+      .tag { color: #6780af; font: 500 10px "DM Mono", monospace; letter-spacing: .12em; }
       main { display: grid; place-items: center; padding: 58px 24px; }
       .content { width: min(100%, 960px); display: grid; grid-template-columns: .9fr 1.1fr; align-items: center; gap: clamp(28px, 7vw, 98px); }
       .number { position: relative; min-height: 302px; display: grid; place-items: center; }
-      .number::before { content: ""; width: min(28vw, 270px); aspect-ratio: 1; position: absolute; border: 1px solid rgba(172,204,255,.42); border-radius: 50%; box-shadow: 0 0 0 22px rgba(105,151,245,.08), 0 0 0 58px rgba(105,151,245,.04); animation: breathe 4s ease-in-out infinite; }
-      .number strong { position: relative; color: #fff; font: 500 clamp(108px, 17vw, 190px)/.8 "DM Mono", monospace; letter-spacing: -.16em; text-shadow: 0 15px 38px rgba(0,0,0,.24); }
-      .number strong span { color: #93b9ff; }
-      .marker { position: absolute; display: flex; align-items: center; gap: 8px; padding: 8px 11px; border: 1px solid rgba(190,213,255,.26); border-radius: 9px; color: #cfe0ff; background: rgba(16,43,95,.58); backdrop-filter: blur(10px); box-shadow: 0 12px 30px rgba(0,0,0,.13); font: 500 10px "DM Mono", monospace; letter-spacing: .06em; }
+      .number::before { content: ""; width: min(28vw, 270px); aspect-ratio: 1; position: absolute; border: 1px solid rgba(83,127,205,.36); border-radius: 50%; box-shadow: 0 0 0 22px rgba(105,151,245,.11), 0 0 0 58px rgba(105,151,245,.06); animation: breathe 4s ease-in-out infinite; }
+      .number strong { position: relative; color: #244a9e; font: 500 clamp(108px, 17vw, 190px)/.8 "DM Mono", monospace; letter-spacing: -.16em; text-shadow: 0 15px 38px rgba(57,101,186,.16); }
+      .number strong span { color: #6f98ed; }
+      .marker { position: absolute; display: flex; align-items: center; gap: 8px; padding: 8px 11px; border: 1px solid rgba(115,151,216,.3); border-radius: 9px; color: #45649a; background: rgba(255,255,255,.78); backdrop-filter: blur(10px); box-shadow: 0 12px 30px rgba(58,93,153,.1); font: 500 10px "DM Mono", monospace; letter-spacing: .06em; }
       .marker::before { content: ""; width: 6px; height: 6px; border-radius: 50%; background: #86acff; box-shadow: 0 0 10px #86acff; }
       .marker.a { top: 12%; right: 1%; }.marker.b { bottom: 9%; left: 0; }
       .copy { max-width: 460px; }
-      .eyebrow { margin: 0 0 17px; color: #a8c4ff; font: 500 11px "DM Mono", monospace; letter-spacing: .14em; }
+      .eyebrow { margin: 0 0 17px; color: #5274bd; font: 500 11px "DM Mono", monospace; letter-spacing: .14em; }
       h1 { margin: 0; font-size: clamp(37px, 5vw, 58px); font-weight: 900; letter-spacing: -.08em; line-height: 1.22; }
-      h1 em { color: #9ebfff; font-style: normal; }
-      .description { max-width: 420px; margin: 22px 0 0; color: #bfd0ee; font-size: 15px; font-weight: 500; line-height: 1.9; }
+      h1 em { color: #4775d0; font-style: normal; }
+      .description { max-width: 420px; margin: 22px 0 0; color: #60718e; font-size: 15px; font-weight: 500; line-height: 1.9; }
       .actions { display: flex; gap: 11px; flex-wrap: wrap; margin-top: 32px; }
-      .button { min-height: 52px; display: inline-flex; align-items: center; justify-content: center; gap: 10px; padding: 0 19px; border: 1px solid rgba(194,214,255,.28); border-radius: 13px; color: #e7efff; background: rgba(255,255,255,.07); font-size: 14px; font-weight: 800; text-decoration: none; transition: transform .2s ease, background .2s ease, border-color .2s ease; }
-      .button.primary { border-color: #a7c5ff; color: #122756; background: #b2ccff; box-shadow: 0 12px 28px rgba(66,117,218,.25); }
-      .button:hover { transform: translateY(-3px); border-color: #a8c5ff; background: rgba(255,255,255,.14); }.button.primary:hover { background: #d0e0ff; }
-      .hint { display: flex; align-items: center; gap: 8px; margin-top: 28px; color: #91abd5; font-size: 11px; }.hint span { width: 19px; height: 1px; background: #6387ca; }
-      footer { display: flex; justify-content: space-between; gap: 18px; padding: 23px clamp(24px, 6vw, 92px); border-top: 1px solid rgba(205,220,255,.13); color: #819cc7; font: 400 10px "DM Mono", monospace; letter-spacing: .04em; }
+      .button { min-height: 52px; display: inline-flex; align-items: center; justify-content: center; gap: 10px; padding: 0 19px; border: 1px solid #c6d5ee; border-radius: 13px; color: #315795; background: rgba(255,255,255,.78); font-size: 14px; font-weight: 800; text-decoration: none; transition: transform .2s ease, background .2s ease, border-color .2s ease; }
+      .button.primary { border-color: #315ee0; color: #fff; background: #315ee0; box-shadow: 0 12px 28px rgba(66,117,218,.25); }
+      .button:hover { transform: translateY(-3px); border-color: #8aaaf0; background: #fff; }.button.primary:hover { background: #244fc8; }
+      .hint { display: flex; align-items: center; gap: 8px; margin-top: 28px; color: #7185a8; font-size: 11px; }.hint span { width: 19px; height: 1px; background: #8aa7df; }
+      footer { display: flex; justify-content: space-between; gap: 18px; padding: 23px clamp(24px, 6vw, 92px); border-top: 1px solid rgba(110,139,188,.19); color: #758bac; font: 400 10px "DM Mono", monospace; letter-spacing: .04em; }
       @keyframes breathe { 50% { transform: scale(1.06); opacity: .74; } }
       @media (max-width: 720px) { header { height: 70px; }.tag { display: none; } main { padding: 35px 23px; }.content { grid-template-columns: 1fr; gap: 20px; text-align: center; }.number { min-height: 238px; }.number::before { width: 190px; }.marker.a { right: 12%; }.marker.b { left: 10%; }.copy { margin: 0 auto; }.description { margin-right: auto; margin-left: auto; }.actions { justify-content: center; }.hint { justify-content: center; } footer { padding-top: 18px; padding-bottom: 18px; } }
       @media (max-width: 440px) { .brand { font-size: 13px; }.brand-mark { width: 34px; height: 34px; }.number { min-height: 205px; }.number strong { font-size: 108px; }.marker { padding: 7px 8px; font-size: 8px; }.marker.a { top: 3%; right: 2%; }.marker.b { bottom: 2%; left: 0; }.description { font-size: 14px; }.actions { display: grid; grid-template-columns: 1fr; }.button { width: 100%; }.hint { margin-top: 22px; } footer span:last-child { display: none; } }

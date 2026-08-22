@@ -20,7 +20,7 @@ const regions = [
   ['竹苗區', '新竹市・新竹縣・苗栗縣', 'HSI', '', 'https://tyctw.github.io/spare/', 'https://hhm.entry.edu.tw/'],
   ['高雄區', '高雄市', 'KAO', '', 'https://tyctw.github.io/spare/', 'https://kh.entry.edu.tw/'],
   ['宜蘭區', '宜蘭縣', 'YIL', '未來將開放', '#', 'https://iln.entry.edu.tw/'],
-  ['嘉義區', '嘉義市・嘉義縣', 'CHI', '未來將開放', '#', 'https://cyc.entry.edu.tw/'],
+  ['嘉義區', '嘉義市・嘉義縣', 'CHI', '', 'https://tyctw.github.io/spare/', 'https://cyc.entry.edu.tw/'],
   ['雲林區', '雲林縣', 'YUN', '未來將開放', '#', 'https://ylc.entry.edu.tw/'],
   ['屏東區', '屏東縣', 'PIN', '未來將開放', '#', 'https://ptc.entry.edu.tw/'],
   ['花蓮區', '花蓮縣', 'HUA', '未來將開放', '#', 'https://hlc.entry.edu.tw/'],
